@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en" class="light scroll-smooth">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Contact ~ Samuell Goldfinch</title>
+	<meta name="description" content="Connect with Samuell Goldfinch for bespoke films, DJ sets and curated events." />
+	<link rel="canonical" href="https://samuellgoldfinch.com/contact" />
+	<meta property="og:title" content="Contact ~ Samuell Goldfinch" />
+	<meta property="og:description" content="Connect with Samuell Goldfinch for bespoke films, DJ sets and curated events." />
+	<meta property="og:image" content="https://samuellgoldfinch.com/assets/contact/contact-og.jpg" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://samuellgoldfinch.com/contact" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Contact ~ Samuell Goldfinch" />
+	<meta name="twitter:description" content="Connect with Samuell Goldfinch for bespoke films, DJ sets and curated events." />
+	<meta name="twitter:image" content="https://samuellgoldfinch.com/assets/contact/contact-og.jpg" />
+	<link rel="icon" href="assets/favicon.png" />
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+	<script>
+		window.tailwind = window.tailwind || {};
+		window.tailwind.config = window.__tailwind_config = { darkMode: 'class' };
+	</script>
+	<script src="js/theme-bootstrap.js"></script>
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body class="contact-page">
+	<div id="cursor" aria-hidden="true"></div>
+	<header class="site-header app-header">
+		<div class="max-w-7xl mx-auto px-6 flex items-center" style="height:var(--header-h);">
+			<button type="button" id="menuToggle" class="menu-toggle" aria-expanded="false" aria-controls="siteNavPanel" aria-label="Toggle navigation menu"></button>
+			<a href="index.html" class="brand font-serif text-xl" aria-label="Samuell Goldfinch homepage">Samuell Goldfinch</a>
+			<div class="header-right flex items-center gap-2 ml-auto">
+				<nav class="header-nav" role="navigation" aria-label="Primary">
+					<a href="blaze.html" class="nav-link">Blaze</a>
+					<a href="kolasi.html" class="nav-link">Kolasi</a>
+					<a href="about.html" class="nav-link">About</a>
+					<a href="contact.html" class="nav-link">Contact</a>
+					<a href="quote.html" class="nav-link nav-link--emphasis">Quote</a>
+				</nav>
+				<span class="header-divider" aria-hidden="true"></span>
+				<button type="button" id="themeToggle" class="theme-btn" aria-pressed="false" aria-label="Toggle theme" data-theme-toggle>
+					<span data-theme-label>Light</span>
+					<span class="sr-only" data-theme-sr>Switch to dark theme</span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<div class="site-nav-overlay" aria-hidden="true">
+		<nav id="siteNavPanel" class="site-nav-panel" role="navigation" aria-label="Primary">
+			<a href="index.html" class="nav-overlay-link">Home</a>
+			<a href="blaze.html" class="nav-overlay-link">Blaze</a>
+			<a href="kolasi.html" class="nav-overlay-link">Kolasi</a>
+			<a href="about.html" class="nav-overlay-link">About</a>
+			<a href="contact.html" class="nav-overlay-link">Contact</a>
+			<a href="quote.html" class="nav-overlay-link">Quote</a>
+		</nav>
+	</div>
+
+	<main class="pt-24 md:pt-32">
+		<section class="contact-hero text-center py-24 px-6 force-visible-mobile" data-reveal>
+			<div class="max-w-3xl mx-auto space-y-4 mobile-section-pad">
+				<h1 class="font-serif text-4xl md:text-6xl font-bold">Let’s Start the Conversation</h1>
+					<p class="text-lg md:text-xl mobile-text-balance">Share your plans for a wedding film, live performance or curated event. We answer within 48 hours.</p>
+			</div>
+		</section>
+
+		<section class="max-w-6xl mx-auto px-6 py-24 grid lg:grid-cols-[1.1fr,1fr] gap-12 mobile-section-pad mobile-grid-relaxed" data-reveal>
+			<div class="contact-panel rounded-2xl p-8 shadow-lg form-wrapper mobile-section-pad" data-reveal>
+			<h2 class="font-serif text-2xl md:text-3xl mb-6">Project Snapshot</h2>
+				<form class="space-y-6 mobile-cta-stack" action="https://formspree.io/f/xdkozlvy" method="post">
+					<div class="relative">
+						<input type="text" name="name" class="contact-input w-full rounded-xl placeholder-transparent px-4 py-4 focus:outline-none focus:ring-2 focus:ring-brandbeige" placeholder="Your name" required>
+						<label class="contact-label">Name</label>
+					</div>
+					<div class="relative">
+						<input type="email" name="email" class="contact-input w-full rounded-xl placeholder-transparent px-4 py-4 focus:outline-none focus:ring-2 focus:ring-brandbeige" placeholder="Email" required>
+						<label class="contact-label">Email</label>
+					</div>
+					<div class="relative">
+						<input type="text" name="project" class="contact-input w-full rounded-xl placeholder-transparent px-4 py-4 focus:outline-none focus:ring-2 focus:ring-brandbeige" placeholder="Project type">
+						<label class="contact-label">Project type</label>
+					</div>
+					<div class="relative">
+						<textarea name="details" rows="5" class="contact-input w-full rounded-xl placeholder-transparent px-4 py-4 focus:outline-none focus:ring-2 focus:ring-brandbeige resize-none" placeholder="Tell me more"></textarea>
+						<label class="contact-label">Details</label>
+					</div>
+					<button type="submit" class="rounded-cta w-full md:w-auto px-8 py-3">Send Request</button>
+				</form>
+			</div>
+
+			<div class="space-y-8 text-neutral-600 dark:text-neutral-300 contact-info mobile-section-pad mobile-grid-relaxed" data-reveal>
+				<div data-reveal>
+					<h2 class="font-serif text-3xl text-neutral-900 dark:text-white mb-3">Direct Contact</h2>
+					<p class="text-lg"><a href="mailto:contact@samuellgoldfinch.com" class="underline">contact@samuellgoldfinch.com</a></p>
+					<p class="text-lg"><a href="tel:+33605883966" class="underline">+33 6 05 88 39 66</a></p>
+				</div>
+				<div data-reveal>
+					<h3 class="font-serif text-2xl text-neutral-900 dark:text-white mb-2">Availability</h3>
+					<p>Based in Paris. Frequently working across France, Europe, the Middle East and available worldwide.</p>
+				</div>
+				<div data-reveal>
+					<h3 class="font-serif text-2xl text-neutral-900 dark:text-white mb-2">Follow</h3>
+					<div class="social-links">
+						<a href="https://www.instagram.com/samuellgoldfinch" target="_blank" rel="noreferrer" class="social-link" aria-label="Instagram @samuellgoldfinch">
+							<img src="assets/icon-instagram.png" alt="Instagram icon" loading="lazy" decoding="async">
+							<span>@samuellgoldfinch</span>
+						</a>
+						<a href="https://www.instagram.com/kolasi.paris?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noreferrer" class="social-link" aria-label="Instagram @kolasi.paris">
+							<img src="assets/icon-instagram.png" alt="Instagram icon" loading="lazy" decoding="async">
+							<span>@kolasi.paris</span>
+						</a>
+						<a href="https://www.instagram.com/blazeprd?utm_source=ig_web_button_share_sheet&amp;igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noreferrer" class="social-link" aria-label="Instagram @blazeprd">
+							<img src="assets/icon-instagram.png" alt="Instagram icon" loading="lazy" decoding="async">
+							<span>@blazeprd</span>
+						</a>
+					</div>
+				</div>
+				<div class="rounded-2xl border border-white/10 p-6 text-center" data-reveal>
+					<h3 class="font-serif text-xl text-neutral-900 dark:text-white mb-2">Response Promise</h3>
+					<p>Every enquiry receives a personalised reply with next steps, budget guidance and a proposed call time within two business days.</p>
+				</div>
+			</div>
+		</section>
+		
+		<section class="py-20 text-center bg-white dark:bg-neutral-900 lets-meet mobile-section-pad" data-reveal>
+			<div class="max-w-3xl mx-auto px-6 space-y-5 mobile-section-pad mobile-cta-stack">
+				<h2 class="font-serif text-3xl md:text-4xl text-neutral-900 dark:text-white">Prefer to meet in person?</h2>
+				<p class="text-neutral-600 dark:text-neutral-300">Schedule a studio session in Paris or a virtual call to explore how Blaze Production and Kolasi can elevate your project.</p>
+				<a href="quote.html" class="rounded-cta inline-flex items-center justify-center px-8 py-3">Book a Discovery Call</a>
+			</div>
+		</section>
+	</main>
+
+	<footer class="bg-secondary py-12 text-center text-sm text-graylux">
+		<p>&copy; <span id="year"></span> Samuell Goldfinch ~ Contact</p>
+	</footer>
+
+	<script src="js/main.js" defer></script>
+</body>
+</html>
