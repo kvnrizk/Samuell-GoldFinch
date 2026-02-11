@@ -2,6 +2,16 @@
 
 import { getPayload } from './payload';
 import { Resend } from 'resend';
+import {
+  contactNotification,
+  contactAutoReply,
+  quoteNotification,
+  quoteAutoReply,
+  venueQualifiedNotification,
+  venueQualifiedAutoReply,
+  venueUnderBudgetNotification,
+  venueStarterNightAutoReply,
+} from './email-templates';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -55,27 +65,14 @@ export async function submitContactForm(formData: FormData): Promise<FormResult>
         from: 'Samuell Goldfinch <noreply@samuellgoldfinch.com>',
         to: 'contact@samuellgoldfinch.com',
         subject: `New Contact Inquiry from ${name}`,
-        html: `
-          <h2>New Contact Inquiry</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Project Type:</strong> ${projectType || 'Not specified'}</p>
-          <p><strong>Details:</strong></p>
-          <p>${details || 'No details provided'}</p>
-        `,
+        html: contactNotification({ name, email, projectType, details }),
       });
 
       await resend.emails.send({
         from: 'Samuell Goldfinch <noreply@samuellgoldfinch.com>',
         to: email,
         subject: 'Thank you for reaching out — Samuell Goldfinch',
-        html: `
-          <h2>Thank you, ${name}</h2>
-          <p>We've received your inquiry and will respond within <strong>48 hours</strong> with a personalized reply.</p>
-          <p>For urgent matters, feel free to reach out directly:</p>
-          <p>Email: contact@samuellgoldfinch.com<br>Phone: +33 6 05 88 39 66</p>
-          <p style="color:#999;font-size:12px;">— Samuell Goldfinch</p>
-        `,
+        html: contactAutoReply({ name, email }),
       });
     } catch {
       // Email failed but inquiry saved — don't lose the lead
@@ -133,31 +130,14 @@ export async function submitQuoteForm(formData: FormData): Promise<FormResult> {
         from: 'Samuell Goldfinch <noreply@samuellgoldfinch.com>',
         to: 'contact@samuellgoldfinch.com',
         subject: `New Quote Request from ${name}`,
-        html: `
-          <h2>New Quote Request</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-          <p><strong>Service:</strong> ${service || 'Not specified'}</p>
-          <p><strong>Date:</strong> ${eventDate || 'Not specified'}</p>
-          <p><strong>Guests:</strong> ${guestCount || 'Not specified'}</p>
-          <p><strong>Budget:</strong> ${budget || 'Not specified'}</p>
-          <p><strong>Details:</strong></p>
-          <p>${details || 'No details provided'}</p>
-        `,
+        html: quoteNotification({ name, email, phone, service, eventDate, guestCount, budget, details }),
       });
 
       await resend.emails.send({
         from: 'Samuell Goldfinch <noreply@samuellgoldfinch.com>',
         to: email,
         subject: 'Thank you for your quote request — Samuell Goldfinch',
-        html: `
-          <h2>Thank you, ${name}</h2>
-          <p>We've received your bespoke quote request and will respond within <strong>48 hours</strong>.</p>
-          <p>For urgent matters:</p>
-          <p>Email: contact@samuellgoldfinch.com<br>Phone: +33 6 05 88 39 66</p>
-          <p style="color:#999;font-size:12px;">— Samuell Goldfinch</p>
-        `,
+        html: quoteAutoReply({ name, email }),
       });
     } catch {
       // Email failed but inquiry saved
@@ -166,5 +146,107 @@ export async function submitQuoteForm(formData: FormData): Promise<FormResult> {
     return { success: true };
   } catch {
     return { success: false, error: 'Something went wrong. Please try again or email us directly.' };
+  }
+}
+
+export async function submitVenueInquiry(formData: FormData): Promise<FormResult> {
+  const honeypot = formData.get('_hp') as string;
+  if (honeypot) return { success: true };
+
+  const venueName = sanitize((formData.get('venueName') as string) || '', 200);
+  const address = sanitize((formData.get('address') as string) || '', 300);
+  const website = sanitize((formData.get('website') as string) || '', 200);
+  const instagram = sanitize((formData.get('instagram') as string) || '', 100);
+  const venueType = (formData.get('venueType') as string) || '';
+  const capacity = parseInt((formData.get('capacity') as string) || '0', 10) || undefined;
+  const hasDancePocket = formData.get('hasDancePocket') === 'true';
+  const currentProgramming = sanitize((formData.get('currentProgramming') as string) || '', 1000);
+  const goals = formData.getAll('goal') as string[];
+  const monthlyBudget = (formData.get('monthlyBudget') as string) || '';
+  const decisionMaker = (formData.get('decisionMaker') as string) || '';
+  const contactName = sanitize((formData.get('contactName') as string) || '', 100);
+  const contactWhatsApp = sanitize((formData.get('contactWhatsApp') as string) || '', 30);
+  const contactEmail = sanitize((formData.get('contactEmail') as string) || '', 254);
+  const timeline = (formData.get('timeline') as string) || '';
+
+  if (!venueName || !contactName || !contactEmail || !monthlyBudget) {
+    return { success: false, error: 'Please fill in all required fields.' };
+  }
+  if (!isValidEmail(contactEmail)) {
+    return { success: false, error: 'Please provide a valid email address.' };
+  }
+
+  const isQualified = monthlyBudget !== 'under-2k';
+
+  try {
+    const payload = await getPayload();
+
+    await payload.create({
+      collection: 'venue-inquiries',
+      data: {
+        venueName,
+        address,
+        website,
+        instagram,
+        venueType: venueType as 'bar' | 'brasserie' | 'club' | 'resto-festif' | 'hybrid',
+        capacity,
+        hasDancePocket,
+        currentProgramming,
+        goal: goals as ('more-tables' | 'better-crowd' | 'stronger-brand' | 'higher-spend' | 'signature-night')[],
+        monthlyBudget: monthlyBudget as 'under-2k' | '2k-5k' | '5k-10k' | '10k-plus',
+        decisionMaker: decisionMaker as 'owner' | 'gm' | 'event-manager',
+        contactName,
+        contactWhatsApp,
+        contactEmail,
+        timeline: timeline as 'asap' | 'next-month' | 'next-season',
+        source: 'venue-form',
+        status: isQualified ? 'qualified' : 'new',
+      },
+    });
+
+    const settings = await payload.findGlobal({ slug: 'global-settings' });
+    const calendlyUrl = (settings as Record<string, unknown>).calendlyUrl as string || 'https://calendly.com/samuellgoldfinch';
+
+    try {
+      if (isQualified) {
+        const venueData = { venueName, contactName, contactEmail, contactWhatsApp, venueType, capacity, monthlyBudget, goals, timeline, currentProgramming, calendlyUrl };
+
+        await resend.emails.send({
+          from: 'Samuell Goldfinch <noreply@samuellgoldfinch.com>',
+          to: 'contact@samuellgoldfinch.com',
+          subject: `Qualified Venue Lead: ${venueName} (${monthlyBudget})`,
+          html: venueQualifiedNotification(venueData),
+        });
+
+        await resend.emails.send({
+          from: 'Samuell Goldfinch <noreply@samuellgoldfinch.com>',
+          to: contactEmail,
+          subject: `Your venue inquiry — Samuell Goldfinch`,
+          html: venueQualifiedAutoReply(venueData),
+        });
+      } else {
+        const venueData = { venueName, contactName, contactEmail, contactWhatsApp, venueType, capacity, monthlyBudget, goals, timeline, currentProgramming, calendlyUrl };
+
+        await resend.emails.send({
+          from: 'Samuell Goldfinch <noreply@samuellgoldfinch.com>',
+          to: 'contact@samuellgoldfinch.com',
+          subject: `Venue Inquiry (under budget): ${venueName}`,
+          html: venueUnderBudgetNotification(venueData),
+        });
+
+        await resend.emails.send({
+          from: 'Samuell Goldfinch <noreply@samuellgoldfinch.com>',
+          to: contactEmail,
+          subject: `Starter Night — Perfect for ${venueName}`,
+          html: venueStarterNightAutoReply(venueData),
+        });
+      }
+    } catch {
+      // Email failed but venue inquiry saved
+    }
+
+    return { success: true };
+  } catch {
+    return { success: false, error: 'Something went wrong. Please try again.' };
   }
 }

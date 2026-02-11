@@ -58,6 +58,13 @@
   }
 }
 
+/* ── Focus Styles (Accessibility) ── */
+*:focus-visible {
+  outline: 2px solid var(--color-gold, #c8a96e);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 /* ── Custom Scrollbar ── */
 ::-webkit-scrollbar {
   width: 4px;
@@ -153,6 +160,172 @@
   letter-spacing: 0.4em;
   color: var(--text-mute);
   pointer-events: none;
+}
+
+/* ── Animated Background Floats ── */
+@keyframes float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(3%, 5%) scale(1.05); }
+}
+@keyframes float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-4%, -3%) scale(1.03); }
+}
+@keyframes float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5%, -4%) scale(1.06); }
+}
+
+.animate-float-1 { animation: float-1 20s ease-in-out infinite; }
+.animate-float-2 { animation: float-2 25s ease-in-out infinite; }
+.animate-float-3 { animation: float-3 18s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-1,
+  .animate-float-2,
+  .animate-float-3 {
+    animation: none;
+  }
+}
+
+/* ── Light Mode Overrides ── */
+/* Flip all hardcoded dark backgrounds and text colors */
+html.light {
+  /* Backgrounds */
+  & .bg-black,
+  & .bg-\[\#070707\],
+  & .bg-\[\#09090b\],
+  & .bg-\[\#0a0a0a\] {
+    background-color: var(--bg) !important;
+  }
+
+  & .bg-neutral-900,
+  & .bg-neutral-900\/30 {
+    background-color: var(--bg-card) !important;
+  }
+
+  & .bg-\[\#111114\],
+  & .bg-\[\#111113\] {
+    background-color: var(--bg-card) !important;
+  }
+
+  /* Text colors */
+  & .text-white {
+    color: var(--text) !important;
+  }
+
+  & .text-white\/50,
+  & .text-white\/40,
+  & .text-white\/30,
+  & .text-white\/20 {
+    color: var(--text-dim) !important;
+  }
+
+  & .text-stone-100 {
+    color: var(--text) !important;
+  }
+
+  & .text-stone-200 {
+    color: color-mix(in srgb, var(--text), transparent 10%) !important;
+  }
+
+  & .text-zinc-400,
+  & .text-zinc-500 {
+    color: var(--text-dim) !important;
+  }
+
+  & .text-zinc-600 {
+    color: var(--text-mute) !important;
+  }
+
+  /* Borders */
+  & .border-white\/5,
+  & .border-white\/\[0\.06\],
+  & .border-white\/\[0\.08\],
+  & .border-white\/10,
+  & .border-white\/20 {
+    border-color: var(--border) !important;
+  }
+
+  /* Backgrounds with opacity */
+  & .bg-white\/\[0\.02\],
+  & .bg-white\/\[0\.05\],
+  & .bg-white\/5 {
+    background-color: color-mix(in srgb, var(--text), transparent 95%) !important;
+  }
+
+  & .bg-black\/90 {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+  }
+
+  & .bg-black\/80,
+  & .bg-black\/60 {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  /* Gradients */
+  & .from-black {
+    --tw-gradient-from: var(--bg) !important;
+  }
+
+  & .to-black {
+    --tw-gradient-to: var(--bg) !important;
+  }
+
+  & .from-black\/80,
+  & .from-black\/60 {
+    --tw-gradient-from: rgba(247, 247, 245, 0.8) !important;
+  }
+
+  /* Header backdrop */
+  & .backdrop-blur-xl {
+    backdrop-filter: blur(24px);
+  }
+
+  /* Forms */
+  & .form-field input,
+  & .form-field textarea,
+  & .form-field select {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: var(--border);
+    color: var(--text);
+  }
+
+  /* Glass cards */
+  & .bg-white\/\[0\.03\],
+  & .bg-white\/\[0\.04\] {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+  }
+
+  /* Selection */
+  & ::selection {
+    background: rgba(200, 169, 110, 0.2);
+    color: #18181b;
+  }
+
+  /* Grain overlay — hide in light mode */
+  & ~ body .grain {
+    opacity: 0.015;
+  }
+
+  /* Prose invert → normal */
+  & .prose-invert {
+    --tw-prose-body: var(--text-dim);
+    --tw-prose-headings: var(--text);
+    --tw-prose-links: #c8a96e;
+    --tw-prose-bold: var(--text);
+    --tw-prose-bullets: var(--text-mute);
+    --tw-prose-quotes: var(--text-dim);
+    --tw-prose-quote-borders: #c8a96e;
+  }
+
+  /* Scrollbar */
+  & ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+  & ::-webkit-scrollbar-thumb {
+    background: var(--border-hi);
+  }
 }
 
 /* ── Page-scoped tokens ── */

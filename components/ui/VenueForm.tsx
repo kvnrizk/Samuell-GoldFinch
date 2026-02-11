@@ -1,0 +1,299 @@
+'use client';
+
+import { useState } from 'react';
+import { submitVenueInquiry } from '@/lib/actions';
+import { trackEvent } from '@/lib/analytics';
+import { getUTMParams } from '@/lib/utm';
+
+type Step = 1 | 2 | 3;
+
+const venueTypes = [
+  { label: 'Bar', value: 'bar' },
+  { label: 'Brasserie', value: 'brasserie' },
+  { label: 'Club', value: 'club' },
+  { label: 'Resto-Festif', value: 'resto-festif' },
+  { label: 'Hybrid', value: 'hybrid' },
+];
+
+const goals = [
+  { label: 'More Tables / Reservations', value: 'more-tables' },
+  { label: 'Better Crowd', value: 'better-crowd' },
+  { label: 'Stronger Brand', value: 'stronger-brand' },
+  { label: 'Higher Average Spend', value: 'higher-spend' },
+  { label: 'Create a Signature Night', value: 'signature-night' },
+];
+
+const budgets = [
+  { label: 'Under €2,000/month', value: 'under-2k' },
+  { label: '€2,000–5,000/month', value: '2k-5k' },
+  { label: '€5,000–10,000/month', value: '5k-10k' },
+  { label: '€10,000+/month', value: '10k-plus' },
+];
+
+const timelines = [
+  { label: 'As soon as possible', value: 'asap' },
+  { label: 'Next month', value: 'next-month' },
+  { label: 'Next season', value: 'next-season' },
+];
+
+const inputClass =
+  'w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-sm text-stone-100 placeholder:text-zinc-600 outline-none focus:border-[#c8a96e]/40 transition-colors';
+const labelClass = 'text-[10px] font-mono uppercase tracking-[0.15em] text-zinc-500 mb-1.5 block';
+const selectClass =
+  'w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-sm text-stone-100 outline-none focus:border-[#c8a96e]/40 transition-colors appearance-none';
+
+export function VenueForm() {
+  const [step, setStep] = useState<Step>(1);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
+
+  const toggleGoal = (value: string) => {
+    setSelectedGoals((prev) =>
+      prev.includes(value) ? prev.filter((g) => g !== value) : [...prev, value],
+    );
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('sending');
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    // Append multi-select goals
+    formData.delete('goal');
+    selectedGoals.forEach((g) => formData.append('goal', g));
+
+    // Append UTM params
+    const utm = getUTMParams();
+    if (utm.utm_source) formData.append('utm_source', utm.utm_source);
+    if (utm.utm_medium) formData.append('utm_medium', utm.utm_medium);
+    if (utm.utm_campaign) formData.append('utm_campaign', utm.utm_campaign);
+
+    const result = await submitVenueInquiry(formData);
+
+    if (result.success) {
+      setStatus('success');
+      trackEvent('venue_form_submit', {
+        venue_type: formData.get('venueType') as string,
+        budget: formData.get('monthlyBudget') as string,
+      });
+    } else {
+      setStatus('error');
+      setErrorMsg(result.error || 'Something went wrong. Please try again.');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <div className="text-center py-12">
+        <div className="w-16 h-16 rounded-full bg-[#c8a96e]/10 border border-[#c8a96e]/30 flex items-center justify-center mx-auto mb-6">
+          <span className="text-[#c8a96e] text-2xl">&#10003;</span>
+        </div>
+        <h3 className="font-serif text-2xl text-stone-100 mb-3">Application Received</h3>
+        <p className="text-sm text-zinc-500 max-w-md mx-auto">
+          We&apos;ll review your venue within 24 hours and send you a personalised response with next
+          steps.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Honeypot */}
+      <input type="text" name="_hp" className="hidden" tabIndex={-1} autoComplete="off" />
+
+      {/* Step Indicators */}
+      <div className="flex items-center gap-2 mb-8">
+        {[1, 2, 3].map((s) => (
+          <div key={s} className="flex items-center gap-2">
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-mono transition-all ${
+                s === step
+                  ? 'bg-[#c8a96e] text-[#09090b] font-bold'
+                  : s < step
+                    ? 'bg-[#c8a96e]/20 text-[#c8a96e]'
+                    : 'bg-white/[0.05] text-zinc-600'
+              }`}
+            >
+              {s < step ? '✓' : s}
+            </div>
+            {s < 3 && (
+              <div
+                className={`w-12 h-px ${s < step ? 'bg-[#c8a96e]/40' : 'bg-white/[0.08]'}`}
+              />
+            )}
+          </div>
+        ))}
+        <span className="ml-3 text-[10px] font-mono uppercase tracking-wider text-zinc-600">
+          {step === 1 && 'Your Venue'}
+          {step === 2 && 'Goals & Budget'}
+          {step === 3 && 'Contact Info'}
+        </span>
+      </div>
+
+      {/* Step 1: Venue Info */}
+      {step === 1 && (
+        <div className="space-y-5 animate-in fade-in duration-300">
+          <div>
+            <label className={labelClass}>Venue Name *</label>
+            <input type="text" name="venueName" required className={inputClass} placeholder="e.g. Le Speakeasy" />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelClass}>Venue Type</label>
+              <select name="venueType" className={selectClass}>
+                <option value="">Select...</option>
+                {venueTypes.map((t) => (
+                  <option key={t.value} value={t.value}>{t.label}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className={labelClass}>Capacity</label>
+              <input type="number" name="capacity" className={inputClass} placeholder="e.g. 200" />
+            </div>
+          </div>
+          <div>
+            <label className={labelClass}>Address</label>
+            <input type="text" name="address" className={inputClass} placeholder="City or full address" />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelClass}>Website</label>
+              <input type="text" name="website" className={inputClass} placeholder="https://" />
+            </div>
+            <div>
+              <label className={labelClass}>Instagram</label>
+              <input type="text" name="instagram" className={inputClass} placeholder="@handle" />
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <input type="checkbox" name="hasDancePocket" id="hasDancePocket" className="accent-[#c8a96e]" />
+            <label htmlFor="hasDancePocket" className="text-sm text-zinc-400">
+              We have a dance floor / dance pocket
+            </label>
+          </div>
+          <div>
+            <label className={labelClass}>Current Programming</label>
+            <textarea name="currentProgramming" rows={3} className={inputClass} placeholder="Do you currently have DJ nights? What genre? How often?" />
+          </div>
+          <button
+            type="button"
+            onClick={() => setStep(2)}
+            className="w-full bg-[#c8a96e] text-[#09090b] font-semibold text-sm py-3 rounded-lg hover:bg-[#d4b87a] active:scale-[0.98] transition-all"
+          >
+            Continue
+          </button>
+        </div>
+      )}
+
+      {/* Step 2: Goals & Budget */}
+      {step === 2 && (
+        <div className="space-y-5 animate-in fade-in duration-300">
+          <div>
+            <label className={labelClass}>What are your goals? (select all that apply)</label>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {goals.map((g) => (
+                <button
+                  key={g.value}
+                  type="button"
+                  onClick={() => toggleGoal(g.value)}
+                  className={`px-3 py-2 rounded-lg text-xs border transition-all ${
+                    selectedGoals.includes(g.value)
+                      ? 'border-[#c8a96e] bg-[#c8a96e]/10 text-[#c8a96e]'
+                      : 'border-white/[0.08] text-zinc-500 hover:border-white/[0.15]'
+                  }`}
+                >
+                  {g.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label className={labelClass}>Monthly Budget *</label>
+            <select name="monthlyBudget" required className={selectClass}>
+              <option value="">Select budget range...</option>
+              {budgets.map((b) => (
+                <option key={b.value} value={b.value}>{b.label}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className={labelClass}>Decision Maker</label>
+            <select name="decisionMaker" className={selectClass}>
+              <option value="">Select role...</option>
+              <option value="owner">Owner</option>
+              <option value="gm">General Manager</option>
+              <option value="event-manager">Event Manager</option>
+            </select>
+          </div>
+          <div>
+            <label className={labelClass}>Timeline</label>
+            <select name="timeline" className={selectClass}>
+              <option value="">When do you want to start?</option>
+              {timelines.map((t) => (
+                <option key={t.value} value={t.value}>{t.label}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => setStep(1)}
+              className="flex-1 border border-white/[0.08] text-zinc-400 font-semibold text-sm py-3 rounded-lg hover:border-white/[0.15] transition-all"
+            >
+              Back
+            </button>
+            <button
+              type="button"
+              onClick={() => setStep(3)}
+              className="flex-1 bg-[#c8a96e] text-[#09090b] font-semibold text-sm py-3 rounded-lg hover:bg-[#d4b87a] active:scale-[0.98] transition-all"
+            >
+              Continue
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Step 3: Contact Info */}
+      {step === 3 && (
+        <div className="space-y-5 animate-in fade-in duration-300">
+          <div>
+            <label className={labelClass}>Your Name *</label>
+            <input type="text" name="contactName" required className={inputClass} placeholder="Full name" />
+          </div>
+          <div>
+            <label className={labelClass}>WhatsApp *</label>
+            <input type="tel" name="contactWhatsApp" required className={inputClass} placeholder="+33 6 00 00 00 00" />
+          </div>
+          <div>
+            <label className={labelClass}>Email *</label>
+            <input type="email" name="contactEmail" required className={inputClass} placeholder="you@venue.com" />
+          </div>
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => setStep(2)}
+              className="flex-1 border border-white/[0.08] text-zinc-400 font-semibold text-sm py-3 rounded-lg hover:border-white/[0.15] transition-all"
+            >
+              Back
+            </button>
+            <button
+              type="submit"
+              disabled={status === 'sending'}
+              className="flex-1 bg-[#c8a96e] text-[#09090b] font-semibold text-sm py-3 rounded-lg hover:bg-[#d4b87a] active:scale-[0.98] transition-all disabled:opacity-50"
+            >
+              {status === 'sending' ? 'Submitting...' : 'Submit Application'}
+            </button>
+          </div>
+          {status === 'error' && (
+            <p className="text-red-400 text-xs text-center">{errorMsg}</p>
+          )}
+        </div>
+      )}
+    </form>
+  );
+}

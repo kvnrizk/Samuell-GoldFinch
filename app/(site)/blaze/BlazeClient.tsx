@@ -3,9 +3,11 @@
 import React, { useRef } from 'react';
 import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
-import { registerGSAP, gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/gsap-utils';
+import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import OrbitCarousel from '@/components/ui/OrbitCarousel';
+import VideoPlayer from '@/components/ui/VideoPlayer';
 
+// Static fallbacks
 const stouhBeirut = [
   { url: '/assets/blaze/stouh_beirut/2E2A1724.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
   { url: '/assets/blaze/stouh_beirut/2E2A2072.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
@@ -24,7 +26,7 @@ const embassy = [
   { url: '/assets/blaze/ambassy/0C5A9206.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
 ];
 
-const weddings = [
+const weddingsStatic = [
   { url: '/assets/blaze/weddings/DSCF2395.jpg', title: 'Weddings', category: 'Cinematic' },
   { url: '/assets/blaze/weddings/IMG_0100.jpg', title: 'Weddings', category: 'Cinematic' },
   { url: '/assets/blaze/weddings/IMG_0084.jpg', title: 'Weddings', category: 'Cinematic' },
@@ -33,7 +35,7 @@ const weddings = [
   { url: '/assets/blaze/weddings/0G0A7811.jpg', title: 'Weddings', category: 'Cinematic' },
 ];
 
-const editorial = [
+const editorialStatic = [
   { url: '/assets/blaze/cloudinary_uploaded/IMG_5744_compressed.JPG', title: 'Editorial & Brand', category: 'Editorial' },
   { url: '/assets/blaze/editorial_and_brand/pexels-amar-10288372.jpg', title: 'Editorial & Brand', category: 'Editorial' },
   { url: '/assets/blaze/editorial_and_brand/pexels-angel-ayala-321556-28976231.jpg', title: 'Editorial & Brand', category: 'Editorial' },
@@ -41,8 +43,52 @@ const editorial = [
   { url: '/assets/blaze/editorial_and_brand/pexels-valentina-maros-128709290-13283497.jpg', title: 'Editorial & Brand', category: 'Editorial' },
 ];
 
-export default function BlazeClient() {
+interface BlazeGalleryItem {
+  photo?: {
+    url?: string;
+  };
+}
+
+interface BlazeHeroVideo {
+  muxPlaybackId?: string;
+  posterUrl?: string;
+}
+
+interface BlazeProject {
+  title: string;
+  category: string;
+  gallery?: BlazeGalleryItem[];
+  heroVideo?: BlazeHeroVideo;
+}
+
+interface BlazeClientProps {
+  projects: BlazeProject[];
+}
+
+function projectsToCarousel(projects: BlazeProject[], category: string) {
+  const filtered = projects.filter((p) => p.category === category);
+  if (filtered.length === 0) return null;
+  return filtered.flatMap((p) =>
+    (p.gallery || []).map((g) => ({
+      url: g.photo?.url || '',
+      title: p.title,
+      category: p.category,
+    })),
+  ).filter((item) => item.url);
+}
+
+export default function BlazeClient({ projects }: BlazeClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Build carousels from CMS or fallback
+  const hasCMS = projects.length > 0;
+  const weddingItems = (hasCMS && projectsToCarousel(projects, 'Wedding')) || weddingsStatic;
+  const editorialItems = (hasCMS && projectsToCarousel(projects, 'Editorial')) || editorialStatic;
+  const eventItems = (hasCMS && projectsToCarousel(projects, 'Event')) || stouhBeirut;
+  const diplomaticItems = (hasCMS && projectsToCarousel(projects, 'Diplomatic')) || embassy;
+
+  // Hero video: from first project with heroVideo or fallback
+  const heroProject = projects.find((p) => p.heroVideo?.muxPlaybackId);
 
   useGSAP(() => {
     if (prefersReducedMotion()) return;
@@ -63,12 +109,26 @@ export default function BlazeClient() {
     <div ref={containerRef} className="bg-[#0a0a0a]">
       {/* Full Screen Hero Video */}
       <section className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
-        <video
-          autoPlay loop muted playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-60 scale-105"
-          poster="/assets/blaze/weddings/DSCF2395.jpg"
-          src="/assets/blaze/weddings/BLAZE_WEDDINGS_Demoreel.mp4"
-        />
+        {heroProject?.heroVideo?.muxPlaybackId ? (
+          <div className="absolute inset-0">
+            <VideoPlayer
+              muxPlaybackId={heroProject.heroVideo.muxPlaybackId}
+              poster={heroProject.heroVideo.posterUrl}
+              autoPlay
+              loop
+              muted
+              mode="hero"
+              className="opacity-60 scale-105"
+            />
+          </div>
+        ) : (
+          <video
+            autoPlay loop muted playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-60 scale-105"
+            poster="/assets/blaze/weddings/DSCF2395.jpg"
+            src="/assets/blaze/weddings/BLAZE_WEDDINGS_Demoreel.mp4"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black" />
 
         <div className="relative z-10 text-center px-6">
@@ -106,16 +166,21 @@ export default function BlazeClient() {
         </div>
 
         <div className="reveal-up">
-          <div className="aspect-[4/3] rounded-[2.5rem] bg-neutral-900 border border-white/5 shadow-2xl flex items-center justify-center p-20 relative overflow-hidden group">
-            <div className="relative z-10 text-center transform group-hover:scale-110 transition-transform duration-700">
-              <div className="flex items-center justify-center space-x-4 mb-4">
-                <div className="w-12 h-12 rounded-full border-2 border-white flex items-center justify-center font-serif text-2xl italic">B</div>
-                <div className="h-[2px] w-12 bg-white" />
+          <div className="aspect-[4/3] rounded-[2.5rem] bg-neutral-900 border border-white/5 shadow-2xl relative overflow-hidden group">
+            <img
+              src="/assets/blaze/IMG_6050.JPG"
+              alt="Blaze Production — behind the scenes"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="absolute bottom-8 left-8 right-8 z-10">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="w-10 h-10 rounded-full border-2 border-white/80 flex items-center justify-center font-serif text-lg italic">B</div>
+                <div className="h-[1px] w-8 bg-white/40" />
               </div>
-              <p className="text-2xl font-serif tracking-[0.3em] uppercase">Blaze</p>
-              <p className="text-[10px] tracking-[0.4em] uppercase text-white/40 mt-1">Production</p>
+              <p className="text-xl font-serif tracking-[0.2em] uppercase">Blaze</p>
+              <p className="text-[9px] tracking-[0.3em] uppercase text-white/50 mt-1">Production</p>
             </div>
-            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
           </div>
         </div>
       </section>
@@ -151,8 +216,8 @@ export default function BlazeClient() {
             <h2 className="text-3xl font-serif mb-2 italic">STOUH BEIRUT Rooftop</h2>
             <p className="text-[10px] tracking-[0.4em] uppercase text-white/30">Golden-hour diplomacy and Parisian skyline energy.</p>
           </div>
-          <OrbitCarousel items={stouhBeirut} autoplayInterval={5200} />
-          <div className="mt-20 text-center">
+          <OrbitCarousel items={eventItems} autoplayInterval={5200} />
+          <div className="mt-28 mb-8 text-center">
             <button className="px-10 py-3 border border-white/20 rounded-full text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all">Coming Soon</button>
           </div>
         </div>
@@ -162,8 +227,8 @@ export default function BlazeClient() {
             <h2 className="text-3xl font-serif mb-2 italic">Embassy of Lebanon &middot; Paris</h2>
             <p className="text-[10px] tracking-[0.4em] uppercase text-white/30">Diplomatic ceremonies captured with cinematic restraint.</p>
           </div>
-          <OrbitCarousel items={embassy} autoplayInterval={5600} />
-          <div className="mt-20 text-center">
+          <OrbitCarousel items={diplomaticItems} autoplayInterval={5600} />
+          <div className="mt-28 mb-8 text-center">
             <button className="px-10 py-3 border border-white/20 rounded-full text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all">Coming Soon</button>
           </div>
         </div>
@@ -173,8 +238,8 @@ export default function BlazeClient() {
             <h2 className="text-3xl font-serif mb-2 italic">Weddings</h2>
             <p className="text-[10px] tracking-[0.4em] uppercase text-white/30">Stories of connection and timeless elegance.</p>
           </div>
-          <OrbitCarousel items={weddings} autoplayInterval={5200} />
-          <div className="mt-20 text-center">
+          <OrbitCarousel items={weddingItems} autoplayInterval={5200} />
+          <div className="mt-28 mb-8 text-center">
             <button className="px-10 py-3 border border-white/20 rounded-full text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all">Coming Soon</button>
           </div>
         </div>
@@ -184,8 +249,8 @@ export default function BlazeClient() {
             <h2 className="text-3xl font-serif mb-2 italic">Editorial &amp; Brand</h2>
             <p className="text-[10px] tracking-[0.4em] uppercase text-white/30">The language of identity told through crafted imagery.</p>
           </div>
-          <OrbitCarousel items={editorial} autoplayInterval={5400} />
-          <div className="mt-20 text-center">
+          <OrbitCarousel items={editorialItems} autoplayInterval={5400} />
+          <div className="mt-28 mb-8 text-center">
             <button className="px-10 py-3 border border-white/20 rounded-full text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all">Coming Soon</button>
           </div>
         </div>

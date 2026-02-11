@@ -48,7 +48,29 @@ function getIcon(name: string) {
   }
 }
 
-export default function KolasiClient() {
+interface GalleryPhoto {
+  photo?: { url: string };
+}
+
+interface KolasiEvent {
+  gallery?: GalleryPhoto[];
+}
+
+interface KolasiArtist {
+  name?: string;
+}
+
+interface KolasiClientProps {
+  events: KolasiEvent[];
+  artists: KolasiArtist[];
+}
+
+export default function KolasiClient({ events }: KolasiClientProps) {
+  // Build gallery from CMS events or fallback
+  const cmsGallery = events.flatMap((e: KolasiEvent) =>
+    (e.gallery || []).map((g: GalleryPhoto) => g.photo?.url).filter(Boolean),
+  );
+  const galleryImages = cmsGallery.length > 0 ? cmsGallery : gallery;
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -200,7 +222,7 @@ export default function KolasiClient() {
             <p className="text-[10px] tracking-[0.4em] uppercase text-white/30">A glimpse into our nights ~ sound, light and emotion captured in motion.</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 reveal-up">
-            {gallery.map((img, i) => (
+            {galleryImages.map((img, i) => (
               <div key={i} className={`overflow-hidden rounded-2xl group relative ${i % 3 === 0 ? 'md:col-span-2 md:row-span-2 aspect-square' : 'aspect-[3/4]'}`}>
                 <img
                   src={img}
@@ -210,6 +232,29 @@ export default function KolasiClient() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* For Venue Owners Banner */}
+      <section className="py-20 bg-[#070707] reveal-up">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="rounded-2xl border border-[#c8a96e]/20 bg-gradient-to-r from-[#c8a96e]/[0.05] to-transparent p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
+            <div className="flex-1">
+              <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#c8a96e] mb-2">For Venue Owners</p>
+              <h3 className="font-serif text-2xl text-stone-100 font-semibold mb-2">
+                Looking for weekly programming?
+              </h3>
+              <p className="text-sm text-zinc-500">
+                We offer full-service venue programming — DJ booking, content production, and brand strategy tailored to your crowd.
+              </p>
+            </div>
+            <Link
+              href="/venues"
+              className="bg-[#c8a96e] text-[#09090b] font-semibold text-sm px-8 py-3 rounded-lg hover:bg-[#d4b87a] active:scale-[0.98] transition-all whitespace-nowrap"
+            >
+              Explore Venue Packages
+            </Link>
           </div>
         </div>
       </section>

@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 const navLinks = [
   { name: 'Blaze', path: '/blaze' },
   { name: 'Kolasi', path: '/kolasi' },
+  { name: 'For Venues', path: '/venues', accent: true },
   { name: 'About', path: '/about' },
   { name: 'Contact', path: '/contact' },
   { name: 'Quote', path: '/quote' },
@@ -62,13 +63,19 @@ export default function Header() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center space-x-12">
+        <nav aria-label="Main navigation" className="hidden md:flex items-center space-x-12">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               href={link.path}
-              className={`text-[10px] uppercase tracking-[0.4em] font-medium hover:text-white transition-colors ${
-                pathname === link.path ? 'text-white' : 'text-white/40'
+              className={`text-[10px] uppercase tracking-[0.4em] font-medium transition-colors ${
+                link.accent
+                  ? pathname === link.path
+                    ? 'text-[#c8a96e]'
+                    : 'text-[#c8a96e]/70 hover:text-[#c8a96e]'
+                  : pathname === link.path
+                    ? 'text-white'
+                    : 'text-white/40 hover:text-white'
               }`}
             >
               {link.name}
@@ -77,6 +84,7 @@ export default function Header() {
           <div className="h-4 w-[1px] bg-white/20" />
           <button
             onClick={toggleTheme}
+            aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
             className="text-[10px] uppercase tracking-[0.4em] text-white/40 hover:text-white transition-colors"
           >
             {theme === 'dark' ? 'Light' : 'Dark'}
@@ -88,6 +96,8 @@ export default function Header() {
           onClick={() => setIsOpen(!isOpen)}
           className="md:hidden p-2 text-white/70 relative w-8 h-8 flex flex-col justify-center items-center"
           aria-label={isOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isOpen}
+          aria-controls="mobile-nav"
         >
           <span
             className={`block w-5 h-[1.5px] bg-white transition-all duration-300 ${
@@ -108,10 +118,13 @@ export default function Header() {
       </div>
 
       {/* Mobile Nav Overlay */}
-      <div
+      <nav
+        id="mobile-nav"
+        aria-label="Mobile navigation"
         className={`fixed inset-0 bg-black z-40 flex flex-col items-center justify-center space-y-10 transition-transform duration-700 md:hidden ${
-          isOpen ? 'translate-y-0' : '-translate-y-full'
+          isOpen ? 'translate-y-0' : '-translate-y-full pointer-events-none'
         }`}
+        aria-hidden={!isOpen}
       >
         {navLinks.map((link) => (
           <Link
@@ -129,7 +142,7 @@ export default function Header() {
         >
           {theme === 'dark' ? 'Switch to Light' : 'Switch to Dark'}
         </button>
-      </div>
+      </nav>
     </header>
   );
 }

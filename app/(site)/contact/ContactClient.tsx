@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
 import { gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import { submitContactForm } from '@/lib/actions';
+import { trackEvent } from '@/lib/analytics';
 
 export default function ContactClient() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -26,6 +27,7 @@ export default function ContactClient() {
     const result = await submitContactForm(formData);
     if (result.success) {
       setStatus('success');
+      trackEvent('contact_form_submit', { project_type: formData.get('projectType') as string });
       form.reset();
     } else {
       setStatus('error');

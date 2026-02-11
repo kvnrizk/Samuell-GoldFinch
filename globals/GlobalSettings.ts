@@ -61,5 +61,16 @@ export const GlobalSettings: GlobalConfig = {
       type: 'textarea',
       defaultValue: 'Every inquiry receives a personal reply within 48 hours. Not a template — a thoughtful response crafted by Samuell.',
     },
+    {
+      name: 'calendlyUrl',
+      type: 'text',
+      admin: { description: 'Calendly booking link for venue discovery calls' },
+    },
+    {
+      name: 'whatsappNumber',
+      type: 'text',
+      defaultValue: '+33605883966',
+      admin: { description: 'WhatsApp number shown on /venues page' },
+    },
   ],
 };

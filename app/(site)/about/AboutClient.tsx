@@ -32,7 +32,22 @@ const notableCredits = {
   assets: ['DJ press photos (high-res)', 'Bio / rider (PDF)', 'Set recordings (SoundCloud)'],
 };
 
-export default function AboutClient() {
+interface CmsMilestone {
+  title?: string;
+  name?: string;
+  description?: string;
+}
+
+interface AboutClientProps {
+  cmsMilestones: CmsMilestone[];
+  settings: Record<string, unknown>;
+}
+
+export default function AboutClient({ cmsMilestones }: AboutClientProps) {
+  // Use CMS milestones if populated, otherwise static fallback
+  const displayMilestones = cmsMilestones.length > 0
+    ? cmsMilestones.map((m: CmsMilestone) => ({ title: m.title || m.name, description: m.description || '' }))
+    : milestones;
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -91,7 +106,7 @@ export default function AboutClient() {
         <h2 className="text-4xl md:text-5xl font-serif text-center mb-32 reveal-up italic">Milestones</h2>
         <div className="space-y-24 relative">
           <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-[1px] bg-white/10" />
-          {milestones.map((item, i) => (
+          {displayMilestones.map((item, i) => (
             <div key={i} className="relative reveal-up flex flex-col md:flex-row items-start md:items-center">
               <div className="absolute left-[-5px] md:left-1/2 md:-translate-x-1/2 w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.8)] z-10" />
               <div className={`md:w-1/2 pl-12 md:pl-0 ${i % 2 === 0 ? 'md:pr-20 md:text-right' : 'md:order-2 md:pl-20'}`}>

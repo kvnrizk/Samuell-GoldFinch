@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
-import { registerGSAP, gsap, ScrollTrigger, prefersReducedMotion, EASING, DURATION } from '@/lib/gsap-utils';
+import { registerGSAP, gsap, prefersReducedMotion, EASING, DURATION } from '@/lib/gsap-utils';
 
 interface RevealOnScrollProps {
   children: React.ReactNode;

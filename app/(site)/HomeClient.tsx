@@ -1,33 +1,76 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
-import { registerGSAP, gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/gsap-utils';
+import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import OrbitCarousel from '@/components/ui/OrbitCarousel';
+import VideoPlayer from '@/components/ui/VideoPlayer';
+import { SectionKicker } from '@/components/ui/SectionKicker';
 
-const featuredSets = [
+// Static fallbacks when CMS is empty
+const staticFeaturedSets = [
   { url: '/assets/blaze/stouh_beirut/2E2A1724.jpg', title: 'STOUH BEIRUT', category: 'Rooftop Event' },
   { url: '/assets/blaze/ambassy/0C5A9134.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic Event' },
   { url: '/assets/blaze/weddings/DSCF2395.jpg', title: 'Blaze Weddings', category: 'Cinematic Wedding' },
   { url: '/assets/blaze/editorial_and_brand/pexels-amar-10288372.jpg', title: 'Editorial & Brand', category: 'Brand Campaign' },
 ];
 
-const collaborations = [
-  { name: 'Embassy of Lebanon', location: 'Paris', logo: '🏛' },
-  { name: 'STOUH BEIRUT', location: 'Paris', logo: '🌆' },
-  { name: 'MIPIM Cannes', location: 'Cannes', logo: '🏗' },
-  { name: 'Elie Saab', location: 'Beirut', logo: '✦' },
-  { name: 'Kate Zubok', location: 'International', logo: '🎵' },
-  { name: 'Transdev', location: 'France', logo: '🚆' },
-  { name: 'Le Speakeasy', location: 'Paris', logo: '🍸' },
-  { name: 'Chloe Khalife', location: 'International', logo: '🎤' },
-  { name: 'Brunch Festival', location: 'Paris', logo: '🎪' },
-  { name: 'France Tourisme', location: 'France', logo: '🇫🇷' },
+const collaborations: { name: string; location: string; logo?: string }[] = [
+  { name: 'Embassy of Lebanon', location: 'Paris' },
+  { name: 'STOUH BEIRUT', location: 'Paris', logo: '/assets/stouth_beirut_logo.webp' },
+  { name: 'MIPIM Cannes', location: 'Cannes', logo: '/assets/mipim logo.webp' },
+  { name: 'Elie Saab', location: 'Beirut', logo: '/assets/Elie_saab_logo.webp' },
+  { name: 'Kate Zubok', location: 'International' },
+  { name: 'Transdev', location: 'France' },
+  { name: 'Le Speakeasy', location: 'Paris', logo: '/assets/kolasi/logo_speakeasy.png' },
+  { name: 'Chloe Khalife', location: 'International' },
+  { name: 'Brunch Festival', location: 'Paris' },
+  { name: 'France Tourisme', location: 'France' },
 ];
 
-export default function HomeClient() {
+interface CMSPhoto {
+  url?: string;
+}
+
+interface CMSGalleryItem {
+  photo?: CMSPhoto;
+  [key: string]: unknown;
+}
+
+interface CMSProject {
+  slug?: string;
+  title?: string;
+  heroVideo?: { muxPlaybackId?: string; posterUrl?: string };
+  gallery?: CMSGalleryItem[];
+  category?: string;
+  [key: string]: unknown;
+}
+
+interface CMSArtist {
+  name?: string;
+  slug?: string;
+  [key: string]: unknown;
+}
+
+interface HomeClientProps {
+  settings: Record<string, unknown>;
+  blazeProjects: CMSProject[];
+  kolasiEvents: CMSProject[];
+  artists: CMSArtist[];
+}
+
+export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Build carousel items from CMS or fallback
+  const carouselItems = blazeProjects.length > 0
+    ? blazeProjects.map((p: CMSProject) => ({
+        url: p.gallery?.[0]?.photo?.url || p.heroVideo?.posterUrl || '/assets/blaze/stouh_beirut/2E2A1724.jpg',
+        title: p.title || 'Untitled',
+        category: p.category || 'Production',
+      }))
+    : staticFeaturedSets;
 
   useGSAP(() => {
     if (prefersReducedMotion()) return;
@@ -57,14 +100,14 @@ export default function HomeClient() {
       {/* Cinematic Hero */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <video
+          <VideoPlayer
+            src="/assets/blaze/weddings/BLAZE_WEDDINGS_Demoreel.mp4"
+            poster="/assets/blaze/weddings/0G0A7811.jpg"
             autoPlay
             loop
             muted
-            playsInline
-            className="w-full h-full object-cover opacity-40"
-            poster="/assets/blaze/weddings/0G0A7811.jpg"
-            src="/assets/blaze/weddings/BLAZE_WEDDINGS_Demoreel.mp4"
+            mode="hero"
+            className="opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
         </div>
@@ -83,7 +126,7 @@ export default function HomeClient() {
             <p className="hero-reveal text-sm text-white/40 max-w-md uppercase tracking-widest leading-relaxed">
               Paris-based creative director blending cinematic storytelling with curated live experiences across Europe, the Middle East, and beyond.
             </p>
-            <div className="hero-reveal flex space-x-4 pt-4">
+            <div className="hero-reveal flex flex-wrap gap-4 pt-4">
               <Link
                 href="/blaze"
                 className="px-8 py-3 border border-white/20 text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all rounded-sm backdrop-blur-md"
@@ -102,7 +145,7 @@ export default function HomeClient() {
           <div className="hero-reveal hidden md:block">
             <div className="group relative w-full aspect-[4/3] bg-neutral-900 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
               <img
-                src="/assets/blaze/weddings/0G0A7811.jpg"
+                src={blazeProjects[0]?.gallery?.[0]?.photo?.url || '/assets/blaze/weddings/0G0A7811.jpg'}
                 alt="Blaze Motion — Signature Wedding Reel"
                 className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
               />
@@ -136,7 +179,7 @@ export default function HomeClient() {
             </h2>
           </div>
           <div className="reveal-section">
-            <OrbitCarousel items={featuredSets} />
+            <OrbitCarousel items={carouselItems} />
           </div>
         </div>
       </section>
@@ -169,10 +212,10 @@ export default function HomeClient() {
             </div>
             <div className="relative">
               <div className="aspect-[4/5] bg-neutral-900 rounded-3xl overflow-hidden shadow-2xl transform md:translate-x-12 relative z-10">
-                <img src="/assets/blaze/stouh_beirut/2E2A1724.jpg" alt="STOUH BEIRUT" className="w-full h-full object-cover" />
+                <img src={blazeProjects[0]?.gallery?.[0]?.photo?.url || '/assets/blaze/stouh_beirut/2E2A1724.jpg'} alt="STOUH BEIRUT" className="w-full h-full object-cover" />
               </div>
               <div className="absolute top-1/2 -left-12 -translate-y-1/2 aspect-[4/5] w-2/3 bg-neutral-900 rounded-3xl overflow-hidden shadow-2xl opacity-40">
-                <img src="/assets/blaze/ambassy/0C5A9134.jpg" alt="Embassy of Lebanon" className="w-full h-full object-cover" />
+                <img src={blazeProjects[1]?.gallery?.[0]?.photo?.url || '/assets/blaze/ambassy/0C5A9134.jpg'} alt="Embassy of Lebanon" className="w-full h-full object-cover" />
               </div>
             </div>
           </div>
@@ -210,15 +253,64 @@ export default function HomeClient() {
 
             <div className="grid grid-cols-2 gap-6">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl">
-                <img src="/assets/kolasi/images/4F8A2882.jpg" alt="Kolasi event" className="w-full h-full object-cover" />
+                <img src={kolasiEvents[0]?.gallery?.[0]?.photo?.url || '/assets/kolasi/images/4F8A2882.jpg'} alt="Kolasi event" className="w-full h-full object-cover" />
               </div>
               <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl mt-12">
-                <img src="/assets/kolasi/images/4F8A3195.jpg" alt="Kolasi artist" className="w-full h-full object-cover" />
+                <img src={kolasiEvents[1]?.gallery?.[0]?.photo?.url || '/assets/kolasi/images/4F8A3195.jpg'} alt="Kolasi artist" className="w-full h-full object-cover" />
               </div>
               <div className="col-span-2 aspect-[16/9] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl -mt-6">
                 <img src="/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.JPG" alt="Le Speakeasy" className="w-full h-full object-cover transition-all duration-700" />
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* For Venues CTA */}
+      <section className="py-32 bg-[#070707] reveal-section">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="relative overflow-hidden rounded-3xl border border-[#c8a96e]/20 bg-gradient-to-br from-[#c8a96e]/[0.06] to-transparent p-12 md:p-16">
+            <div className="grid md:grid-cols-2 gap-10 items-center">
+              <div>
+                <SectionKicker label="For Venues" />
+                <h2 className="font-serif text-3xl md:text-4xl font-bold text-stone-100 mb-4">
+                  Give your venue a weekly identity
+                </h2>
+                <p className="text-sm text-zinc-400 leading-relaxed mb-8">
+                  Curated DJ programming, monthly content production, and brand strategy for bars, clubs, and restaurants.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    href="/venues"
+                    className="bg-[#c8a96e] text-[#09090b] font-semibold text-sm px-8 py-3 rounded-lg hover:bg-[#d4b87a] active:scale-[0.98] transition-all"
+                  >
+                    Learn More
+                  </Link>
+                  <Link
+                    href="/venues#venue-form"
+                    className="border border-[#c8a96e] text-[#c8a96e] font-semibold text-sm px-8 py-3 rounded-lg hover:bg-[#c8a96e]/[0.08] transition-all"
+                  >
+                    Apply Now
+                  </Link>
+                </div>
+              </div>
+              <div className="hidden md:flex items-center justify-center">
+                <div className="grid grid-cols-3 gap-3 text-center">
+                  {[
+                    { stat: '150+', label: 'Live sessions' },
+                    { stat: '12+', label: 'Venues' },
+                    { stat: '3x', label: 'Avg. engagement lift' },
+                  ].map((s, i) => (
+                    <div key={i} className="p-4">
+                      <p className="font-serif text-2xl text-[#c8a96e] font-bold">{s.stat}</p>
+                      <p className="text-[10px] text-zinc-500 uppercase tracking-wider mt-1">{s.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {/* Decorative glow */}
+            <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#c8a96e]/[0.04] rounded-full blur-[80px]" />
           </div>
         </div>
       </section>
@@ -232,14 +324,18 @@ export default function HomeClient() {
               From Parisian diplomacy to Cannes <br /> summits, we safeguard the chemistry <br /> between story, guests, and spotlight.
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               {collaborations.map((c, i) => (
-                <div key={i} className="group p-10 bg-neutral-900/30 rounded-2xl border border-white/5 hover:bg-black transition-all">
-                  <div className="text-3xl mb-6 transition-all opacity-40 group-hover:opacity-100">
-                    {c.logo}
+                <div key={i} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-[#c8a96e]/20 hover:bg-[#c8a96e]/[0.03] transition-all duration-500">
+                  <div className="h-12 flex items-center justify-center mb-5">
+                    {c.logo ? (
+                      <img src={c.logo} alt={c.name} className="h-10 w-auto object-contain mix-blend-screen opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+                    ) : (
+                      <span className="text-lg font-serif italic text-white/20 group-hover:text-white/50 transition-colors duration-500">{c.name.split(' ').map(w => w[0]).join('')}</span>
+                    )}
                   </div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest mb-1">{c.name}</p>
-                  <p className="text-[10px] text-white/30 uppercase tracking-[0.2em]">{c.location}</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.15em] mb-1 text-white/70 group-hover:text-white transition-colors">{c.name}</p>
+                  <p className="text-[9px] text-white/25 uppercase tracking-[0.2em] group-hover:text-[#c8a96e]/60 transition-colors">{c.location}</p>
                 </div>
               ))}
             </div>
@@ -266,12 +362,20 @@ export default function HomeClient() {
           <p className="text-sm text-white/40 uppercase tracking-[0.3em] mb-12">
             Tell me about your vision ~ weddings, films or events.
           </p>
-          <Link
-            href="/quote"
-            className="inline-block px-12 py-4 border border-white/20 rounded-full text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all"
-          >
-            Request a Quote
-          </Link>
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link
+              href="/quote"
+              className="inline-block px-12 py-4 border border-white/20 rounded-full text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all"
+            >
+              Request a Quote
+            </Link>
+            <Link
+              href="/venues"
+              className="inline-block px-12 py-4 bg-[#c8a96e]/10 border border-[#c8a96e]/30 rounded-full text-[10px] tracking-widest uppercase text-[#c8a96e] hover:bg-[#c8a96e] hover:text-[#09090b] transition-all"
+            >
+              I&apos;m a Venue Owner
+            </Link>
+          </div>
         </div>
       </section>
     </div>

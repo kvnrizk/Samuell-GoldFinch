@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 
 interface CarouselItem {
   url: string;
@@ -85,7 +84,7 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
               <img
                 src={item.url}
                 alt={item.title}
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                className="w-full h-full object-cover transition-all duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8">
                 {item.category && (
@@ -105,7 +104,7 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
         );
       })}
 
-      <div className="absolute bottom-0 md:bottom-[-80px] flex space-x-4">
+      <div className="absolute -bottom-4 md:bottom-[-100px] flex space-x-4">
         <button
           onClick={prev}
           className="p-4 rounded-full border border-white/10 hover:bg-white hover:text-black transition-all"

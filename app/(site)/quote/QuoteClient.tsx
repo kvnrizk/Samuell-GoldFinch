@@ -3,12 +3,16 @@
 import React, { useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import { gsap, prefersReducedMotion } from '@/lib/gsap-utils';
+import { useRouter } from 'next/navigation';
 import { submitQuoteForm } from '@/lib/actions';
+import { trackEvent } from '@/lib/analytics';
 
 export default function QuoteClient() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [clientType, setClientType] = useState<'personal' | 'venue' | null>(null);
 
   useGSAP(() => {
     if (prefersReducedMotion()) return;
@@ -25,12 +29,54 @@ export default function QuoteClient() {
     const result = await submitQuoteForm(formData);
     if (result.success) {
       setStatus('success');
+      trackEvent('quote_form_submit', { service: formData.get('service') as string });
       form.reset();
     } else {
       setStatus('error');
       setErrorMsg(result.error || 'Something went wrong.');
     }
   };
+
+  // Venue owner redirect
+  if (clientType === 'venue') {
+    router.push('/venues');
+    return null;
+  }
+
+  // Client type selector (first step)
+  if (clientType === null) {
+    return (
+      <div ref={containerRef} className="pt-32 pb-24 min-h-screen bg-[#0a0a0a]">
+        <div className="max-w-2xl mx-auto px-6 text-center">
+          <div className="reveal-up">
+            <p className="text-[10px] tracking-[0.4em] uppercase text-white/40 mb-4">First things first</p>
+            <h1 className="text-5xl md:text-7xl font-serif mb-8 italic">How can we help?</h1>
+            <p className="text-white/50 max-w-lg mx-auto text-sm uppercase tracking-widest leading-relaxed mb-16">
+              Select your project type to get the right experience.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6 reveal-up">
+            <button
+              onClick={() => setClientType('personal')}
+              className="p-10 border border-white/10 bg-neutral-900/30 rounded-[2rem] hover:bg-neutral-900 hover:border-white/20 transition-all text-center group"
+            >
+              <p className="text-3xl mb-4">🎬</p>
+              <h3 className="text-lg font-serif mb-2">Personal / Brand</h3>
+              <p className="text-[10px] text-white/40 uppercase tracking-widest">Wedding film, editorial, DJ booking, or event production</p>
+            </button>
+            <button
+              onClick={() => setClientType('venue')}
+              className="p-10 border border-[#c8a96e]/20 bg-[#c8a96e]/[0.03] rounded-[2rem] hover:bg-[#c8a96e]/[0.08] hover:border-[#c8a96e]/40 transition-all text-center group"
+            >
+              <p className="text-3xl mb-4">🍸</p>
+              <h3 className="text-lg font-serif mb-2 text-[#c8a96e]">I&apos;m a Venue Owner</h3>
+              <p className="text-[10px] text-zinc-500 uppercase tracking-widest">Weekly DJ programming, content & brand strategy</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="pt-32 pb-24 min-h-screen bg-[#0a0a0a]">

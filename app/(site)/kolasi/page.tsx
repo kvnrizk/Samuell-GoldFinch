@@ -1,13 +1,20 @@
 import type { Metadata } from 'next';
+import { getAllKolasiEvents, getFeaturedArtists } from '@/lib/fetchers';
 import KolasiClient from './KolasiClient';
-
-export const metadata: Metadata = {
-  title: 'Kolasi Agency — DJ Booking, Event Curation & Content | Samuell Goldfinch',
-  description: 'Creative booking and talent agency. DJ & live show booking, event curation, and content creation across Europe and the Middle East.',
-};
 
 export const revalidate = 60;
 
-export default function KolasiPage() {
-  return <KolasiClient />;
+export const metadata: Metadata = {
+  title: 'Kolasi Agency — DJ Booking, Event Curation & Content',
+  description: 'Creative booking and talent agency. DJ & live show booking, event curation, and content creation across Europe and the Middle East.',
+  alternates: { canonical: '/kolasi' },
+};
+
+export default async function KolasiPage() {
+  const [events, artists] = await Promise.all([
+    getAllKolasiEvents(),
+    getFeaturedArtists(),
+  ]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Payload returns generic JsonObject types
+  return <KolasiClient events={events as any} artists={artists as any} />;
 }

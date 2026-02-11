@@ -55,5 +55,16 @@ export const Artists: CollectionConfig = {
       defaultValue: false,
       admin: { description: 'Appears in homepage gallery band' },
     },
+    {
+      name: 'rosterCategory',
+      type: 'select',
+      options: [
+        { label: 'Resident', value: 'resident' },
+        { label: 'Headliner', value: 'headliner' },
+        { label: 'Live Act', value: 'live-act' },
+        { label: 'Hybrid', value: 'hybrid' },
+      ],
+      admin: { description: 'Category for /venues roster display' },
+    },
   ],
 };

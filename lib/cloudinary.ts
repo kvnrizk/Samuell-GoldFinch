@@ -8,6 +8,18 @@ interface CloudinaryLoaderProps {
 
 export default function cloudinaryLoader({ src, width, quality }: CloudinaryLoaderProps): string {
   const q = quality || 'auto';
+
+  // Full Cloudinary URL — inject transforms before the public ID
+  if (src.includes('res.cloudinary.com')) {
+    return src.replace('/upload/', `/upload/f_auto,q_${q},w_${width}/`);
+  }
+
+  // Non-Cloudinary URL (local /assets/ paths, external) — passthrough
+  if (src.startsWith('/') || src.startsWith('http')) {
+    return src;
+  }
+
+  // Public ID — construct full Cloudinary URL
   return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/f_auto,q_${q},w_${width}/${src}`;
 }
 

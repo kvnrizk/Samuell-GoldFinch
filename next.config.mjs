@@ -32,6 +32,20 @@ const nextConfig = {
           { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
           { key: 'X-DNS-Prefetch-Control', value: 'on' },
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://connect.facebook.net https://assets.calendly.com https://cdn.mux.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://assets.calendly.com",
+              "img-src 'self' data: blob: https://res.cloudinary.com https://image.mux.com https://www.facebook.com",
+              "media-src 'self' blob: https://stream.mux.com https://*.mux.com",
+              "font-src 'self' https://fonts.gstatic.com",
+              "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://inferred.litix.io https://connect.facebook.net https://stream.mux.com https://*.mux.com https://cdn.mux.com",
+              "frame-src https://calendly.com https://www.facebook.com",
+              "worker-src 'self' blob:",
+            ].join('; '),
+          },
         ],
       },
     ];
