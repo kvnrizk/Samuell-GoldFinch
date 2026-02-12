@@ -51,11 +51,21 @@ export function middleware(request: NextRequest) {
   // ── Rate limiting for form submissions (POST only) ──
   if (request.method !== 'POST') return NextResponse.next();
 
+  // Skip rate limiting for Payload CMS internal API routes (auth, collections, globals)
+  if (
+    pathname.startsWith('/api/users') ||
+    pathname.startsWith('/api/media') ||
+    pathname.startsWith('/api/globals')
+  ) {
+    return NextResponse.next();
+  }
+
   const isFormEndpoint =
-    pathname.startsWith('/api/') ||
     pathname.includes('contact') ||
     pathname.includes('quote') ||
-    pathname.includes('venues');
+    pathname.includes('venues') ||
+    pathname.includes('inquiries') ||
+    pathname.includes('venue-inquiries');
 
   if (!isFormEndpoint) return NextResponse.next();
 

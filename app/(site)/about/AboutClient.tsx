@@ -236,6 +236,15 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
       {/* The Universe — Brand Pillars */}
       <section ref={pillarsRef} className="py-16 md:py-40 max-w-7xl mx-auto px-6">
         <div className="text-center mb-16 md:mb-32 reveal-up">
+          <div className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-8 relative">
+            <Image
+              src="https://res.cloudinary.com/dwayr9ynb/image/upload/sg-platform/sg-logo-gold.png"
+              alt="SG Logo"
+              fill
+              sizes="128px"
+              className="object-contain"
+            />
+          </div>
           <p className="text-xs font-medium mb-6" style={{ color: 'var(--text-mute)' }}>
             Three Pillars
           </p>
@@ -290,13 +299,13 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
                       {pillar.description}
                     </p>
                     {pillar.stats.length > 0 && (
-                      <div className="pillar-reveal grid grid-cols-3 gap-4 pt-6 border-t" style={{ borderColor: 'var(--border)' }}>
+                      <div className="pillar-reveal grid grid-cols-3 gap-3 md:gap-4 pt-6 border-t" style={{ borderColor: 'var(--border)' }}>
                         {pillar.stats.map((stat, si) => (
                           <div key={si} className="text-center md:text-left">
-                            <p className="text-2xl md:text-3xl font-serif" style={{ color: pillar.accent !== 'var(--text)' ? pillar.accent : 'var(--text)' }}>
+                            <p className="text-xl md:text-3xl font-serif leading-none" style={{ color: pillar.accent !== 'var(--text)' ? pillar.accent : 'var(--text)' }}>
                               {stat.value}
                             </p>
-                            <p className="text-[10px] font-mono mt-1" style={{ color: 'var(--text-mute)' }}>{stat.label}</p>
+                            <p className="text-[9px] md:text-[10px] font-mono mt-2" style={{ color: 'var(--text-mute)' }}>{stat.label}</p>
                           </div>
                         ))}
                       </div>
