@@ -147,7 +147,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--bg) 60%, transparent), transparent, var(--bg))' }} />
 
         <div className="relative z-10 text-center px-6">
-          <h1 className="text-5xl md:text-8xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
+          <h1 className="text-3xl sm:text-5xl md:text-8xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
             Bringing Your <br />
             <span className="italic">Story to Life</span>
           </h1>
@@ -161,9 +161,9 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
       </section>
 
       {/* Manifesto + Logo Card */}
-      <section className="py-40 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-24 items-center">
+      <section className="py-16 md:py-40 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 md:gap-24 items-center">
         <div className="space-y-10 reveal-up">
-          <h2 className="text-4xl md:text-6xl font-serif leading-tight italic">
+          <h2 className="text-3xl md:text-6xl font-serif leading-tight italic">
             Bringing Your <br />
             <span className="not-italic">Story to Life</span>
           </h2>
@@ -203,16 +203,16 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
       </section>
 
       {/* Blaze Showcase */}
-      <section className="py-40 border-y" style={{ backgroundColor: 'var(--bg)', borderColor: 'var(--border)' }}>
+      <section className="py-16 md:py-40 border-y" style={{ backgroundColor: 'var(--bg)', borderColor: 'var(--border)' }}>
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="mb-24 reveal-up">
+          <div className="mb-12 md:mb-24 reveal-up">
             <h2 className="text-4xl md:text-6xl font-serif italic mb-4">Blaze Showcase</h2>
             <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>Light, movement, and emotion captured through crafted moments.</p>
           </div>
           <div className="reveal-up max-w-4xl mx-auto">
             <div className="group relative rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl aspect-[16/9] mb-12">
               <Image src="/assets/blaze/IMG_6050.JPG" alt="Blaze Showcase" fill sizes="100vw" className="object-cover group-hover:scale-105 transition-all duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-12 text-center">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 md:p-12 text-center">
                 <p className="text-xs font-medium mb-2" style={{ color: 'var(--text-mute)' }}>Featured Project</p>
                 <h3 className="text-xl md:text-2xl font-serif italic uppercase tracking-tighter">STOUH BEIRUT Rooftop</h3>
               </div>
@@ -229,14 +229,14 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
       </section>
 
       {/* Categorized Carousels */}
-      <section className="py-40 space-y-40">
+      <section className="py-16 md:py-40 space-y-20 md:space-y-40">
         <div className="reveal-up">
           <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
             <h2 className="text-3xl font-serif mb-2 italic">STOUH BEIRUT Rooftop</h2>
             <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Golden-hour diplomacy and Parisian skyline energy.</p>
           </div>
           <OrbitCarousel items={eventItems} autoplayInterval={5200} />
-          <div className="mt-28 mb-8 text-center">
+          <div className="mt-12 md:mt-28 mb-8 text-center">
             <Link href={`/blaze/${firstSlugForCategory(projects, 'Event') || 'stouh-beirut'}`} className="px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
               View Project
             </Link>
@@ -249,7 +249,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
             <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Diplomatic ceremonies captured with cinematic restraint.</p>
           </div>
           <OrbitCarousel items={diplomaticItems} autoplayInterval={5600} />
-          <div className="mt-28 mb-8 text-center">
+          <div className="mt-12 md:mt-28 mb-8 text-center">
             <Link href={`/blaze/${firstSlugForCategory(projects, 'Diplomatic') || 'embassy-of-lebanon'}`} className="px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
               View Project
             </Link>
@@ -262,7 +262,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
             <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Stories of connection and timeless elegance.</p>
           </div>
           <OrbitCarousel items={weddingItems} autoplayInterval={5200} />
-          <div className="mt-28 mb-8 text-center">
+          <div className="mt-12 md:mt-28 mb-8 text-center">
             <Link href={`/blaze/${firstSlugForCategory(projects, 'Wedding') || 'weddings'}`} className="px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
               View Project
             </Link>
@@ -275,7 +275,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
             <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>The language of identity told through crafted imagery.</p>
           </div>
           <OrbitCarousel items={editorialItems} autoplayInterval={5400} />
-          <div className="mt-28 mb-8 text-center">
+          <div className="mt-12 md:mt-28 mb-8 text-center">
             <Link href={`/blaze/${firstSlugForCategory(projects, 'Editorial') || 'editorial-brand'}`} className="px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
               View Project
             </Link>
@@ -294,9 +294,9 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
       <BudgetEstimator brand="blaze" />
 
       {/* Final CTA */}
-      <section className="py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--bg), var(--bg-card))', borderColor: 'var(--border)' }}>
+      <section className="py-16 md:py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--bg), var(--bg-card))', borderColor: 'var(--border)' }}>
         <div className="max-w-3xl mx-auto px-6 reveal-up">
-          <h2 className="text-5xl md:text-7xl font-serif mb-10 italic leading-tight">Your Story Deserves a Cinematic Soul</h2>
+          <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-10 italic leading-tight">Your Story Deserves a Cinematic Soul</h2>
           <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>
             Let&apos;s create films that feel alive ~ crafted with depth and precision.
           </p>

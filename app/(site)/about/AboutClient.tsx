@@ -189,8 +189,8 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
   return (
     <div ref={containerRef} className="min-h-screen" style={{ backgroundColor: 'var(--bg)' }}>
       {/* Header */}
-      <section className="pt-40 pb-32 text-center max-w-4xl mx-auto px-6">
-        <h1 className="text-6xl md:text-8xl font-serif mb-10 leading-none reveal-up">
+      <section className="pt-28 pb-16 md:pt-40 md:pb-32 text-center max-w-4xl mx-auto px-6">
+        <h1 className="text-4xl sm:text-6xl md:text-8xl font-serif mb-10 leading-none reveal-up">
           The Story <br />
           <span className="italic">Behind the Vision</span>
         </h1>
@@ -205,9 +205,9 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
       </section>
 
       {/* Portrait & Bio */}
-      <section className="py-24 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-24 items-center">
+      <section className="py-12 md:py-24 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 md:gap-24 items-center">
         <div className="reveal-up">
-          <div className="rounded-[2.5rem] overflow-hidden aspect-[3/4] shadow-2xl bg-neutral-900 border border-white/5 group">
+          <div className="relative rounded-[2.5rem] overflow-hidden aspect-[3/4] shadow-2xl bg-neutral-900 border border-white/5 group">
             <Image
               src="/assets/about/IMG_5840.JPG"
               alt="Samuell Goldfinch"
@@ -234,8 +234,8 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
       </section>
 
       {/* The Universe — Brand Pillars */}
-      <section ref={pillarsRef} className="py-40 max-w-7xl mx-auto px-6">
-        <div className="text-center mb-32 reveal-up">
+      <section ref={pillarsRef} className="py-16 md:py-40 max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16 md:mb-32 reveal-up">
           <p className="text-xs font-medium mb-6" style={{ color: 'var(--text-mute)' }}>
             Three Pillars
           </p>
@@ -252,7 +252,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
           </div>
 
           {/* Pillar cards — alternating left/right with visuals */}
-          <div className="space-y-28 md:space-y-36">
+          <div className="space-y-16 md:space-y-36">
             {displayPillars.map((pillar, i) => {
               const isLeft = i % 2 === 0;
 
@@ -384,9 +384,9 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
       </section>
 
       {/* What Drives the Work */}
-      <section className="py-40 border-y" style={{ backgroundColor: 'var(--bg)', borderColor: 'var(--border)' }}>
+      <section className="py-16 md:py-40 border-y" style={{ backgroundColor: 'var(--bg)', borderColor: 'var(--border)' }}>
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-20 reveal-up">
+          <div className="text-center mb-10 md:mb-20 reveal-up">
             <p className="text-xs font-medium mb-4" style={{ color: 'var(--text-mute)' }}>The Foundation</p>
             <h2 className="text-4xl md:text-5xl font-serif italic">What Drives the Work</h2>
           </div>
@@ -455,9 +455,9 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
       </section>
 
       {/* Artist Statement & Credits */}
-      <section className="py-40 max-w-7xl mx-auto px-6">
+      <section className="py-16 md:py-40 max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-12">
-          <div data-halo className="reveal-up p-16 border border-white/5 bg-neutral-900/20 rounded-[3rem] space-y-10">
+          <div data-halo className="reveal-up p-8 md:p-16 border border-white/5 bg-neutral-900/20 rounded-[3rem] space-y-10">
             <h3 className="text-2xl font-serif text-center mb-8 italic">Artist Statement</h3>
             <p className="text-sm leading-[1.9] font-light text-center" style={{ color: 'var(--text-dim)' }}>
               I believe the most powerful stories are felt before they&apos;re understood. Whether through a lens or a live set, my work explores the space between emotion and craft — where a perfectly timed cut mirrors the drop in a melody, where light and sound dissolve the boundary between observer and participant.
@@ -473,7 +473,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
             </div>
           </div>
 
-          <div data-halo className="reveal-up p-16 border border-white/5 bg-neutral-900/40 rounded-[3rem] space-y-10 flex flex-col justify-between">
+          <div data-halo className="reveal-up p-8 md:p-16 border border-white/5 bg-neutral-900/40 rounded-[3rem] space-y-10 flex flex-col justify-between">
             <div className="text-center space-y-10">
               <h3 className="text-2xl font-serif italic">Notable credits &amp; assets</h3>
               <p className="text-sm font-light" style={{ color: 'var(--text-dim)' }}>Selected collaborations, events and press resources to support editorial use and bookings.</p>
@@ -509,9 +509,9 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
       </section>
 
       {/* CTA */}
-      <section className="py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--bg), var(--bg-card))', borderColor: 'var(--border)' }}>
+      <section className="py-16 md:py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--bg), var(--bg-card))', borderColor: 'var(--border)' }}>
         <div className="max-w-3xl mx-auto px-6 reveal-up">
-          <h2 className="text-5xl md:text-7xl font-serif mb-10 italic">Let&apos;s Create Together</h2>
+          <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-10 italic">Let&apos;s Create Together</h2>
           <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>
             Ready to craft films, events or live performances that resonate? Share your vision, we&apos;ll design the atmosphere, sound and narrative to match.
           </p>

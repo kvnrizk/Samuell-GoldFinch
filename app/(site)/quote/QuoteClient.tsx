@@ -290,7 +290,7 @@ export default function QuoteClient() {
         <div className="max-w-2xl mx-auto px-6 text-center">
           <div className="reveal-up">
             <p className="text-xs font-medium mb-4" style={{ color: 'var(--text-mute)' }}>First things first</p>
-            <h1 className="text-5xl md:text-7xl font-serif mb-8 italic">How can we help?</h1>
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-8 italic">How can we help?</h1>
             <p className="text-sm md:text-base max-w-lg mx-auto leading-relaxed font-light mb-16" style={{ color: 'var(--text-dim)' }}>
               Select your project type to get the right experience.
             </p>
@@ -366,7 +366,7 @@ export default function QuoteClient() {
               <div className="step-field">
                 <InputField label="Venue / Location" name="weddingVenue" placeholder="e.g. Château de Versailles, Paris" value={form.weddingVenue} onChange={(v) => update('weddingVenue', v)} />
               </div>
-              <div className="grid grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="step-field">
                   <SelectField label="Hours of coverage" name="weddingHours" value={form.weddingHours} onChange={(v) => update('weddingHours', v)} options={[
                     { label: '4-6 hours', value: '4-6' },
@@ -434,7 +434,7 @@ export default function QuoteClient() {
               Help us match you with the perfect artist from the Kolasi roster.
             </p>
             <div className="space-y-5">
-              <div className="grid grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="step-field">
                   <SelectField label="Event type" name="djEventType" value={form.djEventType} onChange={(v) => update('djEventType', v)} options={[
                     { label: 'Wedding', value: 'wedding' },
@@ -496,7 +496,7 @@ export default function QuoteClient() {
               </div>
               <div className="step-field space-y-2">
                 <label className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>Services needed</label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {[
                     { label: 'Sound & lights', value: 'sound-lights' },
                     { label: 'DJ / Live acts', value: 'dj-live' },
@@ -571,7 +571,7 @@ export default function QuoteClient() {
         This helps us tailor a proposal that fits your expectations.
       </p>
       <div className="space-y-5">
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="step-field">
             <InputField label="Event date / Timeframe" name="eventDate" placeholder="e.g. September 2026" value={form.eventDate} onChange={(v) => update('eventDate', v)} />
           </div>
@@ -604,7 +604,7 @@ export default function QuoteClient() {
         <div className="step-field">
           <InputField label="Full name" name="name" placeholder="Your name" value={form.name} onChange={(v) => update('name', v)} required />
         </div>
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="step-field">
             <InputField label="Email" name="email" type="email" placeholder="you@example.com" value={form.email} onChange={(v) => update('email', v)} required />
           </div>

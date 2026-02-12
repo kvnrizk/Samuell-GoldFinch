@@ -92,6 +92,14 @@ export default function RecentInquiries() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [venueInquiries, setVenueInquiries] = useState<VenueInquiry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   useEffect(() => {
     async function fetchRecent() {
@@ -116,7 +124,7 @@ export default function RecentInquiries() {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '0.75rem 1rem',
+    padding: isMobile ? '0.625rem 0.75rem' : '0.75rem 1rem',
     borderBottom: '1px solid var(--theme-elevation-100)',
     textDecoration: 'none',
     color: 'inherit',
@@ -124,7 +132,7 @@ export default function RecentInquiries() {
   };
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '1rem' : '1.5rem', marginBottom: '2rem' }}>
       {/* General Inquiries */}
       <div style={{ border: '1px solid var(--theme-elevation-150)', borderRadius: '8px', overflow: 'hidden', background: 'var(--theme-elevation-50)' }}>
         <div style={{ padding: '1rem', borderBottom: '1px solid var(--theme-elevation-150)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

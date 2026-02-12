@@ -66,6 +66,14 @@ export default function InquiryKanban() {
   const [docs, setDocs] = useState<InquiryDoc[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const columns = view === 'inquiry' ? inquiryColumns : venueColumns;
   const collection = view === 'inquiry' ? 'inquiries' : 'venue-inquiries';
@@ -104,7 +112,7 @@ export default function InquiryKanban() {
   return (
     <div style={{ marginBottom: '2rem' }}>
       {/* Header with tab toggle */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: isMobile ? '0.5rem' : '0' }}>
         <h2 style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--theme-text)', margin: 0 }}>
           Pipeline
         </h2>
@@ -146,6 +154,7 @@ export default function InquiryKanban() {
               borderRadius: '8px',
               border: '1px solid var(--theme-elevation-150)',
               minHeight: '200px',
+              minWidth: '200px',
             }}>
               {/* Column header */}
               <div style={{

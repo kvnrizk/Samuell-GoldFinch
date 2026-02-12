@@ -36,11 +36,11 @@ export default function ContactClient() {
   };
 
   return (
-    <div ref={containerRef} className="pt-40 pb-32 min-h-screen" style={{ backgroundColor: 'var(--bg)' }}>
+    <div ref={containerRef} className="pt-28 pb-16 md:pt-40 md:pb-32 min-h-screen" style={{ backgroundColor: 'var(--bg)' }}>
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-32 reveal-up">
-          <h1 className="text-6xl md:text-8xl font-serif mb-8 italic leading-none">
+        <div className="text-center mb-16 md:mb-32 reveal-up">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-serif mb-8 italic leading-none">
             Let&apos;s Start the <br /> Conversation
           </h1>
           <p className="text-sm md:text-base max-w-2xl mx-auto leading-relaxed font-light" style={{ color: 'var(--text-dim)' }}>
@@ -196,8 +196,8 @@ export default function ContactClient() {
         </div>
 
         {/* Meeting Section */}
-        <section className="mt-48 pt-32 border-t text-center reveal-up" style={{ borderColor: 'var(--border)' }}>
-          <h2 className="text-4xl md:text-6xl font-serif mb-10 italic">Prefer to meet in person?</h2>
+        <section className="mt-24 md:mt-48 pt-16 md:pt-32 border-t text-center reveal-up" style={{ borderColor: 'var(--border)' }}>
+          <h2 className="text-3xl md:text-6xl font-serif mb-10 italic">Prefer to meet in person?</h2>
           <p className="text-sm md:text-base mb-12 max-w-2xl mx-auto leading-relaxed font-light" style={{ color: 'var(--text-dim)' }}>
             Schedule a studio session in Paris or a virtual call to explore how Blaze Production and Kolasi can elevate your project.
           </p>

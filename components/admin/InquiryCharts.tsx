@@ -92,6 +92,14 @@ export default function InquiryCharts() {
     venueByBudget: {},
   });
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -160,11 +168,11 @@ export default function InquiryCharts() {
 
   return (
     <div style={{ marginBottom: '2rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: isMobile ? '0.5rem' : '0' }}>
         <h2 style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--theme-text)', margin: 0 }}>
           Analytics
         </h2>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
           <a
             href="/api/export-csv?collection=inquiries"
             style={{
@@ -203,7 +211,9 @@ export default function InquiryCharts() {
       </div>
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+        gridTemplateColumns: isMobile
+          ? 'repeat(auto-fill, minmax(240px, 1fr))'
+          : 'repeat(auto-fill, minmax(280px, 1fr))',
         gap: '1rem',
       }}>
         <BarChart data={data.inquiriesByMonth} title="Inquiries by Month (All)" />

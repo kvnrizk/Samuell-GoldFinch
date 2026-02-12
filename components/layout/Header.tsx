@@ -79,6 +79,12 @@ export default function Header() {
     window.scrollTo(0, 0);
   }, [pathname]);
 
+  // Lock body scroll when mobile nav is open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
   useEffect(() => {
     const stored = localStorage.getItem('theme') as 'dark' | 'light' | null;
     if (stored) setTheme(stored);
@@ -108,8 +114,8 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         isScrolled
-          ? 'backdrop-blur-xl py-5 border-b'
-          : 'bg-transparent py-10'
+          ? 'backdrop-blur-xl py-3 md:py-5 border-b'
+          : 'bg-transparent py-4 md:py-10'
       }`}
       style={isScrolled ? { backgroundColor: 'color-mix(in srgb, var(--bg) 90%, transparent)', borderColor: 'var(--border)' } : undefined}
     >
@@ -309,43 +315,51 @@ export default function Header() {
       </div>
 
       {/* Mobile Nav Overlay */}
-      <nav
+      {/* Mobile Nav Overlay — full screen behind header */}
+      <div
         id="mobile-nav"
-        aria-label="Mobile navigation"
-        className={`fixed inset-0 z-40 flex flex-col items-center justify-center space-y-8 transition-transform duration-700 md:hidden ${
-          isOpen ? 'translate-y-0' : '-translate-y-full pointer-events-none'
+        className={`fixed inset-0 z-40 md:hidden transition-all duration-500 ${
+          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         style={{ backgroundColor: 'var(--bg)' }}
         aria-hidden={!isOpen}
       >
-        {[...navLinks, ...moreLinks].map((link) => (
-          <Link
-            key={link.path}
-            href={link.path}
-            onClick={() => setIsOpen(false)}
-            className="text-3xl font-serif italic hover:not-italic transition-all uppercase tracking-tighter"
-          >
-            {link.name}
-          </Link>
-        ))}
-        <button
-          onClick={toggleTheme}
-          className="mt-4 text-[10px] uppercase tracking-[0.4em] transition-colors flex items-center gap-2"
-          style={{ color: 'var(--text-dim)' }}
+        <nav
+          aria-label="Mobile navigation"
+          className="flex flex-col items-center justify-center h-full gap-6 overflow-y-auto px-6 py-24"
         >
-          {theme === 'dark' ? (
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-            </svg>
-          ) : (
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
-          )}
-          {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-        </button>
-      </nav>
+          {[...navLinks, ...moreLinks].map((link) => (
+            <Link
+              key={link.path}
+              href={link.path}
+              onClick={() => setIsOpen(false)}
+              className="text-2xl font-serif italic hover:not-italic transition-all uppercase tracking-tighter"
+              style={{ color: pathname === link.path ? '#c8a96e' : 'var(--text)' }}
+            >
+              {link.name}
+            </Link>
+          ))}
+          <div className="mt-4 pt-4 border-t w-32 text-center" style={{ borderColor: 'var(--border)' }}>
+            <button
+              onClick={toggleTheme}
+              className="text-[10px] uppercase tracking-[0.4em] transition-colors flex items-center gap-2 mx-auto"
+              style={{ color: 'var(--text-dim)' }}
+            >
+              {theme === 'dark' ? (
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                </svg>
+              ) : (
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              )}
+              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            </button>
+          </div>
+        </nav>
+      </div>
     </header>
   );
 }

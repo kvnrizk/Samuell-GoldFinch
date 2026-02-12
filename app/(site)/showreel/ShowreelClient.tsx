@@ -102,7 +102,7 @@ export default function ShowreelClient({ heroReel, highlights }: ShowreelClientP
           <p className="reel-reveal text-xs font-medium tracking-[0.3em] uppercase mb-6" style={{ color: 'var(--text-mute)' }}>
             Blaze Production &times; Kolasi Agency
           </p>
-          <h1 className="reel-reveal text-5xl md:text-8xl font-serif uppercase tracking-tighter leading-none mb-8">
+          <h1 className="reel-reveal text-3xl sm:text-5xl md:text-8xl font-serif uppercase tracking-tighter leading-none mb-8">
             {heroReel.title || 'Showreel'}
           </h1>
           <p className="reel-reveal text-sm md:text-base font-light max-w-xl mx-auto leading-relaxed mb-10" style={{ color: 'var(--text-dim)' }}>
@@ -134,7 +134,7 @@ export default function ShowreelClient({ heroReel, highlights }: ShowreelClientP
       </section>
 
       {/* ── Highlights Section ── */}
-      <section id="highlights" className="py-32 px-6 max-w-7xl mx-auto">
+      <section id="highlights" className="py-16 md:py-32 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-xs uppercase tracking-[0.3em] font-medium mb-4" style={{ color: '#c8a96e' }}>Selected Work</p>
           <h2 className="text-3xl md:text-5xl font-serif italic tracking-tight">Highlight Clips</h2>
@@ -250,7 +250,7 @@ export default function ShowreelClient({ heroReel, highlights }: ShowreelClientP
       </section>
 
       {/* ── CTA Section ── */}
-      <section className="py-32 text-center px-6" style={{ borderTop: '1px solid var(--border)' }}>
+      <section className="py-16 md:py-32 text-center px-6" style={{ borderTop: '1px solid var(--border)' }}>
         <p className="text-xs uppercase tracking-[0.3em] font-medium mb-6" style={{ color: '#c8a96e' }}>
           Like What You See?
         </p>

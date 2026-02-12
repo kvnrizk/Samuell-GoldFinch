@@ -416,7 +416,7 @@ function ServicesAccordion() {
                 className="relative z-10 overflow-hidden"
                 style={{ height: 0 }}
               >
-                <div className="pb-10 pl-14 md:pl-16 pr-6 max-w-2xl">
+                <div className="pb-10 pl-8 md:pl-16 pr-6 max-w-2xl">
                   <p className="acc-reveal text-sm md:text-base leading-relaxed font-light mb-6" style={{ color: 'var(--text-dim)' }}>
                     {svc.description}
                   </p>
@@ -495,7 +495,7 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
         </div>
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--bg) 60%, transparent), transparent, var(--bg))' }} />
         <div className="relative z-10 text-center px-6 max-w-5xl">
-          <h1 className="text-5xl md:text-8xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
+          <h1 className="text-3xl sm:text-5xl md:text-8xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
             Creative Booking <br />
             <span className="italic">and Talent Agency</span>
           </h1>
@@ -509,7 +509,7 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
       </section>
 
       {/* Manifesto + Logo */}
-      <section className="py-32 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+      <section className="py-16 md:py-32 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div className="space-y-10 reveal-up">
           <h2 className="text-4xl md:text-5xl font-serif leading-tight italic">
             Creative Booking &amp; <br />
@@ -542,7 +542,7 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
       {/* Expertise */}
       <section id="services" className="py-20 border-y" style={{ backgroundColor: 'var(--bg)', borderColor: 'var(--border)' }}>
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-24 reveal-up">
+          <div className="text-center mb-12 md:mb-24 reveal-up">
             <h2 className="text-4xl md:text-6xl font-serif italic mb-4">Our Expertise</h2>
             <div className="w-20 h-[1px] mx-auto" style={{ backgroundColor: 'var(--border-hi)' }} />
           </div>
@@ -557,7 +557,7 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, var(--bg) 10%, color-mix(in srgb, var(--bg) 60%, transparent) 50%, transparent)' }} />
-                <div className="absolute bottom-0 left-0 right-0 p-10 z-10">
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 z-10">
                   <div className="mb-4 p-3 rounded-full inline-flex" style={{ backgroundColor: 'color-mix(in srgb, var(--bg) 60%, transparent)', color: 'var(--text)' }}>
                     {getIcon(exp.icon)}
                   </div>
@@ -616,9 +616,9 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
       </section>
 
       {/* CTA */}
-      <section className="py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--bg), var(--bg-card))', borderColor: 'var(--border)' }}>
+      <section className="py-16 md:py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--bg), var(--bg-card))', borderColor: 'var(--border)' }}>
         <div className="max-w-3xl mx-auto px-6 reveal-up">
-          <h2 className="text-5xl md:text-7xl font-serif mb-10 italic">Let&apos;s Create the Night</h2>
+          <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-10 italic">Let&apos;s Create the Night</h2>
           <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>
             From concept to performance, Kolasi curates experiences that transcend nightlife.
           </p>

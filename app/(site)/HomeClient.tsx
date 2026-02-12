@@ -135,7 +135,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
             <p className="hero-reveal text-xs font-medium" style={{ color: 'var(--text-mute)' }}>
               Artistic Director &bull; DJ &bull; Event Curator
             </p>
-            <h1 className="hero-reveal text-6xl md:text-8xl font-serif leading-[0.9] tracking-tight">
+            <h1 className="hero-reveal text-4xl sm:text-6xl md:text-8xl font-serif leading-[0.9] tracking-tight">
               Visionary <br />
               <span className="italic">Storyteller</span> <br />
               Experience <br />
@@ -187,9 +187,9 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
       </section>
 
       {/* Featured Sets */}
-      <section className="py-40" style={{ backgroundColor: 'var(--bg)' }}>
+      <section className="py-16 md:py-40" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-24 reveal-section">
+          <div className="text-center mb-12 md:mb-24 reveal-section">
             <p className="text-xs font-medium mb-6" style={{ color: 'var(--text-mute)' }}>Featured Sets</p>
             <h2 className="text-4xl md:text-6xl font-serif max-w-4xl mx-auto leading-tight italic">
               Stories Worth <span className="not-italic">Reliving</span>
@@ -202,12 +202,12 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
       </section>
 
       {/* Blaze Section Split */}
-      <section className="py-40" style={{ backgroundColor: 'var(--bg)' }}>
+      <section className="py-16 md:py-40" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-20 items-center reveal-section">
+          <div className="grid md:grid-cols-2 gap-10 md:gap-20 items-center reveal-section">
             <div className="space-y-10">
               <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>Blaze Production</p>
-              <h2 className="text-5xl md:text-7xl font-serif leading-none italic">
+              <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif leading-none italic">
                 Where <br /> Emotion <br /> <span className="not-italic">Meets Craft</span>
               </h2>
               <p className="text-sm leading-relaxed font-light max-w-sm" style={{ color: 'var(--text-dim)' }}>
@@ -241,7 +241,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
                   />
                 ))}
               </div>
-              <div className="absolute top-1/2 -left-12 -translate-y-1/2 aspect-[4/5] w-2/3 rounded-3xl overflow-hidden shadow-2xl opacity-40">
+              <div className="hidden md:block absolute top-1/2 -left-12 -translate-y-1/2 aspect-[4/5] w-2/3 rounded-3xl overflow-hidden shadow-2xl opacity-40">
                 {blazeImages.map((src, i) => (
                   <Image
                     key={src}
@@ -260,12 +260,12 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
       </section>
 
       {/* Kolasi Section */}
-      <section className="py-40 overflow-hidden" style={{ backgroundColor: 'var(--bg)' }}>
+      <section className="py-16 md:py-40 overflow-hidden" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 reveal-section">
-            <div className="bg-neutral-900/40 p-12 rounded-3xl border border-white/5 backdrop-blur-xl">
+            <div className="bg-neutral-900/40 p-6 md:p-12 rounded-3xl border border-white/5 backdrop-blur-xl">
               <p className="text-xs font-medium mb-8" style={{ color: 'var(--text-mute)' }}>Kolasi Agency</p>
-              <h2 className="text-4xl md:text-5xl font-serif mb-8 leading-tight italic">
+              <h2 className="text-3xl md:text-5xl font-serif mb-8 leading-tight italic">
                 Where Culture <br /> Meets the Night
               </h2>
               <p className="text-sm leading-[1.9] font-light mb-10" style={{ color: 'var(--text-dim)' }}>
@@ -306,7 +306,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
       {/* For Venues CTA */}
       <section className="py-16 reveal-section" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-5xl mx-auto px-6">
-          <div className="relative overflow-hidden rounded-3xl border border-[#c8a96e]/20 bg-gradient-to-br from-[#c8a96e]/[0.06] to-transparent p-12 md:p-16">
+          <div className="relative overflow-hidden rounded-3xl border border-[#c8a96e]/20 bg-gradient-to-br from-[#c8a96e]/[0.06] to-transparent p-6 md:p-16">
             <div className="grid md:grid-cols-2 gap-10 items-center">
               <div>
                 <SectionKicker label="For Venues" />
@@ -357,13 +357,13 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
         <div className="max-w-5xl mx-auto px-6 text-center">
           <div className="reveal-section">
             <p className="text-xs font-medium mb-8" style={{ color: 'var(--text-mute)' }}>Trusted Collaborations</p>
-            <h2 className="text-3xl md:text-4xl font-serif italic mb-20">
+            <h2 className="text-3xl md:text-4xl font-serif italic mb-10 md:mb-20">
               Trusted by the Best
             </h2>
 
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               {collaborations.map((c, i) => (
-                <div key={i} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-[#c8a96e]/20 hover:bg-[#c8a96e]/[0.03] transition-all duration-500">
+                <div key={i} className="group flex flex-col items-center justify-center p-4 md:p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-[#c8a96e]/20 hover:bg-[#c8a96e]/[0.03] transition-all duration-500">
                   <div className="h-12 flex items-center justify-center mb-5">
                     {c.logo ? (
                       <Image src={c.logo} alt={c.name} width={120} height={40} className="h-10 w-auto object-contain mix-blend-screen opacity-60 group-hover:opacity-100 transition-opacity duration-500" sizes="120px" />
@@ -377,7 +377,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
               ))}
             </div>
 
-            <div className="mt-20 flex justify-center space-x-12 py-10 border-y border-white/5">
+            <div className="mt-20 flex justify-center space-x-6 md:space-x-12 py-10 border-y border-white/5">
               <div className="text-center">
                 <p className="text-xs font-medium mb-2" style={{ color: 'var(--text-mute)' }}>Cities Filmed</p>
                 <p className="text-3xl font-serif">12+</p>
@@ -402,7 +402,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
       {/* CTA */}
       <section className="py-20" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-4xl mx-auto px-6 text-center reveal-section">
-          <h2 className="text-5xl md:text-7xl font-serif mb-10 italic">Let&apos;s Create Together</h2>
+          <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-10 italic">Let&apos;s Create Together</h2>
           <p className="text-sm font-light mb-12" style={{ color: 'var(--text-dim)' }}>
             Tell me about your vision ~ weddings, films or events.
           </p>

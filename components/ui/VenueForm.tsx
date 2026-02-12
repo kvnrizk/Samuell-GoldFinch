@@ -141,7 +141,7 @@ export function VenueForm() {
             <label className={labelClass}>Venue Name *</label>
             <input type="text" name="venueName" required className={inputClass} placeholder="e.g. Le Speakeasy" />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Venue Type</label>
               <select name="venueType" className={selectClass}>
@@ -160,7 +160,7 @@ export function VenueForm() {
             <label className={labelClass}>Address</label>
             <input type="text" name="address" className={inputClass} placeholder="City or full address" />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Website</label>
               <input type="text" name="website" className={inputClass} placeholder="https://" />

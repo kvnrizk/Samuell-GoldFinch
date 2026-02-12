@@ -25,6 +25,14 @@ const defaultKPI: KPIData = {
 export default function DashboardKPIs() {
   const [data, setData] = useState<KPIData>(defaultKPI);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   useEffect(() => {
     async function fetchKPIs() {
@@ -99,8 +107,10 @@ export default function DashboardKPIs() {
       </h2>
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-        gap: '1rem',
+        gridTemplateColumns: isMobile
+          ? 'repeat(auto-fill, minmax(140px, 1fr))'
+          : 'repeat(auto-fill, minmax(180px, 1fr))',
+        gap: isMobile ? '0.75rem' : '1rem',
       }}>
         {cards.map((card) => (
           <a
@@ -108,7 +118,7 @@ export default function DashboardKPIs() {
             href={card.href}
             style={{
               display: 'block',
-              padding: '1.25rem',
+              padding: isMobile ? '0.875rem' : '1.25rem',
               borderRadius: '8px',
               border: '1px solid var(--theme-elevation-150)',
               background: 'var(--theme-elevation-50)',
@@ -135,7 +145,7 @@ export default function DashboardKPIs() {
                 </span>
               )}
             </div>
-            <div style={{ fontSize: '2rem', fontWeight: 700, color: loading ? 'var(--theme-elevation-300)' : 'var(--theme-text)' }}>
+            <div style={{ fontSize: isMobile ? '1.5rem' : '2rem', fontWeight: 700, color: loading ? 'var(--theme-elevation-300)' : 'var(--theme-text)' }}>
               {loading ? '—' : card.value}
             </div>
           </a>
