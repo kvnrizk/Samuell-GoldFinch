@@ -95,6 +95,35 @@
   }
 }
 
+/* ── Cursor Halo (radial glow on interactive elements) ── */
+.cursor-halo-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    300px circle at var(--halo-x, 50%) var(--halo-y, 50%),
+    color-mix(in srgb, var(--halo-color, var(--text)) 6%, transparent),
+    transparent
+  );
+}
+
+/* Brighter white reflection for 3D-tilt cards */
+.cursor-halo-shine {
+  background: radial-gradient(
+    250px circle at var(--halo-x, 50%) var(--halo-y, 50%),
+    rgba(255, 255, 255, 0.12),
+    transparent
+  );
+}
+
+@media (pointer: coarse) {
+  .cursor-halo-glow { display: none !important; }
+}
+
 /* ── Custom Cursor ── */
 .cursor-dot,
 .cursor-ring {
@@ -119,9 +148,34 @@
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
+/* Cursor bubble — contextual label on interactive cards */
+.cursor-bubble {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 80px;
+  pointer-events: none;
+  z-index: 99999;
+  border-radius: 50%;
+  background: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cursor-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--bg);
+  white-space: nowrap;
+}
+
 @media (pointer: coarse) {
   .cursor-dot,
-  .cursor-ring {
+  .cursor-ring,
+  .cursor-bubble {
     display: none !important;
   }
 }
@@ -189,127 +243,90 @@
 }
 
 /* ── Light Mode Overrides ── */
-/* Flip all hardcoded dark backgrounds and text colors */
+/* Use attribute selectors for reliable matching across Tailwind v4 */
 html.light {
-  /* Backgrounds */
-  & .bg-black,
-  & .bg-\[\#070707\],
-  & .bg-\[\#09090b\],
-  & .bg-\[\#0a0a0a\] {
+  /* ── Backgrounds ── */
+  [class*="bg-black"] {
     background-color: var(--bg) !important;
   }
-
-  & .bg-neutral-900,
-  & .bg-neutral-900\/30 {
+  [class*="bg-neutral-900"] {
     background-color: var(--bg-card) !important;
   }
 
-  & .bg-\[\#111114\],
-  & .bg-\[\#111113\] {
-    background-color: var(--bg-card) !important;
-  }
-
-  /* Text colors */
-  & .text-white {
+  /* ── Text colors ── */
+  [class*="text-white"] {
     color: var(--text) !important;
   }
-
-  & .text-white\/50,
-  & .text-white\/40,
-  & .text-white\/30,
-  & .text-white\/20 {
+  [class*="text-white/5"], [class*="text-white/4"], [class*="text-white/3"], [class*="text-white/2"] {
     color: var(--text-dim) !important;
   }
-
-  & .text-stone-100 {
+  [class*="text-stone-1"], [class*="text-stone-2"] {
     color: var(--text) !important;
   }
-
-  & .text-stone-200 {
-    color: color-mix(in srgb, var(--text), transparent 10%) !important;
-  }
-
-  & .text-zinc-400,
-  & .text-zinc-500 {
+  [class*="text-zinc-4"], [class*="text-zinc-5"] {
     color: var(--text-dim) !important;
   }
-
-  & .text-zinc-600 {
+  [class*="text-zinc-6"] {
     color: var(--text-mute) !important;
   }
 
-  /* Borders */
-  & .border-white\/5,
-  & .border-white\/\[0\.06\],
-  & .border-white\/\[0\.08\],
-  & .border-white\/10,
-  & .border-white\/20 {
+  /* ── Borders ── */
+  [class*="border-white/"] {
     border-color: var(--border) !important;
   }
 
-  /* Backgrounds with opacity */
-  & .bg-white\/\[0\.02\],
-  & .bg-white\/\[0\.05\],
-  & .bg-white\/5 {
-    background-color: color-mix(in srgb, var(--text), transparent 95%) !important;
+  /* ── Glass & semi-transparent backgrounds ── */
+  .bg-white\/5,
+  .bg-white\/\[0\.01\],
+  .bg-white\/\[0\.02\],
+  .bg-white\/\[0\.03\],
+  .bg-white\/\[0\.04\],
+  .bg-white\/\[0\.05\] {
+    background-color: color-mix(in srgb, var(--text) 5%, transparent) !important;
   }
 
-  & .bg-black\/90 {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-  }
-
-  & .bg-black\/80,
-  & .bg-black\/60 {
-    background-color: rgba(255, 255, 255, 0.8) !important;
-  }
-
-  /* Gradients */
-  & .from-black {
+  /* ── Gradients ── */
+  [class*="from-black"] {
     --tw-gradient-from: var(--bg) !important;
   }
-
-  & .to-black {
+  [class*="to-black"] {
     --tw-gradient-to: var(--bg) !important;
   }
-
-  & .from-black\/80,
-  & .from-black\/60 {
-    --tw-gradient-from: rgba(247, 247, 245, 0.8) !important;
+  [class*="via-transparent"] {
+    --tw-gradient-via: transparent !important;
+  }
+  [class*="to-transparent"] {
+    --tw-gradient-to: transparent !important;
   }
 
-  /* Header backdrop */
-  & .backdrop-blur-xl {
-    backdrop-filter: blur(24px);
+  /* ── Form inputs ── */
+  input, textarea, select {
+    background-color: color-mix(in srgb, var(--text) 3%, var(--bg-card)) !important;
+    border-color: var(--border) !important;
+    color: var(--text) !important;
   }
 
-  /* Forms */
-  & .form-field input,
-  & .form-field textarea,
-  & .form-field select {
-    background: rgba(0, 0, 0, 0.03);
-    border-color: var(--border);
-    color: var(--text);
+  /* ── Cursor ── */
+  .cursor-dot {
+    background: #18181b;
+  }
+  .cursor-ring {
+    border-color: rgba(24, 24, 27, 0.5);
   }
 
-  /* Glass cards */
-  & .bg-white\/\[0\.03\],
-  & .bg-white\/\[0\.04\] {
-    background-color: rgba(0, 0, 0, 0.03) !important;
+  /* ── Grain overlay (subtle in light mode) ── */
+  .grain {
+    opacity: 0.012 !important;
   }
 
-  /* Selection */
-  & ::selection {
+  /* ── Selection ── */
+  ::selection {
     background: rgba(200, 169, 110, 0.2);
     color: #18181b;
   }
 
-  /* Grain overlay — hide in light mode */
-  & ~ body .grain {
-    opacity: 0.015;
-  }
-
-  /* Prose invert → normal */
-  & .prose-invert {
+  /* ── Prose invert → normal ── */
+  .prose-invert {
     --tw-prose-body: var(--text-dim);
     --tw-prose-headings: var(--text);
     --tw-prose-links: #c8a96e;
@@ -319,12 +336,42 @@ html.light {
     --tw-prose-quote-borders: #c8a96e;
   }
 
-  /* Scrollbar */
-  & ::-webkit-scrollbar-track {
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar-track {
     background: var(--bg);
   }
-  & ::-webkit-scrollbar-thumb {
+  ::-webkit-scrollbar-thumb {
     background: var(--border-hi);
+  }
+
+  /* ── Borders (non-interactive elements: cards, dividers) ── */
+  div[class*="border-white/"],
+  section[class*="border-white/"],
+  nav[class*="border-white/"] {
+    border-color: var(--border) !important;
+  }
+
+  /* ── All buttons & links: dark filled in light mode ── */
+  button[class*="border-white/"],
+  a[class*="border-white/"],
+  button[class*="backdrop-blur"],
+  a[class*="backdrop-blur"] {
+    background-color: #18181b !important;
+    border-color: #18181b !important;
+    color: #f7f7f5 !important;
+  }
+  button[class*="border-white/"]:hover,
+  a[class*="border-white/"]:hover,
+  button[class*="backdrop-blur"]:hover,
+  a[class*="backdrop-blur"]:hover {
+    background-color: #2a2a32 !important;
+    border-color: #2a2a32 !important;
+    color: #f7f7f5 !important;
+  }
+
+  /* ── Logo images that use mix-blend-screen ── */
+  [class*="mix-blend-screen"] {
+    mix-blend-mode: multiply !important;
   }
 }
 

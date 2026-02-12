@@ -70,7 +70,7 @@ export default async function VenueSEOPage({ params }: Props) {
       <article className="pt-32 pb-24">
         <div className="max-w-3xl mx-auto px-6">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-wider text-zinc-600 mb-12">
+          <nav className="flex items-center gap-2 text-xs font-mono text-zinc-600 mb-12">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
             <Link href="/venues" className="hover:text-white transition-colors">For Venues</Link>
@@ -100,7 +100,7 @@ export default async function VenueSEOPage({ params }: Props) {
           ">
             {page.content ? (
               typeof page.content === 'string' ? (
-                <div dangerouslySetInnerHTML={{ __html: page.content }} />
+                <div dangerouslySetInnerHTML={{ __html: page.content.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/on\w+="[^"]*"/gi, '') }} />
               ) : (
                 <p className="text-zinc-500 italic">Content coming soon — this page is being prepared.</p>
               )
@@ -137,7 +137,7 @@ export default async function VenueSEOPage({ params }: Props) {
 
           {/* Internal links */}
           <div className="mt-16 pt-8 border-t border-white/[0.06]">
-            <p className="text-[10px] font-mono uppercase tracking-wider text-zinc-600 mb-4">Related</p>
+            <p className="text-xs font-mono text-zinc-600 mb-4">Related</p>
             <div className="flex flex-wrap gap-3">
               <Link href="/venues" className="text-sm text-[#c8a96e] hover:underline">Venue Packages</Link>
               <span className="text-zinc-700">·</span>

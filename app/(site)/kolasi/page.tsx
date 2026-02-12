@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getAllKolasiEvents, getFeaturedArtists } from '@/lib/fetchers';
+import { getAllKolasiEvents, getFeaturedArtists, getFeaturedTestimonials, getUpcomingEvents } from '@/lib/fetchers';
 import KolasiClient from './KolasiClient';
 
 export const revalidate = 60;
@@ -11,10 +11,12 @@ export const metadata: Metadata = {
 };
 
 export default async function KolasiPage() {
-  const [events, artists] = await Promise.all([
+  const [events, artists, testimonials, upcomingEvents] = await Promise.all([
     getAllKolasiEvents(),
     getFeaturedArtists(),
+    getFeaturedTestimonials('kolasi').catch(() => []),
+    getUpcomingEvents().catch(() => []),
   ]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Payload returns generic JsonObject types
-  return <KolasiClient events={events as any} artists={artists as any} />;
+  return <KolasiClient events={events as any} artists={artists as any} testimonials={testimonials as any} upcomingEvents={upcomingEvents as any} />;
 }

@@ -18,6 +18,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 function sanitize(input: string, maxLength: number): string {
   return input
     .replace(/<[^>]*>/g, '')
+    .replace(/[\r\n]+/g, ' ')
     .trim()
     .slice(0, maxLength);
 }

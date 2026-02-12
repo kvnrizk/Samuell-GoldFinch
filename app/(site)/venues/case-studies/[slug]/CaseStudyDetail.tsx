@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import VideoPlayer from '@/components/ui/VideoPlayer';
@@ -78,7 +79,7 @@ export default function CaseStudyDetail({ caseStudy }: CaseStudyDetailProps) {
 
         {/* Cover media */}
         {(caseStudy.coverVideo || caseStudy.coverImage?.url) && (
-          <div className="rounded-2xl overflow-hidden mb-12 cs-reveal">
+          <div className="relative rounded-2xl overflow-hidden mb-12 cs-reveal aspect-video">
             {caseStudy.coverVideo ? (
               <VideoPlayer
                 muxPlaybackId={caseStudy.coverVideo}
@@ -89,10 +90,12 @@ export default function CaseStudyDetail({ caseStudy }: CaseStudyDetailProps) {
                 className="aspect-video"
               />
             ) : (
-              <img
+              <Image
                 src={caseStudy.coverImage!.url}
                 alt={caseStudy.venueName}
-                className="w-full aspect-video object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 896px"
+                className="object-cover"
               />
             )}
           </div>
@@ -101,7 +104,7 @@ export default function CaseStudyDetail({ caseStudy }: CaseStudyDetailProps) {
         {/* Outcome highlight */}
         {caseStudy.outcome && (
           <GlassCard featured className="!p-8 mb-12 cs-reveal">
-            <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-[#c8a96e] mb-2">
+            <p className="text-xs font-medium text-[#c8a96e] mb-2">
               Key Result
             </p>
             <p className="font-serif text-2xl md:text-3xl text-stone-100 font-semibold">
@@ -127,7 +130,7 @@ export default function CaseStudyDetail({ caseStudy }: CaseStudyDetailProps) {
           <div className="prose prose-invert prose-sm max-w-none cs-reveal mb-16">
             {/* Payload richText renders as a structured object. For now, render as plain text if string. */}
             {typeof caseStudy.fullContent === 'string' ? (
-              <div dangerouslySetInnerHTML={{ __html: caseStudy.fullContent }} />
+              <div dangerouslySetInnerHTML={{ __html: caseStudy.fullContent.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/on\w+="[^"]*"/gi, '') }} />
             ) : (
               <p className="text-zinc-400">Full case study content available soon.</p>
             )}

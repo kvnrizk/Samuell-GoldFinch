@@ -1,12 +1,14 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import OrbitCarousel from '@/components/ui/OrbitCarousel';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { SectionKicker } from '@/components/ui/SectionKicker';
+import TestimonialCarousel from '@/components/ui/TestimonialCarousel';
 
 // Static fallbacks when CMS is empty
 const staticFeaturedSets = [
@@ -58,10 +60,26 @@ interface HomeClientProps {
   blazeProjects: CMSProject[];
   kolasiEvents: CMSProject[];
   artists: CMSArtist[];
+  testimonials?: any[];
 }
 
-export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientProps) {
+export default function HomeClient({ blazeProjects, testimonials = [] }: HomeClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Blaze section cycling images
+  const blazeImages = [
+    blazeProjects[0]?.gallery?.[0]?.photo?.url || '/assets/blaze/stouh_beirut/2E2A1724.jpg',
+    blazeProjects[1]?.gallery?.[0]?.photo?.url || '/assets/blaze/ambassy/0C5A9134.jpg',
+    '/assets/blaze/weddings/DSCF2395.jpg',
+  ];
+  const [blazeIdx, setBlazeIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setBlazeIdx((prev) => (prev + 1) % blazeImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [blazeImages.length]);
 
   // Build carousel items from CMS or fallback
   const carouselItems = blazeProjects.length > 0
@@ -101,7 +119,7 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <VideoPlayer
-            src="/assets/blaze/weddings/BLAZE_WEDDINGS_Demoreel.mp4"
+            muxPlaybackId="ABVHVsPKRIgCyqWD7JOSHSxvR00HVt800oBerw5sQDk00A"
             poster="/assets/blaze/weddings/0G0A7811.jpg"
             autoPlay
             loop
@@ -109,12 +127,12 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
             mode="hero"
             className="opacity-40"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent, var(--bg))' }} />
         </div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <p className="hero-reveal text-[10px] tracking-[0.5em] uppercase text-white/50">
+            <p className="hero-reveal text-xs font-medium" style={{ color: 'var(--text-mute)' }}>
               Artistic Director &bull; DJ &bull; Event Curator
             </p>
             <h1 className="hero-reveal text-6xl md:text-8xl font-serif leading-[0.9] tracking-tight">
@@ -123,19 +141,19 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
               Experience <br />
               <span className="italic">Curator</span>
             </h1>
-            <p className="hero-reveal text-sm text-white/40 max-w-md uppercase tracking-widest leading-relaxed">
+            <p className="hero-reveal text-sm max-w-md leading-relaxed font-light" style={{ color: 'var(--text-dim)' }}>
               Paris-based creative director blending cinematic storytelling with curated live experiences across Europe, the Middle East, and beyond.
             </p>
             <div className="hero-reveal flex flex-wrap gap-4 pt-4">
               <Link
                 href="/blaze"
-                className="px-8 py-3 border border-white/20 text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all rounded-sm backdrop-blur-md"
+                className="px-8 py-3 border border-white/20 text-sm font-semibold hover:bg-white hover:text-black transition-all rounded-sm backdrop-blur-md"
               >
                 View Blaze Work
               </Link>
               <Link
                 href="/kolasi"
-                className="px-8 py-3 bg-white/5 border border-white/10 text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all rounded-sm backdrop-blur-md"
+                className="px-8 py-3 bg-white/5 border border-white/10 text-sm font-semibold hover:bg-white hover:text-black transition-all rounded-sm backdrop-blur-md"
               >
                 Discover Kolasi
               </Link>
@@ -143,16 +161,19 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
           </div>
 
           <div className="hero-reveal hidden md:block">
-            <div className="group relative w-full aspect-[4/3] bg-neutral-900 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-              <img
+            <div className="group relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+              <Image
                 src={blazeProjects[0]?.gallery?.[0]?.photo?.url || '/assets/blaze/weddings/0G0A7811.jpg'}
                 alt="Blaze Motion — Signature Wedding Reel"
-                className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover group-hover:scale-105 transition-all duration-700"
+                priority
               />
-              <div className="absolute inset-0 flex flex-col justify-end p-10 bg-gradient-to-t from-black via-transparent to-transparent">
-                <p className="text-[10px] tracking-widest uppercase text-white/40 mb-2">Blaze Motion</p>
-                <h3 className="text-xl font-serif italic mb-1 uppercase tracking-tighter">Signature Wedding Reel</h3>
-                <p className="text-[10px] tracking-[0.3em] uppercase text-white/30 border-t border-white/10 pt-4 mt-4">
+              <div className="absolute inset-0 flex flex-col justify-end p-10" style={{ background: 'linear-gradient(to top, var(--bg), transparent, transparent)' }}>
+                <p className="text-xs font-medium mb-2" style={{ color: 'var(--text-mute)' }}>Blaze Motion</p>
+                <h3 className="text-xl font-serif italic mb-1">Signature Wedding Reel</h3>
+                <p className="text-xs font-light border-t border-white/10 pt-4 mt-4" style={{ color: 'var(--text-mute)' }}>
                   Paris &bull; Cinematic Weddings
                 </p>
               </div>
@@ -166,16 +187,12 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
       </section>
 
       {/* Featured Sets */}
-      <section className="py-40 bg-black">
+      <section className="py-40" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-24 reveal-section">
-            <p className="text-[10px] tracking-[0.4em] uppercase text-white/30 mb-6">Featured Sets</p>
+            <p className="text-xs font-medium mb-6" style={{ color: 'var(--text-mute)' }}>Featured Sets</p>
             <h2 className="text-4xl md:text-6xl font-serif max-w-4xl mx-auto leading-tight italic">
-              Three Blaze coverages orbiting between <br />
-              <span className="not-italic">
-                STOUH BEIRUT, Parisian diplomacy, <br />
-                and MIPIM Cannes.
-              </span>
+              Stories Worth <span className="not-italic">Reliving</span>
             </h2>
           </div>
           <div className="reveal-section">
@@ -185,37 +202,57 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
       </section>
 
       {/* Blaze Section Split */}
-      <section className="py-40 bg-[#070707]">
+      <section className="py-40" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-20 items-center reveal-section">
             <div className="space-y-10">
-              <p className="text-[10px] tracking-[0.4em] uppercase text-white/30">Blaze Production</p>
+              <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>Blaze Production</p>
               <h2 className="text-5xl md:text-7xl font-serif leading-none italic">
                 Where <br /> Emotion <br /> <span className="not-italic">Meets Craft</span>
               </h2>
-              <p className="text-sm text-white/50 leading-relaxed uppercase tracking-widest max-w-sm">
+              <p className="text-sm leading-relaxed font-light max-w-sm" style={{ color: 'var(--text-dim)' }}>
                 Cinematic storytelling and visual precision for those who feel deeply. From intimate weddings to editorial campaigns, Blaze turns life into moving art.
               </p>
               <div className="grid grid-cols-2 gap-8 pt-6">
                 <div className="space-y-2 border-l border-white/10 pl-6">
-                  <p className="text-[10px] font-bold uppercase tracking-widest">Wedding films</p>
-                  <p className="text-[10px] text-white/40 leading-relaxed">Crafted with timeless elegance and emotional weight.</p>
+                  <p className="text-xs font-semibold">Wedding films</p>
+                  <p className="text-xs font-light leading-relaxed" style={{ color: 'var(--text-dim)' }}>Crafted with timeless elegance and emotional weight.</p>
                 </div>
                 <div className="space-y-2 border-l border-white/10 pl-6">
-                  <p className="text-[10px] font-bold uppercase tracking-widest">Speakeasy Series</p>
-                  <p className="text-[10px] text-white/40 leading-relaxed">Capturing warmth, shadow, and nocturnal energy.</p>
+                  <p className="text-xs font-semibold">Speakeasy Series</p>
+                  <p className="text-xs font-light leading-relaxed" style={{ color: 'var(--text-dim)' }}>Capturing warmth, shadow, and nocturnal energy.</p>
                 </div>
               </div>
-              <Link href="/blaze" className="inline-block px-12 py-4 border border-white/20 text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all">
+              <Link href="/blaze" className="inline-block px-12 py-4 border border-white/20 text-sm font-semibold hover:bg-white hover:text-black transition-all">
                 Explore Blaze
               </Link>
             </div>
             <div className="relative">
-              <div className="aspect-[4/5] bg-neutral-900 rounded-3xl overflow-hidden shadow-2xl transform md:translate-x-12 relative z-10">
-                <img src={blazeProjects[0]?.gallery?.[0]?.photo?.url || '/assets/blaze/stouh_beirut/2E2A1724.jpg'} alt="STOUH BEIRUT" className="w-full h-full object-cover" />
+              <div className="aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl transform md:translate-x-12 relative z-10">
+                {blazeImages.map((src, i) => (
+                  <Image
+                    key={src}
+                    src={src}
+                    alt="Blaze Production"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-opacity duration-1000 ease-in-out"
+                    style={{ opacity: i === blazeIdx ? 1 : 0 }}
+                  />
+                ))}
               </div>
-              <div className="absolute top-1/2 -left-12 -translate-y-1/2 aspect-[4/5] w-2/3 bg-neutral-900 rounded-3xl overflow-hidden shadow-2xl opacity-40">
-                <img src={blazeProjects[1]?.gallery?.[0]?.photo?.url || '/assets/blaze/ambassy/0C5A9134.jpg'} alt="Embassy of Lebanon" className="w-full h-full object-cover" />
+              <div className="absolute top-1/2 -left-12 -translate-y-1/2 aspect-[4/5] w-2/3 rounded-3xl overflow-hidden shadow-2xl opacity-40">
+                {blazeImages.map((src, i) => (
+                  <Image
+                    key={src}
+                    src={src}
+                    alt="Blaze Production"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-opacity duration-1000 ease-in-out"
+                    style={{ opacity: i === (blazeIdx + 1) % blazeImages.length ? 1 : 0 }}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -223,29 +260,29 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
       </section>
 
       {/* Kolasi Section */}
-      <section className="py-40 bg-black overflow-hidden">
+      <section className="py-40 overflow-hidden" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 reveal-section">
             <div className="bg-neutral-900/40 p-12 rounded-3xl border border-white/5 backdrop-blur-xl">
-              <p className="text-[10px] tracking-[0.4em] uppercase text-white/30 mb-8">Kolasi Agency</p>
-              <h2 className="text-4xl md:text-5xl font-serif mb-8 leading-tight">
-                DJ &amp; Live Show <br /> Booking &bull; Event <br /> Curation &bull; Content <br /> Creation
+              <p className="text-xs font-medium mb-8" style={{ color: 'var(--text-mute)' }}>Kolasi Agency</p>
+              <h2 className="text-4xl md:text-5xl font-serif mb-8 leading-tight italic">
+                Where Culture <br /> Meets the Night
               </h2>
-              <p className="text-sm text-white/40 uppercase tracking-widest leading-relaxed mb-10">
+              <p className="text-sm leading-[1.9] font-light mb-10" style={{ color: 'var(--text-dim)' }}>
                 Kolasi curates nightlife, festivals and cultural happenings through bespoke talent booking, scenography and media production.
               </p>
               <ul className="space-y-4 mb-12">
                 {['DJ booking & live performers worldwide', 'Tailor-made events with artistic direction and PR', 'Cinematic coverage and post-event media', 'Sound & Light Rental'].map((item, i) => (
-                  <li key={i} className="text-[10px] text-white uppercase tracking-widest flex items-center">
-                    <span className="w-1 h-1 bg-white rounded-full mr-4" /> {item}
+                  <li key={i} className="text-xs flex items-center" style={{ color: 'var(--text)' }}>
+                    <span className="w-1 h-1 rounded-full mr-4 flex-shrink-0" style={{ backgroundColor: 'var(--text-mute)' }} /> {item}
                   </li>
                 ))}
               </ul>
               <div className="flex space-x-4">
-                <Link href="/kolasi" className="px-8 py-3 border border-white/20 text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all">
+                <Link href="/kolasi" className="px-8 py-3 border border-white/20 text-sm font-semibold hover:bg-white hover:text-black transition-all">
                   Discover Kolasi
                 </Link>
-                <Link href="/kolasi#services" className="px-8 py-3 border border-white/10 bg-white/5 text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all">
+                <Link href="/kolasi#services" className="px-8 py-3 border border-white/10 bg-white/5 text-sm font-semibold hover:bg-white hover:text-black transition-all">
                   View Expertise
                 </Link>
               </div>
@@ -253,13 +290,13 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
 
             <div className="grid grid-cols-2 gap-6">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl">
-                <img src={kolasiEvents[0]?.gallery?.[0]?.photo?.url || '/assets/kolasi/images/4F8A2882.jpg'} alt="Kolasi event" className="w-full h-full object-cover" />
+                <VideoPlayer muxPlaybackId="uar02cwjF78qfyUUvSQIMcnQyHVImiF6sJP3Izh7D01JU" autoPlay loop muted mode="hero" />
               </div>
-              <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl mt-12">
-                <img src={kolasiEvents[1]?.gallery?.[0]?.photo?.url || '/assets/kolasi/images/4F8A3195.jpg'} alt="Kolasi artist" className="w-full h-full object-cover" />
+              <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl">
+                <VideoPlayer muxPlaybackId="RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo" autoPlay loop muted mode="hero" />
               </div>
-              <div className="col-span-2 aspect-[16/9] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl -mt-6">
-                <img src="/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.JPG" alt="Le Speakeasy" className="w-full h-full object-cover transition-all duration-700" />
+              <div className="col-span-2 aspect-[16/9] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl">
+                <VideoPlayer src="/assets/kolasi/Speakeasy_Ads/LeSpeakeasyVid.mp4" autoPlay loop muted mode="hero" />
               </div>
             </div>
           </div>
@@ -267,7 +304,7 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
       </section>
 
       {/* For Venues CTA */}
-      <section className="py-32 bg-[#070707] reveal-section">
+      <section className="py-16 reveal-section" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-5xl mx-auto px-6">
           <div className="relative overflow-hidden rounded-3xl border border-[#c8a96e]/20 bg-gradient-to-br from-[#c8a96e]/[0.06] to-transparent p-12 md:p-16">
             <div className="grid md:grid-cols-2 gap-10 items-center">
@@ -303,7 +340,7 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
                   ].map((s, i) => (
                     <div key={i} className="p-4">
                       <p className="font-serif text-2xl text-[#c8a96e] font-bold">{s.stat}</p>
-                      <p className="text-[10px] text-zinc-500 uppercase tracking-wider mt-1">{s.label}</p>
+                      <p className="text-xs text-zinc-500 mt-1">{s.label}</p>
                     </div>
                   ))}
                 </div>
@@ -316,12 +353,12 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
       </section>
 
       {/* Trusted Collaborations */}
-      <section className="py-40 bg-[#070707]">
+      <section className="py-20" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-5xl mx-auto px-6 text-center">
           <div className="reveal-section">
-            <p className="text-[10px] tracking-[0.5em] uppercase text-white/30 mb-8">Trusted Collaborations</p>
-            <h2 className="text-3xl md:text-4xl font-serif italic mb-20 leading-snug">
-              From Parisian diplomacy to Cannes <br /> summits, we safeguard the chemistry <br /> between story, guests, and spotlight.
+            <p className="text-xs font-medium mb-8" style={{ color: 'var(--text-mute)' }}>Trusted Collaborations</p>
+            <h2 className="text-3xl md:text-4xl font-serif italic mb-20">
+              Trusted by the Best
             </h2>
 
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -329,25 +366,25 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
                 <div key={i} className="group flex flex-col items-center justify-center p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-[#c8a96e]/20 hover:bg-[#c8a96e]/[0.03] transition-all duration-500">
                   <div className="h-12 flex items-center justify-center mb-5">
                     {c.logo ? (
-                      <img src={c.logo} alt={c.name} className="h-10 w-auto object-contain mix-blend-screen opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+                      <Image src={c.logo} alt={c.name} width={120} height={40} className="h-10 w-auto object-contain mix-blend-screen opacity-60 group-hover:opacity-100 transition-opacity duration-500" sizes="120px" />
                     ) : (
                       <span className="text-lg font-serif italic text-white/20 group-hover:text-white/50 transition-colors duration-500">{c.name.split(' ').map(w => w[0]).join('')}</span>
                     )}
                   </div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.15em] mb-1 text-white/70 group-hover:text-white transition-colors">{c.name}</p>
-                  <p className="text-[9px] text-white/25 uppercase tracking-[0.2em] group-hover:text-[#c8a96e]/60 transition-colors">{c.location}</p>
+                  <p className="text-xs font-semibold mb-1 text-white/70 group-hover:text-white transition-colors">{c.name}</p>
+                  <p className="text-[10px] font-light group-hover:text-[#c8a96e]/60 transition-colors" style={{ color: 'var(--text-mute)' }}>{c.location}</p>
                 </div>
               ))}
             </div>
 
             <div className="mt-20 flex justify-center space-x-12 py-10 border-y border-white/5">
               <div className="text-center">
-                <p className="text-[10px] tracking-widest uppercase text-white/40 mb-2">Cities Filmed</p>
+                <p className="text-xs font-medium mb-2" style={{ color: 'var(--text-mute)' }}>Cities Filmed</p>
                 <p className="text-3xl font-serif">12+</p>
               </div>
               <div className="w-[1px] bg-white/10" />
               <div className="text-center">
-                <p className="text-[10px] tracking-widest uppercase text-white/40 mb-2">Live Experiences</p>
+                <p className="text-xs font-medium mb-2" style={{ color: 'var(--text-mute)' }}>Live Experiences</p>
                 <p className="text-3xl font-serif">150+ sets</p>
               </div>
             </div>
@@ -355,23 +392,31 @@ export default function HomeClient({ blazeProjects, kolasiEvents }: HomeClientPr
         </div>
       </section>
 
+      {/* Testimonials */}
+      <TestimonialCarousel
+        testimonials={testimonials}
+        heading="What Our Clients Say"
+        subheading="Stories from the people we've had the privilege to work with."
+      />
+
       {/* CTA */}
-      <section className="py-40 bg-black">
+      <section className="py-20" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-4xl mx-auto px-6 text-center reveal-section">
           <h2 className="text-5xl md:text-7xl font-serif mb-10 italic">Let&apos;s Create Together</h2>
-          <p className="text-sm text-white/40 uppercase tracking-[0.3em] mb-12">
+          <p className="text-sm font-light mb-12" style={{ color: 'var(--text-dim)' }}>
             Tell me about your vision ~ weddings, films or events.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/quote"
-              className="inline-block px-12 py-4 border border-white/20 rounded-full text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all"
+              className="inline-block px-12 py-4 rounded-full text-sm font-semibold transition-all"
+              style={{ border: '1px solid var(--border-hi)', color: 'var(--text)' }}
             >
               Request a Quote
             </Link>
             <Link
               href="/venues"
-              className="inline-block px-12 py-4 bg-[#c8a96e]/10 border border-[#c8a96e]/30 rounded-full text-[10px] tracking-widest uppercase text-[#c8a96e] hover:bg-[#c8a96e] hover:text-[#09090b] transition-all"
+              className="inline-block px-12 py-4 bg-[#c8a96e]/10 border border-[#c8a96e]/30 rounded-full text-sm font-semibold text-[#c8a96e] hover:bg-[#c8a96e] hover:text-[#09090b] transition-all"
             >
               I&apos;m a Venue Owner
             </Link>

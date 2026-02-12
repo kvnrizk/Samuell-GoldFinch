@@ -5,8 +5,10 @@ const nextConfig = {
   trailingSlash: false,
 
   images: {
-    loader: 'custom',
-    loaderFile: './lib/cloudinary.ts',
+    remotePatterns: [
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
+      { protocol: 'https', hostname: 'image.mux.com' },
+    ],
   },
 
   async redirects() {

@@ -12,7 +12,7 @@ export default function PrivacyPage() {
     <article className="pt-32 pb-24">
       <div className="max-w-3xl mx-auto px-6">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-wider text-zinc-600 mb-12">
+        <nav className="flex items-center gap-2 text-xs font-mono text-zinc-600 mb-12">
           <Link href="/" className="hover:text-white transition-colors">Home</Link>
           <span>/</span>
           <span className="text-zinc-400">Privacy Policy</span>

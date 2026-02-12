@@ -4,12 +4,14 @@ export const Media: CollectionConfig = {
   slug: 'media',
   upload: {
     mimeTypes: ['image/*'],
+    filesRequiredOnCreate: true,
   },
   admin: {
     useAsTitle: 'alt',
   },
   access: {
     read: () => true,
+    delete: ({ req: { user } }) => user?.role === 'admin',
   },
   fields: [
     {

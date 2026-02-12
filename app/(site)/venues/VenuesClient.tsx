@@ -1,8 +1,10 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
-import { gsap, prefersReducedMotion } from '@/lib/gsap-utils';
+import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { SectionKicker } from '@/components/ui/SectionKicker';
 import { GlassCard } from '@/components/ui/GlassCard';
@@ -46,6 +48,7 @@ interface FAQItem {
 interface Artist {
   id: string;
   name?: string;
+  slug?: string;
   photo?: { url?: string };
   genre?: string;
   rosterCategory?: string;
@@ -72,12 +75,15 @@ export default function VenuesClient({
 
   useGSAP(() => {
     if (prefersReducedMotion()) return;
-    gsap.from('.venue-reveal', {
-      y: 40,
-      opacity: 0,
-      duration: 0.9,
-      stagger: 0.12,
-      ease: 'power3.out',
+    registerGSAP();
+    gsap.utils.toArray<HTMLElement>('.venue-reveal').forEach((el) => {
+      gsap.from(el, {
+        scrollTrigger: { trigger: el, start: 'top 90%' },
+        y: 40,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+      });
     });
   }, { scope: containerRef });
 
@@ -90,16 +96,6 @@ export default function VenuesClient({
     trackEvent('whatsapp_click', { source: 'venues-page' });
     window.open(`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`, '_blank');
   };
-
-  // Group artists by category for roster section
-  const rosterCategories = ['resident', 'headliner', 'live-act', 'hybrid'] as const;
-  const artistsByCategory = rosterCategories.reduce(
-    (acc, cat) => {
-      acc[cat] = artists.filter((a) => a.rosterCategory === cat);
-      return acc;
-    },
-    {} as Record<string, Artist[]>,
-  );
 
   return (
     <div ref={containerRef}>
@@ -119,7 +115,7 @@ export default function VenuesClient({
             className="absolute inset-0"
             style={{
               background:
-                'linear-gradient(to top, rgba(9,9,11,0.95) 0%, rgba(9,9,11,0.4) 50%, rgba(9,9,11,0.6) 100%)',
+                'linear-gradient(to top, color-mix(in srgb, var(--bg) 95%, transparent) 0%, color-mix(in srgb, var(--bg) 40%, transparent) 50%, color-mix(in srgb, var(--bg) 60%, transparent) 100%)',
             }}
           />
         </div>
@@ -176,9 +172,17 @@ export default function VenuesClient({
         </div>
       </section>
 
+      {/* ─── Visual break ─── */}
+      <div className="relative h-40 md:h-64 overflow-hidden">
+        <Image src="/assets/kolasi/images/4F8A3777.jpg" alt="" fill sizes="100vw" className="object-cover opacity-30" />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
+      </div>
+
       {/* ─── PACKAGES ─── */}
-      <section className="py-24 md:py-32">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-24 md:py-32 relative overflow-hidden">
+        {/* Ambient background glow */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-[0.04] blur-[120px] pointer-events-none" style={{ background: '#c8a96e' }} />
+        <div className="relative max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 venue-reveal">
             <SectionKicker label="Packages" />
             <h2 className="font-serif text-3xl md:text-5xl font-bold text-stone-100 mb-4">
@@ -253,8 +257,13 @@ export default function VenuesClient({
 
       {/* ─── CASE STUDIES ─── */}
       {(caseStudies.length > 0 || true) && (
-        <section className="py-24 md:py-32 bg-white/[0.01]">
-          <div className="max-w-7xl mx-auto px-6">
+        <section className="py-24 md:py-32 relative overflow-hidden">
+          {/* Background image accent */}
+          <div className="absolute inset-0 pointer-events-none">
+            <Image src="/assets/kolasi/images/4F8A2882.jpg" alt="" fill sizes="100vw" className="object-cover opacity-[0.06]" />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 20%, transparent 80%, var(--bg))' }} />
+          </div>
+          <div className="relative max-w-7xl mx-auto px-6">
             <div className="text-center mb-16 venue-reveal">
               <SectionKicker label="Case Studies" />
               <h2 className="font-serif text-3xl md:text-5xl font-bold text-stone-100 mb-4">
@@ -309,8 +318,16 @@ export default function VenuesClient({
         </section>
       )}
 
+      {/* ─── Visual break ─── */}
+      <div className="relative h-40 md:h-64 overflow-hidden">
+        <Image src="/assets/kolasi/artists/4F8A3682.jpg" alt="" fill sizes="100vw" className="object-cover opacity-30" />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
+      </div>
+
       {/* ─── ROSTER ─── */}
-      <section className="py-24 md:py-32">
+      <section className="py-24 md:py-32 relative overflow-hidden">
+        {/* Ambient glow */}
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full opacity-[0.03] blur-[100px] pointer-events-none" style={{ background: '#a78bfa' }} />
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 venue-reveal">
             <SectionKicker label="Our Roster" />
@@ -322,69 +339,107 @@ export default function VenuesClient({
             </p>
           </div>
 
-          <div className="space-y-12 venue-reveal">
-            {rosterCategories.map((cat) => {
-              const catArtists = artistsByCategory[cat];
-              if (!catArtists || catArtists.length === 0) return null;
-              const catLabel = cat === 'live-act' ? 'Live Acts' : cat.charAt(0).toUpperCase() + cat.slice(1) + 's';
-              return (
-                <div key={cat}>
-                  <h3 className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#c8a96e] mb-6">
-                    {catLabel}
-                  </h3>
-                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    {catArtists.map((artist) => (
-                      <GlassCard key={artist.id} className="!p-4 text-center">
-                        {artist.photo?.url ? (
-                          <img
-                            src={artist.photo.url}
-                            alt={artist.name}
-                            className="w-16 h-16 rounded-full object-cover mx-auto mb-3"
-                          />
-                        ) : (
-                          <div className="w-16 h-16 rounded-full bg-white/[0.05] flex items-center justify-center mx-auto mb-3 text-zinc-600 text-lg font-serif">
-                            {artist.name?.charAt(0)}
-                          </div>
-                        )}
-                        <p className="text-sm font-medium text-stone-100 truncate">{artist.name}</p>
-                        {artist.genre && (
-                          <p className="text-[10px] text-zinc-500 mt-1 truncate">{artist.genre}</p>
-                        )}
-                      </GlassCard>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+          {artists.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 venue-reveal">
+              {artists.map((artist) => {
+                const catLabel =
+                  artist.rosterCategory === 'live-act' ? 'Live Act'
+                    : artist.rosterCategory === 'hybrid' ? 'Hybrid'
+                    : artist.rosterCategory === 'headliner' ? 'Headliner'
+                    : 'Resident';
 
-            {artists.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-zinc-600 text-sm">
-                  Roster coming soon. Book a call to discuss your programming needs.
-                </p>
-              </div>
-            )}
-          </div>
+                const card = (
+                  <>
+                    {artist.photo?.url ? (
+                      <Image
+                        src={artist.photo.url}
+                        alt={artist.name || 'Artist'}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 25vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-card)' }}>
+                        <span className="text-4xl font-serif italic" style={{ color: 'var(--text-mute)' }}>
+                          {artist.name?.charAt(0) || '?'}
+                        </span>
+                      </div>
+                    )}
+                    {/* Gradient overlay */}
+                    <div
+                      className="absolute inset-0"
+                      style={{ background: 'linear-gradient(to top, var(--bg) 5%, color-mix(in srgb, var(--bg) 60%, transparent) 45%, transparent)' }}
+                    />
+                    {/* Category badge */}
+                    <span
+                      className="absolute top-4 right-4 px-3 py-1 rounded-full text-[9px] font-semibold uppercase tracking-[0.12em] border"
+                      style={{
+                        borderColor: 'color-mix(in srgb, #c8a96e 30%, transparent)',
+                        color: '#c8a96e',
+                        backgroundColor: 'color-mix(in srgb, var(--bg) 70%, transparent)',
+                        backdropFilter: 'blur(8px)',
+                      }}
+                    >
+                      {catLabel}
+                    </span>
+                    {/* Name + genre */}
+                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                      <p className="text-sm font-serif font-medium" style={{ color: 'var(--text)' }}>{artist.name}</p>
+                      {artist.genre && (
+                        <p className="text-[11px] mt-1" style={{ color: 'var(--text-mute)' }}>{artist.genre}</p>
+                      )}
+                    </div>
+                  </>
+                );
+
+                return artist.slug ? (
+                  <Link
+                    key={artist.id}
+                    href={`/kolasi/artists/${artist.slug}`}
+                    className="group relative aspect-[3/4] rounded-2xl overflow-hidden border block transition-colors hover:border-[#c8a96e]/30"
+                    style={{ borderColor: 'var(--border)' }}
+                  >
+                    {card}
+                  </Link>
+                ) : (
+                  <div
+                    key={artist.id}
+                    className="group relative aspect-[3/4] rounded-2xl overflow-hidden border"
+                    style={{ borderColor: 'var(--border)' }}
+                  >
+                    {card}
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-center py-12 venue-reveal">
+              <p className="text-zinc-600 text-sm">
+                Roster coming soon. Book a call to discuss your programming needs.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
       {/* ─── PROCESS ─── */}
-      <section className="py-24 md:py-32 bg-white/[0.01]">
+      <section className="py-24 md:py-32 relative overflow-hidden" style={{ backgroundColor: 'color-mix(in srgb, var(--bg-card) 50%, var(--bg))' }}>
+        {/* Background accent */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full opacity-[0.03] blur-[100px] pointer-events-none" style={{ background: '#c8a96e' }} />
         <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16 venue-reveal">
+          <div className="text-center mb-16">
             <SectionKicker label="How It Works" />
             <h2 className="font-serif text-3xl md:text-5xl font-bold text-stone-100 mb-4">
               From audit to launch in 3 steps
             </h2>
           </div>
-          <div className="venue-reveal">
-            <ProcessTimeline />
-          </div>
+          <ProcessTimeline />
         </div>
       </section>
 
       {/* ─── FAQ ─── */}
-      <section className="py-24 md:py-32">
+      <section className="py-24 md:py-32 relative">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-16 venue-reveal">
             <SectionKicker label="FAQ" />
@@ -433,9 +488,20 @@ export default function VenuesClient({
         </div>
       </section>
 
+      {/* ─── Visual break ─── */}
+      <div className="relative h-40 md:h-56 overflow-hidden">
+        <Image src="/assets/kolasi/images/4F8A3801.jpg" alt="" fill sizes="100vw" className="object-cover opacity-25" />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
+      </div>
+
       {/* ─── VENUE FORM / FINAL CTA ─── */}
-      <section id="venue-form" className="py-24 md:py-32 bg-white/[0.01]">
-        <div className="max-w-7xl mx-auto px-6">
+      <section id="venue-form" className="py-24 md:py-32 relative overflow-hidden">
+        {/* Background photo accent */}
+        <div className="absolute inset-0 pointer-events-none">
+          <Image src="/assets/kolasi/images/4F8A2938.jpg" alt="" fill sizes="100vw" className="object-cover opacity-[0.04]" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, var(--bg) 40%, transparent 80%)' }} />
+        </div>
+        <div className="relative max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             {/* Left: CTA copy */}
             <div className="venue-reveal">
@@ -481,7 +547,7 @@ export default function VenuesClient({
               </div>
 
               <GlassCard className="!p-6">
-                <p className="text-[10px] font-mono uppercase tracking-[0.15em] text-[#c8a96e] mb-3">
+                <p className="text-xs font-medium text-[#c8a96e] mb-3">
                   Response Promise
                 </p>
                 <p className="text-sm text-zinc-400 leading-relaxed italic">

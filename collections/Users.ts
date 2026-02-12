@@ -1,16 +1,39 @@
 import type { CollectionConfig } from 'payload';
 
+const isAdmin = ({ req: { user } }: any) => user?.role === 'admin';
+const isAdminOrSelf = ({ req: { user }, id }: any) => user?.role === 'admin' || user?.id === id;
+
 export const Users: CollectionConfig = {
   slug: 'users',
   auth: true,
   admin: {
     useAsTitle: 'email',
+    defaultColumns: ['email', 'name', 'role'],
   },
   access: {
     read: ({ req: { user } }) => Boolean(user),
-    create: ({ req: { user } }) => Boolean(user),
-    update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    create: async ({ req }) => {
+      // Allow first user creation (bootstrap) when no users exist
+      if (req.user?.role === 'admin') return true;
+      const { totalDocs } = await req.payload.find({ collection: 'users', limit: 0 });
+      return totalDocs === 0;
+    },
+    update: isAdminOrSelf,
+    delete: isAdmin,
+  },
+  hooks: {
+    beforeChange: [
+      async ({ data, req, operation }) => {
+        // First user ever created automatically gets admin role
+        if (operation === 'create') {
+          const { totalDocs } = await req.payload.find({ collection: 'users', limit: 0 });
+          if (totalDocs === 0) {
+            data.role = 'admin';
+          }
+        }
+        return data;
+      },
+    ],
   },
   fields: [
     {
@@ -20,10 +43,18 @@ export const Users: CollectionConfig = {
     {
       name: 'role',
       type: 'select',
-      defaultValue: 'admin',
+      required: true,
+      defaultValue: 'editor',
       options: [
         { label: 'Admin', value: 'admin' },
+        { label: 'Editor', value: 'editor' },
       ],
+      access: {
+        update: isAdmin,
+      },
+      admin: {
+        description: 'Admins can manage users and delete content. Editors can create and edit content only.',
+      },
     },
   ],
 };

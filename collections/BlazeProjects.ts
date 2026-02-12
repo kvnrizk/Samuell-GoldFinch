@@ -10,7 +10,7 @@ export const BlazeProjects: CollectionConfig = {
     read: () => true,
     create: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    delete: ({ req: { user } }) => user?.role === 'admin',
   },
   fields: [
     {

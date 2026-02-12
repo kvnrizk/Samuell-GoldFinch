@@ -10,7 +10,7 @@ export const Artists: CollectionConfig = {
     read: () => true,
     create: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    delete: ({ req: { user } }) => user?.role === 'admin',
   },
   fields: [
     {
@@ -47,6 +47,26 @@ export const Artists: CollectionConfig = {
         { name: 'instagram', type: 'text' },
         { name: 'soundcloud', type: 'text' },
         { name: 'spotify', type: 'text' },
+      ],
+    },
+    {
+      name: 'mixes',
+      type: 'array',
+      label: 'DJ Mixes / Sets',
+      fields: [
+        { name: 'title', type: 'text', required: true },
+        { name: 'url', type: 'text', required: true },
+        {
+          name: 'platform',
+          type: 'select',
+          options: [
+            { label: 'SoundCloud', value: 'soundcloud' },
+            { label: 'Mixcloud', value: 'mixcloud' },
+            { label: 'Spotify', value: 'spotify' },
+            { label: 'YouTube', value: 'youtube' },
+          ],
+        },
+        { name: 'duration', type: 'text', admin: { description: 'e.g. 1:23:45' } },
       ],
     },
     {

@@ -12,6 +12,11 @@ const eslintConfig = [
   {
     ignores: ['_legacy/**'],
   },
+  {
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ];
 
 export default eslintConfig;

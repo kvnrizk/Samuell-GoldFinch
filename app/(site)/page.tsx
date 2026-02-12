@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getGlobalSettings, getFeaturedBlazeProjects, getFeaturedKolasiEvents, getFeaturedArtists } from '@/lib/fetchers';
+import { getGlobalSettings, getFeaturedBlazeProjects, getFeaturedKolasiEvents, getFeaturedArtists, getFeaturedTestimonials } from '@/lib/fetchers';
 import HomeClient from './HomeClient';
 
 export const revalidate = 60;
@@ -13,11 +13,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const [settings, blazeProjects, kolasiEvents, artists] = await Promise.all([
+  const [settings, blazeProjects, kolasiEvents, artists, testimonials] = await Promise.all([
     getGlobalSettings(),
     getFeaturedBlazeProjects(6),
     getFeaturedKolasiEvents(4),
     getFeaturedArtists(),
+    getFeaturedTestimonials().catch(() => []),
   ]);
 
   /* eslint-disable @typescript-eslint/no-explicit-any -- Payload returns generic JsonObject types */
@@ -27,6 +28,7 @@ export default async function HomePage() {
       blazeProjects={blazeProjects as any}
       kolasiEvents={kolasiEvents as any}
       artists={artists as any}
+      testimonials={testimonials as any}
     />
   );
   /* eslint-enable @typescript-eslint/no-explicit-any */

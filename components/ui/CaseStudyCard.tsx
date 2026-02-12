@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { GlassCard } from './GlassCard';
 
 interface CaseStudyCardProps {
@@ -16,11 +17,13 @@ export function CaseStudyCard({ venueName, slug, coverImageUrl, role, frequency,
     <a href={`/venues/case-studies/${slug}`} className="block group">
       <GlassCard className="overflow-hidden !p-0">
         {coverImageUrl && (
-          <div className="aspect-video overflow-hidden">
-            <img
+          <div className="relative aspect-video overflow-hidden">
+            <Image
               src={coverImageUrl}
               alt={venueName}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
             />
           </div>
         )}

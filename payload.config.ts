@@ -19,7 +19,12 @@ import { CaseStudies } from './collections/CaseStudies';
 import { VenueFAQ } from './collections/VenueFAQ';
 import { VenueInquiries } from './collections/VenueInquiries';
 import { VenueSEOPages } from './collections/VenueSEOPages';
+import { Testimonials } from './collections/Testimonials';
+import { Posts } from './collections/Posts';
+import { PricingFactors } from './collections/PricingFactors';
 import { GlobalSettings } from './globals/GlobalSettings';
+import { PressKit } from './globals/PressKit';
+import { Showreel } from './globals/Showreel';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -29,6 +34,14 @@ export default buildConfig({
     user: Users.slug,
     meta: {
       titleSuffix: ' — Samuell Goldfinch',
+    },
+    components: {
+      beforeDashboard: [
+        '/components/admin/DashboardKPIs',
+        '/components/admin/RecentInquiries',
+        '/components/admin/InquiryKanban',
+        '/components/admin/InquiryCharts',
+      ],
     },
   },
 
@@ -52,9 +65,12 @@ export default buildConfig({
     VenueFAQ,
     VenueInquiries,
     VenueSEOPages,
+    Testimonials,
+    Posts,
+    PricingFactors,
   ],
 
-  globals: [GlobalSettings],
+  globals: [GlobalSettings, PressKit, Showreel],
 
   secret: process.env.PAYLOAD_SECRET || 'DEFAULT_SECRET_CHANGE_ME',
 

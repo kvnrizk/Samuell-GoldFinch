@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 
 interface CarouselItem {
   url: string;
@@ -80,13 +81,15 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
             style={{ transform, opacity, zIndex }}
             onClick={() => setActiveIndex(index)}
           >
-            <div className="relative overflow-hidden rounded-2xl shadow-2xl w-[280px] md:w-[450px] aspect-[4/5] bg-neutral-900 border border-white/10">
-              <img
+            <div className="relative overflow-hidden rounded-2xl shadow-2xl w-[280px] md:w-[450px] aspect-[4/5] border" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border)' }}>
+              <Image
                 src={item.url}
                 alt={item.title}
-                className="w-full h-full object-cover transition-all duration-500"
+                fill
+                sizes="(max-width: 768px) 280px, 450px"
+                className="object-cover transition-all duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8">
+              <div className="absolute inset-0 flex flex-col justify-end p-8" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--bg) 80%, transparent), transparent, transparent)' }}>
                 {item.category && (
                   <p className="text-xs tracking-widest uppercase text-white/50 mb-2">
                     {item.category}
@@ -94,9 +97,9 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
                 )}
                 <h3 className="text-2xl font-serif text-white">{item.title}</h3>
                 {isActive && (
-                  <button className="mt-4 px-4 py-2 border border-white/20 text-[10px] tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all self-start">
-                    Coming Soon
-                  </button>
+                  <span className="mt-4 px-4 py-2 border border-white/20 text-[10px] tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all self-start">
+                    View Project
+                  </span>
                 )}
               </div>
             </div>
@@ -107,7 +110,7 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
       <div className="absolute -bottom-4 md:bottom-[-100px] flex space-x-4">
         <button
           onClick={prev}
-          className="p-4 rounded-full border border-white/10 hover:bg-white hover:text-black transition-all"
+          className="p-4 rounded-full border transition-all" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
           aria-label="Previous slide"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -116,7 +119,7 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
         </button>
         <button
           onClick={next}
-          className="p-4 rounded-full border border-white/10 hover:bg-white hover:text-black transition-all"
+          className="p-4 rounded-full border transition-all" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
           aria-label="Next slide"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

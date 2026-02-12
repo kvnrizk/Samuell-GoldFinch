@@ -11,7 +11,7 @@ export const VenueInquiries: CollectionConfig = {
     read: ({ req: { user } }) => Boolean(user),
     create: () => true,
     update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    delete: ({ req: { user } }) => user?.role === 'admin',
   },
   fields: [
     {

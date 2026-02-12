@@ -10,7 +10,7 @@ export const KolasiEvents: CollectionConfig = {
     read: () => true,
     create: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
-    delete: ({ req: { user } }) => Boolean(user),
+    delete: ({ req: { user } }) => user?.role === 'admin',
   },
   fields: [
     {
@@ -73,6 +73,40 @@ export const KolasiEvents: CollectionConfig = {
     {
       name: 'description',
       type: 'richText',
+    },
+    {
+      name: 'status',
+      type: 'select',
+      defaultValue: 'upcoming',
+      options: [
+        { label: 'Upcoming', value: 'upcoming' },
+        { label: 'Past', value: 'past' },
+        { label: 'Cancelled', value: 'cancelled' },
+      ],
+    },
+    {
+      name: 'ticketUrl',
+      type: 'text',
+      label: 'Ticket Link',
+      admin: { description: 'URL to ticket platform (Shotgun, Dice, Eventbrite, etc.)' },
+    },
+    {
+      name: 'doorsTime',
+      type: 'text',
+      label: 'Doors Open',
+      admin: { description: 'e.g. "23:00"' },
+    },
+    {
+      name: 'endTime',
+      type: 'text',
+      label: 'End Time',
+      admin: { description: 'e.g. "06:00"' },
+    },
+    {
+      name: 'ticketPrice',
+      type: 'text',
+      label: 'Price',
+      admin: { description: 'e.g. "15€ / 20€ at door"' },
     },
     {
       name: 'featured',

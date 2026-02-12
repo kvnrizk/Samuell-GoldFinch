@@ -1,17 +1,22 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
-import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
+import { registerGSAP, gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/gsap-utils';
+import TestimonialCarousel from '@/components/ui/TestimonialCarousel';
+import UpcomingEvents from '@/components/ui/UpcomingEvents';
+import BudgetEstimator from '@/components/ui/BudgetEstimator';
+import VideoPlayer from '@/components/ui/VideoPlayer';
 
 const expertise = [
-  { icon: 'music', title: 'DJ Booking', description: 'Connecting world-class DJs and live performers with venues, festivals and private events globally.' },
-  { icon: 'layout', title: 'Event Curation', description: 'Art direction, programming and press relations to shape cultural experiences and narratives.' },
-  { icon: 'camera', title: 'Content Creation', description: 'Cinematic capture, editing and campaign-ready media for events and promotions.' },
+  { icon: 'music', title: 'DJ Booking', description: 'Connecting world-class DJs and live performers with venues, festivals and private events globally.', image: '/assets/kolasi/artists/4F8A3682.jpg' },
+  { icon: 'layout', title: 'Event Curation', description: 'Art direction, programming and press relations to shape cultural experiences and narratives.', image: '/assets/kolasi/images/4F8A2882.jpg' },
+  { icon: 'camera', title: 'Content Creation', description: 'Cinematic capture, editing and campaign-ready media for events and promotions.', image: '/assets/kolasi/images/4F8A3310.jpg' },
 ];
 
-const gallery = [
+const galleryRow1 = [
   '/assets/kolasi/images/4F8A2882.jpg',
   '/assets/kolasi/images/4F8A3195.jpg',
   '/assets/kolasi/images/4F8A3310.jpg',
@@ -20,6 +25,9 @@ const gallery = [
   '/assets/kolasi/images/4F8A3777.jpg',
   '/assets/kolasi/images/4F8A3801.jpg',
   '/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.JPG',
+];
+
+const galleryRow2 = [
   '/assets/kolasi/artists/artist-1.jpg',
   '/assets/kolasi/artists/artist-2.jpg',
   '/assets/kolasi/artists/artist-3.JPG',
@@ -63,19 +71,405 @@ interface KolasiArtist {
 interface KolasiClientProps {
   events: KolasiEvent[];
   artists: KolasiArtist[];
+  testimonials?: any[];
+  upcomingEvents?: any[];
 }
 
-export default function KolasiClient({ events }: KolasiClientProps) {
+const showcaseClips = [
+  { src: '/assets/kolasi/Speakeasy_Ads/le speakeasy ads.mp4', label: 'Le Speakeasy', poster: '/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.JPG', slug: 'le-speakeasy' },
+  { src: '/assets/kolasi/Speakeasy_Ads/le speakeasy ads2 barman.mp4', label: '2nd Sun', poster: '/assets/kolasi/images/4F8A3195.jpg', slug: '2nd-sun' },
+  { src: '/assets/kolasi/Speakeasy_Ads/lespeakeasy g500 mercedes.mp4', label: 'Kolasi Nights', poster: '/assets/kolasi/images/4F8A2938.jpg', slug: 'kolasi-nights' },
+];
+
+function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] & { slug?: string } }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [loaded, setLoaded] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Lazy load: set src when near viewport
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoaded(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Auto-play on loop once loaded (like Instagram reels)
+  useEffect(() => {
+    if (!loaded) return;
+    const v = videoRef.current;
+    if (!v) return;
+    const startPlay = () => { v.play().catch(() => {}); };
+    if (v.readyState >= 3) { startPlay(); }
+    else { v.addEventListener('canplay', startPlay, { once: true }); }
+    return () => v.removeEventListener('canplay', startPlay);
+  }, [loaded]);
+
+  return (
+    <div
+      ref={cardRef}
+      className="reveal-up aspect-[4/3] rounded-3xl overflow-hidden border relative group cursor-pointer shadow-2xl"
+      style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border)' }}
+    >
+      <video
+        ref={videoRef}
+        muted
+        playsInline
+        loop
+        preload="metadata"
+        poster={clip.poster}
+        className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+        {...(loaded ? { src: clip.src } : {})}
+      />
+      {/* Hover hint — fades out on hover */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center group-hover:opacity-0 transition-opacity duration-300 pointer-events-none">
+        <div className="w-14 h-14 rounded-full border flex items-center justify-center mb-3" style={{ borderColor: 'var(--border-hi)', backgroundColor: 'color-mix(in srgb, var(--bg) 50%, transparent)' }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="10 8 16 12 10 16" /></svg>
+        </div>
+        <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>Hover to play</p>
+      </div>
+      <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+        <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>{clip.label}</p>
+        {clip.slug && (
+          <Link
+            href={`/kolasi/${clip.slug}`}
+            className="text-[10px] font-medium px-3 py-1.5 rounded-full border opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            style={{ borderColor: 'var(--border-hi)', color: 'var(--text-dim)' }}
+          >
+            View Event
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ShowcaseSection() {
+  return (
+    <section className="py-20">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-24 reveal-up">
+          <h2 className="text-4xl font-serif mb-4 italic">Kolasi Showcase</h2>
+          <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>Selected clips and promos from Kolasi nights.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {showcaseClips.map((clip) => (
+            <ShowcaseCard key={clip.label} clip={clip} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Marquee Gallery ── */
+function MarqueeRow({ images, direction = 'left', speed = 1 }: { images: string[]; direction?: 'left' | 'right'; speed?: number }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const tweenRef = useRef<gsap.core.Tween | null>(null);
+
+  useGSAP(() => {
+    registerGSAP();
+    if (prefersReducedMotion()) return;
+    const track = trackRef.current;
+    if (!track) return;
+
+    // Wait for all images in this row to load before measuring
+    const imgs = Array.from(track.querySelectorAll('img'));
+    const allLoaded = () => {
+      const gap = 16;
+      // Measure one set (first half of children, since we render 2x in JSX)
+      const halfCount = imgs.length / 2;
+      let totalWidth = 0;
+      for (let i = 0; i < halfCount; i++) {
+        totalWidth += imgs[i].parentElement!.offsetWidth + gap;
+      }
+      if (totalWidth <= 0) return;
+
+      // Simple infinite tween: slide by one set width
+      const tween = gsap.fromTo(track,
+        { x: direction === 'left' ? 0 : -totalWidth },
+        {
+          x: direction === 'left' ? -totalWidth : 0,
+          duration: totalWidth / (50 * speed),
+          ease: 'none',
+          repeat: -1,
+        },
+      );
+      tweenRef.current = tween;
+
+      // Scroll-velocity boost
+      ScrollTrigger.create({
+        trigger: wrapperRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        onUpdate: (self) => {
+          const v = Math.abs(self.getVelocity()) / 1000;
+          gsap.to(tween, { timeScale: 1 + v * 0.5, duration: 0.3, overwrite: true });
+        },
+      });
+    };
+
+    // Check if all loaded, otherwise wait
+    const pending = imgs.filter((img) => !img.complete);
+    if (pending.length === 0) {
+      allLoaded();
+    } else {
+      let loadedCount = 0;
+      const onLoad = () => {
+        loadedCount++;
+        if (loadedCount >= pending.length) allLoaded();
+      };
+      pending.forEach((img) => img.addEventListener('load', onLoad, { once: true }));
+    }
+  }, { scope: wrapperRef });
+
+  // 3D tilt handlers
+  const handleMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    gsap.to(el, {
+      rotateY: x * 12,
+      rotateX: -y * 12,
+      scale: 1.06,
+      duration: 0.3,
+      ease: 'power2.out',
+      transformPerspective: 800,
+    });
+  }, []);
+
+  const handleLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    gsap.to(e.currentTarget, { rotateY: 0, rotateX: 0, scale: 1, duration: 0.5, ease: 'power2.out' });
+  }, []);
+
+  return (
+    <div ref={wrapperRef} className="overflow-hidden">
+      <div ref={trackRef} className="flex gap-4 will-change-transform w-max">
+        {/* Original set */}
+        {images.map((src, i) => (
+          <div
+            key={`a-${i}`}
+            className="flex-shrink-0 rounded-2xl overflow-hidden cursor-pointer"
+            style={{ transformStyle: 'preserve-3d' }}
+            onMouseMove={handleMove}
+            onMouseLeave={handleLeave}
+          >
+            <Image src={src} alt="Kolasi event" className="h-56 md:h-72 w-auto object-cover pointer-events-none" width={400} height={288} sizes="300px" />
+          </div>
+        ))}
+        {/* Duplicate for seamless loop */}
+        {images.map((src, i) => (
+          <div
+            key={`b-${i}`}
+            className="flex-shrink-0 rounded-2xl overflow-hidden cursor-pointer"
+            style={{ transformStyle: 'preserve-3d' }}
+            onMouseMove={handleMove}
+            onMouseLeave={handleLeave}
+          >
+            <Image src={src} alt="Kolasi event" className="h-56 md:h-72 w-auto object-cover pointer-events-none" width={400} height={288} sizes="300px" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Services Accordion ── */
+const services = [
+  {
+    num: '01',
+    title: 'DJ & Live Show Booking',
+    description: 'Talent sourcing, rider negotiation and international bookings for clubs, festivals and private events across Europe, the Middle East, and South America.',
+    tags: ['Clubs', 'Festivals', 'Private Events', 'International Tours'],
+    image: '/assets/kolasi/artists/4F8A3682.jpg',
+  },
+  {
+    num: '02',
+    title: 'Event Curation & PR',
+    description: 'Art direction, programming and press relations to shape cultural experiences and narratives that resonate with audiences worldwide.',
+    tags: ['Art Direction', 'Programming', 'Press Relations', 'Brand Strategy'],
+    image: '/assets/kolasi/images/4F8A3195.jpg',
+  },
+  {
+    num: '03',
+    title: 'Content Creation & Production',
+    description: 'Cinematic capture, editing and campaign-ready media for events and promotions — from music videos to social content and brand films.',
+    tags: ['Music Videos', 'Event Recaps', 'Social Content', 'Brand Films'],
+    image: '/assets/kolasi/images/4F8A3310.jpg',
+  },
+  {
+    num: '+',
+    title: 'Sound & Light Design',
+    description: 'Full technical production — sound engineering and lighting design that transforms any venue into an immersive experience.',
+    tags: ['Sound Engineering', 'Lighting Design', 'Venue Setup', 'Technical Production'],
+    image: '/assets/kolasi/images/4F8A3750.jpg',
+  },
+];
+
+function ServicesAccordion() {
+  const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const toggle = useCallback((idx: number) => {
+    const isClosing = activeIdx === idx;
+    const prevIdx = activeIdx;
+
+    // Close previous
+    if (prevIdx !== null && prevIdx !== idx) {
+      const prevContent = contentRefs.current[prevIdx];
+      const prevImg = imgRefs.current[prevIdx];
+      if (prevContent) gsap.to(prevContent, { height: 0, duration: 0.6, ease: 'power3.inOut' });
+      if (prevImg) gsap.to(prevImg, { opacity: 0, scale: 1.1, duration: 0.5 });
+    }
+
+    if (isClosing) {
+      // Close current
+      const content = contentRefs.current[idx];
+      const img = imgRefs.current[idx];
+      if (content) gsap.to(content, { height: 0, duration: 0.6, ease: 'power3.inOut' });
+      if (img) gsap.to(img, { opacity: 0, scale: 1.1, duration: 0.5 });
+      setActiveIdx(null);
+    } else {
+      // Open new
+      const content = contentRefs.current[idx];
+      const img = imgRefs.current[idx];
+      if (content) {
+        gsap.set(content, { height: 'auto' });
+        const h = content.offsetHeight;
+        gsap.fromTo(content, { height: 0 }, { height: h, duration: 0.7, ease: 'power3.inOut' });
+      }
+      if (img) {
+        gsap.fromTo(img, { opacity: 0, scale: 1.15 }, { opacity: 0.35, scale: 1, duration: 1, ease: 'power2.out' });
+      }
+      // Stagger text elements
+      const textEls = content?.querySelectorAll('.acc-reveal');
+      if (textEls) {
+        gsap.fromTo(textEls, { y: 20, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.08, duration: 0.5, delay: 0.2, ease: 'power2.out' });
+      }
+      setActiveIdx(idx);
+    }
+  }, [activeIdx]);
+
+  return (
+    <section ref={sectionRef} className="py-20 border-y" style={{ borderColor: 'var(--border)' }}>
+      <div className="max-w-5xl mx-auto px-6">
+        <h2 className="text-4xl md:text-5xl font-serif text-center mb-16 reveal-up italic">Services &amp; Capabilities</h2>
+        <div className="reveal-up">
+          {services.map((svc, i) => (
+            <div
+              key={i}
+              ref={(el) => { rowRefs.current[i] = el; }}
+              className="border-b cursor-pointer group relative overflow-hidden"
+              style={{ borderColor: 'var(--border)' }}
+              onClick={() => toggle(i)}
+            >
+              {/* Background image (absolute, behind content) */}
+              <Image
+                ref={(el) => { imgRefs.current[i] = el; }}
+                src={svc.image}
+                alt=""
+                fill
+                className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                style={{ opacity: 0, transform: 'scale(1.15)' }}
+                sizes="(max-width: 768px) 100vw, 960px"
+              />
+              <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to right, var(--bg) 30%, color-mix(in srgb, var(--bg) 70%, transparent))' }} />
+
+              {/* Collapsed header — always visible */}
+              <div className="relative z-10 flex items-center justify-between py-7 md:py-8">
+                <div className="flex items-center gap-6 md:gap-8">
+                  <span className="text-2xl md:text-3xl font-serif italic transition-colors duration-300" style={{ color: activeIdx === i ? '#c8a96e' : 'var(--text-mute)' }}>
+                    {svc.num}
+                  </span>
+                  <h3 className="text-lg md:text-xl font-serif transition-colors duration-300" style={{ color: activeIdx === i ? 'var(--text)' : 'var(--text-dim)' }}>
+                    {svc.title}
+                  </h3>
+                </div>
+                <div
+                  className="w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-300"
+                  style={{ borderColor: activeIdx === i ? '#c8a96e' : 'var(--border-hi)', transform: activeIdx === i ? 'rotate(45deg)' : 'rotate(0deg)' }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Expandable content */}
+              <div
+                ref={(el) => { contentRefs.current[i] = el; }}
+                className="relative z-10 overflow-hidden"
+                style={{ height: 0 }}
+              >
+                <div className="pb-10 pl-14 md:pl-16 pr-6 max-w-2xl">
+                  <p className="acc-reveal text-sm md:text-base leading-relaxed font-light mb-6" style={{ color: 'var(--text-dim)' }}>
+                    {svc.description}
+                  </p>
+                  <div className="acc-reveal flex flex-wrap gap-2">
+                    {svc.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-xs font-medium px-4 py-2 rounded-full border"
+                        style={{ borderColor: 'color-mix(in srgb, #c8a96e 30%, transparent)', color: '#c8a96e' }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MarqueeGallery({ row1, row2 }: { row1: string[]; row2: string[] }) {
+  return (
+    <section className="py-20 overflow-hidden">
+      <div className="text-center mb-16 reveal-up px-6">
+        <h2 className="text-4xl font-serif italic mb-4">Kolasi Gallery</h2>
+        <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>
+          A glimpse into our nights ~ sound, light and emotion captured in motion.
+        </p>
+      </div>
+      <div className="space-y-4">
+        <MarqueeRow images={row1} direction="left" speed={1} />
+        <MarqueeRow images={row2} direction="right" speed={0.8} />
+      </div>
+    </section>
+  );
+}
+
+export default function KolasiClient({ events, testimonials = [], upcomingEvents = [] }: KolasiClientProps) {
   // Build gallery from CMS events or fallback
   const cmsGallery = events.flatMap((e: KolasiEvent) =>
-    (e.gallery || []).map((g: GalleryPhoto) => g.photo?.url).filter(Boolean),
+    (e.gallery || []).map((g: GalleryPhoto) => g.photo?.url).filter((u): u is string => Boolean(u)),
   );
-  const galleryImages = cmsGallery.length > 0 ? cmsGallery : gallery;
+  const row1 = cmsGallery.length > 0 ? cmsGallery.slice(0, Math.ceil(cmsGallery.length / 2)) : galleryRow1;
+  const row2 = cmsGallery.length > 0 ? cmsGallery.slice(Math.ceil(cmsGallery.length / 2)) : galleryRow2;
   const containerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    if (prefersReducedMotion()) return;
     registerGSAP();
+    if (prefersReducedMotion()) return;
     gsap.utils.toArray<HTMLElement>('.reveal-up').forEach((el) => {
       gsap.from(el, {
         scrollTrigger: { trigger: el, start: 'top 90%' },
@@ -85,25 +479,30 @@ export default function KolasiClient({ events }: KolasiClientProps) {
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} className="pt-20 bg-[#0a0a0a]">
+    <div ref={containerRef} className="pt-20" style={{ backgroundColor: 'var(--bg)' }}>
       {/* Hero */}
-      <section className="relative h-screen w-full bg-black overflow-hidden flex items-center justify-center">
-        <video
-          autoPlay loop muted playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-60 scale-105"
-          poster="/assets/kolasi/images/4F8A3195.jpg"
-          src="/assets/kolasi/events/2ndsun/2nd_sun.mp4"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black" />
+      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--bg)' }}>
+        <div className="absolute inset-0">
+          <VideoPlayer
+            muxPlaybackId="RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo"
+            poster="/assets/kolasi/images/4F8A3195.jpg"
+            autoPlay
+            loop
+            muted
+            mode="hero"
+            className="opacity-60 scale-105"
+          />
+        </div>
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--bg) 60%, transparent), transparent, var(--bg))' }} />
         <div className="relative z-10 text-center px-6 max-w-5xl">
           <h1 className="text-5xl md:text-8xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
             Creative Booking <br />
             <span className="italic">and Talent Agency</span>
           </h1>
-          <p className="text-[10px] md:text-xs tracking-[0.4em] uppercase text-white/50 mb-10 reveal-up">
+          <p className="text-xs md:text-sm font-medium mb-10 reveal-up" style={{ color: 'var(--text-mute)' }}>
             DJ &amp; Live Show Booking &bull; Event Curation &bull; Content Creation &bull; Production Services
           </p>
-          <a href="#services" className="px-10 py-4 border border-white/20 rounded-full text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all reveal-up backdrop-blur-sm inline-block">
+          <a href="#services" className="px-10 py-4 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all reveal-up backdrop-blur-sm inline-block">
             Explore Services
           </a>
         </div>
@@ -116,41 +515,55 @@ export default function KolasiClient({ events }: KolasiClientProps) {
             Creative Booking &amp; <br />
             <span className="not-italic">Talent Agency</span>
           </h2>
-          <div className="space-y-6 text-sm md:text-base text-white/50 leading-relaxed uppercase tracking-widest font-light">
+          <div className="space-y-5 text-sm md:text-base leading-[1.9] font-light" style={{ color: 'var(--text-dim)' }}>
             <p>At Kolasi, we craft your brand&apos;s visual and audio identity through artistic direction, DJ bookings, live shows with top-tier singers, and PR strategy.</p>
             <p>Our agency creates events and collaborates with renowned curators to deliver unforgettable experiences.</p>
-            <p>With a network of over 50 international DJs and partnerships across Europe, the Middle East, and South America, Kolasi bridges music, performance, and innovation to elevate every moment.</p>
+            <p>With a network of over <span className="font-medium" style={{ color: 'var(--text)' }}>50 international DJs</span> and partnerships across Europe, the Middle East, and South America, Kolasi bridges music, performance, and innovation to elevate every moment.</p>
           </div>
         </div>
         <div className="reveal-up">
-          <div className="aspect-[4/3] rounded-[2.5rem] bg-neutral-900 border border-white/5 shadow-2xl flex items-center justify-center p-20 relative overflow-hidden group">
-            <div className="relative z-10 text-center space-y-6 transform group-hover:scale-110 transition-transform duration-700">
-              <div className="w-16 h-24 mx-auto border-x-2 border-b-2 border-white relative">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-24 bg-white" />
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[2px] bg-white" />
-              </div>
-              <p className="text-2xl font-serif tracking-[0.3em] uppercase">Kolasi</p>
+          <div className="aspect-[4/3] rounded-[2.5rem] border shadow-2xl relative overflow-hidden group" style={{ borderColor: 'var(--border)' }}>
+            <Image
+              src="/assets/kolasi/images/4F8A3195.jpg"
+              alt="Kolasi — behind the scenes"
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, var(--bg), transparent)' }} />
+            <div className="absolute bottom-8 left-8 z-10">
+              <p className="text-xl font-serif tracking-[0.2em] uppercase" style={{ color: 'var(--text)' }}>Kolasi</p>
+              <p className="text-[10px] font-light mt-1" style={{ color: 'var(--text-dim)' }}>Agency</p>
             </div>
-            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent" />
           </div>
         </div>
       </section>
 
       {/* Expertise */}
-      <section id="services" className="py-40 bg-[#070707] border-y border-white/5">
+      <section id="services" className="py-20 border-y" style={{ backgroundColor: 'var(--bg)', borderColor: 'var(--border)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-24 reveal-up">
             <h2 className="text-4xl md:text-6xl font-serif italic mb-4">Our Expertise</h2>
-            <div className="w-20 h-[1px] bg-white/20 mx-auto" />
+            <div className="w-20 h-[1px] mx-auto" style={{ backgroundColor: 'var(--border-hi)' }} />
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {expertise.map((exp, i) => (
-              <div key={i} className="reveal-up p-12 border border-white/5 bg-neutral-900/40 rounded-[2rem] hover:bg-neutral-900 transition-all group flex flex-col items-center text-center">
-                <div className="mb-8 p-6 bg-white/5 rounded-full text-white/40 group-hover:text-white transition-all">
-                  {getIcon(exp.icon)}
+              <div key={i} className="reveal-up rounded-[2rem] overflow-hidden relative group aspect-[3/4] cursor-pointer">
+                <Image
+                  src={exp.image}
+                  alt={exp.title}
+                  fill
+                  className="absolute inset-0 object-cover group-hover:scale-110 transition-transform duration-700"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, var(--bg) 10%, color-mix(in srgb, var(--bg) 60%, transparent) 50%, transparent)' }} />
+                <div className="absolute bottom-0 left-0 right-0 p-10 z-10">
+                  <div className="mb-4 p-3 rounded-full inline-flex" style={{ backgroundColor: 'color-mix(in srgb, var(--bg) 60%, transparent)', color: 'var(--text)' }}>
+                    {getIcon(exp.icon)}
+                  </div>
+                  <h3 className="text-xl font-serif mb-3" style={{ color: 'var(--text)' }}>{exp.title}</h3>
+                  <p className="text-sm leading-relaxed font-light" style={{ color: 'var(--text-dim)' }}>{exp.description}</p>
                 </div>
-                <h3 className="text-xl font-serif uppercase tracking-widest mb-4">{exp.title}</h3>
-                <p className="text-[10px] text-white/40 leading-relaxed uppercase tracking-widest">{exp.description}</p>
               </div>
             ))}
           </div>
@@ -158,90 +571,33 @@ export default function KolasiClient({ events }: KolasiClientProps) {
       </section>
 
       {/* Kolasi Showcase */}
-      <section className="py-40">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-24 reveal-up">
-            <h2 className="text-4xl font-serif mb-4 italic">Kolasi Showcase</h2>
-            <p className="text-[10px] tracking-[0.4em] uppercase text-white/30">Selected clips and promos from Kolasi nights.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {['le speakeasy ads.mp4', 'le speakeasy ads2 barman.mp4', 'lespeakeasy g500 mercedes.mp4'].map((clip, i) => (
-              <div key={i} className="reveal-up aspect-video bg-neutral-900 rounded-3xl overflow-hidden border border-white/5 relative group cursor-pointer shadow-2xl">
-                <video
-                  muted playsInline loop
-                  className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity"
-                  src={`/assets/kolasi/Speakeasy_Ads/${clip}`}
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-all">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
-                  </div>
-                </div>
-                <div className="absolute bottom-6 left-6">
-                  <p className="text-[10px] uppercase tracking-widest text-white/40">Clip 0{i + 1}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ShowcaseSection />
 
-      {/* Services & Capabilities */}
-      <section className="py-40 bg-neutral-900/20">
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl md:text-5xl font-serif text-center mb-24 reveal-up">Services &amp; Capabilities</h2>
-          <div className="grid md:grid-cols-3 gap-16 reveal-up">
-            <div className="space-y-8">
-              <h3 className="text-xl font-serif border-b border-white/10 pb-6 uppercase tracking-widest">DJ &amp; Live Show Booking</h3>
-              <p className="text-[10px] text-white/40 uppercase tracking-widest leading-relaxed">Talent sourcing, rider negotiation and international bookings for clubs, festivals and private events.</p>
-            </div>
-            <div className="space-y-8">
-              <h3 className="text-xl font-serif border-b border-white/10 pb-6 uppercase tracking-widest">Event Curation &amp; PR</h3>
-              <p className="text-[10px] text-white/40 uppercase tracking-widest leading-relaxed">Art direction, programming and press relations to shape cultural experiences and narratives.</p>
-            </div>
-            <div className="space-y-8">
-              <h3 className="text-xl font-serif border-b border-white/10 pb-6 uppercase tracking-widest">Content Creation &amp; Production</h3>
-              <p className="text-[10px] text-white/40 uppercase tracking-widest leading-relaxed">Cinematic capture, editing and campaign-ready media for events and promotions.</p>
-            </div>
-          </div>
-          <div className="mt-24 text-center reveal-up">
-            <p className="text-[10px] uppercase tracking-[0.5em] text-white/30 mb-8">Integrated Plus Services</p>
-            <div className="flex justify-center space-x-12 text-sm uppercase tracking-[0.3em] font-light">
-              <span>&bull; Sound</span>
-              <span>&bull; Light</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Upcoming Events */}
+      <UpcomingEvents events={upcomingEvents} />
 
-      {/* Gallery */}
-      <section className="py-40">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-24 reveal-up">
-            <h2 className="text-4xl font-serif italic mb-4">Kolasi Gallery</h2>
-            <p className="text-[10px] tracking-[0.4em] uppercase text-white/30">A glimpse into our nights ~ sound, light and emotion captured in motion.</p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 reveal-up">
-            {galleryImages.map((img, i) => (
-              <div key={i} className={`overflow-hidden rounded-2xl group relative ${i % 3 === 0 ? 'md:col-span-2 md:row-span-2 aspect-square' : 'aspect-[3/4]'}`}>
-                <img
-                  src={img}
-                  alt="Kolasi event"
-                  className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700 opacity-80 group-hover:opacity-100"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Services & Capabilities — Accordion */}
+      <ServicesAccordion />
+
+      {/* Budget Estimator */}
+      <BudgetEstimator brand="kolasi" />
+
+      {/* Gallery — Infinite Marquee */}
+      <MarqueeGallery row1={row1} row2={row2} />
+
+      {/* Testimonials */}
+      <TestimonialCarousel
+        testimonials={testimonials}
+        heading="What Venue Owners Say"
+        subheading="From club owners to festival organizers — the Kolasi difference."
+      />
 
       {/* For Venue Owners Banner */}
-      <section className="py-20 bg-[#070707] reveal-up">
+      <section className="py-20 reveal-up" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-4xl mx-auto px-6">
           <div className="rounded-2xl border border-[#c8a96e]/20 bg-gradient-to-r from-[#c8a96e]/[0.05] to-transparent p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1">
-              <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#c8a96e] mb-2">For Venue Owners</p>
+              <p className="text-xs font-medium text-[#c8a96e] mb-2">For Venue Owners</p>
               <h3 className="font-serif text-2xl text-stone-100 font-semibold mb-2">
                 Looking for weekly programming?
               </h3>
@@ -260,13 +616,13 @@ export default function KolasiClient({ events }: KolasiClientProps) {
       </section>
 
       {/* CTA */}
-      <section className="py-40 text-center bg-gradient-to-b from-black to-neutral-900 border-t border-white/5">
+      <section className="py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--bg), var(--bg-card))', borderColor: 'var(--border)' }}>
         <div className="max-w-3xl mx-auto px-6 reveal-up">
           <h2 className="text-5xl md:text-7xl font-serif mb-10 italic">Let&apos;s Create the Night</h2>
-          <p className="text-[10px] text-white/40 uppercase tracking-[0.4em] mb-12 max-w-lg mx-auto leading-relaxed">
+          <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>
             From concept to performance, Kolasi curates experiences that transcend nightlife.
           </p>
-          <Link href="/contact" className="px-14 py-4 border border-white/30 rounded-full text-[10px] tracking-widest uppercase hover:bg-white hover:text-black transition-all">
+          <Link href="/contact" className="px-14 py-4 border border-white/30 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
             Contact Kolasi
           </Link>
         </div>
