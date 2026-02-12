@@ -314,48 +314,54 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile Nav Overlay */}
-      {/* Mobile Nav Overlay — full screen behind header */}
+      {/* Mobile Nav — compact dropdown panel */}
       <div
         id="mobile-nav"
-        className={`fixed inset-0 z-40 md:hidden transition-all duration-500 ${
-          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        className={`fixed left-0 right-0 z-40 md:hidden transition-all duration-400 border-b ${
+          isOpen
+            ? 'opacity-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
-        style={{ backgroundColor: 'var(--bg)' }}
+        style={{
+          top: isScrolled ? '52px' : '60px',
+          backgroundColor: 'color-mix(in srgb, var(--bg) 97%, transparent)',
+          backdropFilter: 'blur(20px)',
+          borderColor: 'var(--border)',
+        }}
         aria-hidden={!isOpen}
       >
         <nav
           aria-label="Mobile navigation"
-          className="flex flex-col items-center justify-center h-full gap-6 overflow-y-auto px-6 py-24"
+          className="flex flex-col items-center gap-3 px-6 py-6"
         >
           {[...navLinks, ...moreLinks].map((link) => (
             <Link
               key={link.path}
               href={link.path}
               onClick={() => setIsOpen(false)}
-              className="text-2xl font-serif italic hover:not-italic transition-all uppercase tracking-tighter"
-              style={{ color: pathname === link.path ? '#c8a96e' : 'var(--text)' }}
+              className="text-sm font-medium uppercase tracking-[0.15em] transition-colors py-1"
+              style={{ color: pathname === link.path ? '#c8a96e' : 'var(--text-dim)' }}
             >
               {link.name}
             </Link>
           ))}
-          <div className="mt-4 pt-4 border-t w-32 text-center" style={{ borderColor: 'var(--border)' }}>
+          <div className="mt-2 pt-3 border-t w-24 text-center" style={{ borderColor: 'var(--border)' }}>
             <button
               onClick={toggleTheme}
-              className="text-[10px] uppercase tracking-[0.4em] transition-colors flex items-center gap-2 mx-auto"
-              style={{ color: 'var(--text-dim)' }}
+              className="text-[10px] uppercase tracking-[0.3em] transition-colors flex items-center gap-2 mx-auto"
+              style={{ color: 'var(--text-mute)' }}
             >
               {theme === 'dark' ? (
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="4" />
                   <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
                 </svg>
               ) : (
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
               )}
-              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              {theme === 'dark' ? 'Light' : 'Dark'}
             </button>
           </div>
         </nav>

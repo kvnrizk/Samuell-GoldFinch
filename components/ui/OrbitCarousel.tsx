@@ -44,7 +44,7 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
 
   return (
     <div
-      className="relative w-full max-w-4xl mx-auto h-[400px] md:h-[600px] flex items-center justify-center"
+      className="relative w-full max-w-4xl mx-auto h-[440px] md:h-[600px] flex items-center justify-center"
       style={{ perspective: '1000px' }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -107,22 +107,22 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
         );
       })}
 
-      <div className="absolute -bottom-4 md:bottom-[-100px] flex space-x-4">
+      <div className="absolute -bottom-14 md:bottom-[-100px] flex space-x-4">
         <button
           onClick={prev}
-          className="p-4 rounded-full border transition-all" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
+          className="p-3 md:p-4 rounded-full border transition-all" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
           aria-label="Previous slide"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="md:w-5 md:h-5">
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </button>
         <button
           onClick={next}
-          className="p-4 rounded-full border transition-all" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
+          className="p-3 md:p-4 rounded-full border transition-all" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
           aria-label="Next slide"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="md:w-5 md:h-5">
             <polyline points="9 18 15 12 9 6" />
           </svg>
         </button>
