@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
 import Image from 'next/image';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 
 interface Testimonial {
   clientName: string;
@@ -214,6 +215,8 @@ export default function TestimonialCarousel({
                   alt={t.clientName}
                   width={44}
                   height={44}
+                  placeholder="blur"
+                  blurDataURL={BLUR_DATA_URL}
                   className="w-11 h-11 rounded-full object-cover border"
                   style={{ borderColor: 'var(--border-hi)' }}
                 />

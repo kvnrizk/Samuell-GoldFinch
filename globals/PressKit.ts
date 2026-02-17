@@ -3,6 +3,9 @@ import type { GlobalConfig } from 'payload';
 export const PressKit: GlobalConfig = {
   slug: 'press-kit',
   label: 'Press Kit',
+  admin: {
+    group: 'Content',
+  },
   access: {
     read: () => true,
   },

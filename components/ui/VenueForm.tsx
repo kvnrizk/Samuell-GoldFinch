@@ -138,13 +138,13 @@ export function VenueForm() {
       {step === 1 && (
         <div className="space-y-5 animate-in fade-in duration-300">
           <div>
-            <label className={labelClass}>Venue Name *</label>
-            <input type="text" name="venueName" required className={inputClass} placeholder="e.g. Le Speakeasy" />
+            <label htmlFor="venue-name" className={labelClass}>Venue Name *</label>
+            <input id="venue-name" type="text" name="venueName" required className={inputClass} placeholder="e.g. Le Speakeasy" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className={labelClass}>Venue Type</label>
-              <select name="venueType" className={selectClass}>
+              <label htmlFor="venue-type" className={labelClass}>Venue Type</label>
+              <select id="venue-type" name="venueType" className={selectClass}>
                 <option value="">Select...</option>
                 {venueTypes.map((t) => (
                   <option key={t.value} value={t.value}>{t.label}</option>
@@ -152,22 +152,22 @@ export function VenueForm() {
               </select>
             </div>
             <div>
-              <label className={labelClass}>Capacity</label>
-              <input type="number" name="capacity" className={inputClass} placeholder="e.g. 200" />
+              <label htmlFor="venue-capacity" className={labelClass}>Capacity</label>
+              <input id="venue-capacity" type="number" name="capacity" className={inputClass} placeholder="e.g. 200" />
             </div>
           </div>
           <div>
-            <label className={labelClass}>Address</label>
-            <input type="text" name="address" className={inputClass} placeholder="City or full address" />
+            <label htmlFor="venue-address" className={labelClass}>Address</label>
+            <input id="venue-address" type="text" name="address" className={inputClass} placeholder="City or full address" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className={labelClass}>Website</label>
-              <input type="text" name="website" className={inputClass} placeholder="https://" />
+              <label htmlFor="venue-website" className={labelClass}>Website</label>
+              <input id="venue-website" type="text" name="website" className={inputClass} placeholder="https://" />
             </div>
             <div>
-              <label className={labelClass}>Instagram</label>
-              <input type="text" name="instagram" className={inputClass} placeholder="@handle" />
+              <label htmlFor="venue-instagram" className={labelClass}>Instagram</label>
+              <input id="venue-instagram" type="text" name="instagram" className={inputClass} placeholder="@handle" />
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -177,8 +177,8 @@ export function VenueForm() {
             </label>
           </div>
           <div>
-            <label className={labelClass}>Current Programming</label>
-            <textarea name="currentProgramming" rows={3} className={inputClass} placeholder="Do you currently have DJ nights? What genre? How often?" />
+            <label htmlFor="venue-current-programming" className={labelClass}>Current Programming</label>
+            <textarea id="venue-current-programming" name="currentProgramming" rows={3} className={inputClass} placeholder="Do you currently have DJ nights? What genre? How often?" />
           </div>
           <button
             type="button"
@@ -213,8 +213,8 @@ export function VenueForm() {
             </div>
           </div>
           <div>
-            <label className={labelClass}>Monthly Budget *</label>
-            <select name="monthlyBudget" required className={selectClass}>
+            <label htmlFor="venue-budget" className={labelClass}>Monthly Budget *</label>
+            <select id="venue-budget" name="monthlyBudget" required className={selectClass}>
               <option value="">Select budget range...</option>
               {budgets.map((b) => (
                 <option key={b.value} value={b.value}>{b.label}</option>
@@ -222,8 +222,8 @@ export function VenueForm() {
             </select>
           </div>
           <div>
-            <label className={labelClass}>Decision Maker</label>
-            <select name="decisionMaker" className={selectClass}>
+            <label htmlFor="venue-decision-maker" className={labelClass}>Decision Maker</label>
+            <select id="venue-decision-maker" name="decisionMaker" className={selectClass}>
               <option value="">Select role...</option>
               <option value="owner">Owner</option>
               <option value="gm">General Manager</option>
@@ -231,8 +231,8 @@ export function VenueForm() {
             </select>
           </div>
           <div>
-            <label className={labelClass}>Timeline</label>
-            <select name="timeline" className={selectClass}>
+            <label htmlFor="venue-timeline" className={labelClass}>Timeline</label>
+            <select id="venue-timeline" name="timeline" className={selectClass}>
               <option value="">When do you want to start?</option>
               {timelines.map((t) => (
                 <option key={t.value} value={t.value}>{t.label}</option>
@@ -262,16 +262,16 @@ export function VenueForm() {
       {step === 3 && (
         <div className="space-y-5 animate-in fade-in duration-300">
           <div>
-            <label className={labelClass}>Your Name *</label>
-            <input type="text" name="contactName" required className={inputClass} placeholder="Full name" />
+            <label htmlFor="venue-contact-name" className={labelClass}>Your Name *</label>
+            <input id="venue-contact-name" type="text" name="contactName" required className={inputClass} placeholder="Full name" />
           </div>
           <div>
-            <label className={labelClass}>WhatsApp *</label>
-            <input type="tel" name="contactWhatsApp" required className={inputClass} placeholder="+33 6 00 00 00 00" />
+            <label htmlFor="venue-contact-whatsapp" className={labelClass}>WhatsApp *</label>
+            <input id="venue-contact-whatsapp" type="tel" name="contactWhatsApp" required className={inputClass} placeholder="+33 6 00 00 00 00" />
           </div>
           <div>
-            <label className={labelClass}>Email *</label>
-            <input type="email" name="contactEmail" required className={inputClass} placeholder="you@venue.com" />
+            <label htmlFor="venue-contact-email" className={labelClass}>Email *</label>
+            <input id="venue-contact-email" type="email" name="contactEmail" required className={inputClass} placeholder="you@venue.com" />
           </div>
           <div className="flex gap-3">
             <button

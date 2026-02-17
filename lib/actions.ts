@@ -48,6 +48,15 @@ export async function submitContactForm(formData: FormData): Promise<FormResult>
     return { success: false, error: 'Please provide a valid email address.' };
   }
 
+  // Map contact projectType to collection service values
+  const serviceMap: Record<string, string> = {
+    'Wedding Film': 'wedding-film',
+    'Editorial / Brand': 'editorial-commercial',
+    'DJ Booking / Live Performance': 'dj-performance',
+    'Event Curation': 'event-production',
+  };
+  const service = serviceMap[projectType] as 'wedding-film' | 'editorial-commercial' | 'event-production' | 'dj-performance' | undefined;
+
   try {
     const payload = await getPayload();
     await payload.create({
@@ -55,6 +64,7 @@ export async function submitContactForm(formData: FormData): Promise<FormResult>
       data: {
         name,
         email,
+        ...(service ? { service } : {}),
         details,
         source: 'contact-page',
         status: 'new',
@@ -160,7 +170,7 @@ export async function submitVenueInquiry(formData: FormData): Promise<FormResult
   const instagram = sanitize((formData.get('instagram') as string) || '', 100);
   const venueType = (formData.get('venueType') as string) || '';
   const capacity = parseInt((formData.get('capacity') as string) || '0', 10) || undefined;
-  const hasDancePocket = formData.get('hasDancePocket') === 'true';
+  const hasDancePocket = formData.has('hasDancePocket');
   const currentProgramming = sanitize((formData.get('currentProgramming') as string) || '', 1000);
   const goals = formData.getAll('goal') as string[];
   const monthlyBudget = (formData.get('monthlyBudget') as string) || '';

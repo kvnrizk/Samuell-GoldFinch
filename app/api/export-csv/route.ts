@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPayload } from '@/lib/payload';
+import { headers as getHeaders } from 'next/headers';
 
 function escapeCSV(value: unknown): string {
   if (value == null) return '';
@@ -13,7 +14,13 @@ function escapeCSV(value: unknown): string {
 export async function GET(req: NextRequest) {
   const payload = await getPayload();
 
-  // Verify authenticated user
+  // Authenticate: require a logged-in Payload user
+  const headersList = await getHeaders();
+  const { user } = await payload.auth({ headers: headersList });
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { searchParams } = new URL(req.url);
   const collection = searchParams.get('collection');
 

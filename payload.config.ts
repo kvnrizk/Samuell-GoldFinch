@@ -5,7 +5,6 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage';
 import { cloudinaryAdapter } from './lib/cloudinary-adapter';
-
 import { BlazeProjects } from './collections/BlazeProjects';
 import { KolasiEvents } from './collections/KolasiEvents';
 import { Artists } from './collections/Artists';
@@ -30,6 +29,8 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 export default buildConfig({
+  serverURL: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+
   admin: {
     user: Users.slug,
     meta: {
@@ -72,7 +73,7 @@ export default buildConfig({
 
   globals: [GlobalSettings, PressKit, Showreel],
 
-  secret: process.env.PAYLOAD_SECRET || 'DEFAULT_SECRET_CHANGE_ME',
+  secret: process.env.PAYLOAD_SECRET!,
 
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
