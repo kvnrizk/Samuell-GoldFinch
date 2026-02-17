@@ -2,10 +2,12 @@
 
 import React, { useRef, useEffect } from 'react';
 import MuxPlayer from '@mux/mux-player-react';
+import { cloudinaryVideoUrl, cloudinaryVideoPoster } from '@/lib/cloudinary';
 
 interface VideoPlayerProps {
   src?: string;
   muxPlaybackId?: string;
+  cloudinaryVideoId?: string;
   poster?: string;
   autoPlay?: boolean;
   loop?: boolean;
@@ -18,6 +20,7 @@ interface VideoPlayerProps {
 export default function VideoPlayer({
   src,
   muxPlaybackId,
+  cloudinaryVideoId,
   poster,
   autoPlay = true,
   loop = true,
@@ -29,13 +32,22 @@ export default function VideoPlayer({
   const videoRef = useRef<HTMLVideoElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  const posterSrc = muxPlaybackId
-    ? poster || `https://image.mux.com/${muxPlaybackId}/thumbnail.jpg`
-    : poster;
+  // Resolve the video source: Cloudinary → Mux → raw src
+  const resolvedSrc = cloudinaryVideoId
+    ? cloudinaryVideoUrl(cloudinaryVideoId)
+    : src;
 
-  // For non-Mux sources, keep the intersection observer behavior
+  const posterSrc = cloudinaryVideoId
+    ? poster || cloudinaryVideoPoster(cloudinaryVideoId)
+    : muxPlaybackId
+      ? poster || `https://image.mux.com/${muxPlaybackId}/thumbnail.jpg`
+      : poster;
+
+  const useMux = Boolean(muxPlaybackId) && !cloudinaryVideoId;
+
+  // For non-Mux sources, use intersection observer for lazy play
   useEffect(() => {
-    if (muxPlaybackId) return; // MuxPlayer handles its own lazy play
+    if (useMux) return;
     const video = videoRef.current;
     if (!video) return;
 
@@ -52,10 +64,10 @@ export default function VideoPlayer({
 
     observerRef.current.observe(video);
     return () => observerRef.current?.disconnect();
-  }, [autoPlay, muxPlaybackId]);
+  }, [autoPlay, useMux]);
 
   useEffect(() => {
-    if (!loopEnd || muxPlaybackId) return;
+    if (!loopEnd || useMux) return;
     const video = videoRef.current;
     if (!video) return;
 
@@ -67,7 +79,7 @@ export default function VideoPlayer({
 
     video.addEventListener('timeupdate', onTimeUpdate);
     return () => video.removeEventListener('timeupdate', onTimeUpdate);
-  }, [loopEnd, muxPlaybackId]);
+  }, [loopEnd, useMux]);
 
   const handleClick = () => {
     if (mode !== 'showcase') return;
@@ -81,7 +93,7 @@ export default function VideoPlayer({
   };
 
   // Use MuxPlayer for Mux content — proper HLS adaptive streaming
-  if (muxPlaybackId) {
+  if (useMux) {
     return (
       <MuxPlayer
         playbackId={muxPlaybackId}
@@ -103,12 +115,12 @@ export default function VideoPlayer({
     );
   }
 
-  // Fallback to HTML5 video for local/external sources
+  // HTML5 video for Cloudinary and local/external sources
   return (
     <video
       ref={videoRef}
-      src={src}
-      poster={posterSrc}
+      src={resolvedSrc}
+      poster={posterSrc ?? undefined}
       autoPlay={autoPlay}
       loop={loop}
       muted={muted}
