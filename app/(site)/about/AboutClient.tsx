@@ -32,7 +32,7 @@ const brandPillars: BrandPillar[] = [
       { value: '50+', label: 'Intl DJs' },
     ],
     link: '/about',
-    visual: { type: 'image', src: '/assets/1st.png' },
+    visual: { type: 'image', src: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363934/sg-platform/static/assets/1st.png' },
   },
   {
     num: '02',
@@ -60,7 +60,7 @@ const brandPillars: BrandPillar[] = [
       { value: '12', label: 'Cities' },
     ],
     link: '/blaze',
-    visual: { type: 'image', src: '/assets/blaze/weddings/DSCF2395.jpg' },
+    visual: { type: 'image', src: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg' },
   },
 ];
 
@@ -70,21 +70,21 @@ const drives = [
     description: 'Emotion-first direction for weddings, commercials and editorial films that are made to last.',
     accent: '#c8a96e',
     link: '/blaze',
-    image: '/assets/blaze/weddings/DSCF2395.jpg',
+    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg',
   },
   {
     title: 'Music',
     description: 'Melodic and commercial house sets that blend culture and mood into a dancefloor journey.',
     accent: '#a78bfa',
     link: '/kolasi',
-    image: '/assets/kolasi/artists/4F8A3682.jpg',
+    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg',
   },
   {
     title: 'Experiences',
     description: 'Kolasi curates multi-sensory events, from scenography to PR, turning moments into memories.',
     accent: '#c8a96e',
     link: '/kolasi',
-    image: '/assets/kolasi/images/4F8A2882.jpg',
+    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg',
   },
 ];
 
@@ -210,7 +210,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
         <div className="reveal-up">
           <div className="relative rounded-[2.5rem] overflow-hidden aspect-[3/4] shadow-2xl bg-neutral-900 border border-white/5 group">
             <Image
-              src="/assets/about/IMG_5840.JPG"
+              src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363938/sg-platform/static/assets/about/IMG_5840.jpg"
               alt="Samuell Goldfinch"
               fill
               placeholder="blur"

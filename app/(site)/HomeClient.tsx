@@ -13,20 +13,20 @@ import TestimonialCarousel from '@/components/ui/TestimonialCarousel';
 
 // Static fallbacks when CMS is empty
 const staticFeaturedSets = [
-  { url: '/assets/blaze/stouh_beirut/2E2A1724.jpg', title: 'STOUH BEIRUT', category: 'Rooftop Event' },
-  { url: '/assets/blaze/ambassy/0C5A9134.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic Event' },
-  { url: '/assets/blaze/weddings/DSCF2395.jpg', title: 'Blaze Weddings', category: 'Cinematic Wedding' },
-  { url: '/assets/blaze/editorial_and_brand/pexels-amar-10288372.jpg', title: 'Editorial & Brand', category: 'Brand Campaign' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364037/sg-platform/statichttps://res.cloudinary.com/dwayr9ynb/image/upload/v1771364037/sg-platform/static/assets/blaze/stouh_beirut/2E2A1724.jpg', title: 'STOUH BEIRUT', category: 'Rooftop Event' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363942/sg-platform/statichttps://res.cloudinary.com/dwayr9ynb/image/upload/v1771363942/sg-platform/static/assets/blaze/ambassy/0C5A9134.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic Event' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/statichttps://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg', title: 'Blaze Weddings', category: 'Cinematic Wedding' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364019/sg-platform/static/assets/blaze/editorial_and_brand/pexels-amar-10288372.jpg', title: 'Editorial & Brand', category: 'Brand Campaign' },
 ];
 
 const collaborations: { name: string; location: string; logo?: string }[] = [
   { name: 'Embassy of Lebanon', location: 'Paris' },
-  { name: 'STOUH BEIRUT', location: 'Paris', logo: '/assets/stouth_beirut_logo.webp' },
-  { name: 'MIPIM Cannes', location: 'Cannes', logo: '/assets/mipim logo.webp' },
-  { name: 'Elie Saab', location: 'Beirut', logo: '/assets/Elie_saab_logo.webp' },
+  { name: 'STOUH BEIRUT', location: 'Paris', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364300/sg-platform/static/assets/stouth_beirut_logo.webp' },
+  { name: 'MIPIM Cannes', location: 'Cannes', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364300/sg-platform/static/assets/mipim_logo.webp' },
+  { name: 'Elie Saab', location: 'Beirut', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363933/sg-platform/static/assets/Elie_saab_logo.webp' },
   { name: 'Kate Zubok', location: 'International' },
   { name: 'Transdev', location: 'France' },
-  { name: 'Le Speakeasy', location: 'Paris', logo: '/assets/kolasi/logo_speakeasy.png' },
+  { name: 'Le Speakeasy', location: 'Paris', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364284/sg-platform/static/assets/kolasi/logo_speakeasy.png' },
   { name: 'Chloe Khalife', location: 'International' },
   { name: 'Brunch Festival', location: 'Paris' },
   { name: 'France Tourisme', location: 'France' },
@@ -69,9 +69,9 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
 
   // Blaze section cycling images
   const blazeImages = [
-    blazeProjects[0]?.gallery?.[0]?.image?.url || '/assets/blaze/stouh_beirut/2E2A1724.jpg',
-    blazeProjects[1]?.gallery?.[0]?.image?.url || '/assets/blaze/ambassy/0C5A9134.jpg',
-    '/assets/blaze/weddings/DSCF2395.jpg',
+    blazeProjects[0]?.gallery?.[0]?.image?.url || 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364037/sg-platform/static/assets/blaze/stouh_beirut/2E2A1724.jpg',
+    blazeProjects[1]?.gallery?.[0]?.image?.url || 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363942/sg-platform/static/assets/blaze/ambassy/0C5A9134.jpg',
+    'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg',
   ];
   const [blazeIdx, setBlazeIdx] = useState(0);
 
@@ -85,7 +85,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
   // Build carousel items from CMS or fallback
   const carouselItems = blazeProjects.length > 0
     ? blazeProjects.map((p: CMSProject) => ({
-        url: p.gallery?.[0]?.image?.url || p.heroVideo?.posterUrl || '/assets/blaze/stouh_beirut/2E2A1724.jpg',
+        url: p.gallery?.[0]?.image?.url || p.heroVideo?.posterUrl || 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364037/sg-platform/static/assets/blaze/stouh_beirut/2E2A1724.jpg',
         title: p.title || 'Untitled',
         category: p.category || 'Production',
       }))
@@ -121,7 +121,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
         <div className="absolute inset-0">
           <VideoPlayer
             muxPlaybackId="ABVHVsPKRIgCyqWD7JOSHSxvR00HVt800oBerw5sQDk00A"
-            poster="/assets/blaze/weddings/0G0A7811.jpg"
+            poster="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364149/sg-platform/static/assets/blaze/weddings/0G0A7811.jpg"
             autoPlay
             loop
             muted
@@ -164,7 +164,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
           <div className="hero-reveal hidden md:block">
             <div className="group relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
               <Image
-                src={blazeProjects[0]?.gallery?.[0]?.image?.url || '/assets/blaze/weddings/0G0A7811.jpg'}
+                src={blazeProjects[0]?.gallery?.[0]?.image?.url || 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364149/sg-platform/static/assets/blaze/weddings/0G0A7811.jpg'}
                 alt="Blaze Motion — Signature Wedding Reel"
                 fill
                 placeholder="blur"

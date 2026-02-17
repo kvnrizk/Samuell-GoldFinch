@@ -13,38 +13,38 @@ import BudgetEstimator from '@/components/ui/BudgetEstimator';
 
 // Static fallbacks
 const stouhBeirut = [
-  { url: '/assets/blaze/stouh_beirut/2E2A1724.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
-  { url: '/assets/blaze/stouh_beirut/2E2A2072.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
-  { url: '/assets/blaze/stouh_beirut/2E2A1243.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
-  { url: '/assets/blaze/stouh_beirut/4F8A9365.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
-  { url: '/assets/blaze/stouh_beirut/IMG_6348.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
-  { url: '/assets/blaze/stouh_beirut/IMG_6351.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364037/sg-platform/static/assets/blaze/stouh_beirut/2E2A1724.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364137/sg-platform/static/assets/blaze/stouh_beirut/2E2A2072.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364068/sg-platform/static/assets/blaze/stouh_beirut/2E2A1243.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364096/sg-platform/static/assets/blaze/stouh_beirut/4F8A9365.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364080/sg-platform/static/assets/blaze/stouh_beirut/IMG_6348.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364156/sg-platform/static/assets/blaze/stouh_beirut/IMG_6351.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
 ];
 
 const embassy = [
-  { url: '/assets/blaze/ambassy/0C5A9134.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
-  { url: '/assets/blaze/ambassy/0C5A9139.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
-  { url: '/assets/blaze/ambassy/0C5A9196.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
-  { url: '/assets/blaze/ambassy/4F8A9987.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
-  { url: '/assets/blaze/ambassy/4F8A9996.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
-  { url: '/assets/blaze/ambassy/0C5A9206.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363942/sg-platform/static/assets/blaze/ambassy/0C5A9134.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363957/sg-platform/static/assets/blaze/ambassy/0C5A9139.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363958/sg-platform/static/assets/blaze/ambassy/0C5A9196.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363975/sg-platform/static/assets/blaze/ambassy/4F8A9987.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363989/sg-platform/static/assets/blaze/ambassy/4F8A9996.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363949/sg-platform/static/assets/blaze/ambassy/0C5A9206.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
 ];
 
 const weddingsStatic = [
-  { url: '/assets/blaze/weddings/DSCF2395.jpg', title: 'Weddings', category: 'Cinematic' },
-  { url: '/assets/blaze/weddings/IMG_0100.jpg', title: 'Weddings', category: 'Cinematic' },
-  { url: '/assets/blaze/weddings/IMG_0084.jpg', title: 'Weddings', category: 'Cinematic' },
-  { url: '/assets/blaze/weddings/IMG_0068.jpg', title: 'Weddings', category: 'Cinematic' },
-  { url: '/assets/blaze/weddings/IMG_0079.jpg', title: 'Weddings', category: 'Cinematic' },
-  { url: '/assets/blaze/weddings/0G0A7811.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364179/sg-platform/static/assets/blaze/weddings/IMG_0100.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364179/sg-platform/static/assets/blaze/weddings/IMG_0084.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364166/sg-platform/static/assets/blaze/weddings/IMG_0068.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364167/sg-platform/static/assets/blaze/weddings/IMG_0079.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364149/sg-platform/static/assets/blaze/weddings/0G0A7811.jpg', title: 'Weddings', category: 'Cinematic' },
 ];
 
 const editorialStatic = [
-  { url: '/assets/blaze/cloudinary_uploaded/IMG_5744_compressed.JPG', title: 'Editorial & Brand', category: 'Editorial' },
-  { url: '/assets/blaze/editorial_and_brand/pexels-amar-10288372.jpg', title: 'Editorial & Brand', category: 'Editorial' },
-  { url: '/assets/blaze/editorial_and_brand/pexels-angel-ayala-321556-28976231.jpg', title: 'Editorial & Brand', category: 'Editorial' },
-  { url: '/assets/blaze/editorial_and_brand/pexels-fabrice-busching-1777473881-30235864.jpg', title: 'Editorial & Brand', category: 'Editorial' },
-  { url: '/assets/blaze/editorial_and_brand/pexels-valentina-maros-128709290-13283497.jpg', title: 'Editorial & Brand', category: 'Editorial' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363961/sg-platform/static/assets/blaze/cloudinary_uploaded/IMG_5744_compressed.jpg', title: 'Editorial & Brand', category: 'Editorial' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364019/sg-platform/static/assets/blaze/editorial_and_brand/pexels-amar-10288372.jpg', title: 'Editorial & Brand', category: 'Editorial' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363997/sg-platform/static/assets/blaze/editorial_and_brand/pexels-angel-ayala-321556-28976231.jpg', title: 'Editorial & Brand', category: 'Editorial' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363998/sg-platform/static/assets/blaze/editorial_and_brand/pexels-fabrice-busching-1777473881-30235864.jpg', title: 'Editorial & Brand', category: 'Editorial' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364038/sg-platform/static/assets/blaze/editorial_and_brand/pexels-valentina-maros-128709290-13283497.jpg', title: 'Editorial & Brand', category: 'Editorial' },
 ];
 
 interface BlazeGalleryItem {
@@ -139,7 +139,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
           <div className="absolute inset-0">
             <VideoPlayer
               muxPlaybackId="ABVHVsPKRIgCyqWD7JOSHSxvR00HVt800oBerw5sQDk00A"
-              poster="/assets/blaze/weddings/DSCF2395.jpg"
+              poster="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg"
               autoPlay
               loop
               muted
@@ -187,7 +187,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
         <div className="reveal-up">
           <div className="aspect-[4/3] rounded-[2.5rem] bg-neutral-900 border border-white/5 shadow-2xl relative overflow-hidden group">
             <Image
-              src="/assets/blaze/IMG_6050.JPG"
+              src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363947/sg-platform/static/assets/blaze/IMG_6050.jpg"
               alt="Blaze Production — behind the scenes"
               fill
               placeholder="blur"
@@ -217,7 +217,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
           </div>
           <div className="reveal-up max-w-4xl mx-auto">
             <div className="group relative rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl aspect-[16/9] mb-12">
-              <Image src="/assets/blaze/IMG_6050.JPG" alt="Blaze Showcase" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover group-hover:scale-105 transition-all duration-700" />
+              <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363947/sg-platform/static/assets/blaze/IMG_6050.jpg" alt="Blaze Showcase" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover group-hover:scale-105 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 md:p-12 text-center">
                 <p className="text-xs font-medium mb-2" style={{ color: 'var(--text-mute)' }}>Featured Project</p>
                 <h3 className="text-xl md:text-2xl font-serif italic uppercase tracking-tighter">STOUH BEIRUT Rooftop</h3>

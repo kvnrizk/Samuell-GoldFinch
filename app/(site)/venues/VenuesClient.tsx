@@ -175,7 +175,7 @@ export default function VenuesClient({
 
       {/* ─── Visual break ─── */}
       <div className="relative h-40 md:h-64 overflow-hidden">
-        <Image src="/assets/kolasi/images/4F8A3777.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
+        <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364276/sg-platform/static/assets/kolasi/images/4F8A3777.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
       </div>
 
@@ -261,7 +261,7 @@ export default function VenuesClient({
         <section className="py-24 md:py-32 relative overflow-hidden">
           {/* Background image accent */}
           <div className="absolute inset-0 pointer-events-none">
-            <Image src="/assets/kolasi/images/4F8A2882.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.06]" />
+            <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.06]" />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 20%, transparent 80%, var(--bg))' }} />
           </div>
           <div className="relative max-w-7xl mx-auto px-6">
@@ -321,7 +321,7 @@ export default function VenuesClient({
 
       {/* ─── Visual break ─── */}
       <div className="relative h-40 md:h-64 overflow-hidden">
-        <Image src="/assets/kolasi/artists/4F8A3682.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
+        <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
       </div>
 
@@ -493,7 +493,7 @@ export default function VenuesClient({
 
       {/* ─── Visual break ─── */}
       <div className="relative h-40 md:h-56 overflow-hidden">
-        <Image src="/assets/kolasi/images/4F8A3801.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-25" />
+        <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364297/sg-platform/static/assets/kolasi/images/4F8A3801.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-25" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
       </div>
 
@@ -501,7 +501,7 @@ export default function VenuesClient({
       <section id="venue-form" className="py-24 md:py-32 relative overflow-hidden">
         {/* Background photo accent */}
         <div className="absolute inset-0 pointer-events-none">
-          <Image src="/assets/kolasi/images/4F8A2938.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.04]" />
+          <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364247/sg-platform/static/assets/kolasi/images/4F8A2938.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.04]" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, var(--bg) 40%, transparent 80%)' }} />
         </div>
         <div className="relative max-w-7xl mx-auto px-6">

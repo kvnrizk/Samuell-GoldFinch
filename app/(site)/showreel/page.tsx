@@ -65,7 +65,7 @@ export default async function ShowreelPage() {
   // Try CMS first, fall back to static data
   let heroReel = {
     muxPlaybackId: 'ABVHVsPKRIgCyqWD7JOSHSxvR00HVt800oBerw5sQDk00A',
-    posterUrl: '/assets/blaze/weddings/DSCF2395.jpg',
+    posterUrl: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg',
     title: 'Showreel 2025',
   };
   let highlights = staticHighlights;

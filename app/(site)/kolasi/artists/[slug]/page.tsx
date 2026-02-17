@@ -10,7 +10,7 @@ const staticArtists: Record<string, any> = {
     name: 'Kate Zubok',
     slug: 'kate-zubok',
     bio: 'A Parisian DJ known for her eclectic blend of deep house, melodic techno, and ethnic grooves. Kate has headlined events across France, Lebanon, and the UAE, bringing a hypnotic energy to every set.',
-    photo: { url: '/assets/kolasi/artists/artist-1.jpg' },
+    photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364188/sg-platform/static/assets/kolasi/artists/artist-1.jpg' },
     genres: [{ genre: 'Deep House' }, { genre: 'Melodic Techno' }],
     rosterCategory: 'resident',
     socialLinks: {
@@ -29,7 +29,7 @@ const staticArtists: Record<string, any> = {
     name: 'DJ Marco',
     slug: 'dj-marco',
     bio: 'Resident DJ at some of Beirut\'s most iconic rooftops. Marco\'s sets blend Afro house, organic house, and progressive elements, creating uplifting journeys that keep dance floors alive until sunrise.',
-    photo: { url: '/assets/kolasi/artists/artist-2.jpg' },
+    photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364228/sg-platform/static/assets/kolasi/artists/artist-2.jpg' },
     genres: [{ genre: 'Afro House' }, { genre: 'Progressive' }],
     rosterCategory: 'resident',
     socialLinks: {
@@ -47,7 +47,7 @@ const staticArtists: Record<string, any> = {
     name: 'Naya Sound',
     slug: 'naya-sound',
     bio: 'Blending live vocals with electronic production, Naya Sound delivers a hybrid live act that fuses Arabic melodies with modern club sounds. Featured at festivals across Europe and the MENA region.',
-    photo: { url: '/assets/kolasi/artists/artist-3.JPG' },
+    photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364230/sg-platform/static/assets/kolasi/artists/artist-3.jpg' },
     genres: [{ genre: 'Live Act' }, { genre: 'Electronic Fusion' }],
     rosterCategory: 'live-act',
     socialLinks: {
@@ -65,7 +65,7 @@ const staticArtists: Record<string, any> = {
     name: 'Samir K',
     slug: 'samir-k',
     bio: 'International headliner specializing in high-energy techno and industrial sounds. Samir K has performed at leading European clubs and festivals, known for intense peak-time sets.',
-    photo: { url: '/assets/kolasi/artists/artist-4.JPG' },
+    photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364243/sg-platform/static/assets/kolasi/artists/artist-4.jpg' },
     genres: [{ genre: 'Techno' }, { genre: 'Industrial' }],
     rosterCategory: 'headliner',
     socialLinks: {
@@ -83,7 +83,7 @@ const staticArtists: Record<string, any> = {
     name: 'Lina M',
     slug: 'lina-m',
     bio: 'A rising star in the melodic house scene, Lina M combines delicate synth work with driving rhythms. Her sets at Kolasi events have earned her a devoted following in the French Riviera scene.',
-    photo: { url: '/assets/kolasi/artists/IMG_6476.JPG' },
+    photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364222/sg-platform/static/assets/kolasi/artists/IMG_6476.jpg' },
     genres: [{ genre: 'Melodic House' }, { genre: 'Indie Dance' }],
     rosterCategory: 'resident',
     socialLinks: {

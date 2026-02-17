@@ -12,30 +12,30 @@ import BudgetEstimator from '@/components/ui/BudgetEstimator';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 
 const expertise = [
-  { icon: 'music', title: 'DJ Booking', description: 'Connecting world-class DJs and live performers with venues, festivals and private events globally.', image: '/assets/kolasi/artists/4F8A3682.jpg' },
-  { icon: 'layout', title: 'Event Curation', description: 'Art direction, programming and press relations to shape cultural experiences and narratives.', image: '/assets/kolasi/images/4F8A2882.jpg' },
-  { icon: 'camera', title: 'Content Creation', description: 'Cinematic capture, editing and campaign-ready media for events and promotions.', image: '/assets/kolasi/images/4F8A3310.jpg' },
+  { icon: 'music', title: 'DJ Booking', description: 'Connecting world-class DJs and live performers with venues, festivals and private events globally.', image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg' },
+  { icon: 'layout', title: 'Event Curation', description: 'Art direction, programming and press relations to shape cultural experiences and narratives.', image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg' },
+  { icon: 'camera', title: 'Content Creation', description: 'Cinematic capture, editing and campaign-ready media for events and promotions.', image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364281/sg-platform/static/assets/kolasi/images/4F8A3310.jpg' },
 ];
 
 const galleryRow1 = [
-  '/assets/kolasi/images/4F8A2882.jpg',
-  '/assets/kolasi/images/4F8A3195.jpg',
-  '/assets/kolasi/images/4F8A3310.jpg',
-  '/assets/kolasi/images/4F8A2938.jpg',
-  '/assets/kolasi/images/4F8A3750.jpg',
-  '/assets/kolasi/images/4F8A3777.jpg',
-  '/assets/kolasi/images/4F8A3801.jpg',
-  '/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.JPG',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364281/sg-platform/static/assets/kolasi/images/4F8A3310.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364247/sg-platform/static/assets/kolasi/images/4F8A2938.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364282/sg-platform/static/assets/kolasi/images/4F8A3750.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364276/sg-platform/static/assets/kolasi/images/4F8A3777.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364297/sg-platform/static/assets/kolasi/images/4F8A3801.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364299/sg-platform/static/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.jpg',
 ];
 
 const galleryRow2 = [
-  '/assets/kolasi/artists/artist-1.jpg',
-  '/assets/kolasi/artists/artist-2.jpg',
-  '/assets/kolasi/artists/artist-3.JPG',
-  '/assets/kolasi/artists/artist-4.JPG',
-  '/assets/kolasi/artists/IMG_6476.JPG',
-  '/assets/kolasi/artists/IMG_6733.jpg',
-  '/assets/kolasi/artists/4F8A3682.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364188/sg-platform/static/assets/kolasi/artists/artist-1.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364228/sg-platform/static/assets/kolasi/artists/artist-2.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364230/sg-platform/static/assets/kolasi/artists/artist-3.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364243/sg-platform/static/assets/kolasi/artists/artist-4.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364222/sg-platform/static/assets/kolasi/artists/IMG_6476.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364210/sg-platform/static/assets/kolasi/artists/IMG_6733.jpg',
+  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg',
 ];
 
 const IconMusic = () => (
@@ -77,9 +77,9 @@ interface KolasiClientProps {
 }
 
 const showcaseClips = [
-  { src: '/assets/kolasi/Speakeasy_Ads/le speakeasy ads.mp4', label: 'Le Speakeasy', poster: '/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.JPG', slug: 'le-speakeasy' },
-  { src: '/assets/kolasi/Speakeasy_Ads/le speakeasy ads2 barman.mp4', label: '2nd Sun', poster: '/assets/kolasi/images/4F8A3195.jpg', slug: '2nd-sun' },
-  { src: '/assets/kolasi/Speakeasy_Ads/lespeakeasy g500 mercedes.mp4', label: 'Kolasi Nights', poster: '/assets/kolasi/images/4F8A2938.jpg', slug: 'kolasi-nights' },
+  { src: '/assets/kolasi/Speakeasy_Ads/le speakeasy ads.mp4', label: 'Le Speakeasy', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364299/sg-platform/static/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.jpg', slug: 'le-speakeasy' },
+  { src: '/assets/kolasi/Speakeasy_Ads/le speakeasy ads2 barman.mp4', label: '2nd Sun', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg', slug: '2nd-sun' },
+  { src: '/assets/kolasi/Speakeasy_Ads/lespeakeasy g500 mercedes.mp4', label: 'Kolasi Nights', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364247/sg-platform/static/assets/kolasi/images/4F8A2938.jpg', slug: 'kolasi-nights' },
 ];
 
 function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] & { slug?: string } }) {
@@ -293,28 +293,28 @@ const services = [
     title: 'DJ & Live Show Booking',
     description: 'Talent sourcing, rider negotiation and international bookings for clubs, festivals and private events across Europe, the Middle East, and South America.',
     tags: ['Clubs', 'Festivals', 'Private Events', 'International Tours'],
-    image: '/assets/kolasi/artists/4F8A3682.jpg',
+    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg',
   },
   {
     num: '02',
     title: 'Event Curation & PR',
     description: 'Art direction, programming and press relations to shape cultural experiences and narratives that resonate with audiences worldwide.',
     tags: ['Art Direction', 'Programming', 'Press Relations', 'Brand Strategy'],
-    image: '/assets/kolasi/images/4F8A3195.jpg',
+    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg',
   },
   {
     num: '03',
     title: 'Content Creation & Production',
     description: 'Cinematic capture, editing and campaign-ready media for events and promotions — from music videos to social content and brand films.',
     tags: ['Music Videos', 'Event Recaps', 'Social Content', 'Brand Films'],
-    image: '/assets/kolasi/images/4F8A3310.jpg',
+    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364281/sg-platform/static/assets/kolasi/images/4F8A3310.jpg',
   },
   {
     num: '+',
     title: 'Sound & Light Design',
     description: 'Full technical production — sound engineering and lighting design that transforms any venue into an immersive experience.',
     tags: ['Sound Engineering', 'Lighting Design', 'Venue Setup', 'Technical Production'],
-    image: '/assets/kolasi/images/4F8A3750.jpg',
+    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364282/sg-platform/static/assets/kolasi/images/4F8A3750.jpg',
   },
 ];
 
@@ -488,7 +488,7 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
         <div className="absolute inset-0">
           <VideoPlayer
             muxPlaybackId="RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo"
-            poster="/assets/kolasi/images/4F8A3195.jpg"
+            poster="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg"
             autoPlay
             loop
             muted
@@ -527,7 +527,7 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
         <div className="reveal-up">
           <div className="aspect-[4/3] rounded-[2.5rem] border shadow-2xl relative overflow-hidden group" style={{ borderColor: 'var(--border)' }}>
             <Image
-              src="/assets/kolasi/images/4F8A3195.jpg"
+              src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg"
               alt="Kolasi — behind the scenes"
               fill
               placeholder="blur"
