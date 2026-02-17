@@ -3,6 +3,7 @@
 import React, { useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import { useAudioPlayer } from '@/components/providers/AudioPlayerProvider';
@@ -194,6 +195,8 @@ export default function ArtistProfile({
               src={artist.photo.url}
               alt={artist.name}
               fill
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
               sizes="100vw"
               className="object-cover opacity-60 scale-105"
             />

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 
 interface Post {
   title: string;
@@ -206,6 +207,8 @@ export default function JournalPostDetail({ post, relatedPosts }: JournalPostDet
             src={post.coverImage.url}
             alt={post.title}
             fill
+            placeholder="blur"
+            blurDataURL={BLUR_DATA_URL}
             sizes="100vw"
             className="object-cover"
           />
@@ -315,6 +318,8 @@ export default function JournalPostDetail({ post, relatedPosts }: JournalPostDet
                         src={rp.coverImage.url}
                         alt={rp.title}
                         fill
+                        placeholder="blur"
+                        blurDataURL={BLUR_DATA_URL}
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-700"
                         loading="lazy"

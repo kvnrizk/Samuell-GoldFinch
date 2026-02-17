@@ -3,6 +3,7 @@
 import React, { useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import VideoPlayer from '@/components/ui/VideoPlayer';
@@ -17,7 +18,9 @@ interface GalleryRow {
 
 interface VideoItem {
   title?: string;
-  muxPlaybackId: string;
+  videoSource?: 'mux' | 'cloudinary';
+  muxPlaybackId?: string;
+  cloudinaryVideoId?: string;
   loopEnd?: number;
 }
 
@@ -183,10 +186,11 @@ export default function KolasiEventDetail({
     <div ref={containerRef} style={{ backgroundColor: 'var(--bg)' }}>
       {/* ── Hero ── */}
       <section className="relative h-[70vh] md:h-screen w-full overflow-hidden">
-        {heroVideo?.muxPlaybackId ? (
+        {(heroVideo?.muxPlaybackId || heroVideo?.cloudinaryVideoId) ? (
           <div className="absolute inset-0">
             <VideoPlayer
-              muxPlaybackId={heroVideo.muxPlaybackId}
+              muxPlaybackId={heroVideo.videoSource !== 'cloudinary' ? heroVideo.muxPlaybackId : undefined}
+              cloudinaryVideoId={heroVideo.videoSource === 'cloudinary' ? heroVideo.cloudinaryVideoId : undefined}
               autoPlay
               loop
               muted
@@ -200,6 +204,8 @@ export default function KolasiEventDetail({
               src={heroImage.url}
               alt={event.title}
               fill
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
               sizes="100vw"
               className="object-cover opacity-70 scale-105"
             />
@@ -271,6 +277,8 @@ export default function KolasiEventDetail({
                         src={artist.photo.url}
                         alt={artist.name || 'Artist'}
                         fill
+                        placeholder="blur"
+                        blurDataURL={BLUR_DATA_URL}
                         sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-700"
                         loading="lazy"
@@ -337,6 +345,8 @@ export default function KolasiEventDetail({
                     alt={`${event.title} — ${i + 1}`}
                     width={800}
                     height={600}
+                    placeholder="blur"
+                    blurDataURL={BLUR_DATA_URL}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
                     loading="lazy"

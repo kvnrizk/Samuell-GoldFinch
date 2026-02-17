@@ -3,6 +3,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import OrbitCarousel from '@/components/ui/OrbitCarousel';
@@ -166,6 +167,8 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
                 src={blazeProjects[0]?.gallery?.[0]?.photo?.url || '/assets/blaze/weddings/0G0A7811.jpg'}
                 alt="Blaze Motion — Signature Wedding Reel"
                 fill
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover group-hover:scale-105 transition-all duration-700"
                 priority
@@ -235,6 +238,8 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
                     src={src}
                     alt="Blaze Production"
                     fill
+                    placeholder="blur"
+                    blurDataURL={BLUR_DATA_URL}
                     sizes="(max-width: 768px) 100vw, 50vw"
                     className="object-cover transition-opacity duration-1000 ease-in-out"
                     style={{ opacity: i === blazeIdx ? 1 : 0 }}
@@ -248,6 +253,8 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
                     src={src}
                     alt="Blaze Production"
                     fill
+                    placeholder="blur"
+                    blurDataURL={BLUR_DATA_URL}
                     sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover transition-opacity duration-1000 ease-in-out"
                     style={{ opacity: i === (blazeIdx + 1) % blazeImages.length ? 1 : 0 }}
@@ -366,7 +373,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
                 <div key={i} className="group flex flex-col items-center justify-center p-4 md:p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-[#c8a96e]/20 hover:bg-[#c8a96e]/[0.03] transition-all duration-500">
                   <div className="h-12 flex items-center justify-center mb-5">
                     {c.logo ? (
-                      <Image src={c.logo} alt={c.name} width={120} height={40} className="h-10 w-auto object-contain mix-blend-screen opacity-60 group-hover:opacity-100 transition-opacity duration-500" sizes="120px" />
+                      <Image src={c.logo} alt={c.name} width={120} height={40} placeholder="blur" blurDataURL={BLUR_DATA_URL} className="h-10 w-auto object-contain mix-blend-screen opacity-60 group-hover:opacity-100 transition-opacity duration-500" sizes="120px" />
                     ) : (
                       <span className="text-lg font-serif italic text-white/20 group-hover:text-white/50 transition-colors duration-500">{c.name.split(' ').map(w => w[0]).join('')}</span>
                     )}

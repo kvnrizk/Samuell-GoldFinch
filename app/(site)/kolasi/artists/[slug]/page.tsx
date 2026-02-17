@@ -152,6 +152,7 @@ export async function generateMetadata({
   return {
     title: `${artist.name} — Kolasi | Samuell Goldfinch`,
     description: artist.bio || `${artist.name} — ${genres} artist represented by Kolasi`,
+    alternates: { canonical: `/kolasi/artists/${slug}` },
     openGraph: {
       title: `${artist.name} — Kolasi`,
       description: artist.bio || `${artist.name} — ${genres}`,

@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import OrbitCarousel from '@/components/ui/OrbitCarousel';
@@ -53,7 +54,9 @@ interface BlazeGalleryItem {
 }
 
 interface BlazeHeroVideo {
+  videoSource?: 'mux' | 'cloudinary';
   muxPlaybackId?: string;
+  cloudinaryVideoId?: string;
   posterUrl?: string;
 }
 
@@ -98,7 +101,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
   const diplomaticItems = (hasCMS && projectsToCarousel(projects, 'Diplomatic')) || embassy;
 
   // Hero video: from first project with heroVideo or fallback
-  const heroProject = projects.find((p) => p.heroVideo?.muxPlaybackId);
+  const heroProject = projects.find((p) => p.heroVideo?.muxPlaybackId || p.heroVideo?.cloudinaryVideoId);
 
   useGSAP(() => {
     if (prefersReducedMotion()) return;
@@ -119,10 +122,11 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
     <div ref={containerRef} style={{ backgroundColor: 'var(--bg)' }}>
       {/* Full Screen Hero Video */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--bg)' }}>
-        {heroProject?.heroVideo?.muxPlaybackId ? (
+        {(heroProject?.heroVideo?.muxPlaybackId || heroProject?.heroVideo?.cloudinaryVideoId) ? (
           <div className="absolute inset-0">
             <VideoPlayer
-              muxPlaybackId={heroProject.heroVideo.muxPlaybackId}
+              muxPlaybackId={heroProject.heroVideo.videoSource !== 'cloudinary' ? heroProject.heroVideo.muxPlaybackId : undefined}
+              cloudinaryVideoId={heroProject.heroVideo.videoSource === 'cloudinary' ? heroProject.heroVideo.cloudinaryVideoId : undefined}
               poster={heroProject.heroVideo.posterUrl}
               autoPlay
               loop
@@ -164,8 +168,8 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
       <section className="py-16 md:py-40 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 md:gap-24 items-center">
         <div className="space-y-10 reveal-up">
           <h2 className="text-3xl md:text-6xl font-serif leading-tight italic">
-            Bringing Your <br />
-            <span className="not-italic">Story to Life</span>
+            Where Emotion <br />
+            <span className="not-italic">Meets Craft</span>
           </h2>
           <div className="space-y-5 text-sm md:text-base leading-[1.9] font-light" style={{ color: 'var(--text-dim)' }}>
             <p>
@@ -186,6 +190,8 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
               src="/assets/blaze/IMG_6050.JPG"
               alt="Blaze Production — behind the scenes"
               fill
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover group-hover:scale-105 transition-transform duration-700"
             />
@@ -211,7 +217,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
           </div>
           <div className="reveal-up max-w-4xl mx-auto">
             <div className="group relative rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl aspect-[16/9] mb-12">
-              <Image src="/assets/blaze/IMG_6050.JPG" alt="Blaze Showcase" fill sizes="100vw" className="object-cover group-hover:scale-105 transition-all duration-700" />
+              <Image src="/assets/blaze/IMG_6050.JPG" alt="Blaze Showcase" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover group-hover:scale-105 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 md:p-12 text-center">
                 <p className="text-xs font-medium mb-2" style={{ color: 'var(--text-mute)' }}>Featured Project</p>
                 <h3 className="text-xl md:text-2xl font-serif italic uppercase tracking-tighter">STOUH BEIRUT Rooftop</h3>
@@ -232,7 +238,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
       <section className="py-16 md:py-40 space-y-20 md:space-y-40">
         <div className="reveal-up">
           <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
-            <h2 className="text-3xl font-serif mb-2 italic">STOUH BEIRUT Rooftop</h2>
+            <h3 className="text-3xl font-serif mb-2 italic">STOUH BEIRUT Rooftop</h3>
             <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Golden-hour diplomacy and Parisian skyline energy.</p>
           </div>
           <OrbitCarousel items={eventItems} autoplayInterval={5200} />
@@ -245,7 +251,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
 
         <div className="reveal-up">
           <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
-            <h2 className="text-3xl font-serif mb-2 italic">Embassy of Lebanon &middot; Paris</h2>
+            <h3 className="text-3xl font-serif mb-2 italic">Embassy of Lebanon &middot; Paris</h3>
             <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Diplomatic ceremonies captured with cinematic restraint.</p>
           </div>
           <OrbitCarousel items={diplomaticItems} autoplayInterval={5600} />
@@ -258,7 +264,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
 
         <div className="reveal-up">
           <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
-            <h2 className="text-3xl font-serif mb-2 italic">Weddings</h2>
+            <h3 className="text-3xl font-serif mb-2 italic">Weddings</h3>
             <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Stories of connection and timeless elegance.</p>
           </div>
           <OrbitCarousel items={weddingItems} autoplayInterval={5200} />
@@ -271,7 +277,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
 
         <div className="reveal-up">
           <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
-            <h2 className="text-3xl font-serif mb-2 italic">Editorial &amp; Brand</h2>
+            <h3 className="text-3xl font-serif mb-2 italic">Editorial &amp; Brand</h3>
             <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>The language of identity told through crafted imagery.</p>
           </div>
           <OrbitCarousel items={editorialItems} autoplayInterval={5400} />

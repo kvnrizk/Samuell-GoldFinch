@@ -3,6 +3,7 @@
 import React, { useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import VideoPlayer from '@/components/ui/VideoPlayer';
@@ -11,7 +12,9 @@ registerGSAP();
 
 interface Highlight {
   title: string;
-  muxPlaybackId: string;
+  videoSource?: 'mux' | 'cloudinary';
+  muxPlaybackId?: string;
+  cloudinaryVideoId?: string;
   posterUrl?: string;
   category?: string;
   slug?: string | null;
@@ -20,7 +23,9 @@ interface Highlight {
 
 interface ShowreelClientProps {
   heroReel: {
-    muxPlaybackId: string;
+    videoSource?: 'mux' | 'cloudinary';
+    muxPlaybackId?: string;
+    cloudinaryVideoId?: string;
     posterUrl?: string;
     title?: string;
   };
@@ -45,6 +50,10 @@ export default function ShowreelClient({ heroReel, highlights }: ShowreelClientP
   const filtered = activeFilter === 'all'
     ? highlights
     : highlights.filter(h => h.category === activeFilter);
+
+  function getVideoKey(h: Highlight): string {
+    return h.cloudinaryVideoId || h.muxPlaybackId || h.title;
+  }
 
   useGSAP(() => {
     if (prefersReducedMotion()) return;
@@ -87,7 +96,8 @@ export default function ShowreelClient({ heroReel, highlights }: ShowreelClientP
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0">
           <VideoPlayer
-            muxPlaybackId={heroReel.muxPlaybackId}
+            muxPlaybackId={heroReel.videoSource !== 'cloudinary' ? heroReel.muxPlaybackId : undefined}
+            cloudinaryVideoId={heroReel.videoSource === 'cloudinary' ? heroReel.cloudinaryVideoId : undefined}
             poster={heroReel.posterUrl}
             autoPlay
             loop
@@ -162,11 +172,14 @@ export default function ShowreelClient({ heroReel, highlights }: ShowreelClientP
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {filtered.map((h, i) => {
             const link = getProjectLink(h);
-            const isPlaying = playingId === h.muxPlaybackId;
+            const videoKey = getVideoKey(h);
+            const isPlaying = playingId === videoKey;
+            const isCloudinary = h.videoSource === 'cloudinary';
+            const thumbnailSrc = h.posterUrl || (isCloudinary ? undefined : `https://image.mux.com/${h.muxPlaybackId}/thumbnail.jpg?time=2`);
 
             return (
               <div
-                key={h.muxPlaybackId + i}
+                key={videoKey + i}
                 className="highlight-card group relative rounded-2xl overflow-hidden border"
                 style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-card)' }}
               >
@@ -174,8 +187,9 @@ export default function ShowreelClient({ heroReel, highlights }: ShowreelClientP
                 <div className="aspect-video relative">
                   {isPlaying ? (
                     <VideoPlayer
-                      muxPlaybackId={h.muxPlaybackId}
-                      poster={h.posterUrl || `https://image.mux.com/${h.muxPlaybackId}/thumbnail.jpg?time=2`}
+                      muxPlaybackId={!isCloudinary ? h.muxPlaybackId : undefined}
+                      cloudinaryVideoId={isCloudinary ? h.cloudinaryVideoId : undefined}
+                      poster={thumbnailSrc}
                       autoPlay
                       loop={false}
                       muted={false}
@@ -183,16 +197,20 @@ export default function ShowreelClient({ heroReel, highlights }: ShowreelClientP
                     />
                   ) : (
                     <>
-                      <Image
-                        src={h.posterUrl || `https://image.mux.com/${h.muxPlaybackId}/thumbnail.jpg?time=2`}
-                        alt={h.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
+                      {thumbnailSrc && (
+                        <Image
+                          src={thumbnailSrc}
+                          alt={h.title}
+                          fill
+                          placeholder="blur"
+                          blurDataURL={BLUR_DATA_URL}
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                        />
+                      )}
                       <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300" />
                       <button
-                        onClick={() => setPlayingId(h.muxPlaybackId)}
+                        onClick={() => setPlayingId(videoKey)}
                         className="absolute inset-0 flex items-center justify-center"
                         aria-label={`Play ${h.title}`}
                       >

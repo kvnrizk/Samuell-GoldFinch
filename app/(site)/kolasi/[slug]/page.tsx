@@ -165,7 +165,8 @@ export async function generateMetadata({
     openGraph: {
       title: event.title,
       description,
-      ...(ogImage ? { images: [ogImage] } : {}),
+      type: 'website',
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
     },
   };
 }

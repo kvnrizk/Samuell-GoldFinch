@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import VideoPlayer from '@/components/ui/VideoPlayer';
@@ -19,7 +20,9 @@ interface GalleryRow {
 }
 
 interface HeroVideo {
+  videoSource?: 'mux' | 'cloudinary';
   muxPlaybackId?: string;
+  cloudinaryVideoId?: string;
   posterUrl?: string;
 }
 
@@ -123,7 +126,7 @@ export default function BlazeProjectDetail({
     .filter((img): img is MediaItem => Boolean(img?.url));
 
   const heroImage = galleryImages[0];
-  const hasVideo = Boolean(project.heroVideo?.muxPlaybackId);
+  const hasVideo = Boolean(project.heroVideo?.muxPlaybackId || project.heroVideo?.cloudinaryVideoId);
   const formattedDate = formatDate(project.date);
 
   useGSAP(() => {
@@ -149,7 +152,8 @@ export default function BlazeProjectDetail({
         {hasVideo ? (
           <div className="absolute inset-0">
             <VideoPlayer
-              muxPlaybackId={project.heroVideo!.muxPlaybackId!}
+              muxPlaybackId={project.heroVideo!.videoSource !== 'cloudinary' ? project.heroVideo!.muxPlaybackId : undefined}
+              cloudinaryVideoId={project.heroVideo!.videoSource === 'cloudinary' ? project.heroVideo!.cloudinaryVideoId : undefined}
               poster={project.heroVideo!.posterUrl}
               autoPlay
               loop
@@ -164,6 +168,8 @@ export default function BlazeProjectDetail({
               src={heroImage.url}
               alt={project.title}
               fill
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
               sizes="100vw"
               className="object-cover opacity-70 scale-105"
             />
@@ -241,6 +247,8 @@ export default function BlazeProjectDetail({
                     alt={`${project.title} — ${i + 1}`}
                     width={img.width || 800}
                     height={img.height || 600}
+                    placeholder="blur"
+                    blurDataURL={BLUR_DATA_URL}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
                     loading="lazy"

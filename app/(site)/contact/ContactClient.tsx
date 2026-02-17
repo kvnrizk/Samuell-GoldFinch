@@ -57,18 +57,18 @@ export default function ContactClient() {
               <input type="text" name="_hp" className="hidden" tabIndex={-1} autoComplete="off" />
 
               <div className="space-y-2">
-                <label className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>Name</label>
-                <input type="text" name="name" required placeholder="Your name" className="w-full bg-black/40 border border-white/10 p-5 rounded-2xl outline-none focus:border-white/30 transition-all text-sm" />
+                <label htmlFor="contact-name" className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>Name</label>
+                <input id="contact-name" type="text" name="name" required placeholder="Your name" className="w-full bg-black/40 border border-white/10 p-5 rounded-2xl outline-none focus:border-white/30 transition-all text-sm" />
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>Email</label>
-                <input type="email" name="email" required placeholder="Email address" className="w-full bg-black/40 border border-white/10 p-5 rounded-2xl outline-none focus:border-white/30 transition-all text-sm" />
+                <label htmlFor="contact-email" className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>Email</label>
+                <input id="contact-email" type="email" name="email" required placeholder="Email address" className="w-full bg-black/40 border border-white/10 p-5 rounded-2xl outline-none focus:border-white/30 transition-all text-sm" />
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>Project type</label>
-                <select name="projectType" className="w-full bg-black/40 border border-white/10 p-5 rounded-2xl outline-none focus:border-white/30 transition-all text-sm appearance-none text-white/60">
+                <label htmlFor="contact-project-type" className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>Project type</label>
+                <select id="contact-project-type" name="projectType" className="w-full bg-black/40 border border-white/10 p-5 rounded-2xl outline-none focus:border-white/30 transition-all text-sm appearance-none text-white/60">
                   <option>Wedding Film</option>
                   <option>Editorial / Brand</option>
                   <option>DJ Booking / Live Performance</option>
@@ -78,8 +78,8 @@ export default function ContactClient() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>Details</label>
-                <textarea name="details" placeholder="Tell us more about your vision..." rows={5} className="w-full bg-black/40 border border-white/10 p-5 rounded-2xl outline-none focus:border-white/30 transition-all text-sm resize-none" />
+                <label htmlFor="contact-details" className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>Details</label>
+                <textarea id="contact-details" name="details" placeholder="Tell us more about your vision..." rows={5} className="w-full bg-black/40 border border-white/10 p-5 rounded-2xl outline-none focus:border-white/30 transition-all text-sm resize-none" />
               </div>
 
               <button

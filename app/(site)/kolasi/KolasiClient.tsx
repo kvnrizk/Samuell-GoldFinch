@@ -3,6 +3,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/gsap-utils';
 import TestimonialCarousel from '@/components/ui/TestimonialCarousel';
@@ -265,7 +266,7 @@ function MarqueeRow({ images, direction = 'left', speed = 1 }: { images: string[
             onMouseMove={handleMove}
             onMouseLeave={handleLeave}
           >
-            <Image src={src} alt="Kolasi event" className="h-56 md:h-72 w-auto object-cover pointer-events-none" width={400} height={288} sizes="300px" />
+            <Image src={src} alt="Kolasi event" className="h-56 md:h-72 w-auto object-cover pointer-events-none" width={400} height={288} placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="300px" />
           </div>
         ))}
         {/* Duplicate for seamless loop */}
@@ -277,7 +278,7 @@ function MarqueeRow({ images, direction = 'left', speed = 1 }: { images: string[
             onMouseMove={handleMove}
             onMouseLeave={handleLeave}
           >
-            <Image src={src} alt="Kolasi event" className="h-56 md:h-72 w-auto object-cover pointer-events-none" width={400} height={288} sizes="300px" />
+            <Image src={src} alt="Kolasi event" className="h-56 md:h-72 w-auto object-cover pointer-events-none" width={400} height={288} placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="300px" />
           </div>
         ))}
       </div>
@@ -383,6 +384,8 @@ function ServicesAccordion() {
                 src={svc.image}
                 alt=""
                 fill
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
                 className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 style={{ opacity: 0, transform: 'scale(1.15)' }}
                 sizes="(max-width: 768px) 100vw, 960px"
@@ -512,8 +515,8 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
       <section className="py-16 md:py-32 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div className="space-y-10 reveal-up">
           <h2 className="text-4xl md:text-5xl font-serif leading-tight italic">
-            Creative Booking &amp; <br />
-            <span className="not-italic">Talent Agency</span>
+            Curating Nights <br />
+            <span className="not-italic">That Move People</span>
           </h2>
           <div className="space-y-5 text-sm md:text-base leading-[1.9] font-light" style={{ color: 'var(--text-dim)' }}>
             <p>At Kolasi, we craft your brand&apos;s visual and audio identity through artistic direction, DJ bookings, live shows with top-tier singers, and PR strategy.</p>
@@ -527,6 +530,8 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
               src="/assets/kolasi/images/4F8A3195.jpg"
               alt="Kolasi — behind the scenes"
               fill
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
               className="object-cover group-hover:scale-105 transition-transform duration-700"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
@@ -553,6 +558,8 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
                   src={exp.image}
                   alt={exp.title}
                   fill
+                  placeholder="blur"
+                  blurDataURL={BLUR_DATA_URL}
                   className="absolute inset-0 object-cover group-hover:scale-110 transition-transform duration-700"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />

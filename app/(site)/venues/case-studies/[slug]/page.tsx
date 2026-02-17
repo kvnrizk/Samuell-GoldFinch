@@ -14,10 +14,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cs = await getCaseStudyBySlug(slug);
   if (!cs) return { title: 'Case Study Not Found' };
 
+  const ogImage = (cs as any).coverImage?.url;
   return {
     title: `${cs.venueName} — Case Study`,
     description: cs.outcome || `See how we transformed ${cs.venueName} with curated programming.`,
     alternates: { canonical: `/venues/case-studies/${slug}` },
+    openGraph: {
+      title: `${cs.venueName} — Case Study`,
+      description: cs.outcome || `See how we transformed ${cs.venueName} with curated programming.`,
+      type: 'article',
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
+    },
   };
 }
 

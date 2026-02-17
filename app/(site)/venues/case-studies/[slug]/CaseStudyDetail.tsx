@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap, prefersReducedMotion } from '@/lib/gsap-utils';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { SectionKicker } from '@/components/ui/SectionKicker';
 import { GlassCard } from '@/components/ui/GlassCard';
@@ -17,7 +18,9 @@ interface CaseStudyData {
   outcome?: string;
   deliverables?: string;
   fullContent?: string;
+  coverVideoSource?: 'mux' | 'cloudinary';
   coverVideo?: string;
+  coverVideoCloudinaryId?: string;
   coverImage?: { url: string };
 }
 
@@ -78,11 +81,12 @@ export default function CaseStudyDetail({ caseStudy }: CaseStudyDetailProps) {
         </div>
 
         {/* Cover media */}
-        {(caseStudy.coverVideo || caseStudy.coverImage?.url) && (
+        {(caseStudy.coverVideo || caseStudy.coverVideoCloudinaryId || caseStudy.coverImage?.url) && (
           <div className="relative rounded-2xl overflow-hidden mb-12 cs-reveal aspect-video">
-            {caseStudy.coverVideo ? (
+            {(caseStudy.coverVideo || caseStudy.coverVideoCloudinaryId) ? (
               <VideoPlayer
-                muxPlaybackId={caseStudy.coverVideo}
+                muxPlaybackId={caseStudy.coverVideoSource !== 'cloudinary' ? caseStudy.coverVideo : undefined}
+                cloudinaryVideoId={caseStudy.coverVideoSource === 'cloudinary' ? caseStudy.coverVideoCloudinaryId : undefined}
                 autoPlay
                 loop
                 muted
@@ -94,6 +98,8 @@ export default function CaseStudyDetail({ caseStudy }: CaseStudyDetailProps) {
                 src={caseStudy.coverImage!.url}
                 alt={caseStudy.venueName}
                 fill
+                placeholder="blur"
+                blurDataURL={BLUR_DATA_URL}
                 sizes="(max-width: 768px) 100vw, 896px"
                 className="object-cover"
               />

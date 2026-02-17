@@ -74,12 +74,14 @@ function InputField({ label, name, type = 'text', placeholder, value, onChange, 
   label: string; name: string; type?: string; placeholder?: string;
   value: string; onChange: (v: string) => void; required?: boolean;
 }) {
+  const id = `quote-${name}`;
   return (
     <div className="space-y-2">
-      <label className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>
+      <label htmlFor={id} className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>
         {label} {required && <span style={{ color: '#c8a96e' }}>*</span>}
       </label>
       <input
+        id={id}
         type={type}
         name={name}
         placeholder={placeholder}
@@ -98,12 +100,14 @@ function SelectField({ label, name, value, onChange, options, required }: {
   onChange: (v: string) => void; options: { label: string; value: string }[];
   required?: boolean;
 }) {
+  const id = `quote-${name}`;
   return (
     <div className="space-y-2">
-      <label className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>
+      <label htmlFor={id} className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>
         {label} {required && <span style={{ color: '#c8a96e' }}>*</span>}
       </label>
       <select
+        id={id}
         name={name}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -122,10 +126,12 @@ function TextareaField({ label, name, placeholder, value, onChange, rows = 4 }: 
   label: string; name: string; placeholder?: string;
   value: string; onChange: (v: string) => void; rows?: number;
 }) {
+  const id = `quote-${name}`;
   return (
     <div className="space-y-2">
-      <label className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>{label}</label>
+      <label htmlFor={id} className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>{label}</label>
       <textarea
+        id={id}
         name={name}
         placeholder={placeholder}
         value={value}

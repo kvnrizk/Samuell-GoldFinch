@@ -2,6 +2,7 @@
 
 import React, { useRef } from 'react';
 import Image from 'next/image';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import Link from 'next/link';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { useGSAP } from '@gsap/react';
@@ -212,6 +213,8 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
               src="/assets/about/IMG_5840.JPG"
               alt="Samuell Goldfinch"
               fill
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover group-hover:scale-105 transition-all duration-700"
             />
@@ -241,6 +244,8 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
               src="https://res.cloudinary.com/dwayr9ynb/image/upload/sg-platform/sg-logo-gold.png"
               alt="SG Logo"
               fill
+              placeholder="blur"
+              blurDataURL={BLUR_DATA_URL}
               sizes="128px"
               className="object-contain"
             />
@@ -352,6 +357,8 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
                       src={pillar.visual.src}
                       alt={pillar.name}
                       fill
+                      placeholder="blur"
+                      blurDataURL={BLUR_DATA_URL}
                       sizes="(max-width: 768px) 100vw, 50vw"
                       className={
                         isSignature
@@ -411,6 +418,8 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
                   src={drive.image}
                   alt={drive.title}
                   fill
+                  placeholder="blur"
+                  blurDataURL={BLUR_DATA_URL}
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover group-hover:scale-110 transition-transform duration-700"
                 />

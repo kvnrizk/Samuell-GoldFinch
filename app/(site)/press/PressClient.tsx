@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 
 interface LogoItem {
   brand?: string;
@@ -210,7 +211,7 @@ export default function PressClient({ pressKit }: PressClientProps) {
                   style={{ borderColor: 'var(--border)', backgroundColor: 'color-mix(in srgb, var(--bg-card) 50%, transparent)' }}
                 >
                   {logo.file?.url && (
-                    <Image src={logo.file.url} alt={brandLabel(logo.brand)} width={160} height={64} className="h-16 w-auto object-contain" />
+                    <Image src={logo.file.url} alt={brandLabel(logo.brand)} width={160} height={64} placeholder="blur" blurDataURL={BLUR_DATA_URL} className="h-16 w-auto object-contain" />
                   )}
                   <div className="text-center">
                     <p className="text-sm font-medium" style={{ color: 'var(--text)' }}>{brandLabel(logo.brand)}</p>
@@ -248,7 +249,7 @@ export default function PressClient({ pressKit }: PressClientProps) {
                   style={{ borderColor: 'var(--border)' }}
                 >
                   {photo.image?.url && (
-                    <Image src={photo.image.url} alt={photo.caption || 'Press photo'} width={800} height={600} sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-auto object-cover" loading="lazy" />
+                    <Image src={photo.image.url} alt={photo.caption || 'Press photo'} width={800} height={600} placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="(max-width: 768px) 100vw, 33vw" className="w-full h-auto object-cover" loading="lazy" />
                   )}
                   <div
                     className="absolute inset-0 flex flex-col justify-end p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"

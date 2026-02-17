@@ -16,6 +16,7 @@ import { TrustStrip } from '@/components/ui/TrustStrip';
 import { VenueForm } from '@/components/ui/VenueForm';
 import { StickyMobileCTA } from '@/components/ui/StickyMobileCTA';
 import { trackEvent } from '@/lib/analytics';
+import { BLUR_DATA_URL } from '@/lib/cloudinary';
 
 interface Deliverable {
   item?: string;
@@ -174,7 +175,7 @@ export default function VenuesClient({
 
       {/* ─── Visual break ─── */}
       <div className="relative h-40 md:h-64 overflow-hidden">
-        <Image src="/assets/kolasi/images/4F8A3777.jpg" alt="" fill sizes="100vw" className="object-cover opacity-30" />
+        <Image src="/assets/kolasi/images/4F8A3777.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
       </div>
 
@@ -260,7 +261,7 @@ export default function VenuesClient({
         <section className="py-24 md:py-32 relative overflow-hidden">
           {/* Background image accent */}
           <div className="absolute inset-0 pointer-events-none">
-            <Image src="/assets/kolasi/images/4F8A2882.jpg" alt="" fill sizes="100vw" className="object-cover opacity-[0.06]" />
+            <Image src="/assets/kolasi/images/4F8A2882.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.06]" />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 20%, transparent 80%, var(--bg))' }} />
           </div>
           <div className="relative max-w-7xl mx-auto px-6">
@@ -320,7 +321,7 @@ export default function VenuesClient({
 
       {/* ─── Visual break ─── */}
       <div className="relative h-40 md:h-64 overflow-hidden">
-        <Image src="/assets/kolasi/artists/4F8A3682.jpg" alt="" fill sizes="100vw" className="object-cover opacity-30" />
+        <Image src="/assets/kolasi/artists/4F8A3682.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
       </div>
 
@@ -355,6 +356,8 @@ export default function VenuesClient({
                         src={artist.photo.url}
                         alt={artist.name || 'Artist'}
                         fill
+                        placeholder="blur"
+                        blurDataURL={BLUR_DATA_URL}
                         sizes="(max-width: 768px) 100vw, 25vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-700"
                         loading="lazy"
@@ -490,7 +493,7 @@ export default function VenuesClient({
 
       {/* ─── Visual break ─── */}
       <div className="relative h-40 md:h-56 overflow-hidden">
-        <Image src="/assets/kolasi/images/4F8A3801.jpg" alt="" fill sizes="100vw" className="object-cover opacity-25" />
+        <Image src="/assets/kolasi/images/4F8A3801.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-25" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
       </div>
 
@@ -498,7 +501,7 @@ export default function VenuesClient({
       <section id="venue-form" className="py-24 md:py-32 relative overflow-hidden">
         {/* Background photo accent */}
         <div className="absolute inset-0 pointer-events-none">
-          <Image src="/assets/kolasi/images/4F8A2938.jpg" alt="" fill sizes="100vw" className="object-cover opacity-[0.04]" />
+          <Image src="/assets/kolasi/images/4F8A2938.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.04]" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, var(--bg) 40%, transparent 80%)' }} />
         </div>
         <div className="relative max-w-7xl mx-auto px-6">
