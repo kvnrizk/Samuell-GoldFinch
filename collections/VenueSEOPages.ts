@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload';
 export const VenueSEOPages: CollectionConfig = {
   slug: 'venue-seo-pages',
   admin: {
+    group: 'Venues',
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'targetKeyword', 'sortOrder'],
   },

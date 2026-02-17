@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload';
 export const VenueInquiries: CollectionConfig = {
   slug: 'venue-inquiries',
   admin: {
+    group: 'Leads',
     useAsTitle: 'venueName',
     defaultColumns: ['venueName', 'contactName', 'monthlyBudget', 'status', 'createdAt'],
   },

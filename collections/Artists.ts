@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload';
 export const Artists: CollectionConfig = {
   slug: 'artists',
   admin: {
+    group: 'Kolasi Agency',
     useAsTitle: 'name',
     defaultColumns: ['name', 'featured'],
   },

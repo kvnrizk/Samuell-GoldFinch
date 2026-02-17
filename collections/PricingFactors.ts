@@ -4,6 +4,7 @@ export const PricingFactors: CollectionConfig = {
   slug: 'pricing-factors',
   labels: { singular: 'Pricing Factor', plural: 'Pricing Factors' },
   admin: {
+    group: 'Settings',
     useAsTitle: 'factorName',
     defaultColumns: ['service', 'factorName', 'factorType', 'basePrice', 'sortOrder'],
   },

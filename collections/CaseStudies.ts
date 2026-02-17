@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload';
 export const CaseStudies: CollectionConfig = {
   slug: 'case-studies',
   admin: {
+    group: 'Venues',
     useAsTitle: 'venueName',
     defaultColumns: ['venueName', 'role', 'featured', 'sortOrder'],
   },
@@ -31,9 +32,30 @@ export const CaseStudies: CollectionConfig = {
       relationTo: 'media',
     },
     {
+      name: 'coverVideoSource',
+      type: 'select',
+      defaultValue: 'mux',
+      options: [
+        { label: 'Mux', value: 'mux' },
+        { label: 'Cloudinary', value: 'cloudinary' },
+      ],
+      admin: { description: 'Where the cover video is hosted' },
+    },
+    {
       name: 'coverVideo',
       type: 'text',
-      admin: { description: 'Mux playback ID' },
+      admin: {
+        description: 'Mux playback ID',
+        condition: (data) => data?.coverVideoSource !== 'cloudinary',
+      },
+    },
+    {
+      name: 'coverVideoCloudinaryId',
+      type: 'text',
+      admin: {
+        description: 'Cloudinary public ID (e.g. sg-platform/videos/my-video)',
+        condition: (data) => data?.coverVideoSource === 'cloudinary',
+      },
     },
     {
       name: 'role',

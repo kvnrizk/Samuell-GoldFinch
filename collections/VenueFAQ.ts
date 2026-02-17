@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload';
 export const VenueFAQ: CollectionConfig = {
   slug: 'venue-faq',
   admin: {
+    group: 'Venues',
     useAsTitle: 'question',
     defaultColumns: ['question', 'sortOrder'],
   },

@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload';
 export const VenuePackages: CollectionConfig = {
   slug: 'venue-packages',
   admin: {
+    group: 'Venues',
     useAsTitle: 'name',
     defaultColumns: ['name', 'tier', 'featured', 'sortOrder'],
   },

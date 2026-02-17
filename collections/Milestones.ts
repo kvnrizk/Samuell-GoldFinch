@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload';
 export const Milestones: CollectionConfig = {
   slug: 'milestones',
   admin: {
+    group: 'Content',
     useAsTitle: 'title',
     defaultColumns: ['title', 'brand', 'sortOrder'],
   },

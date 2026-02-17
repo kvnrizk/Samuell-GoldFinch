@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload';
 export const KolasiEvents: CollectionConfig = {
   slug: 'kolasi-events',
   admin: {
+    group: 'Kolasi Agency',
     useAsTitle: 'title',
     defaultColumns: ['title', 'eventType', 'venue', 'featured', 'date'],
   },
@@ -66,7 +67,28 @@ export const KolasiEvents: CollectionConfig = {
       type: 'array',
       fields: [
         { name: 'title', type: 'text' },
-        { name: 'muxPlaybackId', type: 'text', required: true },
+        {
+          name: 'videoSource',
+          type: 'select',
+          defaultValue: 'mux',
+          options: [
+            { label: 'Mux', value: 'mux' },
+            { label: 'Cloudinary', value: 'cloudinary' },
+          ],
+        },
+        {
+          name: 'muxPlaybackId',
+          type: 'text',
+          admin: { condition: (_, siblingData) => siblingData?.videoSource !== 'cloudinary' },
+        },
+        {
+          name: 'cloudinaryVideoId',
+          type: 'text',
+          admin: {
+            description: 'Cloudinary public ID (e.g. sg-platform/videos/my-video)',
+            condition: (_, siblingData) => siblingData?.videoSource === 'cloudinary',
+          },
+        },
         { name: 'loopEnd', type: 'number', admin: { description: 'Loop point in seconds (e.g. 22)' } },
       ],
     },

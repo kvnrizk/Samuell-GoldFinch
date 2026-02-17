@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload';
 export const BlazeProjects: CollectionConfig = {
   slug: 'blaze-projects',
   admin: {
+    group: 'Blaze Production',
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'featured', 'date'],
   },
@@ -43,8 +44,30 @@ export const BlazeProjects: CollectionConfig = {
       name: 'heroVideo',
       type: 'group',
       fields: [
-        { name: 'muxPlaybackId', type: 'text' },
-        { name: 'muxAssetId', type: 'text' },
+        {
+          name: 'videoSource',
+          type: 'select',
+          defaultValue: 'mux',
+          options: [
+            { label: 'Mux', value: 'mux' },
+            { label: 'Cloudinary', value: 'cloudinary' },
+          ],
+          admin: { description: 'Where the video is hosted' },
+        },
+        {
+          name: 'muxPlaybackId',
+          type: 'text',
+          admin: { condition: (_, siblingData) => siblingData?.videoSource !== 'cloudinary' },
+        },
+        { name: 'muxAssetId', type: 'text', admin: { condition: (_, siblingData) => siblingData?.videoSource !== 'cloudinary' } },
+        {
+          name: 'cloudinaryVideoId',
+          type: 'text',
+          admin: {
+            description: 'Cloudinary public ID (e.g. sg-platform/videos/my-video)',
+            condition: (_, siblingData) => siblingData?.videoSource === 'cloudinary',
+          },
+        },
         { name: 'posterUrl', type: 'text' },
       ],
     },

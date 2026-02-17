@@ -7,6 +7,7 @@ export const Media: CollectionConfig = {
     filesRequiredOnCreate: true,
   },
   admin: {
+    group: 'Settings',
     useAsTitle: 'alt',
   },
   access: {
