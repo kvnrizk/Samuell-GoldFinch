@@ -1,4 +1,5 @@
 import React from 'react';
+import { DM_Sans, Playfair_Display } from 'next/font/google';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CustomCursor from '@/components/ui/CustomCursor';
@@ -13,19 +14,30 @@ import { MetaPixel } from '@/components/MetaPixel';
 import { CookieConsent } from '@/components/ui/CookieConsent';
 import { OrganizationJsonLd, PersonJsonLd } from '@/components/JsonLd';
 
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-dm-sans',
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  style: ['normal', 'italic'],
+  display: 'swap',
+  variable: '--font-playfair',
+});
+
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" className={`dark ${dmSans.variable} ${playfair.variable}`} suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://stream.mux.com" />
         <link rel="dns-prefetch" href="https://image.mux.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"
-          rel="stylesheet"
-        />
+        <link rel="alternate" type="application/rss+xml" title="Samuell Goldfinch Journal" href="/feed.xml" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
