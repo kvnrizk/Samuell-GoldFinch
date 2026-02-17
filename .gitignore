@@ -22,12 +22,26 @@ build/
 
 # payload
 /uploads
+app/(payload)/admin/importMap.js
 
-# large video files (keep locally, too big for GitHub)
+# large media files (keep locally, too big for GitHub)
 *.mp4
+*.mov
+*.MOV
+*.avi
+*.mkv
+
+# signature generation tool (not part of web app)
+assets/signature/
 
 # scripts output (contains asset IDs)
 scripts/mux-playback-ids.json
+
+# static assets (images served from public/, heavy for git)
+public/assets/
+
+# docs (internal)
+docs/
 
 # misc
 .DS_Store

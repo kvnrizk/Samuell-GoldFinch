@@ -334,10 +334,10 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
               const isSignature = i === 0;
               const visualContent = (
                 <div
-                  className={`hidden md:block relative overflow-hidden group ${isSignature ? '' : 'rounded-2xl border'}`}
+                  className={`hidden md:flex md:items-center md:justify-center relative overflow-hidden group ${isSignature ? '' : 'rounded-2xl border'}`}
                   style={{
                     borderColor: isSignature ? undefined : 'var(--border)',
-                    minHeight: isSignature ? undefined : '100%',
+                    minHeight: '100%',
                   }}
                 >
                   {pillar.visual.type === 'video' ? (
@@ -352,6 +352,17 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
                         className="group-hover:scale-105 transition-transform duration-700"
                       />
                     </div>
+                  ) : isSignature ? (
+                    <Image
+                      src={pillar.visual.src}
+                      alt={pillar.name}
+                      width={500}
+                      height={300}
+                      placeholder="blur"
+                      blurDataURL={BLUR_DATA_URL}
+                      sizes="(max-width: 768px) 100vw, 40vw"
+                      className="w-full max-w-md group-hover:scale-[1.03] transition-transform duration-700 drop-shadow-2xl"
+                    />
                   ) : (
                     <Image
                       src={pillar.visual.src}
@@ -360,11 +371,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
                       placeholder="blur"
                       blurDataURL={BLUR_DATA_URL}
                       sizes="(max-width: 768px) 100vw, 50vw"
-                      className={
-                        isSignature
-                          ? 'object-contain group-hover:scale-[1.03] transition-transform duration-700 drop-shadow-2xl'
-                          : 'object-cover group-hover:scale-105 transition-transform duration-700'
-                      }
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   )}
                 </div>

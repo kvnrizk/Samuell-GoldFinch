@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     images: [
       {
-        url: `${SITE_URL}/assets/about/IMG_5840.JPG`,
+        url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
         alt: 'Samuell Goldfinch — Creative Director, Filmmaker, DJ',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    images: [`${SITE_URL}/assets/about/IMG_5840.JPG`],
+    images: [`${SITE_URL}/og-image.png`],
   },
   robots: {
     index: true,
