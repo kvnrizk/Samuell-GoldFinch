@@ -37,7 +37,7 @@ interface CMSPhoto {
 }
 
 interface CMSGalleryItem {
-  photo?: CMSPhoto;
+  image?: CMSPhoto;
   [key: string]: unknown;
 }
 
@@ -69,8 +69,8 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
 
   // Blaze section cycling images
   const blazeImages = [
-    blazeProjects[0]?.gallery?.[0]?.photo?.url || '/assets/blaze/stouh_beirut/2E2A1724.jpg',
-    blazeProjects[1]?.gallery?.[0]?.photo?.url || '/assets/blaze/ambassy/0C5A9134.jpg',
+    blazeProjects[0]?.gallery?.[0]?.image?.url || '/assets/blaze/stouh_beirut/2E2A1724.jpg',
+    blazeProjects[1]?.gallery?.[0]?.image?.url || '/assets/blaze/ambassy/0C5A9134.jpg',
     '/assets/blaze/weddings/DSCF2395.jpg',
   ];
   const [blazeIdx, setBlazeIdx] = useState(0);
@@ -85,7 +85,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
   // Build carousel items from CMS or fallback
   const carouselItems = blazeProjects.length > 0
     ? blazeProjects.map((p: CMSProject) => ({
-        url: p.gallery?.[0]?.photo?.url || p.heroVideo?.posterUrl || '/assets/blaze/stouh_beirut/2E2A1724.jpg',
+        url: p.gallery?.[0]?.image?.url || p.heroVideo?.posterUrl || '/assets/blaze/stouh_beirut/2E2A1724.jpg',
         title: p.title || 'Untitled',
         category: p.category || 'Production',
       }))
@@ -164,7 +164,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
           <div className="hero-reveal hidden md:block">
             <div className="group relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
               <Image
-                src={blazeProjects[0]?.gallery?.[0]?.photo?.url || '/assets/blaze/weddings/0G0A7811.jpg'}
+                src={blazeProjects[0]?.gallery?.[0]?.image?.url || '/assets/blaze/weddings/0G0A7811.jpg'}
                 alt="Blaze Motion — Signature Wedding Reel"
                 fill
                 placeholder="blur"

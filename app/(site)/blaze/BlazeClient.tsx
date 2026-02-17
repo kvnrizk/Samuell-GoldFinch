@@ -48,7 +48,7 @@ const editorialStatic = [
 ];
 
 interface BlazeGalleryItem {
-  photo?: {
+  image?: {
     url?: string;
   };
 }
@@ -78,7 +78,7 @@ function projectsToCarousel(projects: BlazeProject[], category: string) {
   if (filtered.length === 0) return null;
   return filtered.flatMap((p) =>
     (p.gallery || []).map((g) => ({
-      url: g.photo?.url || '',
+      url: g.image?.url || '',
       title: p.title,
       category: p.category,
     })),

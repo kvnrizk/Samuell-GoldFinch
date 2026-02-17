@@ -58,7 +58,7 @@ function getIcon(name: string) {
 }
 
 interface GalleryPhoto {
-  photo?: { url: string };
+  image?: { url: string };
 }
 
 interface KolasiEvent {
@@ -464,7 +464,7 @@ function MarqueeGallery({ row1, row2 }: { row1: string[]; row2: string[] }) {
 export default function KolasiClient({ events, testimonials = [], upcomingEvents = [] }: KolasiClientProps) {
   // Build gallery from CMS events or fallback
   const cmsGallery = events.flatMap((e: KolasiEvent) =>
-    (e.gallery || []).map((g: GalleryPhoto) => g.photo?.url).filter((u): u is string => Boolean(u)),
+    (e.gallery || []).map((g: GalleryPhoto) => g.image?.url).filter((u): u is string => Boolean(u)),
   );
   const row1 = cmsGallery.length > 0 ? cmsGallery.slice(0, Math.ceil(cmsGallery.length / 2)) : galleryRow1;
   const row2 = cmsGallery.length > 0 ? cmsGallery.slice(Math.ceil(cmsGallery.length / 2)) : galleryRow2;
