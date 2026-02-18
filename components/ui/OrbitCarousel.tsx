@@ -45,7 +45,7 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
 
   return (
     <div
-      className="relative w-full max-w-4xl mx-auto h-[440px] md:h-[600px] flex items-center justify-center"
+      className="relative w-full max-w-4xl mx-auto h-[400px] md:h-[600px] flex items-center justify-center"
       style={{ perspective: '1000px' }}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -66,12 +66,12 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
           opacity = '1';
           zIndex = '10';
         } else if (isLeft) {
-          transform = 'translateX(-40%) scale(0.7) rotateY(25deg)';
-          opacity = '0.4';
+          transform = 'translateX(-55%) scale(0.65) rotateY(25deg)';
+          opacity = '0.35';
           zIndex = '5';
         } else if (isRight) {
-          transform = 'translateX(40%) scale(0.7) rotateY(-25deg)';
-          opacity = '0.4';
+          transform = 'translateX(55%) scale(0.65) rotateY(-25deg)';
+          opacity = '0.35';
           zIndex = '5';
         }
 
@@ -82,14 +82,14 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
             style={{ transform, opacity, zIndex }}
             onClick={() => setActiveIndex(index)}
           >
-            <div className="relative overflow-hidden rounded-2xl shadow-2xl w-[280px] md:w-[450px] aspect-[4/5] border" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border)' }}>
+            <div className="relative overflow-hidden rounded-2xl shadow-2xl w-[240px] md:w-[450px] aspect-[4/5] border" style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border)' }}>
               <Image
                 src={item.url}
                 alt={item.title}
                 fill
                 placeholder="blur"
                 blurDataURL={BLUR_DATA_URL}
-                sizes="(max-width: 768px) 280px, 450px"
+                sizes="(max-width: 768px) 240px, 450px"
                 className="object-cover transition-all duration-500"
               />
               <div className="absolute inset-0 flex flex-col justify-end p-8" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--bg) 80%, transparent), transparent, transparent)' }}>
@@ -110,7 +110,7 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
         );
       })}
 
-      <div className="absolute -bottom-14 md:bottom-[-100px] flex space-x-4">
+      <div className="absolute -bottom-20 md:bottom-[-100px] flex space-x-4">
         <button
           onClick={prev}
           className="p-3 md:p-4 rounded-full border transition-all" style={{ borderColor: 'var(--border)', color: 'var(--text)' }}

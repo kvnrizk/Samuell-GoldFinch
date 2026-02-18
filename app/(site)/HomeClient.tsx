@@ -13,9 +13,9 @@ import TestimonialCarousel from '@/components/ui/TestimonialCarousel';
 
 // Static fallbacks when CMS is empty
 const staticFeaturedSets = [
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364037/sg-platform/statichttps://res.cloudinary.com/dwayr9ynb/image/upload/v1771364037/sg-platform/static/assets/blaze/stouh_beirut/2E2A1724.jpg', title: 'STOUH BEIRUT', category: 'Rooftop Event' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363942/sg-platform/statichttps://res.cloudinary.com/dwayr9ynb/image/upload/v1771363942/sg-platform/static/assets/blaze/ambassy/0C5A9134.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic Event' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/statichttps://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg', title: 'Blaze Weddings', category: 'Cinematic Wedding' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364037/sg-platform/static/assets/blaze/stouh_beirut/2E2A1724.jpg', title: 'STOUH BEIRUT', category: 'Rooftop Event' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363942/sg-platform/static/assets/blaze/ambassy/0C5A9134.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic Event' },
+  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg', title: 'Blaze Weddings', category: 'Cinematic Wedding' },
   { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364019/sg-platform/static/assets/blaze/editorial_and_brand/pexels-amar-10288372.jpg', title: 'Editorial & Brand', category: 'Brand Campaign' },
 ];
 
@@ -198,7 +198,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
               Stories Worth <span className="not-italic">Reliving</span>
             </h2>
           </div>
-          <div className="reveal-section">
+          <div className="reveal-section pb-24 md:pb-32">
             <OrbitCarousel items={carouselItems} />
           </div>
         </div>
