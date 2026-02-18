@@ -105,7 +105,7 @@ export default function VenuesClient({
         {/* Video Background */}
         <div className="absolute inset-0 z-0">
           <VideoPlayer
-            src="/assets/videos/venue-hero.mp4"
+            muxPlaybackId="uar02cwjF78qfyUUvSQIMcnQyHVImiF6sJP3Izh7D01JU"
             autoPlay
             loop
             muted

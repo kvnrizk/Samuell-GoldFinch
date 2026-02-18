@@ -16,7 +16,7 @@ interface BrandPillar {
   accent: string;
   stats: { value: string; label: string }[];
   link: string;
-  visual: { type: 'image' | 'video'; src: string; muxPlaybackId?: string };
+  visual: { type: 'image' | 'video'; src?: string; muxPlaybackId?: string };
 }
 
 const brandPillars: BrandPillar[] = [
@@ -46,7 +46,7 @@ const brandPillars: BrandPillar[] = [
       { value: '50+', label: 'DJs Booked' },
     ],
     link: '/kolasi',
-    visual: { type: 'video', src: '/assets/kolasi/events/2ndsun/2nd_sun.mp4', muxPlaybackId: 'RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo' },
+    visual: { type: 'video', muxPlaybackId: 'RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo' },
   },
   {
     num: '03',
@@ -125,7 +125,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
         accent: accentMap[m.brand || 'personal'] || 'var(--text)',
         stats: [],
         link: '/about',
-        visual: brandPillars[i]?.visual || { type: 'image' as const, src: '/assets/about/IMAGE_PORTRAIT.webp' },
+        visual: brandPillars[i]?.visual || { type: 'image' as const, src: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363934/sg-platform/static/assets/1st.png' },
       }))
     : brandPillars;
   const containerRef = useRef<HTMLDivElement>(null);
@@ -239,20 +239,6 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
       {/* The Universe — Brand Pillars */}
       <section ref={pillarsRef} className="py-16 md:py-40 max-w-7xl mx-auto px-6">
         <div className="text-center mb-16 md:mb-32 reveal-up">
-          <div className="w-24 h-24 md:w-32 md:h-32 mx-auto mb-8 relative">
-            <Image
-              src="https://res.cloudinary.com/dwayr9ynb/image/upload/sg-platform/sg-logo-gold.png"
-              alt="SG Logo"
-              fill
-              placeholder="blur"
-              blurDataURL={BLUR_DATA_URL}
-              sizes="128px"
-              className="object-contain"
-            />
-          </div>
-          <p className="text-xs font-medium mb-6" style={{ color: 'var(--text-mute)' }}>
-            Three Pillars
-          </p>
           <h2 className="text-4xl md:text-5xl font-serif italic">The Universe</h2>
         </div>
 
@@ -354,7 +340,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
                     </div>
                   ) : isSignature ? (
                     <Image
-                      src={pillar.visual.src}
+                      src={pillar.visual.src || ''}
                       alt={pillar.name}
                       width={500}
                       height={300}
@@ -365,7 +351,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
                     />
                   ) : (
                     <Image
-                      src={pillar.visual.src}
+                      src={pillar.visual.src || ''}
                       alt={pillar.name}
                       fill
                       placeholder="blur"

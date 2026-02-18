@@ -303,7 +303,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
                 <VideoPlayer muxPlaybackId="RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo" autoPlay loop muted mode="hero" />
               </div>
               <div className="col-span-2 aspect-[16/9] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl">
-                <VideoPlayer src="/assets/kolasi/Speakeasy_Ads/LeSpeakeasyVid.mp4" autoPlay loop muted mode="hero" />
+                <VideoPlayer muxPlaybackId="bzlHPIIz3L68lqg6fmMTH02GsYL1AeZnT6ewRQIlokaE" autoPlay loop muted mode="hero" />
               </div>
             </div>
           </div>

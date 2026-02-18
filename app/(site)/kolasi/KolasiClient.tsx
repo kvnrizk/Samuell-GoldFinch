@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BLUR_DATA_URL } from '@/lib/cloudinary';
@@ -77,43 +77,13 @@ interface KolasiClientProps {
 }
 
 const showcaseClips = [
-  { src: '/assets/kolasi/Speakeasy_Ads/le speakeasy ads.mp4', label: 'Le Speakeasy', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364299/sg-platform/static/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.jpg', slug: 'le-speakeasy' },
-  { src: '/assets/kolasi/Speakeasy_Ads/le speakeasy ads2 barman.mp4', label: '2nd Sun', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg', slug: '2nd-sun' },
-  { src: '/assets/kolasi/Speakeasy_Ads/lespeakeasy g500 mercedes.mp4', label: 'Kolasi Nights', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364247/sg-platform/static/assets/kolasi/images/4F8A2938.jpg', slug: 'kolasi-nights' },
+  { muxPlaybackId: 'bzlHPIIz3L68lqg6fmMTH02GsYL1AeZnT6ewRQIlokaE', label: 'Le Speakeasy', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364299/sg-platform/static/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.jpg', slug: 'le-speakeasy' },
+  { muxPlaybackId: 'RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo', label: '2nd Sun', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg', slug: '2nd-sun' },
+  { muxPlaybackId: '2aAgNa5S5s32fQG8XBUHXrwPUBbEQxn4oyKAjJSV801k', label: 'Kolasi Nights', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364247/sg-platform/static/assets/kolasi/images/4F8A2938.jpg', slug: 'kolasi-nights' },
 ];
 
 function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] & { slug?: string } }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [loaded, setLoaded] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
-
-  // Lazy load: set src when near viewport
-  useEffect(() => {
-    const el = cardRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setLoaded(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '200px' },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  // Auto-play on loop once loaded (like Instagram reels)
-  useEffect(() => {
-    if (!loaded) return;
-    const v = videoRef.current;
-    if (!v) return;
-    const startPlay = () => { v.play().catch(() => {}); };
-    if (v.readyState >= 3) { startPlay(); }
-    else { v.addEventListener('canplay', startPlay, { once: true }); }
-    return () => v.removeEventListener('canplay', startPlay);
-  }, [loaded]);
 
   return (
     <div
@@ -121,16 +91,16 @@ function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] & { slug?: 
       className="reveal-up aspect-[4/3] rounded-3xl overflow-hidden border relative group cursor-pointer shadow-2xl"
       style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border)' }}
     >
-      <video
-        ref={videoRef}
-        muted
-        playsInline
-        loop
-        preload="metadata"
-        poster={clip.poster}
-        className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
-        {...(loaded ? { src: clip.src } : {})}
-      />
+      <div className="w-full h-full opacity-60 group-hover:opacity-100 transition-opacity duration-500">
+        <VideoPlayer
+          muxPlaybackId={clip.muxPlaybackId}
+          poster={clip.poster}
+          autoPlay
+          loop
+          muted
+          mode="hero"
+        />
+      </div>
       {/* Hover hint — fades out on hover */}
       <div className="absolute inset-0 flex flex-col items-center justify-center group-hover:opacity-0 transition-opacity duration-300 pointer-events-none">
         <div className="w-14 h-14 rounded-full border flex items-center justify-center mb-3" style={{ borderColor: 'var(--border-hi)', backgroundColor: 'color-mix(in srgb, var(--bg) 50%, transparent)' }}>
