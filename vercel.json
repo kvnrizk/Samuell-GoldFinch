@@ -3,5 +3,11 @@
   "framework": "nextjs",
   "installCommand": "npm ci --legacy-peer-deps",
   "buildCommand": "npm run build",
-  "regions": ["cdg1"]
+  "regions": ["cdg1"],
+  "crons": [
+    {
+      "path": "/api/cron/process-sequences",
+      "schedule": "0 * * * *"
+    }
+  ]
 }

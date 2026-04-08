@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 
 interface InquiryDoc {
   id: string;
@@ -14,6 +14,12 @@ interface InquiryDoc {
   status: string;
   createdAt: string;
   type: 'inquiry' | 'venue';
+  // Lead scoring fields
+  leadScore?: number;
+  leadTier?: string;
+  estimatedValue?: number;
+  contractValue?: number;
+  monthlyValue?: number;
 }
 
 interface Column {
@@ -53,12 +59,52 @@ const budgetLabels: Record<string, string> = {
   '10k-plus': '10K+',
 };
 
+// Tier-based badge colors
+const tierColors: Record<string, { bg: string; text: string }> = {
+  hot:  { bg: '#ef4444', text: '#ffffff' },
+  warm: { bg: '#c8a96e', text: '#09090b' },
+  cool: { bg: '#3b82f6', text: '#ffffff' },
+  cold: { bg: '#6b7280', text: '#ffffff' },
+};
+
+// Currency formatter for column value subtotals
+const eurFormatter = new Intl.NumberFormat('fr-FR', {
+  style: 'currency',
+  currency: 'EUR',
+  maximumFractionDigits: 0,
+});
+
 function timeAgo(dateStr: string): string {
   const days = Math.floor((Date.now() - new Date(dateStr).getTime()) / 86400000);
   if (days === 0) return 'Today';
   if (days === 1) return 'Yesterday';
   if (days < 7) return `${days}d ago`;
   return new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
+/** Get the best value estimate for a doc (contractValue > estimatedValue) */
+function getDocValue(doc: InquiryDoc): number {
+  if (doc.type === 'venue') {
+    return doc.contractValue || doc.estimatedValue || 0;
+  }
+  return doc.estimatedValue || 0;
+}
+
+/** Sort docs by leadScore descending; docs without a score go to the bottom */
+function sortByScore(a: InquiryDoc, b: InquiryDoc): number {
+  const scoreA = a.leadScore ?? -1;
+  const scoreB = b.leadScore ?? -1;
+  return scoreB - scoreA;
+}
+
+/** Infer tier from score when leadTier is missing */
+function getTierForDoc(doc: InquiryDoc): string | null {
+  if (doc.leadTier) return doc.leadTier;
+  if (doc.leadScore == null || doc.leadScore <= 0) return null;
+  if (doc.leadScore >= 80) return 'hot';
+  if (doc.leadScore >= 60) return 'warm';
+  if (doc.leadScore >= 40) return 'cool';
+  return 'cold';
 }
 
 export default function InquiryKanban() {
@@ -92,6 +138,17 @@ export default function InquiryKanban() {
   }, [collection, view]);
 
   useEffect(() => { fetchDocs(); }, [fetchDocs]);
+
+  // Pre-compute column data: sorted docs + value subtotals
+  const columnData = useMemo(() => {
+    const map: Record<string, { docs: InquiryDoc[]; totalValue: number }> = {};
+    for (const col of columns) {
+      const colDocs = docs.filter((d) => d.status === col.id).sort(sortByScore);
+      const totalValue = colDocs.reduce((sum, d) => sum + getDocValue(d), 0);
+      map[col.id] = { docs: colDocs, totalValue };
+    }
+    return map;
+  }, [docs, columns]);
 
   async function moveCard(docId: string, newStatus: string) {
     setUpdating(docId);
@@ -147,7 +204,7 @@ export default function InquiryKanban() {
         overflowX: 'auto',
       }}>
         {columns.map((col) => {
-          const colDocs = docs.filter((d) => d.status === col.id);
+          const { docs: colDocs, totalValue } = columnData[col.id] || { docs: [], totalValue: 0 };
           return (
             <div key={col.id} style={{
               background: 'var(--theme-elevation-50)',
@@ -164,9 +221,16 @@ export default function InquiryKanban() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: col.color }}>
-                  {col.label}
-                </span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 600, color: col.color }}>
+                    {col.label}
+                  </span>
+                  {totalValue > 0 && (
+                    <span style={{ fontSize: '0.5625rem', color: 'var(--theme-elevation-400)' }}>
+                      {eurFormatter.format(totalValue)}
+                    </span>
+                  )}
+                </div>
                 <span style={{
                   fontSize: '0.625rem',
                   fontWeight: 700,
@@ -189,6 +253,11 @@ export default function InquiryKanban() {
                   const isUpdating = updating === doc.id;
                   const editUrl = `/admin/collections/${collection}/${doc.id}`;
 
+                  // Score badge data
+                  const tier = getTierForDoc(doc);
+                  const showBadge = doc.leadScore != null && doc.leadScore > 0 && tier != null;
+                  const badgeColors = tier ? tierColors[tier] || tierColors.cold : tierColors.cold;
+
                   return (
                     <div key={doc.id} style={{
                       padding: '0.75rem',
@@ -200,8 +269,35 @@ export default function InquiryKanban() {
                       transition: 'opacity 0.2s',
                     }}>
                       <a href={editUrl} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <div style={{ fontSize: '0.8125rem', fontWeight: 500, marginBottom: '2px' }}>
-                          {displayName || 'Unnamed'}
+                        <div style={{
+                          fontSize: '0.8125rem',
+                          fontWeight: 500,
+                          marginBottom: '2px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: '6px',
+                        }}>
+                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            {displayName || 'Unnamed'}
+                          </span>
+                          {showBadge && (
+                            <span style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              width: '24px',
+                              height: '24px',
+                              borderRadius: '50%',
+                              fontSize: '0.5625rem',
+                              fontWeight: 700,
+                              background: badgeColors.bg,
+                              color: badgeColors.text,
+                              flexShrink: 0,
+                            }}>
+                              {doc.leadScore}
+                            </span>
+                          )}
                         </div>
                         <div style={{ fontSize: '0.6875rem', color: 'var(--theme-elevation-500)' }}>
                           {subtitle} &middot; {timeAgo(doc.createdAt)}

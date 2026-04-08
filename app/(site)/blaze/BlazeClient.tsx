@@ -235,14 +235,14 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
       </section>
 
       {/* Categorized Carousels */}
-      <section className="py-16 md:py-40 space-y-20 md:space-y-40">
+      <section className="py-16 md:py-40 space-y-20 md:space-y-40 overflow-hidden">
         <div className="reveal-up">
           <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
             <h3 className="text-3xl font-serif mb-2 italic">STOUH BEIRUT Rooftop</h3>
             <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Golden-hour diplomacy and Parisian skyline energy.</p>
           </div>
           <OrbitCarousel items={eventItems} autoplayInterval={5200} />
-          <div className="mt-12 md:mt-28 mb-8 text-center">
+          <div className="mt-16 md:mt-24 mb-8 text-center">
             <Link href={`/blaze/${firstSlugForCategory(projects, 'Event') || 'stouh-beirut'}`} className="px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
               View Project
             </Link>
@@ -255,7 +255,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
             <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Diplomatic ceremonies captured with cinematic restraint.</p>
           </div>
           <OrbitCarousel items={diplomaticItems} autoplayInterval={5600} />
-          <div className="mt-12 md:mt-28 mb-8 text-center">
+          <div className="mt-16 md:mt-24 mb-8 text-center">
             <Link href={`/blaze/${firstSlugForCategory(projects, 'Diplomatic') || 'embassy-of-lebanon'}`} className="px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
               View Project
             </Link>
@@ -268,7 +268,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
             <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Stories of connection and timeless elegance.</p>
           </div>
           <OrbitCarousel items={weddingItems} autoplayInterval={5200} />
-          <div className="mt-12 md:mt-28 mb-8 text-center">
+          <div className="mt-16 md:mt-24 mb-8 text-center">
             <Link href={`/blaze/${firstSlugForCategory(projects, 'Wedding') || 'weddings'}`} className="px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
               View Project
             </Link>
@@ -281,7 +281,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
             <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>The language of identity told through crafted imagery.</p>
           </div>
           <OrbitCarousel items={editorialItems} autoplayInterval={5400} />
-          <div className="mt-12 md:mt-28 mb-8 text-center">
+          <div className="mt-16 md:mt-24 mb-8 text-center">
             <Link href={`/blaze/${firstSlugForCategory(projects, 'Editorial') || 'editorial-brand'}`} className="px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
               View Project
             </Link>

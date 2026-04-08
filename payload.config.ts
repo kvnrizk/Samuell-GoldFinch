@@ -21,6 +21,9 @@ import { VenueSEOPages } from './collections/VenueSEOPages';
 import { Testimonials } from './collections/Testimonials';
 import { Posts } from './collections/Posts';
 import { PricingFactors } from './collections/PricingFactors';
+import { AdminAlerts } from './collections/AdminAlerts';
+import { AutomationSequences } from './collections/AutomationSequences';
+import { SentNotifications } from './collections/SentNotifications';
 import { GlobalSettings } from './globals/GlobalSettings';
 import { PressKit } from './globals/PressKit';
 import { Showreel } from './globals/Showreel';
@@ -38,10 +41,11 @@ export default buildConfig({
     },
     components: {
       beforeDashboard: [
+        '/components/admin/AdminNotificationBell',
         '/components/admin/DashboardKPIs',
+        '/components/admin/RevenueDashboard',
         '/components/admin/RecentInquiries',
         '/components/admin/InquiryKanban',
-        '/components/admin/InquiryCharts',
       ],
     },
   },
@@ -69,6 +73,9 @@ export default buildConfig({
     Testimonials,
     Posts,
     PricingFactors,
+    AdminAlerts,
+    AutomationSequences,
+    SentNotifications,
   ],
 
   globals: [GlobalSettings, PressKit, Showreel],

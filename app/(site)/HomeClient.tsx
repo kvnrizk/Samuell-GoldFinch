@@ -190,7 +190,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
       </section>
 
       {/* Featured Sets */}
-      <section className="py-16 md:py-40" style={{ backgroundColor: 'var(--bg)' }}>
+      <section className="py-16 md:py-40 overflow-hidden" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12 md:mb-24 reveal-section">
             <p className="text-xs font-medium mb-6" style={{ color: 'var(--text-mute)' }}>Featured Sets</p>
@@ -198,7 +198,7 @@ export default function HomeClient({ blazeProjects, testimonials = [] }: HomeCli
               Stories Worth <span className="not-italic">Reliving</span>
             </h2>
           </div>
-          <div className="reveal-section pb-24 md:pb-32">
+          <div className="reveal-section pb-16 md:pb-24">
             <OrbitCarousel items={carouselItems} />
           </div>
         </div>

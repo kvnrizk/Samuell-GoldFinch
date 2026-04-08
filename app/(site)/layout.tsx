@@ -52,7 +52,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="antialiased" suppressHydrationWarning>
+      <body className="antialiased overflow-x-hidden" suppressHydrationWarning>
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:bg-[#c8a96e] focus:text-[#09090b] focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold"
