@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+// KNOWN LIMITATION: this Map lives in the serverless instance's memory. Vercel
+// spins up many instances, so effective limit ≈ 5 × instance_count. Treats
+// naive spam but NOT a real protection layer. Replace with Vercel KV/Upstash
+// Redis for per-project-global limiting when traffic justifies the upgrade.
+// See AUDIT.md P1-1.
 const rateLimit = new Map<string, { count: number; resetTime: number }>();
 
 // Clean stale entries every 10 minutes to prevent memory leaks

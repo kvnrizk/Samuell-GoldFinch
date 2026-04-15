@@ -1,4 +1,4 @@
-import { emailLayout, heading, paragraph, dataTable, divider, goldBadge } from './base';
+import { emailLayout, heading, paragraph, dataTable, divider, goldBadge, esc, escAttr } from './base';
 
 interface ContactData {
   name: string;
@@ -8,25 +8,28 @@ interface ContactData {
 }
 
 export function contactNotification(data: ContactData): string {
+  const name = esc(data.name);
+  const email = esc(data.email);
+  const emailAttr = escAttr(data.email);
   return emailLayout(`
     ${goldBadge('New Inquiry')}
-    ${heading(`Contact from ${data.name}`)}
+    ${heading(`Contact from ${name}`)}
     ${dataTable([
-      ['Name', data.name],
-      ['Email', `<a href="mailto:${data.email}" style="color:#c8a96e;text-decoration:none;">${data.email}</a>`],
-      ['Project Type', data.projectType || 'Not specified'],
+      ['Name', name],
+      ['Email', `<a href="mailto:${emailAttr}" style="color:#c8a96e;text-decoration:none;">${email}</a>`],
+      ['Project Type', esc(data.projectType) || 'Not specified'],
     ])}
     ${data.details ? `
       ${divider()}
       <p style="margin:0 0 8px;font-size:11px;font-family:monospace;text-transform:uppercase;letter-spacing:0.1em;color:#a1a1aa;">Message</p>
-      <p style="margin:0;font-size:14px;line-height:1.7;color:#e7e5e4;white-space:pre-line;">${data.details}</p>
+      <p style="margin:0;font-size:14px;line-height:1.7;color:#e7e5e4;white-space:pre-line;">${esc(data.details)}</p>
     ` : ''}
   `);
 }
 
 export function contactAutoReply(data: ContactData): string {
   return emailLayout(`
-    ${heading(`Thank you, ${data.name}`)}
+    ${heading(`Thank you, ${esc(data.name)}`)}
     ${paragraph("We've received your inquiry and appreciate you reaching out. Our team will review your message and respond within <strong style=\"color:#e7e5e4;\">48 hours</strong> with a personalized reply.")}
     ${paragraph("In the meantime, feel free to explore our recent work:")}
     ${paragraph('<a href="https://samuellgoldfinch.com/blaze" style="color:#c8a96e;text-decoration:none;">Blaze Production</a> &mdash; Film &amp; content creation<br><a href="https://samuellgoldfinch.com/kolasi" style="color:#c8a96e;text-decoration:none;">Kolasi Agency</a> &mdash; DJ booking &amp; event curation')}

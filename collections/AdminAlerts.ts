@@ -10,7 +10,9 @@ export const AdminAlerts: CollectionConfig = {
   timestamps: true,
   access: {
     read: ({ req: { user } }) => Boolean(user),
-    create: () => true, // Hooks and cron need to create without auth context
+    // Payload local API (hooks, cron) bypasses access by default — this gates
+    // only external REST/GraphQL writes, so anonymous spam is impossible.
+    create: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => user?.role === 'admin',
   },

@@ -7,7 +7,7 @@
 import { Resend } from 'resend';
 import { getPayload } from './payload';
 import { sendWhatsApp } from './whatsapp';
-import { emailLayout, heading, paragraph } from './email-templates/base';
+import { emailLayout, heading, paragraph, esc } from './email-templates/base';
 
 // ---- Resend client (same pattern as lib/actions.ts) -----------------------
 
@@ -87,13 +87,20 @@ export interface NotificationPayload {
 
   /** Template variable context — merged with data pulled from the inquiry. */
   context: TemplateContext;
+
+  /**
+   * When true, skip writing a new `sent-notifications` log row. The caller
+   * (e.g. the cron) is responsible for updating the existing pending row.
+   * Prevents duplicate rows for delayed sequences.
+   */
+  skipLogging?: boolean;
 }
 
 // ---- Template variable resolution -----------------------------------------
 
 /**
- * Replace all `{{key}}` placeholders in a string with values from `context`.
- * Unknown keys are left as-is so they're visible during debugging.
+ * Replace `{{key}}` placeholders in a plain-text template (WhatsApp, alert
+ * messages). No HTML escaping — the output is not embedded in HTML.
  */
 export function resolveTemplateVariables(
   template: string,
@@ -103,6 +110,23 @@ export function resolveTemplateVariables(
     const value = context[key];
     if (value === undefined || value === null) return match;
     return String(value);
+  });
+}
+
+/**
+ * Replace `{{key}}` placeholders in an HTML template. Variable VALUES are
+ * HTML-escaped so user-supplied context (name, email, details) cannot break
+ * out of the surrounding markup. The template itself is assumed trusted
+ * (admin-authored).
+ */
+export function resolveTemplateVariablesHtml(
+  template: string,
+  context: TemplateContext,
+): string {
+  return template.replace(/\{\{(\w+)\}\}/g, (match, key: string) => {
+    const value = context[key];
+    if (value === undefined || value === null) return match;
+    return esc(value);
   });
 }
 
@@ -294,11 +318,18 @@ async function handleEmailChannel(
     ? resolveTemplateVariables(p.emailSubject, p.context)
     : 'Notification from Samuell Goldfinch';
 
+  // emailBody is admin-authored (trusted HTML) — only variable VALUES escape.
+  // alertMessage is code-built and may contain raw user data — escape the
+  // whole string before inserting into HTML.
   const bodyHtml = p.emailBody
-    ? emailLayout(resolveTemplateVariables(p.emailBody, p.context))
+    ? emailLayout(resolveTemplateVariablesHtml(p.emailBody, p.context))
     : emailLayout(
-        heading(subject) +
-        paragraph(p.alertMessage ? resolveTemplateVariables(p.alertMessage, p.context) : 'You have a new notification.'),
+        heading(esc(subject)) +
+        paragraph(
+          p.alertMessage
+            ? esc(resolveTemplateVariables(p.alertMessage, p.context))
+            : 'You have a new notification.',
+        ),
       );
 
   const results: Array<{ success: boolean; error?: string }> = [];
@@ -444,15 +475,17 @@ export async function sendNotification(
       result = { success: false, error: `Unknown channel: ${channel}` };
   }
 
-  // ---- Log the send attempt ----
-  await logSentNotification(
-    sequenceId,
-    inquiryId,
-    venueInquiryId,
-    channel,
-    result.success ? 'sent' : 'failed',
-    result.error,
-  );
+  // ---- Log the send attempt (skipped when the caller owns the log row) ----
+  if (!payload.skipLogging) {
+    await logSentNotification(
+      sequenceId,
+      inquiryId,
+      venueInquiryId,
+      channel,
+      result.success ? 'sent' : 'failed',
+      result.error,
+    );
+  }
 
   // ---- On failure, create an admin alert about it ----
   if (!result.success && channel !== 'admin-alert') {

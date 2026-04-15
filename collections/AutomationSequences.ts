@@ -38,11 +38,13 @@ export const AutomationSequences: CollectionConfig = {
       options: [
         { label: 'General Inquiries', value: 'inquiries' },
         { label: 'Venue Inquiries', value: 'venue-inquiries' },
+        { label: 'Both', value: 'both' },
       ],
     },
     {
       name: 'triggerStatus',
       type: 'select',
+      index: true,
       admin: { description: 'Which status triggers this sequence' },
       options: [
         // General inquiry statuses
@@ -85,8 +87,10 @@ export const AutomationSequences: CollectionConfig = {
     },
     {
       name: 'emailBody',
-      type: 'richText',
-      admin: { description: 'Email template body with variable placeholders' },
+      type: 'textarea',
+      admin: {
+        description: 'Email template body. HTML allowed (admin-authored). Supports {{name}}, {{email}}, {{venueName}}, {{calendlyUrl}}, etc. Variable values are HTML-escaped at send time.',
+      },
     },
     {
       name: 'whatsappMessage',

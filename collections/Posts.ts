@@ -14,6 +14,24 @@ export const Posts: CollectionConfig = {
     update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => user?.role === 'admin',
   },
+  hooks: {
+    afterRead: [
+      // For anonymous reads, strip sensitive user fields from the populated
+      // author relationship. Local-API calls (depth > 0) bypass collection
+      // access and would otherwise leak email/role/hash.
+      ({ doc, req }) => {
+        if (req?.user) return doc;
+        if (doc?.author && typeof doc.author === 'object') {
+          const a = doc.author as Record<string, unknown>;
+          doc.author = {
+            id: a.id,
+            name: a.name,
+          };
+        }
+        return doc;
+      },
+    ],
+  },
   fields: [
     {
       name: 'title',

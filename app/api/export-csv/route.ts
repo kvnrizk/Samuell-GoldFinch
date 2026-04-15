@@ -14,11 +14,14 @@ function escapeCSV(value: unknown): string {
 export async function GET(req: NextRequest) {
   const payload = await getPayload();
 
-  // Authenticate: require a logged-in Payload user
+  // Authenticate: export includes PII (internal notes, phone, WhatsApp) — admin-only
   const headersList = await getHeaders();
   const { user } = await payload.auth({ headers: headersList });
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  if (user.role !== 'admin') {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   const { searchParams } = new URL(req.url);
@@ -29,12 +32,15 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    // Try to get user from cookies
+    // Run the query with the authenticated req context so collection-level
+    // access control is enforced (no silent elevation via local API).
+    const authedReq = { ...req, user } as unknown as Parameters<typeof payload.find>[0]['req'];
     const result = await payload.find({
       collection: collection as 'inquiries' | 'venue-inquiries',
       limit: 10000,
       sort: '-createdAt',
       depth: 0,
+      req: authedReq,
     });
 
     const docs = result.docs;

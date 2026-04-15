@@ -171,12 +171,7 @@ export async function getKolasiEventBySlug(slug: string) {
 }
 
 export async function getAdjacentKolasiEvents(currentSlug: string) {
-  const all = await getAllKolasiEvents();
-  const idx = all.findIndex((e: any) => e.slug === currentSlug);
-  return {
-    prev: idx > 0 ? all[idx - 1] : all[all.length - 1],
-    next: idx < all.length - 1 ? all[idx + 1] : all[0],
-  };
+  return getAdjacentByDate('kolasi-events', currentSlug);
 }
 
 export async function getBlazeProjectBySlug(slug: string) {
@@ -191,12 +186,7 @@ export async function getBlazeProjectBySlug(slug: string) {
 }
 
 export async function getAdjacentBlazeProjects(currentSlug: string) {
-  const all = await getAllBlazeProjects();
-  const idx = all.findIndex((p: any) => p.slug === currentSlug);
-  return {
-    prev: idx > 0 ? all[idx - 1] : all[all.length - 1],
-    next: idx < all.length - 1 ? all[idx + 1] : all[0],
-  };
+  return getAdjacentByDate('blaze-projects', currentSlug);
 }
 
 export async function getAllPosts(category?: string, limit = 12) {
@@ -306,10 +296,80 @@ export async function getShowreel() {
 }
 
 export async function getAdjacentArtists(currentSlug: string) {
-  const all = await getArtists();
-  const idx = all.findIndex((a: any) => a.slug === currentSlug);
+  const payload = await getPayload();
+  const current = await payload.find({
+    collection: 'artists',
+    where: { slug: { equals: currentSlug } },
+    limit: 1,
+    depth: 0,
+  });
+  const currentItem = current.docs[0];
+  if (!currentItem) return { prev: null, next: null };
+
+  const [newer, older, oldestWrap, newestWrap] = await Promise.all([
+    payload.find({
+      collection: 'artists',
+      where: { name: { less_than: currentItem.name } },
+      sort: '-name',
+      limit: 1,
+    }),
+    payload.find({
+      collection: 'artists',
+      where: { name: { greater_than: currentItem.name } },
+      sort: 'name',
+      limit: 1,
+    }),
+    payload.find({ collection: 'artists', sort: '-name', limit: 1 }),
+    payload.find({ collection: 'artists', sort: 'name', limit: 1 }),
+  ]);
+
   return {
-    prev: idx > 0 ? all[idx - 1] : all[all.length - 1],
-    next: idx < all.length - 1 ? all[idx + 1] : all[0],
+    prev: newer.docs[0] || oldestWrap.docs[0] || null,
+    next: older.docs[0] || newestWrap.docs[0] || null,
+  };
+}
+
+// ---- Cursor-based adjacency for date-sorted collections -------------------
+
+async function getAdjacentByDate(
+  collection: 'kolasi-events' | 'blaze-projects',
+  currentSlug: string,
+) {
+  const payload = await getPayload();
+  const current = await payload.find({
+    collection,
+    where: { slug: { equals: currentSlug } },
+    limit: 1,
+    depth: 0,
+  });
+  const currentItem = current.docs[0];
+  if (!currentItem) return { prev: null, next: null };
+
+  const currentDate = (currentItem as { date?: string }).date;
+  if (!currentDate) return { prev: null, next: null };
+
+  // Lists are sorted '-date' (newest first). "prev" in that UI is the newer
+  // item (date > current). "next" is the older (date < current). Wrap at the
+  // ends by falling back to oldest/newest.
+  const [newer, older, oldestWrap, newestWrap] = await Promise.all([
+    payload.find({
+      collection,
+      where: { date: { greater_than: currentDate } },
+      sort: 'date',
+      limit: 1,
+    }),
+    payload.find({
+      collection,
+      where: { date: { less_than: currentDate } },
+      sort: '-date',
+      limit: 1,
+    }),
+    payload.find({ collection, sort: 'date', limit: 1 }),
+    payload.find({ collection, sort: '-date', limit: 1 }),
+  ]);
+
+  return {
+    prev: newer.docs[0] || oldestWrap.docs[0] || null,
+    next: older.docs[0] || newestWrap.docs[0] || null,
   };
 }

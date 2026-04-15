@@ -1,4 +1,4 @@
-import { emailLayout, heading, paragraph, dataTable, ctaButton, divider, urgentBadge, goldBadge } from './base';
+import { emailLayout, heading, paragraph, dataTable, ctaButton, divider, urgentBadge, goldBadge, esc, escAttr } from './base';
 
 interface VenueData {
   venueName: string;
@@ -38,35 +38,45 @@ const GOAL_LABELS: Record<string, string> = {
 };
 
 export function venueQualifiedNotification(data: VenueData): string {
+  const venueName = esc(data.venueName);
+  const contactName = esc(data.contactName);
+  const contactEmail = esc(data.contactEmail);
+  const contactEmailAttr = escAttr(data.contactEmail);
+  const budgetLabel = esc(BUDGET_LABELS[data.monthlyBudget] || data.monthlyBudget);
+  const venueTypeLabel = esc(VENUE_TYPES[data.venueType || ''] || data.venueType || 'Not specified');
+  const goalsList = data.goals?.map((g) => esc(GOAL_LABELS[g] || g)).join(', ') || 'Not specified';
   return emailLayout(`
     ${urgentBadge('Qualified Lead')}
-    ${heading(data.venueName)}
-    ${paragraph(`<strong style="color:#e7e5e4;">${data.contactName}</strong> submitted a venue inquiry with a budget of <strong style="color:#c8a96e;">${BUDGET_LABELS[data.monthlyBudget] || data.monthlyBudget}</strong>. This lead has budget — book the call ASAP.`)}
+    ${heading(venueName)}
+    ${paragraph(`<strong style="color:#e7e5e4;">${contactName}</strong> submitted a venue inquiry with a budget of <strong style="color:#c8a96e;">${budgetLabel}</strong>. This lead has budget — book the call ASAP.`)}
     ${dataTable([
-      ['Venue', data.venueName],
-      ['Type', VENUE_TYPES[data.venueType || ''] || data.venueType || 'Not specified'],
+      ['Venue', venueName],
+      ['Type', venueTypeLabel],
       ['Capacity', data.capacity ? String(data.capacity) : 'Not specified'],
-      ['Budget', BUDGET_LABELS[data.monthlyBudget] || data.monthlyBudget],
-      ['Goals', data.goals?.map((g) => GOAL_LABELS[g] || g).join(', ') || 'Not specified'],
-      ['Timeline', data.timeline || 'Not specified'],
-      ['Contact', data.contactName],
-      ['Email', `<a href="mailto:${data.contactEmail}" style="color:#c8a96e;text-decoration:none;">${data.contactEmail}</a>`],
-      ['WhatsApp', data.contactWhatsApp || 'Not provided'],
+      ['Budget', budgetLabel],
+      ['Goals', goalsList],
+      ['Timeline', esc(data.timeline) || 'Not specified'],
+      ['Contact', contactName],
+      ['Email', `<a href="mailto:${contactEmailAttr}" style="color:#c8a96e;text-decoration:none;">${contactEmail}</a>`],
+      ['WhatsApp', esc(data.contactWhatsApp) || 'Not provided'],
     ])}
     ${data.currentProgramming ? `
       ${divider()}
       <p style="margin:0 0 8px;font-size:11px;font-family:monospace;text-transform:uppercase;letter-spacing:0.1em;color:#a1a1aa;">Current Programming</p>
-      <p style="margin:0;font-size:14px;line-height:1.7;color:#e7e5e4;white-space:pre-line;">${data.currentProgramming}</p>
+      <p style="margin:0;font-size:14px;line-height:1.7;color:#e7e5e4;white-space:pre-line;">${esc(data.currentProgramming)}</p>
     ` : ''}
   `);
 }
 
 export function venueQualifiedAutoReply(data: VenueData): string {
+  const contactName = esc(data.contactName);
+  const venueName = esc(data.venueName);
+  const calendlyUrl = escAttr(data.calendlyUrl);
   return emailLayout(`
-    ${heading(`Thank you, ${data.contactName}`)}
-    ${paragraph(`We've received your inquiry for <strong style="color:#e7e5e4;">${data.venueName}</strong> and we're genuinely excited about the potential.`)}
+    ${heading(`Thank you, ${contactName}`)}
+    ${paragraph(`We've received your inquiry for <strong style="color:#e7e5e4;">${venueName}</strong> and we're genuinely excited about the potential.`)}
     ${paragraph("The next step is a <strong style=\"color:#e7e5e4;\">30-minute discovery call</strong> where we'll discuss your venue's identity, programming goals, and how Kolasi can help you build something remarkable.")}
-    ${ctaButton('Book Your Discovery Call', data.calendlyUrl)}
+    ${ctaButton('Book Your Discovery Call', calendlyUrl)}
     ${divider()}
     ${paragraph("For immediate questions, reach us on WhatsApp:")}
     <p style="margin:0;font-size:14px;color:#e7e5e4;">
@@ -76,23 +86,30 @@ export function venueQualifiedAutoReply(data: VenueData): string {
 }
 
 export function venueUnderBudgetNotification(data: VenueData): string {
+  const venueName = esc(data.venueName);
+  const contactName = esc(data.contactName);
+  const contactEmail = esc(data.contactEmail);
+  const contactEmailAttr = escAttr(data.contactEmail);
+  const budgetLabel = esc(BUDGET_LABELS[data.monthlyBudget] || data.monthlyBudget);
   return emailLayout(`
     ${goldBadge('Under Budget')}
-    ${heading(data.venueName)}
-    ${paragraph(`<strong style="color:#e7e5e4;">${data.contactName}</strong> submitted a venue inquiry with a budget of <strong style="color:#a1a1aa;">${BUDGET_LABELS[data.monthlyBudget] || data.monthlyBudget}</strong>. Auto-sent Starter Night offer. No call scheduled.`)}
+    ${heading(venueName)}
+    ${paragraph(`<strong style="color:#e7e5e4;">${contactName}</strong> submitted a venue inquiry with a budget of <strong style="color:#a1a1aa;">${budgetLabel}</strong>. Auto-sent Starter Night offer. No call scheduled.`)}
     ${dataTable([
-      ['Venue', data.venueName],
-      ['Budget', BUDGET_LABELS[data.monthlyBudget] || data.monthlyBudget],
-      ['Contact', data.contactName],
-      ['Email', `<a href="mailto:${data.contactEmail}" style="color:#c8a96e;text-decoration:none;">${data.contactEmail}</a>`],
+      ['Venue', venueName],
+      ['Budget', budgetLabel],
+      ['Contact', contactName],
+      ['Email', `<a href="mailto:${contactEmailAttr}" style="color:#c8a96e;text-decoration:none;">${contactEmail}</a>`],
     ])}
   `);
 }
 
 export function venueStarterNightAutoReply(data: VenueData): string {
+  const contactName = esc(data.contactName);
+  const venueName = esc(data.venueName);
   return emailLayout(`
-    ${heading(`Thank you, ${data.contactName}`)}
-    ${paragraph(`We've reviewed your inquiry for <strong style="color:#e7e5e4;">${data.venueName}</strong>.`)}
+    ${heading(`Thank you, ${contactName}`)}
+    ${paragraph(`We've reviewed your inquiry for <strong style="color:#e7e5e4;">${venueName}</strong>.`)}
     ${paragraph("Based on your current budget, we recommend our <strong style=\"color:#e7e5e4;\">Starter Night</strong> package — designed for venues testing curated programming for the first time:")}
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:20px 0;background:rgba(200,169,110,0.06);border:1px solid rgba(200,169,110,0.15);border-radius:8px;padding:20px;">
     <tr><td style="padding:4px 20px;font-size:14px;color:#e7e5e4;">&#8226; 1 night per week</td></tr>

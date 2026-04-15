@@ -32,7 +32,13 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 export default buildConfig({
-  serverURL: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+  serverURL: (() => {
+    const url = process.env.NEXT_PUBLIC_SITE_URL;
+    if (!url && process.env.NODE_ENV === 'production') {
+      console.warn('[payload] NEXT_PUBLIC_SITE_URL is not set in production — absolute URLs will fall back to localhost');
+    }
+    return url || 'http://localhost:3000';
+  })(),
 
   admin: {
     user: Users.slug,

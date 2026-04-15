@@ -123,7 +123,7 @@ export const VenueInquiries: CollectionConfig = {
                     channel: channel as 'email' | 'whatsapp' | 'admin-alert',
                     targetAudience: (seq.targetAudience as 'admin' | 'lead' | 'both') || 'admin',
                     emailSubject: seq.emailSubject || undefined,
-                    emailBody: typeof seq.emailBody === 'string' ? seq.emailBody : undefined,
+                    emailBody: (seq.emailBody as string | undefined) || undefined,
                     whatsappMessage: seq.whatsappMessage || undefined,
                     alertType: 'new-lead',
                     alertSeverity: severity,
@@ -140,13 +140,14 @@ export const VenueInquiries: CollectionConfig = {
                     },
                   });
                 } else {
+                  const scheduledFor = new Date(Date.now() + (seq.delayHours as number) * 3600000).toISOString();
                   await p.create({
                     collection: 'sent-notifications',
                     data: {
                       sequence: seq.id,
                       venueInquiryRef: doc.id,
                       channel: channel as string,
-                      sentAt: new Date().toISOString(),
+                      scheduledFor,
                       status: 'pending',
                     },
                   });
@@ -195,8 +196,8 @@ export const VenueInquiries: CollectionConfig = {
             });
           }
 
-          // 3. If status is 'disqualified', cancel all pending sequences
-          if (doc.status === 'disqualified') {
+          // 3. If status is terminal ('signed' or 'disqualified'), cancel all pending sequences
+          if (doc.status === 'disqualified' || doc.status === 'signed') {
             try {
               const p = await getPayload();
               const pending = await p.find({
@@ -252,7 +253,7 @@ export const VenueInquiries: CollectionConfig = {
                     channel: channel as 'email' | 'whatsapp' | 'admin-alert',
                     targetAudience: (seq.targetAudience as 'admin' | 'lead' | 'both') || 'admin',
                     emailSubject: seq.emailSubject || undefined,
-                    emailBody: typeof seq.emailBody === 'string' ? seq.emailBody : undefined,
+                    emailBody: (seq.emailBody as string | undefined) || undefined,
                     whatsappMessage: seq.whatsappMessage || undefined,
                     alertType: 'status-change',
                     alertSeverity: 'info',
@@ -267,13 +268,14 @@ export const VenueInquiries: CollectionConfig = {
                     },
                   });
                 } else {
+                  const scheduledFor = new Date(Date.now() + (seq.delayHours as number) * 3600000).toISOString();
                   await p.create({
                     collection: 'sent-notifications',
                     data: {
                       sequence: seq.id,
                       venueInquiryRef: doc.id,
                       channel: channel as string,
-                      sentAt: new Date().toISOString(),
+                      scheduledFor,
                       status: 'pending',
                     },
                   });

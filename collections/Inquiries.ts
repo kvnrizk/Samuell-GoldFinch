@@ -111,7 +111,7 @@ export const Inquiries: CollectionConfig = {
                     channel: channel as 'email' | 'whatsapp' | 'admin-alert',
                     targetAudience: (seq.targetAudience as 'admin' | 'lead' | 'both') || 'admin',
                     emailSubject: seq.emailSubject || undefined,
-                    emailBody: typeof seq.emailBody === 'string' ? seq.emailBody : undefined,
+                    emailBody: (seq.emailBody as string | undefined) || undefined,
                     whatsappMessage: seq.whatsappMessage || undefined,
                     alertType: 'new-lead',
                     alertSeverity: 'info',
@@ -127,14 +127,15 @@ export const Inquiries: CollectionConfig = {
                     },
                   });
                 } else {
-                  // Queue for later — create a pending SentNotification
+                  // Queue for later — create a pending SentNotification with scheduledFor
+                  const scheduledFor = new Date(Date.now() + (seq.delayHours as number) * 3600000).toISOString();
                   await p.create({
                     collection: 'sent-notifications',
                     data: {
                       sequence: seq.id,
                       inquiryRef: doc.id,
                       channel: channel as string,
-                      sentAt: new Date().toISOString(),
+                      scheduledFor,
                       status: 'pending',
                     },
                   });
@@ -220,7 +221,7 @@ export const Inquiries: CollectionConfig = {
                     channel: channel as 'email' | 'whatsapp' | 'admin-alert',
                     targetAudience: (seq.targetAudience as 'admin' | 'lead' | 'both') || 'admin',
                     emailSubject: seq.emailSubject || undefined,
-                    emailBody: typeof seq.emailBody === 'string' ? seq.emailBody : undefined,
+                    emailBody: (seq.emailBody as string | undefined) || undefined,
                     whatsappMessage: seq.whatsappMessage || undefined,
                     alertType: 'status-change',
                     alertSeverity: 'info',
@@ -234,13 +235,14 @@ export const Inquiries: CollectionConfig = {
                     },
                   });
                 } else {
+                  const scheduledFor = new Date(Date.now() + (seq.delayHours as number) * 3600000).toISOString();
                   await p.create({
                     collection: 'sent-notifications',
                     data: {
                       sequence: seq.id,
                       inquiryRef: doc.id,
                       channel: channel as string,
-                      sentAt: new Date().toISOString(),
+                      scheduledFor,
                       status: 'pending',
                     },
                   });

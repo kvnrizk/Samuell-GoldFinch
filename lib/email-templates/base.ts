@@ -1,3 +1,26 @@
+// HTML-encode a value destined for text content. User-supplied form data
+// (name, email, details, etc.) MUST go through esc() before being injected
+// into template strings. Attribute values use escAttr() instead.
+export function esc(value: unknown): string {
+  if (value == null) return '';
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+export function escAttr(value: unknown): string {
+  if (value == null) return '';
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
 const GOLD = '#c8a96e';
 const BG = '#09090b';
 const CARD_BG = '#111113';

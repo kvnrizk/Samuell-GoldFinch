@@ -16,8 +16,13 @@ import { sendNotification } from '@/lib/notifications';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
+  const cronSecret = process.env.CRON_SECRET;
+  if (!cronSecret) {
+    console.error('[cron/process-sequences] CRON_SECRET env var is not set — refusing to run');
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   const authHeader = request.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (authHeader !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -30,16 +35,27 @@ export async function GET(request: Request) {
 
   // ---- Part 1: Process pending sequences ----------------------------------
   try {
+    const nowIso = new Date().toISOString();
     const pendingNotifs = await payload.find({
       collection: 'sent-notifications',
-      where: { status: { equals: 'pending' } },
+      where: {
+        and: [
+          { status: { equals: 'pending' } },
+          {
+            or: [
+              { scheduledFor: { less_than_equal: nowIso } },
+              { scheduledFor: { exists: false } },
+            ],
+          },
+        ],
+      },
+      sort: 'scheduledFor',
       limit: 100,
       depth: 1, // populate sequence and inquiry refs
     });
 
     for (const notif of pendingNotifs.docs) {
       try {
-        // Get the populated sequence document
         const sequence =
           typeof notif.sequence === 'object' && notif.sequence
             ? (notif.sequence as Record<string, unknown>)
@@ -54,9 +70,6 @@ export async function GET(request: Request) {
           continue;
         }
 
-        const delayHours = (sequence.delayHours as number) || 0;
-
-        // Get the populated inquiry/venue-inquiry document
         const inquiryDoc =
           notif.inquiryRef && typeof notif.inquiryRef === 'object'
             ? (notif.inquiryRef as Record<string, unknown>)
@@ -76,15 +89,6 @@ export async function GET(request: Request) {
           continue;
         }
 
-        // Check whether enough time has elapsed
-        const createdAt = new Date(refDoc.createdAt as string).getTime();
-        const scheduledTime = createdAt + delayHours * 3600000;
-
-        if (Date.now() < scheduledTime) {
-          continue; // Not ready yet — skip
-        }
-
-        // Build context from the inquiry document
         const channel = notif.channel as 'email' | 'whatsapp' | 'admin-alert';
         const name =
           (refDoc.name as string | undefined) ||
@@ -96,6 +100,8 @@ export async function GET(request: Request) {
           '';
         const venueName = (refDoc.venueName as string | undefined) || '';
 
+        // skipLogging=true — we own the log row (the pending record) and
+        // update it in place below to avoid duplicate sent-notifications.
         const result = await sendNotification({
           sequenceId: String(sequence.id || notif.sequence),
           inquiryId: inquiryDoc
@@ -108,10 +114,7 @@ export async function GET(request: Request) {
           targetAudience:
             (sequence.targetAudience as 'admin' | 'lead' | 'both') || 'admin',
           emailSubject: (sequence.emailSubject as string) || undefined,
-          emailBody:
-            typeof sequence.emailBody === 'string'
-              ? sequence.emailBody
-              : undefined,
+          emailBody: (sequence.emailBody as string | undefined) || undefined,
           whatsappMessage: (sequence.whatsappMessage as string) || undefined,
           alertType: 'system',
           alertSeverity: 'info',
@@ -123,14 +126,15 @@ export async function GET(request: Request) {
             venueName,
             status: (refDoc.status as string) || '',
           },
+          skipLogging: true,
         });
 
-        // Update the pending notification status
         await payload.update({
           collection: 'sent-notifications',
           id: notif.id as string,
           data: {
             status: result.success ? 'sent' : 'failed',
+            sentAt: new Date().toISOString(),
             ...(result.error
               ? { errorMessage: result.error.slice(0, 500) }
               : {}),
