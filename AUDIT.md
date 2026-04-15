@@ -89,6 +89,33 @@ Deferred to `FRONTEND-TODO.md` or the general backlog. Listed here for the recor
 
 ---
 
+---
+
+## Content Migration — 2026-04-15
+
+Ran `scripts/seed.ts` against production MongoDB after adding an idempotency guard (`assertAllTargetsEmpty`). Result: **65 records + 3 globals** written to the `sg-platform` database.
+
+| Collection | Records |
+|---|---|
+| artists | 5 |
+| blaze-projects | 4 |
+| kolasi-events | 3 |
+| venue-packages | 3 |
+| venue-faq | 5 |
+| case-studies | 3 |
+| milestones | 5 |
+| testimonials | 8 |
+| posts | 5 |
+| pricing-factors | 8 |
+| pages | 8 |
+| venue-seo-pages | 8 |
+
+Globals: `global-settings`, `press-kit`, `showreel` — all populated.
+
+Client components still contain `static*` fallback arrays, but they are now effectively dead code — the CMS fetchers return populated data. Fallbacks can be stripped in a follow-up commit, or kept as defensive safety nets for MongoDB outages.
+
+---
+
 ## How Fixes Will Be Applied
 
 - Single focused commit per logical group (P0 security, P0 data, P1 automation correctness, P1 access hardening, etc.).

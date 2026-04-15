@@ -66,6 +66,44 @@ async function create(collection: string, data: any) {
   return result.doc;
 }
 
+// Collections the seed writes to. If any already has records, we abort to
+// prevent accidental duplicate rows from a double-run.
+const TARGET_COLLECTIONS = [
+  'artists',
+  'blaze-projects',
+  'kolasi-events',
+  'venue-packages',
+  'venue-faq',
+  'case-studies',
+  'milestones',
+  'testimonials',
+  'posts',
+  'pricing-factors',
+  'pages',
+  'venue-seo-pages',
+];
+
+async function assertAllTargetsEmpty() {
+  console.log('\n--- Checking target collections are empty ---');
+  const nonEmpty: Array<{ slug: string; count: number }> = [];
+  for (const slug of TARGET_COLLECTIONS) {
+    const res = await fetch(`${API}/${slug}?limit=0`, {
+      headers: { Authorization: `JWT ${token}` },
+    });
+    const data = await res.json();
+    const count = Number(data?.totalDocs ?? 0);
+    console.log(`  ${slug}: ${count} docs`);
+    if (count > 0) nonEmpty.push({ slug, count });
+  }
+  if (nonEmpty.length > 0) {
+    console.error('\nAborting — the following collections already have records:');
+    for (const n of nonEmpty) console.error(`  - ${n.slug}: ${n.count}`);
+    console.error('\nRe-running the seed would create duplicates. Either clear those collections via /admin and retry, or pass --force to override this check.');
+    if (!process.argv.includes('--force')) process.exit(1);
+    console.warn('\n--force passed — continuing anyway. DUPLICATES MAY BE CREATED.');
+  }
+}
+
 async function updateGlobal(slug: string, data: any) {
   const res = await fetch(`${API}/globals/${slug}`, {
     method: 'POST',
@@ -958,6 +996,8 @@ async function main() {
   console.log(`Target: ${PAYLOAD_URL}\n`);
 
   await login();
+
+  await assertAllTargetsEmpty();
 
   // Seed artists first (other collections reference them)
   await seedArtists();
