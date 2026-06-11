@@ -2,8 +2,8 @@
 
 **Date:** 2026-04-14
 **Scope:** All backend — Payload collections, globals, lib/, middleware, API routes, scripts.
-**Stack:** Next.js 15.3.9 · Payload CMS 3 · MongoDB Atlas · Cloudinary · Mux · Resend · Vercel.
-**Baseline:** `npm run build` passes clean (36 static routes, only unused-eslint-disable warnings).
+**Stack:** Next.js 15.4.11 + Payload CMS 3.84.1 + MongoDB Atlas + Cloudinary + Mux + Resend + Vercel.
+**Baseline:** `npm run build` should pass after regenerating Payload types/import map; focused Vitest coverage is wired with `npm test`.
 
 Replaces previous AUDIT.md which described an obsolete static HTML version of the site.
 

@@ -74,10 +74,10 @@ export default async function ShowreelPage() {
     const { getShowreel } = await import('@/lib/fetchers');
     const data = await getShowreel();
     if (data?.heroReel?.muxPlaybackId) {
-      heroReel = data.heroReel;
+      heroReel = data.heroReel as typeof heroReel;
     }
     if (data?.highlights?.length) {
-      highlights = data.highlights;
+      highlights = data.highlights as typeof highlights;
     }
   } catch {
     // CMS unavailable — use static fallbacks

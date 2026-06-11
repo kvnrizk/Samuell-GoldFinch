@@ -3,6 +3,7 @@ import { withPayload } from '@payloadcms/next/withPayload';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   trailingSlash: false,
+  outputFileTracingRoot: process.cwd(),
 
   images: {
     remotePatterns: [

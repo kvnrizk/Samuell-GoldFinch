@@ -112,7 +112,7 @@ export default function ShowreelClient({ heroReel, highlights }: ShowreelClientP
           <p className="reel-reveal text-xs font-medium tracking-[0.3em] uppercase mb-6" style={{ color: 'var(--text-mute)' }}>
             Blaze Production &times; Kolasi Agency
           </p>
-          <h1 className="reel-reveal text-3xl sm:text-5xl md:text-8xl font-serif uppercase tracking-tighter leading-none mb-8">
+          <h1 className="reel-reveal text-3xl sm:text-4xl md:text-5xl font-serif uppercase tracking-tighter leading-none mb-8">
             {heroReel.title || 'Showreel'}
           </h1>
           <p className="reel-reveal text-sm md:text-base font-light max-w-xl mx-auto leading-relaxed mb-10" style={{ color: 'var(--text-dim)' }}>

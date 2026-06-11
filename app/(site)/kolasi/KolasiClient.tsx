@@ -468,7 +468,7 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
         </div>
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--bg) 60%, transparent), transparent, var(--bg))' }} />
         <div className="relative z-10 text-center px-6 max-w-5xl">
-          <h1 className="text-3xl sm:text-5xl md:text-8xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
             Creative Booking <br />
             <span className="italic">and Talent Agency</span>
           </h1>

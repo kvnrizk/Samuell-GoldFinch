@@ -1,12 +1,16 @@
-import type { Metadata } from 'next';
 import QuoteClient from './QuoteClient';
+import { getDictionary } from '@/lib/i18n';
+import { buildPageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
-  title: 'Request a Bespoke Quote',
-  description: 'Share your vision for a wedding film, curated event, or live performance. Tailored production and experiences.',
-  alternates: { canonical: '/quote' },
-};
+const meta = getDictionary('en').metadata;
+
+export const metadata = buildPageMetadata({
+  title: meta.quoteTitle,
+  description: meta.quoteDescription,
+  path: '/quote',
+  languages: { en: '/quote', fr: '/fr/quote' },
+});
 
 export default function QuotePage() {
-  return <QuoteClient />;
+  return <QuoteClient locale="en" />;
 }

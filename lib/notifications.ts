@@ -4,14 +4,11 @@
 // (Payload collection). Logs every attempt to SentNotifications.
 // ---------------------------------------------------------------------------
 
-import { Resend } from 'resend';
 import { getPayload } from './payload';
+import { getResend } from './resend';
 import { sendWhatsApp } from './whatsapp';
 import { emailLayout, heading, paragraph, esc } from './email-templates/base';
 
-// ---- Resend client (same pattern as lib/actions.ts) -----------------------
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM_ADDRESS = 'Samuell Goldfinch <noreply@samuellgoldfinch.com>';
 const FALLBACK_ADMIN_EMAIL = 'contact@samuellgoldfinch.com';
 const FALLBACK_CALENDLY = 'https://calendly.com/samuellgoldfinch';
@@ -231,7 +228,7 @@ interface ResolvedSettings {
 async function getGlobalSettings(): Promise<ResolvedSettings> {
   try {
     const payload = await getPayload();
-    const settings = await payload.findGlobal({ slug: 'global-settings' }) as Record<string, unknown>;
+    const settings = await payload.findGlobal({ slug: 'global-settings' }) as unknown as Record<string, unknown>;
     return {
       adminEmail: (settings.email as string) || FALLBACK_ADMIN_EMAIL,
       adminWhatsApp: (settings.whatsappNumber as string) || process.env.SAM_WHATSAPP_NUMBER || '',
@@ -262,7 +259,7 @@ async function getLeadContact(
     const payload = await getPayload();
 
     if (inquiryId) {
-      const doc = await payload.findByID({ collection: 'inquiries', id: inquiryId }) as Record<string, unknown>;
+      const doc = await payload.findByID({ collection: 'inquiries', id: inquiryId }) as unknown as Record<string, unknown>;
       return {
         email: doc.email as string | undefined,
         phone: doc.phone as string | undefined,
@@ -271,7 +268,7 @@ async function getLeadContact(
     }
 
     if (venueInquiryId) {
-      const doc = await payload.findByID({ collection: 'venue-inquiries', id: venueInquiryId }) as Record<string, unknown>;
+      const doc = await payload.findByID({ collection: 'venue-inquiries', id: venueInquiryId }) as unknown as Record<string, unknown>;
       return {
         email: doc.contactEmail as string | undefined,
         phone: doc.contactWhatsApp as string | undefined,
@@ -293,7 +290,7 @@ async function sendEmail(
   htmlBody: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const { error } = await resend.emails.send({
+    const { error } = await getResend().emails.send({
       from: FROM_ADDRESS,
       to,
       subject,

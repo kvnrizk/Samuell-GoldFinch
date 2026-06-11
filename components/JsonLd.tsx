@@ -1,3 +1,5 @@
+import { serializeJsonLd } from '@/lib/seo';
+
 interface JsonLdProps {
   data: Record<string, unknown>;
 }
@@ -6,12 +8,13 @@ export function JsonLd({ data }: JsonLdProps) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: serializeJsonLd(data) }}
     />
   );
 }
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://samuellgoldfinch.com';
+const STRUCTURED_DATA_LOGO = `${SITE_URL}/og-image.png`;
 
 export function OrganizationJsonLd() {
   return (
@@ -21,7 +24,7 @@ export function OrganizationJsonLd() {
         '@type': 'Organization',
         name: 'Samuell Goldfinch',
         url: SITE_URL,
-        logo: `${SITE_URL}/assets/logo.png`,
+        logo: STRUCTURED_DATA_LOGO,
         sameAs: [
           'https://instagram.com/samuellgoldfinch',
           'https://instagram.com/kolasi.paris',
@@ -125,7 +128,7 @@ export function ArticleJsonLd({
         publisher: {
           '@type': 'Organization',
           name: 'Samuell Goldfinch',
-          logo: { '@type': 'ImageObject', url: `${SITE_URL}/assets/logo.png` },
+          logo: { '@type': 'ImageObject', url: STRUCTURED_DATA_LOGO },
         },
         ...(datePublished && { datePublished }),
         ...(image && { image }),

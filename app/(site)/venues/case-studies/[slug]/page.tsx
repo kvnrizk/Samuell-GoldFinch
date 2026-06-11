@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getCaseStudyBySlug, getCaseStudies } from '@/lib/fetchers';
+import { safeCms } from '@/lib/cms-safe';
 import CaseStudyDetail from './CaseStudyDetail';
 
 export const revalidate = 60;
@@ -11,7 +12,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const cs = await getCaseStudyBySlug(slug);
+  const cs = await safeCms(getCaseStudyBySlug(slug), null, `case study metadata ${slug}`);
   if (!cs) return { title: 'Case Study Not Found' };
 
   const ogImage = (cs as any).coverImage?.url;
@@ -29,15 +30,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const caseStudies = await getCaseStudies();
-  return caseStudies.map((cs) => ({ slug: (cs as Record<string, string>).slug }));
+  const caseStudies = await safeCms(getCaseStudies(), [], 'case study static params');
+  return caseStudies.map((cs) => ({ slug: (cs as unknown as Record<string, string>).slug }));
 }
 
 export default async function CaseStudyPage({ params }: Props) {
   const { slug } = await params;
-  const cs = await getCaseStudyBySlug(slug);
+  const cs = await safeCms(getCaseStudyBySlug(slug), null, `case study ${slug}`);
   if (!cs) notFound();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Payload returns generic JsonObject types
   return <CaseStudyDetail caseStudy={cs as any} />;
 }

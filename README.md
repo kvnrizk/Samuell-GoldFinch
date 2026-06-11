@@ -68,6 +68,8 @@ npm run dev
 - Website: [http://localhost:3000](http://localhost:3000)
 - CMS Admin: [http://localhost:3000/admin](http://localhost:3000/admin)
 
+Windows note: if `npm run dev` stays on `Starting...` or throws `EPERM` for `.next\trace`, the repo is usually being locked by OneDrive sync. Move the repo to a non-synced path such as `C:\dev\Samuell-Goldfinch` or pause OneDrive sync for this folder, then delete `.next` and run `npm run dev` again.
+
 ### 5. (First time only) Create an admin user
 
 Go to [http://localhost:3000/admin](http://localhost:3000/admin) and create your account when prompted.
@@ -88,6 +90,9 @@ Go to [http://localhost:3000/admin](http://localhost:3000/admin) and create your
 | `MUX_TOKEN_SECRET` | For video | Mux streaming secret |
 | `RESEND_API_KEY` | For email | Resend transactional email |
 | `NEXT_PUBLIC_SITE_URL` | Yes | `http://localhost:3000` locally, production URL on Vercel |
+| `CRON_SECRET` | For automation cron | Shared secret for `/api/cron/process-sequences` |
+| `ADMIN_ACCESS_SECRET` | Optional | Enables the `/admin?secret=...` gate in middleware |
+| `SAM_WHATSAPP_NUMBER` | Optional | Fallback admin WhatsApp number for notifications |
 | `NEXT_PUBLIC_GA4_ID` | Optional | Google Analytics 4 measurement ID |
 | `NEXT_PUBLIC_META_PIXEL_ID` | Optional | Meta/Facebook pixel ID |
 
@@ -102,7 +107,12 @@ Go to [http://localhost:3000/admin](http://localhost:3000/admin) and create your
 | `npm run start` | Start production server locally |
 | `npm run lint` | Run ESLint |
 | `npm run generate:types` | Regenerate `payload-types.ts` after changing collections/globals |
+| `npm run generate:importmap` | Regenerate the Payload admin import map after admin component/config changes |
+| `npm run generate:payload` | Regenerate Payload types and the admin import map together |
+| `npm test` | Run focused Vitest coverage |
 | `npm run seed` | Seed the database with sample data |
+
+Payload generation is routed through `scripts/generate-payload.mjs` because the upstream Payload CLI `tsx` import path currently trips an `undici` constructor issue on this Windows/Node setup. The generated outputs are still the standard `payload-types.ts` and `app/(payload)/admin/importMap.ts`.
 
 ---
 
@@ -127,7 +137,7 @@ app/
     journal/                  # Blog (listing + [slug] detail)
     showreel/                 # Video showreel
     press/                    # Press kit + downloads
-  (payload)/                  # Payload CMS admin UI (auto-generated, don't edit)
+  (payload)/                  # Payload CMS admin UI + generated import map
 
 collections/                  # CMS data models (one file per collection)
 globals/                      # CMS globals (single-instance settings)
@@ -139,6 +149,8 @@ lib/
   fetchers.ts                 # All server-side CMS data fetching
   gsap-utils.ts               # GSAP setup + helpers
   payload.ts                  # Payload client singleton
+  automation.ts               # Automation sequence scheduling/cancellation helpers
+  csv-export.ts               # CSV export column mapping helpers
 public/assets/                # Static images (fallback, migrating to Cloudinary)
 ```
 

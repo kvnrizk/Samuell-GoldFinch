@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload';
+import { createAdminAlert } from '../lib/admin-alerts';
 import { calculateInquiryScore } from '../lib/lead-scoring';
 
 export const Inquiries: CollectionConfig = {
@@ -11,7 +12,7 @@ export const Inquiries: CollectionConfig = {
   timestamps: true,
   access: {
     read: ({ req: { user } }) => Boolean(user),
-    create: () => true,
+    create: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => user?.role === 'admin',
   },
@@ -36,222 +37,39 @@ export const Inquiries: CollectionConfig = {
       },
     ],
     afterChange: [
-      async ({ doc, previousDoc, operation }) => {
-        // Dynamic imports to avoid circular dependency (collection → notifications → payload → config → collection)
-        const { sendNotification } = await import('../lib/notifications');
-        const { getPayload } = await import('../lib/payload');
-
-        // ---- On CREATE: admin alert + hot-lead alert + automation sequences ----
+      async ({ doc, previousDoc, operation, req }) => {
+        // Phase 3: keep simple admin alerts, but disable automation sequences.
         if (operation === 'create') {
-          // 1. Always create an admin alert for new leads
-          await sendNotification({
-            channel: 'admin-alert',
-            targetAudience: 'admin',
-            inquiryId: doc.id,
-            alertType: 'new-lead',
-            alertSeverity: 'info',
-            alertTitle: `New inquiry from ${doc.name}`,
-            alertMessage: `${doc.name} submitted a ${doc.service || 'general'} inquiry${doc.budget ? ` — Budget: ${doc.budget}` : ''}`,
-            context: {
-              name: doc.name,
-              email: doc.email,
-              service: doc.service || '',
-              budget: doc.budget || '',
-              leadScore: doc.leadScore,
-            },
+          await createAdminAlert({
+            payload: req.payload,
+            inquiry: doc.id,
+            type: 'new-lead',
+            severity: 'info',
+            title: `New inquiry from ${doc.name}`,
+            message: `${doc.name} submitted a ${doc.service || 'general'} inquiry${doc.budget ? ` - Budget: ${doc.budget}` : ''}`,
           });
 
-          // 2. If lead score > 75, create a hot-lead alert
           if (doc.leadScore && doc.leadScore > 75) {
-            await sendNotification({
-              channel: 'admin-alert',
-              targetAudience: 'admin',
-              inquiryId: doc.id,
-              alertType: 'hot-lead',
-              alertSeverity: 'warning',
-              alertTitle: `Hot lead: ${doc.name} scored ${doc.leadScore}/100`,
-              alertMessage: `${doc.name} scored ${doc.leadScore}/100 for ${doc.service || 'general'} — ${doc.budget || 'no budget specified'}`,
-              context: {
-                name: doc.name,
-                leadScore: doc.leadScore,
-                service: doc.service || '',
-                budget: doc.budget || '',
-              },
+            await createAdminAlert({
+              payload: req.payload,
+              inquiry: doc.id,
+              type: 'hot-lead',
+              severity: 'warning',
+              title: `Hot lead: ${doc.name} scored ${doc.leadScore}/100`,
+              message: `${doc.name} scored ${doc.leadScore}/100 for ${doc.service || 'general'} - ${doc.budget || 'no budget specified'}`,
             });
-          }
-
-          // 3. Find active AutomationSequences and process them
-          try {
-            const p = await getPayload();
-
-            const sequences = await p.find({
-              collection: 'automation-sequences',
-              where: {
-                and: [
-                  { isActive: { equals: true } },
-                  { triggerType: { equals: 'on-create' } },
-                  { triggerCollection: { equals: 'inquiries' } },
-                ],
-              },
-              limit: 50,
-            });
-
-            for (const seq of sequences.docs) {
-              // Skip if triggerStatus is set and doesn't match
-              if (seq.triggerStatus && seq.triggerStatus !== doc.status) continue;
-
-              const channels = Array.isArray(seq.channels) ? seq.channels : [seq.channels];
-
-              for (const channel of channels) {
-                if (seq.delayHours === 0) {
-                  // Send immediately
-                  await sendNotification({
-                    sequenceId: String(seq.id),
-                    inquiryId: doc.id,
-                    channel: channel as 'email' | 'whatsapp' | 'admin-alert',
-                    targetAudience: (seq.targetAudience as 'admin' | 'lead' | 'both') || 'admin',
-                    emailSubject: seq.emailSubject || undefined,
-                    emailBody: (seq.emailBody as string | undefined) || undefined,
-                    whatsappMessage: seq.whatsappMessage || undefined,
-                    alertType: 'new-lead',
-                    alertSeverity: 'info',
-                    alertTitle: seq.name,
-                    alertMessage: seq.whatsappMessage || seq.emailSubject || seq.name,
-                    context: {
-                      name: doc.name,
-                      email: doc.email,
-                      service: doc.service || '',
-                      budget: doc.budget || '',
-                      leadScore: doc.leadScore,
-                      status: doc.status || 'new',
-                    },
-                  });
-                } else {
-                  // Queue for later — create a pending SentNotification with scheduledFor
-                  const scheduledFor = new Date(Date.now() + (seq.delayHours as number) * 3600000).toISOString();
-                  await p.create({
-                    collection: 'sent-notifications',
-                    data: {
-                      sequence: seq.id,
-                      inquiryRef: doc.id,
-                      channel: channel as string,
-                      scheduledFor,
-                      status: 'pending',
-                    },
-                  });
-                }
-              }
-            }
-          } catch (err) {
-            console.error('[Inquiries afterChange] Failed to process sequences:', err);
           }
         }
 
-        // ---- On UPDATE with status change ----
         if (operation === 'update' && previousDoc && doc.status !== previousDoc.status) {
-          // 1. Create status-change admin alert
-          await sendNotification({
-            channel: 'admin-alert',
-            targetAudience: 'admin',
-            inquiryId: doc.id,
-            alertType: 'status-change',
-            alertSeverity: 'info',
-            alertTitle: `${doc.name}: ${previousDoc.status} → ${doc.status}`,
-            alertMessage: `${doc.name} moved from ${previousDoc.status} to ${doc.status}`,
-            context: {
-              name: doc.name,
-              status: doc.status || '',
-            },
+          await createAdminAlert({
+            payload: req.payload,
+            inquiry: doc.id,
+            type: 'status-change',
+            severity: 'info',
+            title: `${doc.name}: ${previousDoc.status} -> ${doc.status}`,
+            message: `${doc.name} moved from ${previousDoc.status} to ${doc.status}`,
           });
-
-          // 2. If status is 'closed' or 'booked', cancel all pending sequences
-          if (doc.status === 'closed' || doc.status === 'booked') {
-            try {
-              const p = await getPayload();
-              const pending = await p.find({
-                collection: 'sent-notifications',
-                where: {
-                  and: [
-                    { inquiryRef: { equals: doc.id } },
-                    { status: { equals: 'pending' } },
-                  ],
-                },
-                limit: 100,
-              });
-              for (const pend of pending.docs) {
-                await p.update({
-                  collection: 'sent-notifications',
-                  id: pend.id,
-                  data: { status: 'failed', errorMessage: `Cancelled: status changed to ${doc.status}` },
-                });
-              }
-            } catch (err) {
-              console.error('[Inquiries afterChange] Failed to cancel pending sequences:', err);
-            }
-          }
-
-          // 3. Find on-status-change sequences
-          try {
-            const p = await getPayload();
-            const sequences = await p.find({
-              collection: 'automation-sequences',
-              where: {
-                and: [
-                  { isActive: { equals: true } },
-                  { triggerType: { equals: 'on-status-change' } },
-                  {
-                    or: [
-                      { triggerCollection: { equals: 'inquiries' } },
-                      { triggerCollection: { equals: 'both' } },
-                    ],
-                  },
-                ],
-              },
-              limit: 50,
-            });
-
-            for (const seq of sequences.docs) {
-              if (seq.triggerStatus && seq.triggerStatus !== doc.status) continue;
-              const channels = Array.isArray(seq.channels) ? seq.channels : [seq.channels];
-              for (const channel of channels) {
-                if (seq.delayHours === 0) {
-                  await sendNotification({
-                    sequenceId: String(seq.id),
-                    inquiryId: doc.id,
-                    channel: channel as 'email' | 'whatsapp' | 'admin-alert',
-                    targetAudience: (seq.targetAudience as 'admin' | 'lead' | 'both') || 'admin',
-                    emailSubject: seq.emailSubject || undefined,
-                    emailBody: (seq.emailBody as string | undefined) || undefined,
-                    whatsappMessage: seq.whatsappMessage || undefined,
-                    alertType: 'status-change',
-                    alertSeverity: 'info',
-                    alertTitle: seq.name,
-                    alertMessage: `${doc.name} moved to ${doc.status}`,
-                    context: {
-                      name: doc.name,
-                      email: doc.email,
-                      service: doc.service || '',
-                      status: doc.status || '',
-                    },
-                  });
-                } else {
-                  const scheduledFor = new Date(Date.now() + (seq.delayHours as number) * 3600000).toISOString();
-                  await p.create({
-                    collection: 'sent-notifications',
-                    data: {
-                      sequence: seq.id,
-                      inquiryRef: doc.id,
-                      channel: channel as string,
-                      scheduledFor,
-                      status: 'pending',
-                    },
-                  });
-                }
-              }
-            }
-          } catch (err) {
-            console.error('[Inquiries afterChange] Failed to process status-change sequences:', err);
-          }
         }
       },
     ],
@@ -299,7 +117,7 @@ export const Inquiries: CollectionConfig = {
       name: 'budget',
       type: 'text',
       maxLength: 100,
-      admin: { description: 'Freeform, e.g. EUR 5,000–10,000' },
+      admin: { description: 'Freeform, e.g. EUR 5,000-10,000' },
     },
     {
       name: 'details',
@@ -330,7 +148,7 @@ export const Inquiries: CollectionConfig = {
     {
       name: 'internalNotes',
       type: 'textarea',
-      admin: { description: 'Private notes — not visible to client' },
+      admin: { description: 'Private notes - not visible to client' },
     },
     // ---- Lead Intelligence (auto-calculated) --------------------------------
     {

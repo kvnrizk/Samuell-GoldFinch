@@ -32,9 +32,9 @@ Deliver as a single file in any common format (jpg, png, webp). Drop it in `Samu
 
 ## 3. Provide a logo file for SEO metadata
 
-**File referenced:** `/assets/logo.png` in `components/JsonLd.tsx`. This powers the Google Knowledge Panel image and social share previews.
+**Current fallback:** `components/JsonLd.tsx` points structured data at the existing `/og-image.png` so validators do not fail on a missing asset.
 **Needed:** Your "Samuell Goldfinch" wordmark/icon as a **1200×630 PNG** on a transparent background (or dark background matching the site).
-Same delivery method as above.
+Once delivered, replace the temporary structured-data image with the final brand asset. Same delivery method as above.
 
 ---
 

@@ -3,20 +3,32 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { alternateLocalePath, getDictionary, localizedPath, type Locale } from '@/lib/i18n';
 
-const navLinks = [
-  { name: 'Blaze', path: '/blaze' },
-  { name: 'Kolasi', path: '/kolasi' },
-  { name: 'For Venues', path: '/venues', accent: true },
-  { name: 'Quote', path: '/quote' },
-  { name: 'About', path: '/about' },
-];
+function corePath(path: string, locale: Locale) {
+  return ['/', '/quote', '/contact', '/venues'].includes(path) ? localizedPath(path, locale) : path;
+}
 
-const moreLinks = [
-  {
-    name: 'Contact',
-    path: '/contact',
-    desc: 'Get in touch with us',
+function getNavLinks(locale: Locale) {
+  const copy = getDictionary(locale).shell.nav;
+
+  return [
+    { name: copy.blaze, path: '/blaze' },
+    { name: copy.kolasi, path: '/kolasi' },
+    { name: copy.venues, path: corePath('/venues', locale), accent: true },
+    { name: copy.quote, path: corePath('/quote', locale) },
+    { name: copy.about, path: '/about' },
+  ];
+}
+
+function getMoreLinks(locale: Locale) {
+  const copy = getDictionary(locale).shell.nav;
+
+  return [
+    {
+    name: copy.contact,
+    path: corePath('/contact', locale),
+    desc: copy.contactDesc,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-5 h-5">
         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" strokeLinecap="round" strokeLinejoin="round" />
@@ -25,9 +37,9 @@ const moreLinks = [
     ),
   },
   {
-    name: 'Showreel',
+    name: copy.showreel,
     path: '/showreel',
-    desc: 'Watch our latest work',
+    desc: copy.showreelDesc,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-5 h-5">
         <polygon points="5 3 19 12 5 21 5 3" strokeLinecap="round" strokeLinejoin="round" />
@@ -35,9 +47,9 @@ const moreLinks = [
     ),
   },
   {
-    name: 'Journal',
+    name: copy.journal,
     path: '/journal',
-    desc: 'Stories & behind the scenes',
+    desc: copy.journalDesc,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-5 h-5">
         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" strokeLinecap="round" strokeLinejoin="round" />
@@ -46,9 +58,9 @@ const moreLinks = [
     ),
   },
   {
-    name: 'Press Kit',
+    name: copy.press,
     path: '/press',
-    desc: 'Logos, bios & media assets',
+    desc: copy.pressDesc,
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-5 h-5">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" strokeLinecap="round" strokeLinejoin="round" />
@@ -57,15 +69,21 @@ const moreLinks = [
       </svg>
     ),
   },
-];
+  ];
+}
 
-export default function Header() {
+export default function Header({ locale = 'en' }: { locale?: Locale }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const moreRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const copy = getDictionary(locale).shell.nav;
+  const navLinks = getNavLinks(locale);
+  const moreLinks = getMoreLinks(locale);
+  const otherLocale: Locale = locale === 'fr' ? 'en' : 'fr';
+  const languageHref = alternateLocalePath(pathname, otherLocale);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -121,7 +139,7 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <Link
-          href="/"
+          href={localizedPath('/', locale)}
           className="text-lg font-serif tracking-tighter uppercase font-medium group"
         >
           Samuell{' '}
@@ -136,7 +154,7 @@ export default function Header() {
             <Link
               key={link.path}
               href={link.path}
-              className="text-[10px] uppercase tracking-[0.4em] font-medium transition-colors"
+              className="ui-micro font-medium transition-colors"
               style={{
                 color: link.accent
                   ? pathname === link.path ? '#c8a96e' : 'rgba(200,169,110,0.7)'
@@ -152,11 +170,11 @@ export default function Header() {
           <div ref={moreRef} className="relative">
             <button
               onClick={() => setMoreOpen(!moreOpen)}
-              className="text-[10px] uppercase tracking-[0.4em] font-medium transition-colors flex items-center gap-1.5"
+              className="ui-micro font-medium transition-colors flex items-center gap-1.5"
               style={{ color: isMoreActive ? 'var(--text)' : 'var(--text-dim)' }}
               aria-expanded={moreOpen}
             >
-              More
+              {copy.more}
               <svg
                 className={`w-3 h-3 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${moreOpen ? 'rotate-180' : ''}`}
                 viewBox="0 0 12 12"
@@ -214,7 +232,7 @@ export default function Header() {
                         </span>
                         <div className="min-w-0">
                           <span
-                            className="block text-[11px] uppercase tracking-[0.2em] font-semibold transition-colors duration-300 group-hover:text-[#c8a96e]"
+                            className="block ui-kicker font-semibold transition-colors duration-300 group-hover:text-[#c8a96e]"
                             style={{
                               color: pathname === link.path ? '#c8a96e' : 'var(--text)',
                             }}
@@ -222,7 +240,7 @@ export default function Header() {
                             {link.name}
                           </span>
                           <span
-                            className="block text-[10px] mt-0.5 tracking-wide leading-relaxed"
+                            className="block ui-caption mt-0.5"
                             style={{ color: 'var(--text-mute)' }}
                           >
                             {link.desc}
@@ -241,10 +259,10 @@ export default function Header() {
                     }}
                   >
                     <span
-                      className="text-[10px] uppercase tracking-[0.2em] font-medium"
+                      className="ui-micro font-medium"
                       style={{ color: 'var(--text-mute)' }}
                     >
-                      Theme
+                      {copy.theme}
                     </span>
                     <button
                       onClick={toggleTheme}
@@ -284,6 +302,15 @@ export default function Header() {
             </div>
           </div>
         </nav>
+
+        <Link
+          href={languageHref}
+          className="hidden md:block ml-6 ui-micro font-medium transition-colors"
+          style={{ color: 'var(--text-mute)' }}
+          aria-label={otherLocale === 'fr' ? 'Version francaise' : 'English version'}
+        >
+          {otherLocale.toUpperCase()}
+        </Link>
 
         {/* Mobile Toggle */}
         <button
@@ -339,7 +366,7 @@ export default function Header() {
               key={link.path}
               href={link.path}
               onClick={() => setIsOpen(false)}
-              className="text-sm font-medium uppercase tracking-[0.15em] transition-colors py-1"
+              className="ui-kicker font-medium transition-colors py-1"
               style={{ color: pathname === link.path ? '#c8a96e' : 'var(--text-dim)' }}
             >
               {link.name}
@@ -348,7 +375,7 @@ export default function Header() {
           <div className="mt-2 pt-3 border-t w-24 text-center" style={{ borderColor: 'var(--border)' }}>
             <button
               onClick={toggleTheme}
-              className="text-[10px] uppercase tracking-[0.3em] transition-colors flex items-center gap-2 mx-auto"
+              className="ui-micro transition-colors flex items-center gap-2 mx-auto"
               style={{ color: 'var(--text-mute)' }}
             >
               {theme === 'dark' ? (
@@ -361,8 +388,16 @@ export default function Header() {
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
               )}
-              {theme === 'dark' ? 'Light' : 'Dark'}
+              {theme === 'dark' ? copy.light : copy.dark}
             </button>
+            <Link
+              href={languageHref}
+              onClick={() => setIsOpen(false)}
+              className="mt-4 block ui-micro transition-colors"
+              style={{ color: 'var(--text-mute)' }}
+            >
+              {otherLocale.toUpperCase()}
+            </Link>
           </div>
         </nav>
       </div>

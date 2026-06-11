@@ -1,15 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPayload } from '@/lib/payload';
+import { buildCSV, isExportCollection } from '@/lib/csv-export';
 import { headers as getHeaders } from 'next/headers';
-
-function escapeCSV(value: unknown): string {
-  if (value == null) return '';
-  const str = String(value);
-  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-    return `"${str.replace(/"/g, '""')}"`;
-  }
-  return str;
-}
 
 export async function GET(req: NextRequest) {
   const payload = await getPayload();
@@ -27,7 +19,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const collection = searchParams.get('collection');
 
-  if (!collection || !['inquiries', 'venue-inquiries'].includes(collection)) {
+  if (!collection || !isExportCollection(collection)) {
     return NextResponse.json({ error: 'Invalid collection' }, { status: 400 });
   }
 
@@ -48,51 +40,7 @@ export async function GET(req: NextRequest) {
       return new NextResponse('No data to export', { status: 404 });
     }
 
-    let headers: string[];
-    let rows: string[][];
-
-    if (collection === 'inquiries') {
-      headers = ['Name', 'Email', 'Phone', 'Service', 'Event Date', 'Guest Count', 'Budget', 'Details', 'Source', 'Status', 'Internal Notes', 'Created At'];
-      rows = docs.map((doc: any) => [
-        escapeCSV(doc.name),
-        escapeCSV(doc.email),
-        escapeCSV(doc.phone),
-        escapeCSV(doc.service),
-        escapeCSV(doc.eventDate),
-        escapeCSV(doc.guestCount),
-        escapeCSV(doc.budget),
-        escapeCSV(doc.details),
-        escapeCSV(doc.source),
-        escapeCSV(doc.status),
-        escapeCSV(doc.internalNotes),
-        escapeCSV(doc.createdAt ? new Date(doc.createdAt).toISOString() : ''),
-      ]);
-    } else {
-      headers = ['Venue Name', 'Address', 'Website', 'Instagram', 'Venue Type', 'Capacity', 'Has Dance Pocket', 'Current Programming', 'Goals', 'Monthly Budget', 'Decision Maker', 'Contact Name', 'WhatsApp', 'Email', 'Timeline', 'Source', 'Status', 'Internal Notes', 'Created At'];
-      rows = docs.map((doc: any) => [
-        escapeCSV(doc.venueName),
-        escapeCSV(doc.address),
-        escapeCSV(doc.website),
-        escapeCSV(doc.instagram),
-        escapeCSV(doc.venueType),
-        escapeCSV(doc.capacity),
-        escapeCSV(doc.hasDancePocket ? 'Yes' : 'No'),
-        escapeCSV(doc.currentProgramming),
-        escapeCSV(Array.isArray(doc.goal) ? doc.goal.join(', ') : doc.goal),
-        escapeCSV(doc.monthlyBudget),
-        escapeCSV(doc.decisionMaker),
-        escapeCSV(doc.contactName),
-        escapeCSV(doc.contactWhatsApp),
-        escapeCSV(doc.contactEmail),
-        escapeCSV(doc.timeline),
-        escapeCSV(doc.source),
-        escapeCSV(doc.status),
-        escapeCSV(doc.internalNotes),
-        escapeCSV(doc.createdAt ? new Date(doc.createdAt).toISOString() : ''),
-      ]);
-    }
-
-    const csv = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const csv = buildCSV(collection, docs as unknown as Record<string, unknown>[]);
     const filename = `${collection}-export-${new Date().toISOString().slice(0, 10)}.csv`;
 
     return new NextResponse(csv, {

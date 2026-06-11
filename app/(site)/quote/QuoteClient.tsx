@@ -7,6 +7,7 @@ import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import { useRouter } from 'next/navigation';
 import { submitQuoteForm } from '@/lib/actions';
 import { trackEvent } from '@/lib/analytics';
+import { getDictionary, localizedPath, type Locale } from '@/lib/i18n';
 
 /* ── Types ── */
 type Service = 'wedding-film' | 'editorial-commercial' | 'event-production' | 'dj-performance' | 'hybrid-package';
@@ -69,6 +70,10 @@ const serviceOptions = [
 
 const stepLabels = ['Service', 'Details', 'Timeline', 'Contact', 'Done'];
 
+function tx(locale: Locale, en: string, fr: string) {
+  return locale === 'fr' ? fr : en;
+}
+
 /* ── Helpers ── */
 function InputField({ label, name, type = 'text', placeholder, value, onChange, required }: {
   label: string; name: string; type?: string; placeholder?: string;
@@ -77,7 +82,7 @@ function InputField({ label, name, type = 'text', placeholder, value, onChange, 
   const id = `quote-${name}`;
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>
+      <label htmlFor={id} className="text-[0.78rem] font-medium ml-1" style={{ color: 'var(--text-mute)' }}>
         {label} {required && <span style={{ color: '#c8a96e' }}>*</span>}
       </label>
       <input
@@ -88,7 +93,7 @@ function InputField({ label, name, type = 'text', placeholder, value, onChange, 
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
-        className="w-full border rounded-xl px-4 py-3 text-sm focus:border-white/40 outline-none transition-all"
+        className="w-full border rounded-xl px-4 py-3 text-[0.95rem] focus:border-white/40 outline-none transition-all"
         style={{ backgroundColor: 'color-mix(in srgb, var(--bg) 80%, transparent)', borderColor: 'var(--border-hi)' }}
       />
     </div>
@@ -103,7 +108,7 @@ function SelectField({ label, name, value, onChange, options, required }: {
   const id = `quote-${name}`;
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>
+      <label htmlFor={id} className="text-[0.78rem] font-medium ml-1" style={{ color: 'var(--text-mute)' }}>
         {label} {required && <span style={{ color: '#c8a96e' }}>*</span>}
       </label>
       <select
@@ -112,7 +117,7 @@ function SelectField({ label, name, value, onChange, options, required }: {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
-        className="w-full border rounded-xl px-4 py-3 text-sm focus:border-white/40 outline-none transition-all"
+        className="w-full border rounded-xl px-4 py-3 text-[0.95rem] focus:border-white/40 outline-none transition-all"
         style={{ backgroundColor: 'color-mix(in srgb, var(--bg) 80%, transparent)', borderColor: 'var(--border-hi)' }}
       >
         <option value="">Select...</option>
@@ -129,7 +134,7 @@ function TextareaField({ label, name, placeholder, value, onChange, rows = 4 }: 
   const id = `quote-${name}`;
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>{label}</label>
+      <label htmlFor={id} className="text-[0.78rem] font-medium ml-1" style={{ color: 'var(--text-mute)' }}>{label}</label>
       <textarea
         id={id}
         name={name}
@@ -137,7 +142,7 @@ function TextareaField({ label, name, placeholder, value, onChange, rows = 4 }: 
         value={value}
         onChange={(e) => onChange(e.target.value)}
         rows={rows}
-        className="w-full border rounded-xl px-4 py-3 text-sm focus:border-white/40 outline-none transition-all resize-none"
+        className="w-full border rounded-xl px-4 py-3 text-[0.95rem] focus:border-white/40 outline-none transition-all resize-none"
         style={{ backgroundColor: 'color-mix(in srgb, var(--bg) 80%, transparent)', borderColor: 'var(--border-hi)' }}
       />
     </div>
@@ -145,7 +150,7 @@ function TextareaField({ label, name, placeholder, value, onChange, rows = 4 }: 
 }
 
 /* ── Progress Bar ── */
-function ProgressBar({ currentStep, totalSteps }: { currentStep: number; totalSteps: number }) {
+function ProgressBar({ currentStep, totalSteps, labels = stepLabels }: { currentStep: number; totalSteps: number; labels?: string[] }) {
   return (
     <div className="flex items-center gap-2 mb-12">
       {Array.from({ length: totalSteps }, (_, i) => (
@@ -168,7 +173,7 @@ function ProgressBar({ currentStep, totalSteps }: { currentStep: number; totalSt
               )}
             </div>
             <span className="text-[9px] font-medium hidden md:block" style={{ color: i <= currentStep ? 'var(--text-dim)' : 'var(--text-mute)' }}>
-              {stepLabels[i]}
+              {labels[i]}
             </span>
           </div>
           {i < totalSteps - 1 && (
@@ -184,7 +189,7 @@ function ProgressBar({ currentStep, totalSteps }: { currentStep: number; totalSt
 }
 
 /* ── Main Component ── */
-export default function QuoteClient() {
+export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const stepRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -192,6 +197,16 @@ export default function QuoteClient() {
   const [step, setStep] = useState(-1); // -1 = client type selector
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const t = getDictionary(locale).quote;
+  const localizedServiceOptions = locale === 'fr'
+    ? [
+        { value: 'wedding-film' as Service, label: 'Film de mariage', icon: '🎬', desc: 'Films cinematographiques pour raconter votre histoire' },
+        { value: 'editorial-commercial' as Service, label: 'Editorial / Commercial', icon: '📷', desc: 'Films de marque, mode et contenu editorial' },
+        { value: 'dj-performance' as Service, label: 'Performance DJ', icon: '🎵', desc: 'Booker un DJ ou artiste live pour votre evenement' },
+        { value: 'event-production' as Service, label: 'Production evenementielle', icon: '🎪', desc: 'Direction, production et gestion complete' },
+        { value: 'hybrid-package' as Service, label: 'Pack hybride', icon: '✨', desc: 'Combiner film, musique et production' },
+      ]
+    : serviceOptions;
 
   const update = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -247,7 +262,7 @@ export default function QuoteClient() {
         break;
       case 'event-production':
         if (form.eventScale) parts.push(`Scale: ${form.eventScale}`);
-        if (form.eventServices.length) parts.push(`Services needed: ${form.eventServices.join(', ')}`);
+        if (form.eventServices.length) parts.push(`${tx(locale, 'Services needed', 'Services souhaites')}: ${form.eventServices.join(', ')}`);
         if (form.eventVenue) parts.push(`Venue: ${form.eventVenue}`);
         break;
       case 'hybrid-package':
@@ -256,7 +271,7 @@ export default function QuoteClient() {
     }
     if (form.details) parts.push(`\nAdditional notes: ${form.details}`);
     return parts.join('\n');
-  }, [form]);
+  }, [form, locale]);
 
   const handleSubmit = async () => {
     setStatus('sending');
@@ -279,26 +294,26 @@ export default function QuoteClient() {
       setTimeout(() => animateStep('forward'), 50);
     } else {
       setStatus('error');
-      setErrorMsg(result.error || 'Something went wrong.');
+      setErrorMsg(result.error || (locale === 'fr' ? 'Une erreur est survenue.' : 'Something went wrong.'));
     }
   };
 
   /* Venue redirect */
   if (form.clientType === 'venue') {
-    router.push('/venues');
+    router.push(localizedPath('/venues', locale));
     return null;
   }
 
   /* ── Step -1: Client type selector ── */
   if (step === -1) {
     return (
-      <div ref={containerRef} className="pt-32 pb-24 min-h-screen" style={{ backgroundColor: 'var(--bg)' }}>
+      <div ref={containerRef} className="pt-32 pb-24 min-h-screen text-[0.95rem] md:text-base" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-2xl mx-auto px-6 text-center">
           <div className="reveal-up">
-            <p className="text-xs font-medium mb-4" style={{ color: 'var(--text-mute)' }}>First things first</p>
-            <h1 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-8 italic">How can we help?</h1>
-            <p className="text-sm md:text-base max-w-lg mx-auto leading-relaxed font-light mb-16" style={{ color: 'var(--text-dim)' }}>
-              Select your project type to get the right experience.
+            <p className="text-xs font-medium mb-4" style={{ color: 'var(--text-mute)' }}>{t.first}</p>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-8 italic">{t.startTitle}</h1>
+            <p className="ui-body-small md:ui-body max-w-lg mx-auto font-light mb-16" style={{ color: 'var(--text-dim)' }}>
+              {t.startText}
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-6 reveal-up">
@@ -309,8 +324,8 @@ export default function QuoteClient() {
               style={{ borderColor: 'var(--border)', backgroundColor: 'color-mix(in srgb, var(--bg-card) 60%, transparent)' }}
             >
               <p className="text-3xl mb-4">🎬</p>
-              <h3 className="text-lg font-serif mb-2">Personal / Brand</h3>
-              <p className="text-xs font-light" style={{ color: 'var(--text-dim)' }}>Wedding film, editorial, DJ booking, or event production</p>
+              <h3 className="text-lg font-serif mb-2">{t.personal}</h3>
+              <p className="text-xs font-light" style={{ color: 'var(--text-dim)' }}>{t.personalDesc}</p>
             </button>
             <button
               data-halo
@@ -319,8 +334,8 @@ export default function QuoteClient() {
               className="p-10 border border-[#c8a96e]/20 bg-[#c8a96e]/[0.03] rounded-[2rem] hover:bg-[#c8a96e]/[0.08] hover:border-[#c8a96e]/40 transition-all text-center group"
             >
               <p className="text-3xl mb-4">🍸</p>
-              <h3 className="text-lg font-serif mb-2 text-[#c8a96e]">I&apos;m a Venue Owner</h3>
-              <p className="text-xs font-light" style={{ color: 'var(--text-dim)' }}>Weekly DJ programming, content &amp; brand strategy</p>
+              <h3 className="text-lg font-serif mb-2 text-[#c8a96e]">{t.venue}</h3>
+              <p className="text-xs font-light" style={{ color: 'var(--text-dim)' }}>{t.venueDesc}</p>
             </button>
           </div>
         </div>
@@ -331,12 +346,12 @@ export default function QuoteClient() {
   /* ── Step 0: Service selector ── */
   const renderStep0 = () => (
     <div ref={stepRef}>
-      <h2 className="text-3xl md:text-4xl font-serif italic mb-3 step-field">What do you need?</h2>
+      <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{t.whatNeed}</h2>
       <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
-        Select the service that best fits your project.
+        {t.serviceHelp}
       </p>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {serviceOptions.map((opt) => (
+        {localizedServiceOptions.map((opt) => (
           <button
             key={opt.value}
             onClick={() => { update('service', opt.value); goNext(); }}
@@ -361,20 +376,20 @@ export default function QuoteClient() {
       case 'wedding-film':
         return (
           <div ref={stepRef}>
-            <h2 className="text-3xl md:text-4xl font-serif italic mb-3 step-field">Tell us about the wedding</h2>
+            <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us about the wedding', 'Parlez-nous du mariage')}</h2>
             <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
-              These details help us plan the perfect crew and equipment.
+              {tx(locale, 'These details help us plan the perfect crew and equipment.', 'Ces details nous aident a prevoir la bonne equipe et le bon materiel.')}
             </p>
             <div className="space-y-5">
               <div className="step-field">
-                <InputField label="Wedding date" name="weddingDate" placeholder="e.g. 14 September 2026" value={form.weddingDate} onChange={(v) => update('weddingDate', v)} />
+                <InputField label={tx(locale, 'Wedding date', 'Date du mariage')} name="weddingDate" placeholder={tx(locale, 'e.g. 14 September 2026', 'ex. 14 septembre 2026')} value={form.weddingDate} onChange={(v) => update('weddingDate', v)} />
               </div>
               <div className="step-field">
-                <InputField label="Venue / Location" name="weddingVenue" placeholder="e.g. Château de Versailles, Paris" value={form.weddingVenue} onChange={(v) => update('weddingVenue', v)} />
+                <InputField label={tx(locale, 'Venue / Location', 'Lieu / adresse')} name="weddingVenue" placeholder="e.g. Château de Versailles, Paris" value={form.weddingVenue} onChange={(v) => update('weddingVenue', v)} />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="step-field">
-                  <SelectField label="Hours of coverage" name="weddingHours" value={form.weddingHours} onChange={(v) => update('weddingHours', v)} options={[
+                  <SelectField label={tx(locale, 'Hours of coverage', 'Heures de couverture')} name="weddingHours" value={form.weddingHours} onChange={(v) => update('weddingHours', v)} options={[
                     { label: '4-6 hours', value: '4-6' },
                     { label: '8-10 hours', value: '8-10' },
                     { label: 'Full day (12+)', value: '12+' },
@@ -382,7 +397,7 @@ export default function QuoteClient() {
                   ]} />
                 </div>
                 <div className="step-field">
-                  <SelectField label="Style preference" name="weddingStyle" value={form.weddingStyle} onChange={(v) => update('weddingStyle', v)} options={[
+                  <SelectField label={tx(locale, 'Style preference', 'Style souhaite')} name="weddingStyle" value={form.weddingStyle} onChange={(v) => update('weddingStyle', v)} options={[
                     { label: 'Cinematic', value: 'cinematic' },
                     { label: 'Documentary', value: 'documentary' },
                     { label: 'Hybrid', value: 'hybrid' },
@@ -391,7 +406,7 @@ export default function QuoteClient() {
                 </div>
               </div>
               <div className="step-field">
-                <TextareaField label="Anything else we should know?" name="details" placeholder="Special moments to capture, cultural traditions, logistics..." value={form.details} onChange={(v) => update('details', v)} rows={3} />
+                <TextareaField label={tx(locale, 'Anything else we should know?', 'Autre chose a savoir ?')} name="details" placeholder={tx(locale, 'Special moments to capture, cultural traditions, logistics...', 'Moments importants, traditions, logistique...')} value={form.details} onChange={(v) => update('details', v)} rows={3} />
               </div>
             </div>
           </div>
@@ -400,16 +415,16 @@ export default function QuoteClient() {
       case 'editorial-commercial':
         return (
           <div ref={stepRef}>
-            <h2 className="text-3xl md:text-4xl font-serif italic mb-3 step-field">Tell us about the project</h2>
+            <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us about the project', 'Parlez-nous du projet')}</h2>
             <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
-              Understanding your brand and deliverables helps us scope the project accurately.
+              {tx(locale, 'Understanding your brand and deliverables helps us scope the project accurately.', 'Comprendre votre marque et les livrables nous aide a cadrer le projet avec precision.')}
             </p>
             <div className="space-y-5">
               <div className="step-field">
-                <InputField label="Brand / Company" name="editorialBrand" placeholder="e.g. Dior, your startup name" value={form.editorialBrand} onChange={(v) => update('editorialBrand', v)} />
+                <InputField label={tx(locale, 'Brand / Company', 'Marque / entreprise')} name="editorialBrand" placeholder="e.g. Dior, your startup name" value={form.editorialBrand} onChange={(v) => update('editorialBrand', v)} />
               </div>
               <div className="step-field">
-                <SelectField label="Deliverables" name="editorialDeliverables" value={form.editorialDeliverables} onChange={(v) => update('editorialDeliverables', v)} options={[
+                <SelectField label={tx(locale, 'Deliverables', 'Livrables')} name="editorialDeliverables" value={form.editorialDeliverables} onChange={(v) => update('editorialDeliverables', v)} options={[
                   { label: 'Brand film (1-3 min)', value: 'brand-film' },
                   { label: 'Social content package', value: 'social-content' },
                   { label: 'Product video', value: 'product' },
@@ -418,7 +433,7 @@ export default function QuoteClient() {
                 ]} />
               </div>
               <div className="step-field">
-                <SelectField label="Usage rights" name="editorialUsage" value={form.editorialUsage} onChange={(v) => update('editorialUsage', v)} options={[
+                <SelectField label={tx(locale, 'Usage rights', 'Droits d usage')} name="editorialUsage" value={form.editorialUsage} onChange={(v) => update('editorialUsage', v)} options={[
                   { label: 'Social media only', value: 'social' },
                   { label: 'Web + social', value: 'web-social' },
                   { label: 'Full commercial (TV, ads)', value: 'full-commercial' },
@@ -426,7 +441,7 @@ export default function QuoteClient() {
                 ]} />
               </div>
               <div className="step-field">
-                <TextareaField label="Creative brief or notes" name="details" placeholder="Mood, references, key shots, locations..." value={form.details} onChange={(v) => update('details', v)} rows={3} />
+                <TextareaField label={tx(locale, 'Creative brief or notes', 'Brief creatif ou notes')} name="details" placeholder="Mood, references, key shots, locations..." value={form.details} onChange={(v) => update('details', v)} rows={3} />
               </div>
             </div>
           </div>
@@ -435,14 +450,14 @@ export default function QuoteClient() {
       case 'dj-performance':
         return (
           <div ref={stepRef}>
-            <h2 className="text-3xl md:text-4xl font-serif italic mb-3 step-field">Tell us about the event</h2>
+            <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us about the event', 'Parlez-nous de l evenement')}</h2>
             <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
-              Help us match you with the perfect artist from the Kolasi roster.
+              {tx(locale, 'Help us match you with the perfect artist from the Kolasi roster.', 'Aidez-nous a vous proposer le bon artiste du roster Kolasi.')}
             </p>
             <div className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="step-field">
-                  <SelectField label="Event type" name="djEventType" value={form.djEventType} onChange={(v) => update('djEventType', v)} options={[
+                  <SelectField label={tx(locale, 'Event type', 'Type d evenement')} name="djEventType" value={form.djEventType} onChange={(v) => update('djEventType', v)} options={[
                     { label: 'Wedding', value: 'wedding' },
                     { label: 'Private party', value: 'private' },
                     { label: 'Corporate event', value: 'corporate' },
@@ -451,7 +466,7 @@ export default function QuoteClient() {
                   ]} />
                 </div>
                 <div className="step-field">
-                  <SelectField label="Set duration" name="djHours" value={form.djHours} onChange={(v) => update('djHours', v)} options={[
+                  <SelectField label={tx(locale, 'Set duration', 'Duree du set')} name="djHours" value={form.djHours} onChange={(v) => update('djHours', v)} options={[
                     { label: '2-3 hours', value: '2-3' },
                     { label: '4-5 hours', value: '4-5' },
                     { label: '6+ hours', value: '6+' },
@@ -460,7 +475,7 @@ export default function QuoteClient() {
                 </div>
               </div>
               <div className="step-field">
-                <SelectField label="Genre preference" name="djGenre" value={form.djGenre} onChange={(v) => update('djGenre', v)} options={[
+                <SelectField label={tx(locale, 'Genre preference', 'Genre souhaite')} name="djGenre" value={form.djGenre} onChange={(v) => update('djGenre', v)} options={[
                   { label: 'Deep House / Melodic', value: 'deep-melodic' },
                   { label: 'Afro House / Organic', value: 'afro-organic' },
                   { label: 'Techno', value: 'techno' },
@@ -470,7 +485,7 @@ export default function QuoteClient() {
                 ]} />
               </div>
               <div className="step-field">
-                <SelectField label="Equipment needed" name="djEquipment" value={form.djEquipment} onChange={(v) => update('djEquipment', v)} options={[
+                <SelectField label={tx(locale, 'Equipment needed', 'Materiel necessaire')} name="djEquipment" value={form.djEquipment} onChange={(v) => update('djEquipment', v)} options={[
                   { label: 'DJ brings own equipment', value: 'artist-provided' },
                   { label: 'Venue provides sound', value: 'venue-provided' },
                   { label: 'Need full sound + lights', value: 'full-setup' },
@@ -478,7 +493,7 @@ export default function QuoteClient() {
                 ]} />
               </div>
               <div className="step-field">
-                <TextareaField label="Any specific requests?" name="details" placeholder="Specific DJs, vibe, crowd profile..." value={form.details} onChange={(v) => update('details', v)} rows={3} />
+                <TextareaField label={tx(locale, 'Any specific requests?', 'Demandes specifiques ?')} name="details" placeholder="Specific DJs, vibe, crowd profile..." value={form.details} onChange={(v) => update('details', v)} rows={3} />
               </div>
             </div>
           </div>
@@ -487,13 +502,13 @@ export default function QuoteClient() {
       case 'event-production':
         return (
           <div ref={stepRef}>
-            <h2 className="text-3xl md:text-4xl font-serif italic mb-3 step-field">Tell us about the event</h2>
+            <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us about the event', 'Parlez-nous de l evenement')}</h2>
             <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
-              The more detail you share, the more accurate our proposal.
+              {tx(locale, 'The more detail you share, the more accurate our proposal.', 'Plus vous partagez de details, plus notre proposition sera precise.')}
             </p>
             <div className="space-y-5">
               <div className="step-field">
-                <SelectField label="Event scale" name="eventScale" value={form.eventScale} onChange={(v) => update('eventScale', v)} options={[
+                <SelectField label={tx(locale, 'Event scale', 'Taille de l evenement')} name="eventScale" value={form.eventScale} onChange={(v) => update('eventScale', v)} options={[
                   { label: 'Intimate (up to 50)', value: 'intimate' },
                   { label: 'Medium (50-200)', value: 'medium' },
                   { label: 'Large (200-500)', value: 'large' },
@@ -501,7 +516,7 @@ export default function QuoteClient() {
                 ]} />
               </div>
               <div className="step-field space-y-2">
-                <label className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>Services needed</label>
+                <label className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>{tx(locale, 'Services needed', 'Services souhaites')}</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {[
                     { label: 'Sound & lights', value: 'sound-lights' },
@@ -533,10 +548,10 @@ export default function QuoteClient() {
                 </div>
               </div>
               <div className="step-field">
-                <InputField label="Venue or location" name="eventVenue" placeholder="e.g. Rooftop in Paris 8e" value={form.eventVenue} onChange={(v) => update('eventVenue', v)} />
+                <InputField label={tx(locale, 'Venue or location', 'Lieu ou adresse')} name="eventVenue" placeholder="e.g. Rooftop in Paris 8e" value={form.eventVenue} onChange={(v) => update('eventVenue', v)} />
               </div>
               <div className="step-field">
-                <TextareaField label="Vision and logistics" name="details" placeholder="Theme, mood, run of show..." value={form.details} onChange={(v) => update('details', v)} rows={3} />
+                <TextareaField label={tx(locale, 'Vision and logistics', 'Vision et logistique')} name="details" placeholder="Theme, mood, run of show..." value={form.details} onChange={(v) => update('details', v)} rows={3} />
               </div>
             </div>
           </div>
@@ -545,14 +560,14 @@ export default function QuoteClient() {
       case 'hybrid-package':
         return (
           <div ref={stepRef}>
-            <h2 className="text-3xl md:text-4xl font-serif italic mb-3 step-field">Tell us your vision</h2>
+            <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us your vision', 'Parlez-nous de votre vision')}</h2>
             <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
-              A hybrid package combines multiple services. Describe what you have in mind and we&apos;ll craft a bespoke proposal.
+              {tx(locale, 'A hybrid package combines multiple services. Describe what you have in mind and we will craft a bespoke proposal.', 'Un pack hybride combine plusieurs services. Decrivez votre idee et nous preparerons une proposition sur mesure.')}
             </p>
             <div className="space-y-5">
               <div className="step-field">
                 <TextareaField
-                  label="Describe your project"
+                  label={tx(locale, 'Describe your project', 'Decrivez votre projet')}
                   name="details"
                   placeholder="e.g. We need a DJ and a videographer for our wedding in the south of France. We also want a recap video for social media..."
                   value={form.details}
@@ -572,21 +587,21 @@ export default function QuoteClient() {
   /* ── Step 2: Budget + Timeline ── */
   const renderStep2 = () => (
     <div ref={stepRef}>
-      <h2 className="text-3xl md:text-4xl font-serif italic mb-3 step-field">Budget &amp; Timeline</h2>
+      <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{t.budgetTitle}</h2>
       <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
-        This helps us tailor a proposal that fits your expectations.
+        {t.budgetHelp}
       </p>
       <div className="space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="step-field">
-            <InputField label="Event date / Timeframe" name="eventDate" placeholder="e.g. September 2026" value={form.eventDate} onChange={(v) => update('eventDate', v)} />
+            <InputField label={tx(locale, 'Event date / Timeframe', 'Date / periode')} name="eventDate" placeholder="e.g. September 2026" value={form.eventDate} onChange={(v) => update('eventDate', v)} />
           </div>
           <div className="step-field">
-            <InputField label="Expected guests" name="guestCount" type="number" placeholder="Approx. count" value={form.guestCount} onChange={(v) => update('guestCount', v)} />
+            <InputField label={tx(locale, 'Expected guests', 'Nombre d invites')} name="guestCount" type="number" placeholder="Approx. count" value={form.guestCount} onChange={(v) => update('guestCount', v)} />
           </div>
         </div>
         <div className="step-field">
-          <SelectField label="Budget range" name="budget" value={form.budget} onChange={(v) => update('budget', v)} options={[
+          <SelectField label={tx(locale, 'Budget range', 'Budget')} name="budget" value={form.budget} onChange={(v) => update('budget', v)} options={[
             { label: 'Under €2,000', value: 'under-2k' },
             { label: '€2,000 — €5,000', value: '2k-5k' },
             { label: '€5,000 — €10,000', value: '5k-10k' },
@@ -602,20 +617,20 @@ export default function QuoteClient() {
   /* ── Step 3: Contact details ── */
   const renderStep3 = () => (
     <div ref={stepRef}>
-      <h2 className="text-3xl md:text-4xl font-serif italic mb-3 step-field">Almost there</h2>
+      <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{t.almost}</h2>
       <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
-        Where should we send your personalized proposal?
+        {t.contactHelp}
       </p>
       <div className="space-y-5">
         <div className="step-field">
-          <InputField label="Full name" name="name" placeholder="Your name" value={form.name} onChange={(v) => update('name', v)} required />
+          <InputField label={tx(locale, 'Full name', 'Nom complet')} name="name" placeholder="Your name" value={form.name} onChange={(v) => update('name', v)} required />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="step-field">
             <InputField label="Email" name="email" type="email" placeholder="you@example.com" value={form.email} onChange={(v) => update('email', v)} required />
           </div>
           <div className="step-field">
-            <InputField label="Phone / WhatsApp" name="phone" type="tel" placeholder="+33 6 00 00 00 00" value={form.phone} onChange={(v) => update('phone', v)} />
+            <InputField label={tx(locale, 'Phone / WhatsApp', 'Telephone / WhatsApp')} name="phone" type="tel" placeholder="+33 6 00 00 00 00" value={form.phone} onChange={(v) => update('phone', v)} />
           </div>
         </div>
       </div>
@@ -637,21 +652,21 @@ export default function QuoteClient() {
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
-        <h2 className="text-3xl md:text-5xl font-serif italic mb-4">Request Sent</h2>
+        <h2 className="text-2xl md:text-4xl font-serif italic mb-4">{t.sent}</h2>
         <p className="text-sm font-light max-w-md mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>
-          Thank you, {form.name.split(' ')[0]}! We&apos;ve received your request and will get back to you within 48 hours with a tailored proposal.
+          {t.successText.replace('{name}', form.name.split(' ')[0] || '')}
         </p>
       </div>
 
       <div className="step-field max-w-sm mx-auto mb-12">
         <h3 className="text-xs font-semibold uppercase tracking-[0.15em] mb-6" style={{ color: 'var(--text-mute)' }}>
-          What happens next
+          {t.nextTitle}
         </h3>
         <div className="space-y-4 text-left">
           {[
-            { num: '01', text: 'We review your brief and match you with the right team' },
-            { num: '02', text: 'You receive a personalized proposal within 48 hours' },
-            { num: '03', text: 'We schedule a call to finalize the details' },
+            { num: '01', text: t.next[0] },
+            { num: '02', text: t.next[1] },
+            { num: '03', text: t.next[2] },
           ].map((item) => (
             <div key={item.num} className="flex items-start gap-4 p-4 rounded-xl border" style={{ borderColor: 'var(--border)' }}>
               <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: '#c8a96e' }}>{item.num}</span>
@@ -663,17 +678,17 @@ export default function QuoteClient() {
 
       <div className="step-field flex flex-col sm:flex-row items-center justify-center gap-4">
         <Link
-          href="/"
+          href={localizedPath('/', locale)}
           className="px-10 py-3.5 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all"
         >
-          Back to Home
+          {t.backHome}
         </Link>
         <Link
           href="/journal"
           className="px-10 py-3.5 text-sm font-light transition-colors"
           style={{ color: 'var(--text-dim)' }}
         >
-          Read the Journal
+          {t.journal}
         </Link>
       </div>
     </div>
@@ -697,11 +712,11 @@ export default function QuoteClient() {
   };
 
   return (
-    <div ref={containerRef} className="pt-32 pb-24 min-h-screen" style={{ backgroundColor: 'var(--bg)' }}>
+    <div ref={containerRef} className="pt-32 pb-24 min-h-screen text-[0.95rem] md:text-base" style={{ backgroundColor: 'var(--bg)' }}>
       <div className="max-w-2xl mx-auto px-6">
         {step < 4 && (
           <div className="reveal-up">
-            <ProgressBar currentStep={step} totalSteps={totalSteps - 1} />
+            <ProgressBar currentStep={step} totalSteps={totalSteps - 1} labels={locale === 'fr' ? ['Service', 'Details', 'Calendrier', 'Contact', 'Termine'] : stepLabels} />
           </div>
         )}
 
@@ -722,7 +737,7 @@ export default function QuoteClient() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline mr-2 -mt-0.5">
                     <path d="M19 12H5M12 5l-7 7 7 7" />
                   </svg>
-                  Back
+                  {t.back}
                 </button>
               )}
               {step === 0 && (
@@ -734,7 +749,7 @@ export default function QuoteClient() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline mr-2 -mt-0.5">
                     <path d="M19 12H5M12 5l-7 7 7 7" />
                   </svg>
-                  Back
+                  {t.back}
                 </button>
               )}
             </div>
@@ -746,7 +761,7 @@ export default function QuoteClient() {
                   className="px-8 py-3.5 border rounded-full text-sm font-semibold transition-all disabled:opacity-30"
                   style={{ borderColor: 'var(--border-hi)' }}
                 >
-                  Continue
+                  {t.continue}
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline ml-2 -mt-0.5">
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
@@ -758,7 +773,7 @@ export default function QuoteClient() {
                   disabled={!isStepValid() || status === 'sending'}
                   className="px-10 py-3.5 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all disabled:opacity-50"
                 >
-                  {status === 'sending' ? 'Sending...' : 'Send Request'}
+                  {status === 'sending' ? t.sending : t.send}
                 </button>
               )}
             </div>

@@ -22,6 +22,11 @@ function cleanupStaleEntries() {
 const ADMIN_SECRET = process.env.ADMIN_ACCESS_SECRET;
 const COOKIE_NAME = 'sg-admin-access';
 
+export function resetRateLimitForTests() {
+  rateLimit.clear();
+  lastCleanup = Date.now();
+}
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -107,5 +112,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/:path*', '/(site)/contact', '/(site)/quote', '/(site)/venues'],
+  matcher: ['/admin/:path*', '/api/:path*', '/contact', '/quote', '/venues', '/venues/:path*', '/fr/contact', '/fr/quote', '/fr/venues', '/fr/venues/:path*'],
 };

@@ -5,7 +5,7 @@ Written 2026-04-15 by Kevin after a backend hardening pass (commit `212812d`).
 The backend is now audited, tightened, and documented. Everything below is **frontend-focused** (UI, UX, performance, tests) or **nice-to-have backend cleanup** that doesn't block anything. Prioritized.
 
 **Read first:**
-- `CLAUDE.md` — full project brief, rules, tech stack
+- `README.md` — setup, commands, stack, and deployment notes
 - `AUDIT.md` — what was reviewed, what was fixed, what was deferred
 - `SAM-TODO.md` — what Sam still needs to provide (don't block on this; work around)
 
@@ -13,39 +13,27 @@ The backend is now audited, tightened, and documented. Everything below is **fro
 
 ## P1 — Should land before the next public share
 
-### 1. Critical-path test coverage (zero tests today)
+### 1. Critical-path test coverage (baseline added)
 
-No test setup exists. The highest-value tests:
+Vitest is now wired with `npm test`. Baseline coverage exists for:
 
 - **`lib/actions.ts`** — form server actions. Mock Payload + Resend. Assert:
   - Honeypot short-circuits without hitting the DB
   - Invalid email / enum / empty required fields return specific errors
   - `submitVenueInquiry` rejects empty `contactWhatsApp`
-  - Valid submission creates an inquiry and attempts email sends
 - **`lib/notifications.ts`** — `resolveTemplateVariables` vs `resolveTemplateVariablesHtml` (the HTML variant must escape `<>&"'` in values but leave the template alone)
 - **`middleware.ts`** — admin secret gating, rate limit boundary, 429 on 6th POST
 - **`lib/lead-scoring.ts`** — pure function, easy wins for snapshot-style tests
 
-Suggested stack: Vitest + `@testing-library/react` for any component tests later. Add `npm test` to CI.
+Next useful additions: valid-submission action tests and component tests if UI behavior changes.
 
-### 2. Clean up 6 unused `eslint-disable` warnings
+### 2. Clean up unused `eslint-disable` warnings
 
-The build passes but these warnings exist:
+The unused public-page disables were removed. Remaining disables are either generated Payload files or targeted exceptions that should be rechecked when lint rules change.
 
-```
-./app/(site)/blaze/page.tsx:18           @typescript-eslint/no-explicit-any
-./app/(site)/kolasi/page.tsx:20          @typescript-eslint/no-explicit-any
-./app/(site)/page.tsx:24                 @typescript-eslint/no-explicit-any
-./app/(site)/venues/case-studies/[slug]/page.tsx:41  @typescript-eslint/no-explicit-any
-./app/(site)/venues/page.tsx:42          @typescript-eslint/no-explicit-any
-./components/providers/AudioPlayerProvider.tsx:156   jsx-a11y/media-has-caption
-```
+### 3. SEO — final logo asset
 
-Remove them — they're disabling rules that don't actually fire.
-
-### 3. SEO — replace the placeholder logo reference
-
-`components/JsonLd.tsx` hard-codes `/assets/logo.png`, which doesn't exist. Until Sam delivers the final asset (see SAM-TODO #3), point this at an existing Cloudinary image so Google's structured data validator stops erroring. Check `scripts/cloudinary-mapping.json` for an existing wordmark.
+`components/JsonLd.tsx` now points structured data to the existing `/og-image.png` so validators do not fail on a missing file. Replace this with Sam's final logo/wordmark when delivered (see SAM-TODO #3).
 
 ### 4. Replace corrupt `IMAGE_PORTRAIT.webp` fallback
 
@@ -68,9 +56,9 @@ import type { Post } from '@/payload-types';
 const result = await payload.find<'posts'>({ ... });
 ```
 
-### 6. Make `export-csv` column order safe to change
+### 6. Keep `export-csv` column order safe
 
-`app/api/export-csv/route.ts` has two parallel arrays (`headers` + row mappers) that are easy to misalign. Refactor to a single `[header, valueFn]` pair list so adding a column can only be done correctly.
+`app/api/export-csv/route.ts` now delegates to `lib/csv-export.ts`, which uses a single `{ header, value }` pair list. Keep future column changes in that helper and update the Vitest row/header alignment coverage.
 
 ### 7. Wire a real error reporter
 

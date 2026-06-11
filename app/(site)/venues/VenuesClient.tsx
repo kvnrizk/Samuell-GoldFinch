@@ -17,6 +17,7 @@ import { VenueForm } from '@/components/ui/VenueForm';
 import { StickyMobileCTA } from '@/components/ui/StickyMobileCTA';
 import { trackEvent } from '@/lib/analytics';
 import { BLUR_DATA_URL } from '@/lib/cloudinary';
+import { getDictionary, type Locale } from '@/lib/i18n';
 
 interface Deliverable {
   item?: string;
@@ -62,6 +63,7 @@ interface VenuesClientProps {
   artists: Artist[];
   calendlyUrl: string;
   whatsappNumber: string;
+  locale?: Locale;
 }
 
 export default function VenuesClient({
@@ -71,8 +73,10 @@ export default function VenuesClient({
   artists,
   calendlyUrl,
   whatsappNumber,
+  locale = 'en',
 }: VenuesClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const t = getDictionary(locale).venues;
 
   useGSAP(() => {
     if (prefersReducedMotion()) return;
@@ -123,17 +127,12 @@ export default function VenuesClient({
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 md:py-40">
           <div className="max-w-3xl venue-reveal">
-            <SectionKicker label="For Venues" />
-            <h1 className="font-serif text-4xl md:text-6xl font-bold text-stone-100 leading-tight mb-6">
-              Give your venue
-              <br />a weekly identity
+            <SectionKicker label={t.heroKicker} />
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-stone-100 leading-tight mb-6">
+              {t.heroTitle}
             </h1>
             <ul className="space-y-2 mb-8">
-              {[
-                'Curated DJ programming tailored to your crowd',
-                'Monthly content production & social strategy',
-                'Measurable ROI on every session',
-              ].map((line, i) => (
+              {t.bullets.map((line, i) => (
                 <li key={i} className="flex items-start gap-3 text-zinc-400 text-sm md:text-base">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#c8a96e] mt-2 flex-shrink-0" />
                   {line}
@@ -147,28 +146,28 @@ export default function VenuesClient({
                 onClick={handleCallClick}
                 className="bg-[#c8a96e] text-[#09090b] font-semibold text-sm px-8 py-3.5 rounded-lg hover:bg-[#d4b87a] active:scale-[0.98] transition-all"
               >
-                Book a Discovery Call
+                {t.bookCall}
               </button>
               <a
                 href="#venue-form"
                 className="border border-[#c8a96e] text-[#c8a96e] font-semibold text-sm px-8 py-3.5 rounded-lg text-center hover:bg-[#c8a96e]/[0.08] transition-all"
               >
-                Apply Now
+                {t.applyNow}
               </a>
             </div>
 
             {/* WhatsApp micro-CTA */}
             <button
               onClick={handleWhatsApp}
-              className="flex items-center gap-2 text-xs text-zinc-500 hover:text-[#c8a96e] transition-colors mb-8"
+              className="flex items-center gap-2 ui-caption text-zinc-500 hover:text-[#c8a96e] transition-colors mb-8"
             >
               <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
               </svg>
-              WhatsApp: {whatsappNumber}
+              {t.whatsapp}: {whatsappNumber}
             </button>
 
-            <TrustStrip />
+            <TrustStrip locale={locale} />
           </div>
         </div>
       </section>
@@ -185,14 +184,13 @@ export default function VenuesClient({
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-[0.04] blur-[120px] pointer-events-none" style={{ background: '#c8a96e' }} />
         <div className="relative max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 venue-reveal">
-            <SectionKicker label="Packages" />
-            <h2 className="font-serif text-3xl md:text-5xl font-bold text-stone-100 mb-4">
-              Choose your tier
+            <SectionKicker label={t.packages} />
+            <h2 className="font-serif text-2xl md:text-4xl font-bold text-stone-100 mb-4">
+              {t.packagesTitle}
             </h2>
-            <p className="text-zinc-500 max-w-2xl mx-auto text-sm md:text-base">
-              Every package is tailored after a discovery call. These tiers give you a starting
-              framework.
-            </p>
+              <p className="text-zinc-500 max-w-2xl mx-auto ui-body-small md:ui-body">
+                {t.packagesText}
+              </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 venue-reveal">
@@ -206,6 +204,7 @@ export default function VenuesClient({
                   priceRange={pkg.priceRange}
                   featured={pkg.featured}
                   onCTA={handleCallClick}
+                  ctaLabel={t.getStarted}
                 />
               ))
             ) : (
@@ -221,6 +220,7 @@ export default function VenuesClient({
                   ]}
                   priceRange="From €1,500/mo"
                   onCTA={handleCallClick}
+                  ctaLabel={t.getStarted}
                 />
                 <PricingCard
                   name="Core Identity"
@@ -235,6 +235,7 @@ export default function VenuesClient({
                   priceRange="From €3,500/mo"
                   featured
                   onCTA={handleCallClick}
+                  ctaLabel={t.getStarted}
                 />
                 <PricingCard
                   name="Flagship"
@@ -249,6 +250,7 @@ export default function VenuesClient({
                   ]}
                   priceRange="From €7,500/mo"
                   onCTA={handleCallClick}
+                  ctaLabel={t.getStarted}
                 />
               </>
             )}
@@ -266,13 +268,12 @@ export default function VenuesClient({
           </div>
           <div className="relative max-w-7xl mx-auto px-6">
             <div className="text-center mb-16 venue-reveal">
-              <SectionKicker label="Case Studies" />
-              <h2 className="font-serif text-3xl md:text-5xl font-bold text-stone-100 mb-4">
-                Venues we&apos;ve transformed
+              <SectionKicker label={t.caseStudies} />
+              <h2 className="font-serif text-2xl md:text-4xl font-bold text-stone-100 mb-4">
+                {t.caseStudiesTitle}
               </h2>
-              <p className="text-zinc-500 max-w-2xl mx-auto text-sm md:text-base">
-                Real results from real partnerships. See how our programming drives measurable
-                impact.
+              <p className="text-zinc-500 max-w-2xl mx-auto ui-body-small md:ui-body">
+                {t.caseStudiesText}
               </p>
             </div>
 
@@ -331,12 +332,12 @@ export default function VenuesClient({
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full opacity-[0.03] blur-[100px] pointer-events-none" style={{ background: '#a78bfa' }} />
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 venue-reveal">
-            <SectionKicker label="Our Roster" />
-            <h2 className="font-serif text-3xl md:text-5xl font-bold text-stone-100 mb-4">
-              World-class artists, every night
+            <SectionKicker label={t.roster} />
+            <h2 className="font-serif text-2xl md:text-4xl font-bold text-stone-100 mb-4">
+              {t.rosterTitle}
             </h2>
-            <p className="text-zinc-500 max-w-2xl mx-auto text-sm md:text-base">
-              From residents who know your crowd to headliners who pack the room.
+            <p className="text-zinc-500 max-w-2xl mx-auto ui-body-small md:ui-body">
+              {t.rosterText}
             </p>
           </div>
 
@@ -390,7 +391,7 @@ export default function VenuesClient({
                     <div className="absolute bottom-0 left-0 right-0 p-5">
                       <p className="text-sm font-serif font-medium" style={{ color: 'var(--text)' }}>{artist.name}</p>
                       {artist.genre && (
-                        <p className="text-[11px] mt-1" style={{ color: 'var(--text-mute)' }}>{artist.genre}</p>
+                        <p className="ui-caption mt-1" style={{ color: 'var(--text-mute)' }}>{artist.genre}</p>
                       )}
                     </div>
                   </>
@@ -418,7 +419,7 @@ export default function VenuesClient({
             </div>
           ) : (
             <div className="text-center py-12 venue-reveal">
-              <p className="text-zinc-600 text-sm">
+              <p className="text-zinc-600 ui-body-small">
                 Roster coming soon. Book a call to discuss your programming needs.
               </p>
             </div>
@@ -432,12 +433,12 @@ export default function VenuesClient({
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full opacity-[0.03] blur-[100px] pointer-events-none" style={{ background: '#c8a96e' }} />
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <SectionKicker label="How It Works" />
-            <h2 className="font-serif text-3xl md:text-5xl font-bold text-stone-100 mb-4">
-              From audit to launch in 3 steps
+            <SectionKicker label={t.process} />
+            <h2 className="font-serif text-2xl md:text-4xl font-bold text-stone-100 mb-4">
+              {t.processTitle}
             </h2>
           </div>
-          <ProcessTimeline />
+          <ProcessTimeline locale={locale} />
         </div>
       </section>
 
@@ -445,9 +446,9 @@ export default function VenuesClient({
       <section className="py-24 md:py-32 relative">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-16 venue-reveal">
-            <SectionKicker label="FAQ" />
-            <h2 className="font-serif text-3xl md:text-5xl font-bold text-stone-100 mb-4">
-              Common questions
+            <SectionKicker label={t.faq} />
+            <h2 className="font-serif text-2xl md:text-4xl font-bold text-stone-100 mb-4">
+              {t.faqTitle}
             </h2>
           </div>
           <div className="venue-reveal">
@@ -508,15 +509,12 @@ export default function VenuesClient({
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             {/* Left: CTA copy */}
             <div className="venue-reveal">
-              <SectionKicker label="Get Started" />
-              <h2 className="font-serif text-3xl md:text-5xl font-bold text-stone-100 mb-6">
-                Ready to transform
-                <br />
-                your venue?
+              <SectionKicker label={t.getStarted} />
+              <h2 className="font-serif text-2xl md:text-4xl font-bold text-stone-100 mb-6">
+                {t.finalTitle}
               </h2>
-              <p className="text-zinc-400 text-sm md:text-base mb-8 max-w-lg">
-                Fill out the application form and we&apos;ll get back to you within 24 hours with a
-                personalised plan for your venue.
+              <p className="text-zinc-400 ui-body-small md:ui-body mb-8 max-w-lg">
+                {t.finalText}
               </p>
 
               <div className="space-y-4 mb-8">
@@ -536,7 +534,7 @@ export default function VenuesClient({
                     <line x1="8" x2="8" y1="2" y2="6" />
                     <line x1="3" x2="21" y1="10" y2="10" />
                   </svg>
-                  Or book a discovery call directly
+                  {t.bookDirect}
                 </button>
                 <button
                   onClick={handleWhatsApp}
@@ -545,18 +543,16 @@ export default function VenuesClient({
                   <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                   </svg>
-                  Message us on WhatsApp
+                  {t.messageWhatsApp}
                 </button>
               </div>
 
               <GlassCard className="!p-6">
-                <p className="text-xs font-medium text-[#c8a96e] mb-3">
-                  Response Promise
+                <p className="ui-kicker font-medium text-[#c8a96e] mb-3">
+                  {t.promiseTitle}
                 </p>
                 <p className="text-sm text-zinc-400 leading-relaxed italic">
-                  &ldquo;Every venue inquiry receives a personalised reply — not a template — within
-                  24 hours. We&apos;ll include budget guidance, a proposed programming plan, and a
-                  Calendly link if it&apos;s a fit.&rdquo;
+                  &ldquo;{t.promise}&rdquo;
                 </p>
               </GlassCard>
             </div>
@@ -565,12 +561,12 @@ export default function VenuesClient({
             <div className="venue-reveal">
               <GlassCard className="!p-8">
                 <h3 className="font-serif text-xl font-semibold text-stone-100 mb-2">
-                  Venue Application
+                  {t.formTitle}
                 </h3>
-                <p className="text-xs text-zinc-500 mb-8">
-                  Takes about 3 minutes. We&apos;ll tailor our response based on your answers.
+                <p className="ui-caption text-zinc-500 mb-8">
+                  {t.formIntro}
                 </p>
-                <VenueForm />
+                <VenueForm locale={locale} />
               </GlassCard>
             </div>
           </div>
@@ -578,7 +574,7 @@ export default function VenuesClient({
       </section>
 
       {/* Sticky Mobile CTA */}
-      <StickyMobileCTA calendlyUrl={calendlyUrl} whatsappNumber={whatsappNumber} />
+      <StickyMobileCTA calendlyUrl={calendlyUrl} whatsappNumber={whatsappNumber} locale={locale} />
     </div>
   );
 }

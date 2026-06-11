@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import { BLUR_DATA_URL } from '@/lib/cloudinary';
+import { plainTextFromCmsString } from '@/lib/safe-content';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { SectionKicker } from '@/components/ui/SectionKicker';
 import { GlassCard } from '@/components/ui/GlassCard';
@@ -136,7 +137,9 @@ export default function CaseStudyDetail({ caseStudy }: CaseStudyDetailProps) {
           <div className="prose prose-invert prose-sm max-w-none cs-reveal mb-16">
             {/* Payload richText renders as a structured object. For now, render as plain text if string. */}
             {typeof caseStudy.fullContent === 'string' ? (
-              <div dangerouslySetInnerHTML={{ __html: caseStudy.fullContent.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/on\w+="[^"]*"/gi, '') }} />
+              <p className="whitespace-pre-line">
+                {plainTextFromCmsString(caseStudy.fullContent) || 'Full case study content available soon.'}
+              </p>
             ) : (
               <p className="text-zinc-400">Full case study content available soon.</p>
             )}
