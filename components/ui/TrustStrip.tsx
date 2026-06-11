@@ -1,5 +1,7 @@
 'use client';
 
+import type { Locale } from '@/lib/i18n';
+
 const logos = [
   { name: 'Le Speakeasy', initials: 'LS' },
   { name: 'Hôtel Costes', initials: 'HC' },
@@ -8,7 +10,7 @@ const logos = [
   { name: 'Bar Hemingway', initials: 'BH' },
 ];
 
-export function TrustStrip() {
+export function TrustStrip({ locale = 'en' }: { locale?: Locale }) {
   return (
     <div className="flex items-center gap-6 flex-wrap">
       <div className="flex -space-x-2">
@@ -23,7 +25,8 @@ export function TrustStrip() {
         ))}
       </div>
       <span className="text-xs text-zinc-500">
-        <span className="text-stone-100 font-semibold">150+</span> live experiences delivered
+        <span className="text-stone-100 font-semibold">150+</span>{' '}
+        {locale === 'fr' ? 'experiences live realisees' : 'live experiences delivered'}
       </span>
     </div>
   );

@@ -1,14 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { getDictionary, type Locale } from '@/lib/i18n';
 
 interface StickyMobileCTAProps {
   calendlyUrl: string;
   whatsappNumber: string;
+  locale?: Locale;
 }
 
-export function StickyMobileCTA({ calendlyUrl, whatsappNumber }: StickyMobileCTAProps) {
+export function StickyMobileCTA({ calendlyUrl, whatsappNumber, locale = 'en' }: StickyMobileCTAProps) {
   const [visible, setVisible] = useState(false);
+  const t = getDictionary(locale).venues;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -34,7 +37,7 @@ export function StickyMobileCTA({ calendlyUrl, whatsappNumber }: StickyMobileCTA
         rel="noopener noreferrer"
         className="flex-1 bg-[#c8a96e] text-[#09090b] font-semibold text-sm py-3 rounded-lg text-center active:scale-[0.98] transition-transform"
       >
-        Book a Call
+        {t.bookCall}
       </a>
       <a
         href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`}

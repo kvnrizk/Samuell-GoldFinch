@@ -9,9 +9,10 @@ interface PricingCardProps {
   priceRange?: string;
   featured?: boolean;
   onCTA?: () => void;
+  ctaLabel?: string;
 }
 
-export function PricingCard({ name, tagline, deliverables, priceRange, featured = false, onCTA }: PricingCardProps) {
+export function PricingCard({ name, tagline, deliverables, priceRange, featured = false, onCTA, ctaLabel = 'Get Started' }: PricingCardProps) {
   return (
     <GlassCard featured={featured} className="flex flex-col">
       {featured && (
@@ -40,7 +41,7 @@ export function PricingCard({ name, tagline, deliverables, priceRange, featured 
             : 'border border-[#c8a96e] text-[#c8a96e] hover:bg-[#c8a96e]/[0.08]'
         }`}
       >
-        Get Started
+        {ctaLabel}
       </button>
     </GlassCard>
   );

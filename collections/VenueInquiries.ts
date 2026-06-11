@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload';
+import { createAdminAlert } from '../lib/admin-alerts';
 import { calculateVenueScore } from '../lib/lead-scoring';
 
 export const VenueInquiries: CollectionConfig = {
@@ -11,7 +12,7 @@ export const VenueInquiries: CollectionConfig = {
   timestamps: true,
   access: {
     read: ({ req: { user } }) => Boolean(user),
-    create: () => true,
+    create: ({ req: { user } }) => Boolean(user),
     update: ({ req: { user } }) => Boolean(user),
     delete: ({ req: { user } }) => user?.role === 'admin',
   },
@@ -43,247 +44,54 @@ export const VenueInquiries: CollectionConfig = {
       },
     ],
     afterChange: [
-      async ({ doc, previousDoc, operation }) => {
-        // Dynamic imports to avoid circular dependency (collection → notifications → payload → config → collection)
-        const { sendNotification } = await import('../lib/notifications');
-        const { getPayload } = await import('../lib/payload');
+      async ({ doc, previousDoc, operation, req }) => {
+        // Phase 3: keep simple admin alerts, but disable automation sequences.
         type AlertSeverity = 'info' | 'warning' | 'urgent';
 
-        // ---- On CREATE: admin alert + automation sequences ----
         if (operation === 'create') {
-          // 1. Determine severity based on budget
           const isHighBudget = doc.monthlyBudget && doc.monthlyBudget !== 'under-2k';
           const severity: AlertSeverity = isHighBudget ? 'urgent' : 'info';
 
-          // 2. Create admin alert for new venue lead
-          await sendNotification({
-            channel: 'admin-alert',
-            targetAudience: 'admin',
-            venueInquiryId: doc.id,
-            alertType: 'new-lead',
-            alertSeverity: severity,
-            alertTitle: `New venue lead: ${doc.venueName} — ${doc.monthlyBudget || 'no budget'}/mo`,
-            alertMessage: `${doc.contactName} from ${doc.venueName} submitted a venue inquiry — Budget: ${doc.monthlyBudget || 'not specified'}`,
-            context: {
-              name: doc.contactName,
-              email: doc.contactEmail,
-              venueName: doc.venueName,
-              budget: doc.monthlyBudget || '',
-              leadScore: doc.leadScore,
-              contractValue: doc.contractValue,
-              status: doc.status || 'new',
-            },
+          await createAdminAlert({
+            payload: req.payload,
+            venueInquiry: doc.id,
+            type: 'new-lead',
+            severity,
+            title: `New venue lead: ${doc.venueName} - ${doc.monthlyBudget || 'no budget'}/mo`,
+            message: `${doc.contactName} from ${doc.venueName} submitted a venue inquiry - Budget: ${doc.monthlyBudget || 'not specified'}`,
           });
 
-          // 3. If lead score > 75, create a hot-lead alert
           if (doc.leadScore && doc.leadScore > 75) {
-            await sendNotification({
-              channel: 'admin-alert',
-              targetAudience: 'admin',
-              venueInquiryId: doc.id,
-              alertType: 'hot-lead',
-              alertSeverity: 'warning',
-              alertTitle: `Hot venue lead: ${doc.venueName} scored ${doc.leadScore}/100`,
-              alertMessage: `${doc.contactName} from ${doc.venueName} scored ${doc.leadScore}/100 — Budget: ${doc.monthlyBudget || 'not specified'}`,
-              context: {
-                name: doc.contactName,
-                leadScore: doc.leadScore,
-                venueName: doc.venueName,
-                budget: doc.monthlyBudget || '',
-              },
+            await createAdminAlert({
+              payload: req.payload,
+              venueInquiry: doc.id,
+              type: 'hot-lead',
+              severity: 'warning',
+              title: `Hot venue lead: ${doc.venueName} scored ${doc.leadScore}/100`,
+              message: `${doc.contactName} from ${doc.venueName} scored ${doc.leadScore}/100 - Budget: ${doc.monthlyBudget || 'not specified'}`,
             });
-          }
-
-          // 4. Find active AutomationSequences and process them
-          try {
-            const p = await getPayload();
-
-            const sequences = await p.find({
-              collection: 'automation-sequences',
-              where: {
-                and: [
-                  { isActive: { equals: true } },
-                  { triggerType: { equals: 'on-create' } },
-                  { triggerCollection: { equals: 'venue-inquiries' } },
-                ],
-              },
-              limit: 50,
-            });
-
-            for (const seq of sequences.docs) {
-              if (seq.triggerStatus && seq.triggerStatus !== doc.status) continue;
-
-              const channels = Array.isArray(seq.channels) ? seq.channels : [seq.channels];
-
-              for (const channel of channels) {
-                if (seq.delayHours === 0) {
-                  await sendNotification({
-                    sequenceId: String(seq.id),
-                    venueInquiryId: doc.id,
-                    channel: channel as 'email' | 'whatsapp' | 'admin-alert',
-                    targetAudience: (seq.targetAudience as 'admin' | 'lead' | 'both') || 'admin',
-                    emailSubject: seq.emailSubject || undefined,
-                    emailBody: (seq.emailBody as string | undefined) || undefined,
-                    whatsappMessage: seq.whatsappMessage || undefined,
-                    alertType: 'new-lead',
-                    alertSeverity: severity,
-                    alertTitle: seq.name,
-                    alertMessage: seq.whatsappMessage || seq.emailSubject || seq.name,
-                    context: {
-                      name: doc.contactName,
-                      email: doc.contactEmail,
-                      venueName: doc.venueName,
-                      budget: doc.monthlyBudget || '',
-                      leadScore: doc.leadScore,
-                      contractValue: doc.contractValue,
-                      status: doc.status || 'new',
-                    },
-                  });
-                } else {
-                  const scheduledFor = new Date(Date.now() + (seq.delayHours as number) * 3600000).toISOString();
-                  await p.create({
-                    collection: 'sent-notifications',
-                    data: {
-                      sequence: seq.id,
-                      venueInquiryRef: doc.id,
-                      channel: channel as string,
-                      scheduledFor,
-                      status: 'pending',
-                    },
-                  });
-                }
-              }
-            }
-          } catch (err) {
-            console.error('[VenueInquiries afterChange] Failed to process sequences:', err);
           }
         }
 
-        // ---- On UPDATE with status change ----
         if (operation === 'update' && previousDoc && doc.status !== previousDoc.status) {
-          // 1. Create status-change admin alert
-          await sendNotification({
-            channel: 'admin-alert',
-            targetAudience: 'admin',
-            venueInquiryId: doc.id,
-            alertType: 'status-change',
-            alertSeverity: 'info',
-            alertTitle: `${doc.venueName}: ${previousDoc.status} → ${doc.status}`,
-            alertMessage: `${doc.venueName} moved from ${previousDoc.status} to ${doc.status}`,
-            context: {
-              name: doc.contactName,
-              venueName: doc.venueName,
-              status: doc.status || '',
-            },
+          await createAdminAlert({
+            payload: req.payload,
+            venueInquiry: doc.id,
+            type: 'status-change',
+            severity: 'info',
+            title: `${doc.venueName}: ${previousDoc.status} -> ${doc.status}`,
+            message: `${doc.venueName} moved from ${previousDoc.status} to ${doc.status}`,
           });
 
-          // 2. If status is 'signed', create deal-closed alert
           if (doc.status === 'signed') {
-            await sendNotification({
-              channel: 'admin-alert',
-              targetAudience: 'admin',
-              venueInquiryId: doc.id,
-              alertType: 'deal-closed',
-              alertSeverity: 'info',
-              alertTitle: `Deal closed: ${doc.venueName} — €${doc.contractValue || 0}`,
-              alertMessage: `${doc.venueName} signed! Contract value: €${doc.contractValue || 0}`,
-              context: {
-                name: doc.contactName,
-                venueName: doc.venueName,
-                contractValue: doc.contractValue,
-                status: 'signed',
-              },
+            await createAdminAlert({
+              payload: req.payload,
+              venueInquiry: doc.id,
+              type: 'deal-closed',
+              severity: 'info',
+              title: `Deal closed: ${doc.venueName} - EUR ${doc.contractValue || 0}`,
+              message: `${doc.venueName} signed. Contract value: EUR ${doc.contractValue || 0}`,
             });
-          }
-
-          // 3. If status is terminal ('signed' or 'disqualified'), cancel all pending sequences
-          if (doc.status === 'disqualified' || doc.status === 'signed') {
-            try {
-              const p = await getPayload();
-              const pending = await p.find({
-                collection: 'sent-notifications',
-                where: {
-                  and: [
-                    { venueInquiryRef: { equals: doc.id } },
-                    { status: { equals: 'pending' } },
-                  ],
-                },
-                limit: 100,
-              });
-              for (const pend of pending.docs) {
-                await p.update({
-                  collection: 'sent-notifications',
-                  id: pend.id,
-                  data: { status: 'failed', errorMessage: `Cancelled: status changed to ${doc.status}` },
-                });
-              }
-            } catch (err) {
-              console.error('[VenueInquiries afterChange] Failed to cancel pending sequences:', err);
-            }
-          }
-
-          // 4. Find on-status-change sequences
-          try {
-            const p = await getPayload();
-            const sequences = await p.find({
-              collection: 'automation-sequences',
-              where: {
-                and: [
-                  { isActive: { equals: true } },
-                  { triggerType: { equals: 'on-status-change' } },
-                  {
-                    or: [
-                      { triggerCollection: { equals: 'venue-inquiries' } },
-                      { triggerCollection: { equals: 'both' } },
-                    ],
-                  },
-                ],
-              },
-              limit: 50,
-            });
-
-            for (const seq of sequences.docs) {
-              if (seq.triggerStatus && seq.triggerStatus !== doc.status) continue;
-              const channels = Array.isArray(seq.channels) ? seq.channels : [seq.channels];
-              for (const channel of channels) {
-                if (seq.delayHours === 0) {
-                  await sendNotification({
-                    sequenceId: String(seq.id),
-                    venueInquiryId: doc.id,
-                    channel: channel as 'email' | 'whatsapp' | 'admin-alert',
-                    targetAudience: (seq.targetAudience as 'admin' | 'lead' | 'both') || 'admin',
-                    emailSubject: seq.emailSubject || undefined,
-                    emailBody: (seq.emailBody as string | undefined) || undefined,
-                    whatsappMessage: seq.whatsappMessage || undefined,
-                    alertType: 'status-change',
-                    alertSeverity: 'info',
-                    alertTitle: seq.name,
-                    alertMessage: `${doc.venueName} moved to ${doc.status}`,
-                    context: {
-                      name: doc.contactName,
-                      email: doc.contactEmail,
-                      venueName: doc.venueName,
-                      budget: doc.monthlyBudget || '',
-                      status: doc.status || '',
-                    },
-                  });
-                } else {
-                  const scheduledFor = new Date(Date.now() + (seq.delayHours as number) * 3600000).toISOString();
-                  await p.create({
-                    collection: 'sent-notifications',
-                    data: {
-                      sequence: seq.id,
-                      venueInquiryRef: doc.id,
-                      channel: channel as string,
-                      scheduledFor,
-                      status: 'pending',
-                    },
-                  });
-                }
-              }
-            }
-          } catch (err) {
-            console.error('[VenueInquiries afterChange] Failed to process status-change sequences:', err);
           }
         }
       },

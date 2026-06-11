@@ -151,7 +151,7 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--bg) 60%, transparent), transparent, var(--bg))' }} />
 
         <div className="relative z-10 text-center px-6">
-          <h1 className="text-3xl sm:text-5xl md:text-8xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
             Bringing Your <br />
             <span className="italic">Story to Life</span>
           </h1>

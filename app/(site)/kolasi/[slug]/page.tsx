@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getKolasiEventBySlug, getAllKolasiEvents, getAdjacentKolasiEvents } from '@/lib/fetchers';
+import { safeCms } from '@/lib/cms-safe';
 import KolasiEventDetail from './KolasiEventDetail';
 import { notFound } from 'next/navigation';
 
@@ -126,7 +127,7 @@ function getStaticAdjacent(slug: string) {
 /* ── Route generation ── */
 
 export async function generateStaticParams() {
-  const events = await getAllKolasiEvents();
+  const events = await safeCms(getAllKolasiEvents(), [], 'kolasi static params');
   const cmsSlugs = (events as any[])
     .filter((e) => e.slug)
     .map((e) => ({ slug: e.slug }));
@@ -148,7 +149,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const cmsEvent = await getKolasiEventBySlug(slug);
+  const cmsEvent = await safeCms(getKolasiEventBySlug(slug), null, `kolasi metadata ${slug}`);
   const event = (cmsEvent as any) || staticEvents[slug];
   if (!event) return {};
 
@@ -178,13 +179,13 @@ export default async function KolasiEventPage({
 }) {
   const { slug } = await params;
 
-  const cmsEvent = await getKolasiEventBySlug(slug);
+  const cmsEvent = await safeCms(getKolasiEventBySlug(slug), null, `kolasi event ${slug}`);
   const event = (cmsEvent as any) || staticEvents[slug];
   if (!event) notFound();
 
   let adjacent;
   if (cmsEvent) {
-    adjacent = await getAdjacentKolasiEvents(slug);
+    adjacent = await safeCms(getAdjacentKolasiEvents(slug), getStaticAdjacent(slug), `kolasi adjacent ${slug}`);
   } else {
     adjacent = getStaticAdjacent(slug);
   }

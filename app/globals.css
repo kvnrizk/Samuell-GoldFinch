@@ -19,6 +19,11 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    --fs-body: clamp(0.9rem, 0.87rem + 0.18vw, 0.95rem);
+    --fs-body-small: clamp(0.84rem, 0.81rem + 0.16vw, 0.89rem);
+    --fs-micro: clamp(0.64rem, 0.61rem + 0.12vw, 0.69rem);
+    --fs-kicker: clamp(0.69rem, 0.66rem + 0.14vw, 0.74rem);
+    --fs-caption: clamp(0.77rem, 0.74rem + 0.15vw, 0.82rem);
   }
 
   html.dark {
@@ -49,12 +54,89 @@
     background-color: var(--bg);
     color: var(--text);
     font-family: var(--font-sans);
+    font-size: var(--fs-body);
+    line-height: 1.6;
     transition: background-color 0.3s, color 0.3s;
   }
 
   ::selection {
     background: rgba(200, 169, 110, 0.25);
     color: #fff;
+  }
+}
+
+@layer utilities {
+  .ui-micro {
+    font-size: var(--fs-micro);
+    line-height: 1.35;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .ui-kicker {
+    font-size: var(--fs-kicker);
+    line-height: 1.4;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .ui-caption {
+    font-size: var(--fs-caption);
+    line-height: 1.55;
+  }
+
+  .ui-body {
+    font-size: var(--fs-body);
+    line-height: 1.6;
+  }
+
+  .ui-body-small {
+    font-size: var(--fs-body-small);
+    line-height: 1.6;
+  }
+
+  .ui-heading {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  /* Public-site typography normalization (excludes Payload admin) */
+  .site-scope :is(h1, h2, h3, h4, h5, h6) {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .site-scope .text-sm {
+    font-size: var(--fs-body-small);
+    line-height: 1.6;
+  }
+
+  .site-scope .text-xs {
+    font-size: var(--fs-caption);
+    line-height: 1.55;
+  }
+
+  .site-scope .text-\[11px\] {
+    font-size: var(--fs-caption);
+    line-height: 1.55;
+  }
+
+  .site-scope .text-\[10px\] {
+    font-size: var(--fs-micro);
+    line-height: 1.45;
+  }
+
+  .site-scope .text-\[9px\] {
+    font-size: calc(var(--fs-micro) * 0.95);
+    line-height: 1.4;
+  }
+
+  /* Keep action labels readable after global downscale */
+  .site-scope :is(button, a).text-sm {
+    font-size: clamp(0.86rem, 0.83rem + 0.14vw, 0.92rem);
+    line-height: 1.45;
   }
 }
 
@@ -193,7 +275,7 @@
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   padding: 1rem 1rem 0.5rem;
-  font-size: 0.875rem;
+  font-size: var(--fs-body-small);
   color: var(--text);
   outline: none;
   transition: border-color 0.2s;
@@ -209,7 +291,7 @@
   position: absolute;
   top: 0.35rem;
   left: 1rem;
-  font-size: 0.625rem;
+  font-size: var(--fs-micro);
   text-transform: uppercase;
   letter-spacing: 0.4em;
   color: var(--text-mute);

@@ -5,6 +5,7 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { cloudStoragePlugin } from '@payloadcms/plugin-cloud-storage';
 import { cloudinaryAdapter } from './lib/cloudinary-adapter';
+import { getPayloadConfigEnv } from './lib/server-env';
 import { BlazeProjects } from './collections/BlazeProjects';
 import { KolasiEvents } from './collections/KolasiEvents';
 import { Artists } from './collections/Artists';
@@ -30,28 +31,24 @@ import { Showreel } from './globals/Showreel';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
+const payloadEnv = getPayloadConfigEnv();
 
 export default buildConfig({
-  serverURL: (() => {
-    const url = process.env.NEXT_PUBLIC_SITE_URL;
-    if (!url && process.env.NODE_ENV === 'production') {
-      console.warn('[payload] NEXT_PUBLIC_SITE_URL is not set in production — absolute URLs will fall back to localhost');
-    }
-    return url || 'http://localhost:3000';
-  })(),
+  serverURL: payloadEnv.siteUrl,
 
   admin: {
     user: Users.slug,
+    importMap: {
+      importMapFile: path.resolve(dirname, 'app/(payload)/admin/importMap.ts'),
+    },
     meta: {
-      titleSuffix: ' — Samuell Goldfinch',
+      titleSuffix: ' - Samuell Goldfinch',
     },
     components: {
       beforeDashboard: [
         '/components/admin/AdminNotificationBell',
         '/components/admin/DashboardKPIs',
-        '/components/admin/RevenueDashboard',
         '/components/admin/RecentInquiries',
-        '/components/admin/InquiryKanban',
       ],
     },
   },
@@ -59,7 +56,10 @@ export default buildConfig({
   editor: lexicalEditor(),
 
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
+    url: payloadEnv.databaseUri,
+    connectOptions: {
+      serverSelectionTimeoutMS: 1500,
+    },
   }),
 
   collections: [
@@ -86,7 +86,7 @@ export default buildConfig({
 
   globals: [GlobalSettings, PressKit, Showreel],
 
-  secret: process.env.PAYLOAD_SECRET!,
+  secret: payloadEnv.payloadSecret,
 
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
@@ -105,6 +105,6 @@ export default buildConfig({
 
   cors: [
     'http://localhost:3000',
-    process.env.NEXT_PUBLIC_SITE_URL || '',
+    payloadEnv.siteUrl,
   ].filter(Boolean),
 });

@@ -82,7 +82,7 @@ export default function JournalClient({ posts }: JournalClientProps) {
       <section className="pt-40 pb-16 md:pt-48 md:pb-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif italic leading-[0.95] tracking-tight mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif italic leading-[0.95] tracking-tight mb-4">
               Journal
             </h1>
             <p className="text-sm font-light max-w-xl mx-auto" style={{ color: 'var(--text-dim)' }}>

@@ -170,7 +170,7 @@ export default function TestimonialCarousel({
     <section ref={sectionRef} className="py-24 md:py-32 overflow-hidden" style={{ backgroundColor: 'var(--bg)' }}>
       <div className="max-w-7xl mx-auto px-6 mb-14 testi-reveal">
         <div className="text-center">
-          <h2 className="text-3xl md:text-5xl font-serif italic mb-4">{heading}</h2>
+          <h2 className="text-2xl md:text-4xl font-serif italic mb-4">{heading}</h2>
           {subheading && (
             <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>{subheading}</p>
           )}
