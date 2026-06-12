@@ -297,13 +297,13 @@ export default function HomeClient({ blazeProjects, testimonials = [], locale = 
 
             <div className="grid grid-cols-2 gap-6">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl">
-                <VideoPlayer muxPlaybackId="uar02cwjF78qfyUUvSQIMcnQyHVImiF6sJP3Izh7D01JU" autoPlay loop muted mode="hero" />
+                <VideoPlayer muxPlaybackId="uar02cwjF78qfyUUvSQIMcnQyHVImiF6sJP3Izh7D01JU" autoPlay loop muted mode="hero" lazy />
               </div>
               <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl">
-                <VideoPlayer muxPlaybackId="RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo" autoPlay loop muted mode="hero" />
+                <VideoPlayer muxPlaybackId="RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo" autoPlay loop muted mode="hero" lazy />
               </div>
               <div className="col-span-2 aspect-[16/9] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl">
-                <VideoPlayer muxPlaybackId="bzlHPIIz3L68lqg6fmMTH02GsYL1AeZnT6ewRQIlokaE" autoPlay loop muted mode="hero" />
+                <VideoPlayer muxPlaybackId="bzlHPIIz3L68lqg6fmMTH02GsYL1AeZnT6ewRQIlokaE" autoPlay loop muted mode="hero" lazy />
               </div>
             </div>
           </div>

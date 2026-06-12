@@ -4,18 +4,11 @@ import Head from 'next/head';
 import Script from 'next/script';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import CustomCursor from '@/components/ui/CustomCursor';
-import CursorHalo from '@/components/ui/CursorHalo';
-import AnimatedBackground from '@/components/ui/AnimatedBackground';
 import { PageTransition } from '@/components/ui/PageTransition';
-import WhatsAppFloat from '@/components/ui/WhatsAppFloat';
 import { AudioPlayerProvider } from '@/components/providers/AudioPlayerProvider';
-import AudioPlayer from '@/components/ui/AudioPlayer';
-import { GoogleAnalytics } from '@/components/Analytics';
-import { MetaPixel } from '@/components/MetaPixel';
-import { CookieConsent } from '@/components/ui/CookieConsent';
 import { OrganizationJsonLd, PersonJsonLd } from '@/components/JsonLd';
 import { getDictionary, type Locale } from '@/lib/i18n';
+import { ClientEffects } from '@/components/layout/ClientEffects';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -72,22 +65,15 @@ export default function SiteShell({
         <PersonJsonLd />
         <AudioPlayerProvider>
           <div className="relative min-h-screen">
-            <CustomCursor />
-            <CursorHalo />
-            <AnimatedBackground />
+            <ClientEffects />
             <Header locale={locale} />
             <PageTransition>
               <main id="main-content" className="relative z-10">{children}</main>
             </PageTransition>
             <Footer locale={locale} />
-            <WhatsAppFloat />
-            <AudioPlayer />
           </div>
         </AudioPlayerProvider>
         <div className="grain" aria-hidden="true" />
-        <GoogleAnalytics />
-        <MetaPixel />
-        <CookieConsent />
       </body>
     </html>
   );
