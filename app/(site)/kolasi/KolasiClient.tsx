@@ -99,6 +99,7 @@ function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] & { slug?: 
           loop
           muted
           mode="hero"
+          lazy
         />
       </div>
       {/* Hover hint — fades out on hover */}

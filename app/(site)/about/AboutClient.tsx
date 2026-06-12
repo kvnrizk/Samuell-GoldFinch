@@ -336,6 +336,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
                         muted
                         mode="hero"
                         className="group-hover:scale-105 transition-transform duration-700"
+                        lazy
                       />
                     </div>
                   ) : isSignature ? (

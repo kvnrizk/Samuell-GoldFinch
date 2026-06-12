@@ -194,6 +194,7 @@ export default function ShowreelClient({ heroReel, highlights }: ShowreelClientP
                       loop={false}
                       muted={false}
                       mode="showcase"
+                      lazy
                     />
                   ) : (
                     <>

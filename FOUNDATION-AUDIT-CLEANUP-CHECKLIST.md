@@ -400,18 +400,18 @@ Relevant files:
 
 Tasks:
 
-- [ ] Make below-the-fold videos poster-first.
-- [ ] Mount Mux players only when visible or when user interacts.
-- [ ] Keep hero video behavior only where it is essential.
-- [ ] Avoid mounting multiple autoplay players on the same page.
-- [ ] Confirm visual design does not change.
+- [x] Make below-the-fold videos poster-first.
+- [x] Mount Mux players only when visible or when user interacts.
+- [x] Keep hero video behavior only where it is essential.
+- [x] Avoid mounting multiple autoplay players on the same page.
+- [x] Confirm visual design does not change.
 
 Acceptance criteria:
 
-- [ ] Home still looks the same at first glance.
-- [ ] Pages load with fewer active video players.
-- [ ] Mobile load is lighter.
-- [ ] No layout or design changes are introduced.
+- [x] Home still looks the same at first glance.
+- [x] Pages load with fewer active video players.
+- [x] Mobile load is lighter.
+- [x] No layout or design changes are introduced.
 
 ### Media Phase 2 - Reduce Global Shell Weight
 
@@ -425,15 +425,15 @@ Relevant file:
 Tasks:
 
 - [ ] Identify which global effects are actually needed on every page.
-- [ ] Lazy-load nonessential effects.
+- [x] Lazy-load nonessential effects.
 - [ ] Consider disabling custom cursor on pages where it adds no value.
-- [ ] Keep visual output unchanged unless explicitly asked.
+- [x] Keep visual output unchanged unless explicitly asked.
 
 Acceptance criteria:
 
-- [ ] Same visible design.
-- [ ] Smaller initial client bundle.
-- [ ] Less runtime JS on simple pages.
+- [x] Same visible design.
+- [x] Smaller initial client bundle.
+- [x] Less runtime JS on simple pages.
 
 ### Media Phase 3 - Image Rationalization
 
@@ -653,14 +653,22 @@ Verification notes:
 
 ### Phase 5 - Media And Runtime Weight Reduction
 
-- [ ] Make below-the-fold videos lazy/poster-first.
-- [ ] Reduce global shell weight without visual changes.
+- [x] Make below-the-fold videos lazy/poster-first.
+- [x] Reduce global shell weight without visual changes.
 - [ ] Rationalize image fallbacks.
 
 Exit criteria:
 
-- [ ] Same design.
-- [ ] Less eager media and less global JS.
+- [x] Same design.
+- [x] Less eager media and less global JS.
+
+Implementation notes:
+
+- Added explicit lazy video support in `components/ui/VideoPlayer.tsx`.
+- Applied lazy loading only to lower-section video placements on Home, Kolasi, About, and Showreel.
+- Kept hero videos eager.
+- Moved cursor, halo, animated background, WhatsApp float, audio player, analytics, pixel, and cookie banner behind `components/layout/ClientEffects.tsx`.
+- Image fallback rationalization is still pending and should be handled as a separate no-design-change pass.
 
 ### Phase 6 - Frontend Polish Only When Explicitly Requested
 
@@ -692,9 +700,9 @@ Completed foundation phases:
 
 Next implementation phase:
 
-- [ ] Phase 5 - Media And Runtime Weight Reduction.
+- [ ] Media Phase 3 - Image Rationalization, or move to frontend polish when explicitly requested.
 
-The backend/security foundation phases are complete enough to move into media/runtime cleanup or the documented frontend polish pass. The unresolved blocker for real CMS/admin use is still the MongoDB Atlas `bad auth` credential issue in `.env`.
+The backend/security foundation phases and first media/runtime cleanup are complete enough to move into image rationalization or the documented frontend polish pass. The unresolved blocker for real CMS/admin use is still the MongoDB Atlas `bad auth` credential issue in `.env`.
 
 ## Cleanup Decision Log
 
