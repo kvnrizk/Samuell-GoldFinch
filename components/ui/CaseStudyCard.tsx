@@ -31,8 +31,8 @@ export function CaseStudyCard({ venueName, slug, coverImageUrl, role, frequency,
           </div>
         )}
         <div className="p-6">
-          <h3 className="font-serif text-lg font-semibold text-stone-100 mb-2">{venueName}</h3>
-          <div className="flex flex-wrap gap-3 text-xs text-zinc-500 mb-3">
+          <h3 className="font-serif text-lg font-semibold mb-2" style={{ color: 'var(--text)' }}>{venueName}</h3>
+          <div className="flex flex-wrap gap-3 text-xs mb-3" style={{ color: 'var(--text-mute)' }}>
             {role && <span>{role}</span>}
             {frequency && <span>· {frequency}</span>}
           </div>

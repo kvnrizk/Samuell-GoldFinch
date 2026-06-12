@@ -38,10 +38,10 @@ const timelines = [
 ];
 
 const inputClass =
-  'w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-sm text-stone-100 placeholder:text-zinc-600 outline-none focus:border-[#c8a96e]/40 transition-colors';
-const labelClass = 'text-[10px] font-mono uppercase tracking-[0.15em] text-zinc-500 mb-1.5 block';
+  'w-full rounded-lg px-4 py-3 text-sm outline-none focus:border-[#c8a96e]/40 transition-colors bg-[color:var(--bg-card)] border border-[color:var(--border)] text-[color:var(--text)] placeholder:text-[color:var(--text-mute)]';
+const labelClass = 'text-[10px] font-mono uppercase tracking-[0.15em] text-[color:var(--text-mute)] mb-1.5 block';
 const selectClass =
-  'w-full bg-white/[0.03] border border-white/[0.08] rounded-lg px-4 py-3 text-sm text-stone-100 outline-none focus:border-[#c8a96e]/40 transition-colors appearance-none';
+  'w-full rounded-lg px-4 py-3 text-sm outline-none focus:border-[#c8a96e]/40 transition-colors appearance-none bg-[color:var(--bg-card)] border border-[color:var(--border)] text-[color:var(--text)]';
 
 export function VenueForm({ locale = 'en' }: { locale?: Locale }) {
   const [step, setStep] = useState<Step>(1);
@@ -116,8 +116,8 @@ export function VenueForm({ locale = 'en' }: { locale?: Locale }) {
         <div className="w-16 h-16 rounded-full bg-[#c8a96e]/10 border border-[#c8a96e]/30 flex items-center justify-center mx-auto mb-6">
           <span className="text-[#c8a96e] text-2xl">&#10003;</span>
         </div>
-        <h3 className="font-serif text-2xl text-stone-100 mb-3">{t.successTitle}</h3>
-        <p className="text-sm text-zinc-500 max-w-md mx-auto">
+        <h3 className="font-serif text-2xl mb-3" style={{ color: 'var(--text)' }}>{t.successTitle}</h3>
+        <p className="text-sm max-w-md mx-auto" style={{ color: 'var(--text-mute)' }}>
           {t.successText}
         </p>
       </div>
@@ -139,7 +139,7 @@ export function VenueForm({ locale = 'en' }: { locale?: Locale }) {
                   ? 'bg-[#c8a96e] text-[#09090b] font-bold'
                   : s < step
                     ? 'bg-[#c8a96e]/20 text-[#c8a96e]'
-                    : 'bg-white/[0.05] text-zinc-600'
+                    : 'bg-[color:var(--bg-card)] text-[color:var(--text-mute)]'
               }`}
             >
               {s < step ? '✓' : s}
@@ -151,7 +151,7 @@ export function VenueForm({ locale = 'en' }: { locale?: Locale }) {
             )}
           </div>
         ))}
-        <span className="ml-3 text-[10px] font-mono uppercase tracking-wider text-zinc-600">
+        <span className="ml-3 text-[10px] font-mono uppercase tracking-wider" style={{ color: 'var(--text-mute)' }}>
           {t.steps[step - 1]}
         </span>
       </div>
@@ -194,7 +194,7 @@ export function VenueForm({ locale = 'en' }: { locale?: Locale }) {
           </div>
           <div className="flex items-center gap-3">
             <input type="checkbox" name="hasDancePocket" id="hasDancePocket" className="accent-[#c8a96e]" />
-            <label htmlFor="hasDancePocket" className="text-sm text-zinc-400">
+            <label htmlFor="hasDancePocket" className="text-sm" style={{ color: 'var(--text-dim)' }}>
               {t.dance}
             </label>
           </div>
@@ -227,7 +227,7 @@ export function VenueForm({ locale = 'en' }: { locale?: Locale }) {
                   className={`px-3 py-2 rounded-lg text-xs border transition-all ${
                     selectedGoals.includes(g.value)
                       ? 'border-[#c8a96e] bg-[#c8a96e]/10 text-[#c8a96e]'
-                      : 'border-white/[0.08] text-zinc-500 hover:border-white/[0.15]'
+                      : 'border-[color:var(--border)] text-[color:var(--text-mute)] hover:border-[#c8a96e]/30'
                   }`}
                 >
                   {g.label}
@@ -266,7 +266,7 @@ export function VenueForm({ locale = 'en' }: { locale?: Locale }) {
             <button
               type="button"
               onClick={() => goToStep(1)}
-              className="flex-1 border border-white/[0.08] text-zinc-400 font-semibold text-sm py-3 rounded-lg hover:border-white/[0.15] transition-all"
+              className="flex-1 border border-[color:var(--border)] text-[color:var(--text-dim)] font-semibold text-sm py-3 rounded-lg hover:border-[#c8a96e]/30 transition-all"
             >
               {t.back}
             </button>
@@ -301,7 +301,7 @@ export function VenueForm({ locale = 'en' }: { locale?: Locale }) {
             <button
               type="button"
               onClick={() => goToStep(2)}
-              className="flex-1 border border-white/[0.08] text-zinc-400 font-semibold text-sm py-3 rounded-lg hover:border-white/[0.15] transition-all"
+              className="flex-1 border border-[color:var(--border)] text-[color:var(--text-dim)] font-semibold text-sm py-3 rounded-lg hover:border-[#c8a96e]/30 transition-all"
             >
               {t.back}
             </button>

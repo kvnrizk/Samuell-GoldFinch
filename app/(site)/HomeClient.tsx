@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -297,10 +297,10 @@ export default function HomeClient({ blazeProjects, testimonials = [], locale = 
             <div className="grid md:grid-cols-2 gap-10 items-center">
               <div>
                 <SectionKicker label={t.venuesKicker} />
-                <h2 className="font-serif text-2xl md:text-3xl font-bold text-stone-100 mb-4">
+                <h2 className="font-serif text-2xl md:text-3xl font-bold mb-4" style={{ color: 'var(--text)' }}>
                   {t.venuesTitle}
                 </h2>
-                <p className="ui-body-small md:ui-body text-zinc-400 mb-8">
+                <p className="ui-body-small md:ui-body mb-8" style={{ color: 'var(--text-dim)' }}>
                   {t.venuesText}
                 </p>
                 <div className="flex flex-wrap gap-3">
@@ -327,7 +327,7 @@ export default function HomeClient({ blazeProjects, testimonials = [], locale = 
                   ].map((s, i) => (
                     <div key={i} className="p-4">
                       <p className="font-serif text-2xl text-[#c8a96e] font-bold">{s.stat}</p>
-                      <p className="text-xs text-zinc-500 mt-1">{s.label}</p>
+                      <p className="text-xs mt-1" style={{ color: 'var(--text-mute)' }}>{s.label}</p>
                     </div>
                   ))}
                 </div>
