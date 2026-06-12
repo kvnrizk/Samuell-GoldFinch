@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useRef } from 'react';
 import Image from 'next/image';
@@ -17,6 +17,7 @@ import { VenueForm } from '@/components/ui/VenueForm';
 import { StickyMobileCTA } from '@/components/ui/StickyMobileCTA';
 import { trackEvent } from '@/lib/analytics';
 import { BLUR_DATA_URL } from '@/lib/cloudinary';
+import { venueBackgrounds } from '@/lib/fallback-media';
 import { getDictionary, type Locale } from '@/lib/i18n';
 
 interface Deliverable {
@@ -104,7 +105,7 @@ export default function VenuesClient({
 
   return (
     <div ref={containerRef}>
-      {/* ─── HERO ─── */}
+      {/* â”€â”€â”€ HERO â”€â”€â”€ */}
       <section id="venue-hero" className="relative min-h-screen flex items-center overflow-hidden">
         {/* Video Background */}
         <div className="absolute inset-0 z-0">
@@ -172,13 +173,13 @@ export default function VenuesClient({
         </div>
       </section>
 
-      {/* ─── Visual break ─── */}
+      {/* â”€â”€â”€ Visual break â”€â”€â”€ */}
       <div className="relative h-40 md:h-64 overflow-hidden">
-        <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364276/sg-platform/static/assets/kolasi/images/4F8A3777.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
+        <Image src={venueBackgrounds.visualBreakTop} alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
       </div>
 
-      {/* ─── PACKAGES ─── */}
+      {/* â”€â”€â”€ PACKAGES â”€â”€â”€ */}
       <section className="py-24 md:py-32 relative overflow-hidden">
         {/* Ambient background glow */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-[0.04] blur-[120px] pointer-events-none" style={{ background: '#c8a96e' }} />
@@ -218,7 +219,7 @@ export default function VenuesClient({
                     'Monthly content recap',
                     'WhatsApp support line',
                   ]}
-                  priceRange="From €1,500/mo"
+                  priceRange="From â‚¬1,500/mo"
                   onCTA={handleCallClick}
                   ctaLabel={t.getStarted}
                 />
@@ -226,13 +227,13 @@ export default function VenuesClient({
                   name="Core Identity"
                   tagline="Build a weekly identity that attracts a loyal crowd"
                   deliverables={[
-                    '2–3 nights per week',
+                    '2â€“3 nights per week',
                     'Full booking + sound rider',
                     'Social content per session',
                     'Monthly strategy call',
                     'Dedicated WhatsApp channel',
                   ]}
-                  priceRange="From €3,500/mo"
+                  priceRange="From â‚¬3,500/mo"
                   featured
                   onCTA={handleCallClick}
                   ctaLabel={t.getStarted}
@@ -248,7 +249,7 @@ export default function VenuesClient({
                     'Weekly reporting dashboard',
                     'Priority artist access',
                   ]}
-                  priceRange="From €7,500/mo"
+                  priceRange="From â‚¬7,500/mo"
                   onCTA={handleCallClick}
                   ctaLabel={t.getStarted}
                 />
@@ -258,12 +259,12 @@ export default function VenuesClient({
         </div>
       </section>
 
-      {/* ─── CASE STUDIES ─── */}
+      {/* â”€â”€â”€ CASE STUDIES â”€â”€â”€ */}
       {(caseStudies.length > 0 || true) && (
         <section className="py-24 md:py-32 relative overflow-hidden">
           {/* Background image accent */}
           <div className="absolute inset-0 pointer-events-none">
-            <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.06]" />
+            <Image src={venueBackgrounds.caseStudyAccent} alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.06]" />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 20%, transparent 80%, var(--bg))' }} />
           </div>
           <div className="relative max-w-7xl mx-auto px-6">
@@ -320,13 +321,13 @@ export default function VenuesClient({
         </section>
       )}
 
-      {/* ─── Visual break ─── */}
+      {/* â”€â”€â”€ Visual break â”€â”€â”€ */}
       <div className="relative h-40 md:h-64 overflow-hidden">
-        <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
+        <Image src={venueBackgrounds.rosterBreak} alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
       </div>
 
-      {/* ─── ROSTER ─── */}
+      {/* â”€â”€â”€ ROSTER â”€â”€â”€ */}
       <section className="py-24 md:py-32 relative overflow-hidden">
         {/* Ambient glow */}
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full opacity-[0.03] blur-[100px] pointer-events-none" style={{ background: '#a78bfa' }} />
@@ -427,7 +428,7 @@ export default function VenuesClient({
         </div>
       </section>
 
-      {/* ─── PROCESS ─── */}
+      {/* â”€â”€â”€ PROCESS â”€â”€â”€ */}
       <section className="py-24 md:py-32 relative overflow-hidden" style={{ backgroundColor: 'color-mix(in srgb, var(--bg-card) 50%, var(--bg))' }}>
         {/* Background accent */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full opacity-[0.03] blur-[100px] pointer-events-none" style={{ background: '#c8a96e' }} />
@@ -442,7 +443,7 @@ export default function VenuesClient({
         </div>
       </section>
 
-      {/* ─── FAQ ─── */}
+      {/* â”€â”€â”€ FAQ â”€â”€â”€ */}
       <section className="py-24 md:py-32 relative">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-16 venue-reveal">
@@ -463,7 +464,7 @@ export default function VenuesClient({
                       {
                         question: 'What genres do you programme?',
                         answer:
-                          'We cover the full spectrum — from deep house and afro beats to disco, funk, Latin, and live jazz. Every programme is tailored to your venue and crowd.',
+                          'We cover the full spectrum â€” from deep house and afro beats to disco, funk, Latin, and live jazz. Every programme is tailored to your venue and crowd.',
                       },
                       {
                         question: 'Do you work outside Paris?',
@@ -473,7 +474,7 @@ export default function VenuesClient({
                       {
                         question: 'How fast can you launch?',
                         answer:
-                          'After the audit call, we typically deliver a programming plan within 5 business days. First night can happen 2–3 weeks after sign-off.',
+                          'After the audit call, we typically deliver a programming plan within 5 business days. First night can happen 2â€“3 weeks after sign-off.',
                       },
                       {
                         question: 'What if we already have DJs booked?',
@@ -492,17 +493,17 @@ export default function VenuesClient({
         </div>
       </section>
 
-      {/* ─── Visual break ─── */}
+      {/* â”€â”€â”€ Visual break â”€â”€â”€ */}
       <div className="relative h-40 md:h-56 overflow-hidden">
-        <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364297/sg-platform/static/assets/kolasi/images/4F8A3801.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-25" />
+        <Image src={venueBackgrounds.finalBreak} alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-25" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
       </div>
 
-      {/* ─── VENUE FORM / FINAL CTA ─── */}
+      {/* â”€â”€â”€ VENUE FORM / FINAL CTA â”€â”€â”€ */}
       <section id="venue-form" className="py-24 md:py-32 relative overflow-hidden">
         {/* Background photo accent */}
         <div className="absolute inset-0 pointer-events-none">
-          <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364247/sg-platform/static/assets/kolasi/images/4F8A2938.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.04]" />
+          <Image src={venueBackgrounds.finalCta} alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.04]" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, var(--bg) 40%, transparent 80%)' }} />
         </div>
         <div className="relative max-w-7xl mx-auto px-6">

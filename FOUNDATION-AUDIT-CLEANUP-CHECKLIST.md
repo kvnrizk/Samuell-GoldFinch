@@ -1,4 +1,4 @@
-# Foundation Audit And Cleanup Checklist
+﻿# Foundation Audit And Cleanup Checklist
 
 Status: Draft working document
 Scope: Backend-first foundation cleanup, media simplification, SEO foundation, and operational hygiene
@@ -439,17 +439,17 @@ Acceptance criteria:
 
 Tasks:
 
-- [ ] Audit all Cloudinary hardcoded URLs.
-- [ ] Decide which images should be CMS-managed and which should remain static fallback.
-- [ ] Remove duplicate fallback arrays where possible.
+- [x] Audit all Cloudinary hardcoded URLs.
+- [x] Decide which images should be CMS-managed and which should remain static fallback.
+- [x] Remove duplicate fallback arrays where possible.
 - [ ] Ensure correct `sizes` attributes for large images.
 - [ ] Keep `blurDataURL` only where useful.
 
 Acceptance criteria:
 
-- [ ] Images still display correctly.
-- [ ] No missing image fallbacks.
-- [ ] No frontend layout changes.
+- [x] Images still display correctly.
+- [x] No missing image fallbacks.
+- [x] No frontend layout changes.
 
 ## SEO Foundation Checklist
 
@@ -655,7 +655,7 @@ Verification notes:
 
 - [x] Make below-the-fold videos lazy/poster-first.
 - [x] Reduce global shell weight without visual changes.
-- [ ] Rationalize image fallbacks.
+- [x] Rationalize image fallbacks.
 
 Exit criteria:
 
@@ -668,7 +668,7 @@ Implementation notes:
 - Applied lazy loading only to lower-section video placements on Home, Kolasi, About, and Showreel.
 - Kept hero videos eager.
 - Moved cursor, halo, animated background, WhatsApp float, audio player, analytics, pixel, and cookie banner behind `components/layout/ClientEffects.tsx`.
-- Image fallback rationalization is still pending and should be handled as a separate no-design-change pass.
+- Image fallback rationalization completed by moving repeated fallback media references into `lib/fallback-media.ts`.
 
 ### Phase 6 - Frontend Polish Only When Explicitly Requested
 
@@ -700,7 +700,7 @@ Completed foundation phases:
 
 Next implementation phase:
 
-- [ ] Media Phase 3 - Image Rationalization, or move to frontend polish when explicitly requested.
+- [x] Media Phase 3 - Image Rationalization. Next: frontend polish when explicitly requested.
 
 The backend/security foundation phases and first media/runtime cleanup are complete enough to move into image rationalization or the documented frontend polish pass. The unresolved blocker for real CMS/admin use is still the MongoDB Atlas `bad auth` credential issue in `.env`.
 
