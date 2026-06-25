@@ -14,9 +14,10 @@ interface CarouselItem {
 interface OrbitCarouselProps {
   items: CarouselItem[];
   autoplayInterval?: number;
+  disableLightbox?: boolean;
 }
 
-export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitCarouselProps) {
+export default function OrbitCarousel({ items, autoplayInterval = 5600, disableLightbox = false }: OrbitCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [lightbox, setLightbox] = useState<number | null>(null);
@@ -84,6 +85,11 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
   };
 
   const handleCardClick = (index: number) => {
+    if (disableLightbox) {
+      setActiveIndex(index);
+      return;
+    }
+
     if (index === activeIndex) {
       setLightbox(index);
     } else {
@@ -153,7 +159,7 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600 }: OrbitC
                   <h3 className="text-2xl font-serif text-white">{item.title}</h3>
                 </div>
                 {/* Tap-to-expand hint on active card */}
-                {isActive && (
+                {isActive && !disableLightbox && (
                   <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                       <polyline points="15 3 21 3 21 9" />

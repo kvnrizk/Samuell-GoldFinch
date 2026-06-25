@@ -6,9 +6,7 @@ import Image from 'next/image';
 import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/gsap-utils';
-import TestimonialCarousel from '@/components/ui/TestimonialCarousel';
 import UpcomingEvents from '@/components/ui/UpcomingEvents';
-import BudgetEstimator from '@/components/ui/BudgetEstimator';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 
 const expertise = [
@@ -65,14 +63,8 @@ interface KolasiEvent {
   gallery?: GalleryPhoto[];
 }
 
-interface KolasiArtist {
-  name?: string;
-}
-
 interface KolasiClientProps {
   events: KolasiEvent[];
-  artists: KolasiArtist[];
-  testimonials?: any[];
   upcomingEvents?: any[];
 }
 
@@ -431,7 +423,7 @@ function MarqueeGallery({ row1, row2 }: { row1: string[]; row2: string[] }) {
   );
 }
 
-export default function KolasiClient({ events, testimonials = [], upcomingEvents = [] }: KolasiClientProps) {
+export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClientProps) {
   // Build gallery from CMS events or fallback
   const cmsGallery = events.flatMap((e: KolasiEvent) =>
     (e.gallery || []).map((g: GalleryPhoto) => g.image?.url).filter((u): u is string => Boolean(u)),
@@ -556,18 +548,8 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
       {/* Services & Capabilities — Accordion */}
       <ServicesAccordion />
 
-      {/* Budget Estimator */}
-      <BudgetEstimator brand="kolasi" />
-
       {/* Gallery — Infinite Marquee */}
       <MarqueeGallery row1={row1} row2={row2} />
-
-      {/* Testimonials */}
-      <TestimonialCarousel
-        testimonials={testimonials}
-        heading="What Venue Owners Say"
-        subheading="From club owners to festival organizers — the Kolasi difference."
-      />
 
       {/* For Venue Owners Banner */}
       <section className="py-20 reveal-up" style={{ backgroundColor: 'var(--bg)' }}>

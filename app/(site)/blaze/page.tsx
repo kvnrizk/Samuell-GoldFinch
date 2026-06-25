@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getAllBlazeProjects, getFeaturedTestimonials } from '@/lib/fetchers';
+import { getAllBlazeProjects } from '@/lib/fetchers';
 import { safeCms } from '@/lib/cms-safe';
 import BlazeClient from './BlazeClient';
 
@@ -12,9 +12,6 @@ export const metadata: Metadata = {
 };
 
 export default async function BlazePage() {
-  const [projects, testimonials] = await Promise.all([
-    safeCms(getAllBlazeProjects(), [], 'blaze projects'),
-    safeCms(getFeaturedTestimonials('blaze'), [], 'blaze testimonials'),
-  ]);
-  return <BlazeClient projects={projects as any} testimonials={testimonials as any} />;
+  const projects = await safeCms(getAllBlazeProjects(), [], 'blaze projects');
+  return <BlazeClient projects={projects as any} />;
 }

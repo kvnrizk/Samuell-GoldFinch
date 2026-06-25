@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { BLUR_DATA_URL } from '@/lib/cloudinary';
@@ -8,43 +8,66 @@ import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import OrbitCarousel from '@/components/ui/OrbitCarousel';
 import VideoPlayer from '@/components/ui/VideoPlayer';
-import TestimonialCarousel from '@/components/ui/TestimonialCarousel';
-import BudgetEstimator from '@/components/ui/BudgetEstimator';
 
 // Static fallbacks
 const stouhBeirut = [
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364037/sg-platform/static/assets/blaze/stouh_beirut/2E2A1724.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364137/sg-platform/static/assets/blaze/stouh_beirut/2E2A2072.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364068/sg-platform/static/assets/blaze/stouh_beirut/2E2A1243.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364096/sg-platform/static/assets/blaze/stouh_beirut/4F8A9365.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364080/sg-platform/static/assets/blaze/stouh_beirut/IMG_6348.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364156/sg-platform/static/assets/blaze/stouh_beirut/IMG_6351.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
-];
-
-const embassy = [
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363942/sg-platform/static/assets/blaze/ambassy/0C5A9134.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363957/sg-platform/static/assets/blaze/ambassy/0C5A9139.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363958/sg-platform/static/assets/blaze/ambassy/0C5A9196.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363975/sg-platform/static/assets/blaze/ambassy/4F8A9987.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363989/sg-platform/static/assets/blaze/ambassy/4F8A9996.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363949/sg-platform/static/assets/blaze/ambassy/0C5A9206.jpg', title: 'Embassy of Lebanon', category: 'Diplomatic' },
+  { url: '/assets/blaze/stouh_beirut/2E2A0578.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: '/assets/blaze/stouh_beirut/2E2A1101.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: '/assets/blaze/stouh_beirut/2E2A1243.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: '/assets/blaze/stouh_beirut/2E2A1637.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: '/assets/blaze/stouh_beirut/2E2A1724.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: '/assets/blaze/stouh_beirut/2E2A2072.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: '/assets/blaze/stouh_beirut/4F8A9363.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: '/assets/blaze/stouh_beirut/4F8A9365.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: '/assets/blaze/stouh_beirut/IMG_6348.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: '/assets/blaze/stouh_beirut/IMG_6350.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
+  { url: '/assets/blaze/stouh_beirut/IMG_6351.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
 ];
 
 const weddingsStatic = [
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg', title: 'Weddings', category: 'Cinematic' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364179/sg-platform/static/assets/blaze/weddings/IMG_0100.jpg', title: 'Weddings', category: 'Cinematic' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364179/sg-platform/static/assets/blaze/weddings/IMG_0084.jpg', title: 'Weddings', category: 'Cinematic' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364166/sg-platform/static/assets/blaze/weddings/IMG_0068.jpg', title: 'Weddings', category: 'Cinematic' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364167/sg-platform/static/assets/blaze/weddings/IMG_0079.jpg', title: 'Weddings', category: 'Cinematic' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364149/sg-platform/static/assets/blaze/weddings/0G0A7811.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/0G0A7343.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/0G0A7376(1).jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/0G0A7733.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/0G0A7774(1).jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/0G0A7811.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/0G0A7820.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/0G0A7828.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/0G0A7833.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/9V5A4101.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/9V5A8531.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/9V5A9337.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/9V5A9365.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/DSCF2395.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_0025.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_0068.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_0079.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_0084.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_0100.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_0158.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_0206.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_5025.JPG', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_6049.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_6051.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_6052.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_6054.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_6055.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_9986.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/IMG_9991.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/pexels-amar-10288372.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/pexels-angel-ayala-321556-28976231.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/pexels-cuneyt-efe-bural-1257409288-23940968.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/pexels-fabrice-busching-1777473881-30235864.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/pexels-leeloothefirst-5038645.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/pexels-mastercowley-1128782.jpg', title: 'Weddings', category: 'Cinematic' },
+  { url: '/assets/blaze/weddings/images/pexels-valentina-maros-128709290-13283497.jpg', title: 'Weddings', category: 'Cinematic' },
 ];
 
 const editorialStatic = [
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363961/sg-platform/static/assets/blaze/cloudinary_uploaded/IMG_5744_compressed.jpg', title: 'Editorial & Brand', category: 'Editorial' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364019/sg-platform/static/assets/blaze/editorial_and_brand/pexels-amar-10288372.jpg', title: 'Editorial & Brand', category: 'Editorial' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363997/sg-platform/static/assets/blaze/editorial_and_brand/pexels-angel-ayala-321556-28976231.jpg', title: 'Editorial & Brand', category: 'Editorial' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363998/sg-platform/static/assets/blaze/editorial_and_brand/pexels-fabrice-busching-1777473881-30235864.jpg', title: 'Editorial & Brand', category: 'Editorial' },
-  { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364038/sg-platform/static/assets/blaze/editorial_and_brand/pexels-valentina-maros-128709290-13283497.jpg', title: 'Editorial & Brand', category: 'Editorial' },
+  { url: '/assets/blaze/cloudinary_uploaded/IMG_5744_compressed.JPG', title: 'Creative Direction', category: 'Editorial' },
+  { url: '/assets/blaze/editorial_and_brand/pexels-amar-10288372.jpg', title: 'Creative Direction', category: 'Editorial' },
+  { url: '/assets/blaze/editorial_and_brand/pexels-angel-ayala-321556-28976231.jpg', title: 'Creative Direction', category: 'Editorial' },
+  { url: '/assets/blaze/editorial_and_brand/pexels-fabrice-busching-1777473881-30235864.jpg', title: 'Creative Direction', category: 'Editorial' },
+  { url: '/assets/blaze/editorial_and_brand/pexels-valentina-maros-128709290-13283497.jpg', title: 'Creative Direction', category: 'Editorial' },
 ];
 
 interface BlazeGalleryItem {
@@ -70,19 +93,6 @@ interface BlazeProject {
 
 interface BlazeClientProps {
   projects: BlazeProject[];
-  testimonials?: any[];
-}
-
-function projectsToCarousel(projects: BlazeProject[], category: string) {
-  const filtered = projects.filter((p) => p.category === category);
-  if (filtered.length === 0) return null;
-  return filtered.flatMap((p) =>
-    (p.gallery || []).map((g) => ({
-      url: g.image?.url || '',
-      title: p.title,
-      category: p.category,
-    })),
-  ).filter((item) => item.url);
 }
 
 function firstSlugForCategory(projects: BlazeProject[], category: string): string | null {
@@ -90,18 +100,54 @@ function firstSlugForCategory(projects: BlazeProject[], category: string): strin
   return match?.slug || null;
 }
 
-export default function BlazeClient({ projects, testimonials = [] }: BlazeClientProps) {
+export default function BlazeClient({ projects }: BlazeClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Build carousels from CMS or fallback
-  const hasCMS = projects.length > 0;
-  const weddingItems = (hasCMS && projectsToCarousel(projects, 'Wedding')) || weddingsStatic;
-  const editorialItems = (hasCMS && projectsToCarousel(projects, 'Editorial')) || editorialStatic;
-  const eventItems = (hasCMS && projectsToCarousel(projects, 'Event')) || stouhBeirut;
-  const diplomaticItems = (hasCMS && projectsToCarousel(projects, 'Diplomatic')) || embassy;
+  // This selected-work module is curated until the final CMS media pass.
+  const weddingItems = weddingsStatic;
+  const editorialItems = editorialStatic;
+  const eventItems = stouhBeirut;
+  const selectedWork = [
+    {
+      id: 'stouh',
+      label: 'STOUH BEIRUT',
+      title: 'STOUH BEIRUT Rooftop',
+      category: 'Event',
+      description: 'Golden-hour diplomacy and Parisian skyline energy.',
+      items: eventItems,
+      autoplayInterval: 5200,
+    },
+    {
+      id: 'weddings',
+      label: 'Weddings',
+      title: 'Weddings',
+      category: 'Cinematic',
+      description: 'Stories of connection and timeless elegance.',
+      items: weddingItems,
+      autoplayInterval: 5200,
+    },
+    {
+      id: 'editorial',
+      label: 'Creative Direction',
+      title: 'Creative Direction',
+      category: 'Editorial',
+      description: 'The language of identity told through crafted imagery.',
+      items: editorialItems,
+      autoplayInterval: 5400,
+    },
+  ];
+  const [selectedWorkId, setSelectedWorkId] = useState(selectedWork[0].id);
+  const activeWork = selectedWork.find((item) => item.id === selectedWorkId) || selectedWork[0];
 
   // Hero video: from first project with heroVideo or fallback
   const heroProject = projects.find((p) => p.heroVideo?.muxPlaybackId || p.heroVideo?.cloudinaryVideoId);
+
+  useEffect(() => {
+    const requestedWork = new URLSearchParams(window.location.search).get('work');
+    if (requestedWork && ['stouh', 'weddings', 'creative-direction'].includes(requestedWork)) {
+      setSelectedWorkId(requestedWork);
+    }
+  }, []);
 
   useGSAP(() => {
     if (prefersReducedMotion()) return;
@@ -234,70 +280,57 @@ export default function BlazeClient({ projects, testimonials = [] }: BlazeClient
         </div>
       </section>
 
-      {/* Categorized Carousels */}
-      <section className="py-16 md:py-40 space-y-20 md:space-y-40 overflow-hidden">
-        <div className="reveal-up">
-          <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
-            <h3 className="text-3xl font-serif mb-2 italic">STOUH BEIRUT Rooftop</h3>
-            <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Golden-hour diplomacy and Parisian skyline energy.</p>
+      {/* Selected Work */}
+      <section id="selected-work" className="py-16 md:py-40 overflow-hidden scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-6 reveal-up">
+          <div className="mb-10 md:mb-16 text-center">
+            <p className="text-xs font-medium uppercase tracking-[0.24em] mb-4" style={{ color: 'var(--text-mute)' }}>Selected Work</p>
+            <h2 className="text-3xl md:text-5xl font-serif italic mb-5">Choose a project</h2>
+            <p className="max-w-xl mx-auto text-sm font-light leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+              Select a project below. The full image set appears here in the same cinematic carousel.
+            </p>
           </div>
-          <OrbitCarousel items={eventItems} autoplayInterval={5200} />
-          <div className="mt-16 md:mt-24 mb-8 text-center">
-            <Link href={`/blaze/${firstSlugForCategory(projects, 'Event') || 'stouh-beirut'}`} className="px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
-              View Project
-            </Link>
+
+          <div className="mx-auto mb-12 grid max-w-4xl grid-cols-1 gap-3 sm:grid-cols-3">
+            {selectedWork.map((work) => {
+              const isSelected = work.id === activeWork.id;
+              return (
+                <button
+                  key={work.id}
+                  type="button"
+                  onClick={() => setSelectedWorkId(work.id)}
+                  className="rounded-2xl border px-4 py-5 text-left transition-all duration-300 hover:bg-white/[0.06]"
+                  style={{
+                    borderColor: isSelected ? 'rgba(255,255,255,0.32)' : 'var(--border)',
+                    backgroundColor: isSelected ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.02)',
+                  }}
+                  aria-pressed={isSelected}
+                >
+                  <span className="mb-3 block text-[10px] font-semibold uppercase tracking-[0.22em]" style={{ color: 'var(--text-mute)' }}>
+                    {work.category}
+                  </span>
+                  <span className="block text-sm font-semibold" style={{ color: 'var(--text)' }}>{work.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mb-10 text-center">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--text-mute)' }}>{activeWork.category}</p>
+            <h3 className="text-3xl font-serif mb-3 italic">{activeWork.title}</h3>
+            <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>{activeWork.description}</p>
           </div>
         </div>
 
         <div className="reveal-up">
-          <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
-            <h3 className="text-3xl font-serif mb-2 italic">Embassy of Lebanon &middot; Paris</h3>
-            <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Diplomatic ceremonies captured with cinematic restraint.</p>
-          </div>
-          <OrbitCarousel items={diplomaticItems} autoplayInterval={5600} />
-          <div className="mt-16 md:mt-24 mb-8 text-center">
-            <Link href={`/blaze/${firstSlugForCategory(projects, 'Diplomatic') || 'embassy-of-lebanon'}`} className="px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
-              View Project
-            </Link>
-          </div>
-        </div>
-
-        <div className="reveal-up">
-          <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
-            <h3 className="text-3xl font-serif mb-2 italic">Weddings</h3>
-            <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Stories of connection and timeless elegance.</p>
-          </div>
-          <OrbitCarousel items={weddingItems} autoplayInterval={5200} />
-          <div className="mt-16 md:mt-24 mb-8 text-center">
-            <Link href={`/blaze/${firstSlugForCategory(projects, 'Wedding') || 'weddings'}`} className="px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
-              View Project
-            </Link>
-          </div>
-        </div>
-
-        <div className="reveal-up">
-          <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
-            <h3 className="text-3xl font-serif mb-2 italic">Editorial &amp; Brand</h3>
-            <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>The language of identity told through crafted imagery.</p>
-          </div>
-          <OrbitCarousel items={editorialItems} autoplayInterval={5400} />
-          <div className="mt-16 md:mt-24 mb-8 text-center">
-            <Link href={`/blaze/${firstSlugForCategory(projects, 'Editorial') || 'editorial-brand'}`} className="px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
-              View Project
-            </Link>
-          </div>
+          <OrbitCarousel
+            key={activeWork.id}
+            items={activeWork.items}
+            autoplayInterval={activeWork.autoplayInterval}
+            disableLightbox
+          />
         </div>
       </section>
-
-      {/* Testimonials */}
-      <TestimonialCarousel
-        testimonials={testimonials}
-        heading="Client Stories"
-        subheading="From couples to brands — hear from the people behind the projects."
-      />
-
-      {/* Budget Estimator */}
-      <BudgetEstimator brand="blaze" />
 
       {/* Final CTA */}
       <section className="py-16 md:py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--bg), var(--bg-card))', borderColor: 'var(--border)' }}>

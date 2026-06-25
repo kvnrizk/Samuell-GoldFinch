@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
 import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import { useGSAP } from '@gsap/react';
@@ -121,12 +122,12 @@ type WorkIdentity = 'blaze' | 'kolasi';
 
 interface WorkItem {
   id: string;
+  blazeWorkId: string;
   identity: WorkIdentity;
   title: string;
   category: string;
   meta: string;
   image: string;
-  gallery: string[];
 }
 
 interface HomeClientProps {
@@ -182,76 +183,6 @@ function CounterStat({ value, label }: { value: number; label: string }) {
   );
 }
 
-function WorkGalleryModal({
-  item,
-  onClose,
-}: {
-  item: WorkItem;
-  onClose: () => void;
-}) {
-  const [active, setActive] = useState(0);
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-      if (event.key === 'ArrowRight') setActive((prev) => (prev + 1) % item.gallery.length);
-      if (event.key === 'ArrowLeft') setActive((prev) => (prev - 1 + item.gallery.length) % item.gallery.length);
-    };
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [item.gallery.length, onClose]);
-
-  return createPortal(
-    <div className="fixed inset-0 z-[70] bg-black/95 px-4 py-6 md:p-10" role="dialog" aria-modal="true" aria-label={item.title}>
-      <button
-        type="button"
-        onClick={onClose}
-        className="absolute right-5 top-5 z-10 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold text-white backdrop-blur-md transition-colors hover:bg-white hover:text-black"
-      >
-        Close
-      </button>
-      <div className="mx-auto flex h-full max-w-7xl flex-col gap-5">
-        <div className="flex flex-col gap-2 pr-20">
-          <p className="ui-kicker" style={{ color: item.identity === 'blaze' ? '#c8a96e' : 'var(--text-mute)' }}>
-            {item.identity === 'blaze' ? 'Blaze' : 'Kolasi'} / {item.category}
-          </p>
-          <h3 className="text-2xl md:text-4xl font-serif">{item.title}</h3>
-          <p className="ui-body-small" style={{ color: 'var(--text-dim)' }}>{item.meta}</p>
-        </div>
-        <div className="relative min-h-0 flex-1 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
-          <Image
-            src={item.gallery[active]}
-            alt={`${item.title} ${active + 1}`}
-            fill
-            sizes="100vw"
-            className="object-contain"
-            priority
-          />
-        </div>
-        <div className="flex gap-3 overflow-x-auto pb-1">
-          {item.gallery.map((src, index) => (
-            <button
-              key={src}
-              type="button"
-              onClick={() => setActive(index)}
-              className="relative h-16 w-24 flex-shrink-0 overflow-hidden rounded-lg border transition-opacity"
-              style={{ borderColor: index === active ? '#c8a96e' : 'rgba(255,255,255,0.12)', opacity: index === active ? 1 : 0.55 }}
-              aria-label={`Show image ${index + 1}`}
-            >
-              <Image src={src} alt="" fill sizes="96px" className="object-cover" />
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>,
-    document.body,
-  );
-}
-
 function ReelModal({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -291,10 +222,12 @@ function ReelModal({ onClose }: { onClose: () => void }) {
 
 function WorkOrbitCarousel({
   items,
-  onOpen,
+  onNavigate,
+  seeMoreLabel,
 }: {
   items: WorkItem[];
-  onOpen: (item: WorkItem) => void;
+  onNavigate: (item: WorkItem) => void;
+  seeMoreLabel: string;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -371,10 +304,10 @@ function WorkOrbitCarousel({
           <button
             key={item.id}
             type="button"
-            onClick={() => (isActive ? onOpen(item) : setActiveIndex(index))}
+            onClick={() => (isActive ? onNavigate(item) : setActiveIndex(index))}
             className="group absolute cursor-pointer text-left transition-all duration-700 ease-out"
             style={{ transform, opacity, zIndex }}
-            aria-label={isActive ? `Open ${item.title} gallery` : `Show ${item.title}`}
+            aria-label={isActive ? `See more ${item.title} work` : `Show ${item.title}`}
           >
             <div
               className="relative aspect-[4/5] w-[240px] overflow-hidden rounded-2xl border shadow-2xl md:w-[450px]"
@@ -395,6 +328,15 @@ function WorkOrbitCarousel({
                 </p>
                 <h4 className="text-2xl font-serif text-white">{item.title}</h4>
                 <p className="mt-3 text-xs leading-relaxed text-white/55">{item.meta}</p>
+                {isActive && (
+                  <span className="mt-5 inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/80 backdrop-blur-md transition-colors group-hover:bg-white group-hover:text-black">
+                    {seeMoreLabel}
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                      <path d="M7 17 17 7" />
+                      <path d="M9 7h8v8" />
+                    </svg>
+                  </span>
+                )}
               </div>
               {isActive && (
                 <div className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-black/40 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
@@ -446,37 +388,37 @@ function WorkOrbitCarousel({
 
 export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   const t = getDictionary(locale).home;
-  const [activeWork, setActiveWork] = useState<WorkItem | null>(null);
   const [showReel, setShowReel] = useState(false);
 
   const curatedBlazeItems: WorkItem[] = [
     {
       id: 'blaze-weddings',
+      blazeWorkId: 'weddings',
       identity: 'blaze',
       title: 'Weddings',
       category: 'Videography',
       meta: 'Cinematic wedding storytelling',
       image: media.weddings[4],
-      gallery: media.weddings,
     },
     {
       id: 'stouh-beirut',
+      blazeWorkId: 'stouh',
       identity: 'blaze',
       title: 'STOUH BEIRUT',
       category: 'Photography / Videography',
       meta: 'Rooftop event film and photography',
       image: media.stouh[4],
-      gallery: media.stouh,
     },
     {
       id: 'creative-direction',
+      blazeWorkId: 'creative-direction',
       identity: 'blaze',
       title: 'Creative Direction',
       category: 'Creative Direction',
       meta: 'Editorial and brand image-making',
       image: media.editorial[0],
-      gallery: media.editorial,
     },
   ];
 
@@ -610,7 +552,11 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
               </Link>
             </div>
             <div className="relative">
-              <WorkOrbitCarousel items={curatedBlazeItems} onOpen={setActiveWork} />
+              <WorkOrbitCarousel
+                items={curatedBlazeItems}
+                onNavigate={(item) => router.push(`/blaze?work=${item.blazeWorkId}#selected-work`)}
+                seeMoreLabel={t.seeMore}
+              />
             </div>
           </div>
         </div>
@@ -746,7 +692,6 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
         </div>
       </section>
 
-      {activeWork && <WorkGalleryModal item={activeWork} onClose={() => setActiveWork(null)} />}
       {showReel && <ReelModal onClose={() => setShowReel(false)} />}
     </div>
   );
