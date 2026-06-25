@@ -1,35 +1,39 @@
 import type { Metadata } from 'next';
-import { getGlobalSettings, getFeaturedBlazeProjects, getFeaturedKolasiEvents, getFeaturedArtists, getFeaturedTestimonials } from '@/lib/fetchers';
+import { getGlobalSettings, getFeaturedBlazeProjects } from '@/lib/fetchers';
+import { safeCms } from '@/lib/cms-safe';
 import HomeClient from './HomeClient';
+import { getDictionary } from '@/lib/i18n';
 
 export const revalidate = 60;
 
+const fallbackSettings = {
+  seoDefaults: {
+    defaultTitle: 'Samuell Goldfinch - Creative Director, Filmmaker, DJ',
+    defaultDescription: 'Paris-based creative director, filmmaker, and international DJ. Founder of Blaze Production and Kolasi Agency.',
+  },
+};
+
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getGlobalSettings();
+  const settings = await safeCms(getGlobalSettings() as Promise<typeof fallbackSettings>, fallbackSettings, 'home metadata');
+  const meta = getDictionary('en').metadata;
   return {
-    title: settings.seoDefaults?.defaultTitle || 'Samuell Goldfinch — Creative Director · Filmmaker · DJ',
-    description: settings.seoDefaults?.defaultDescription || 'Paris-based creative director, filmmaker, and international DJ. Founder of Blaze Production and Kolasi Agency.',
+    title: settings.seoDefaults?.defaultTitle || meta.homeTitle,
+    description: settings.seoDefaults?.defaultDescription || meta.homeDescription,
+    alternates: {
+      canonical: '/',
+      languages: { en: '/', fr: '/fr' },
+    },
+    openGraph: { locale: meta.ogLocale },
   };
 }
 
 export default async function HomePage() {
-  const [settings, blazeProjects, kolasiEvents, artists, testimonials] = await Promise.all([
-    getGlobalSettings(),
-    getFeaturedBlazeProjects(6),
-    getFeaturedKolasiEvents(4),
-    getFeaturedArtists(),
-    getFeaturedTestimonials().catch(() => []),
-  ]);
+  const blazeProjects = await safeCms(getFeaturedBlazeProjects(6), [], 'home blaze projects');
 
-  /* eslint-disable @typescript-eslint/no-explicit-any -- Payload returns generic JsonObject types */
   return (
     <HomeClient
-      settings={settings as any}
       blazeProjects={blazeProjects as any}
-      kolasiEvents={kolasiEvents as any}
-      artists={artists as any}
-      testimonials={testimonials as any}
+      locale="en"
     />
   );
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 }

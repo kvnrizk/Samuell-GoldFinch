@@ -153,7 +153,6 @@ export function AudioPlayerProvider({ children }: { children: React.ReactNode })
       value={{ currentTrack, isPlaying, progress, duration, volume, play, pause, toggle, seek, setVolume, close, audioRef }}
     >
       {children}
-      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <audio ref={audioRef} preload="metadata" />
     </AudioPlayerContext.Provider>
   );

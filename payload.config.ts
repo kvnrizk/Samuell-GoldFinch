@@ -42,6 +42,9 @@ export default buildConfig({
 
   admin: {
     user: Users.slug,
+    importMap: {
+      importMapFile: path.resolve(dirname, 'app/(payload)/admin/importMap.ts'),
+    },
     meta: {
       titleSuffix: ' — Samuell Goldfinch',
     },
@@ -60,6 +63,9 @@ export default buildConfig({
 
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
+    connectOptions: {
+      serverSelectionTimeoutMS: 8000,
+    },
   }),
 
   collections: [

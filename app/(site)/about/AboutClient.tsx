@@ -191,7 +191,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
     <div ref={containerRef} className="min-h-screen" style={{ backgroundColor: 'var(--bg)' }}>
       {/* Header */}
       <section className="pt-28 pb-16 md:pt-40 md:pb-32 text-center max-w-4xl mx-auto px-6">
-        <h1 className="text-4xl sm:text-6xl md:text-8xl font-serif mb-10 leading-none reveal-up">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-10 leading-none reveal-up">
           The Story <br />
           <span className="italic">Behind the Vision</span>
         </h1>

@@ -1,0 +1,474 @@
+export const locales = ['en', 'fr'] as const;
+
+export type Locale = (typeof locales)[number];
+
+export const defaultLocale: Locale = 'en';
+
+export function isLocale(value: string | undefined): value is Locale {
+  return value === 'en' || value === 'fr';
+}
+
+export function localePrefix(locale: Locale) {
+  return locale === 'fr' ? '/fr' : '';
+}
+
+export function localizedPath(path: string, locale: Locale) {
+  const cleanPath = path === '/' ? '' : path.startsWith('/') ? path : `/${path}`;
+  return `${localePrefix(locale)}${cleanPath}` || '/';
+}
+
+export function alternateLocalePath(pathname: string, nextLocale: Locale) {
+  const pathWithoutLocale = pathname === '/fr' ? '/' : pathname.startsWith('/fr/') ? pathname.slice(3) : pathname;
+  const corePaths = ['/', '/quote', '/contact', '/venues'];
+  const safePath = corePaths.includes(pathWithoutLocale || '/') ? pathWithoutLocale || '/' : '/';
+  return localizedPath(safePath, nextLocale);
+}
+
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://samuellgoldfinch.com';
+
+export function absoluteUrl(path: string) {
+  return new URL(path, siteUrl).toString();
+}
+
+export const dictionary = {
+  en: {
+    metadata: {
+      homeTitle: 'Samuell Goldfinch - Creative Director, Filmmaker, DJ',
+      homeDescription:
+        'Paris-based creative director, filmmaker, and international DJ. Founder of Blaze Production and Kolasi Agency.',
+      contactTitle: 'Contact - Get in Touch',
+      contactDescription:
+        'Get in touch for wedding films, DJ bookings, event curation, or creative production. We respond within 48 hours.',
+      quoteTitle: 'Request a Bespoke Quote',
+      quoteDescription:
+        'Share your vision for a wedding film, curated event, or live performance. Tailored production and experiences.',
+      venuesTitle: 'For Venues - DJ Programming & Event Curation',
+      venuesDescription:
+        'Give your venue a weekly identity. Curated DJ programming, content production, and brand strategy for bars, clubs, and restaurants across Paris.',
+      ogLocale: 'en_US',
+    },
+    shell: {
+      skip: 'Skip to main content',
+      nav: {
+        blaze: 'Blaze',
+        kolasi: 'Kolasi',
+        venues: 'For Venues',
+        quote: 'Quote',
+        about: 'About',
+        more: 'More',
+        contact: 'Contact',
+        contactDesc: 'Get in touch with us',
+        showreel: 'Showreel',
+        showreelDesc: 'Watch our latest work',
+        journal: 'Journal',
+        journalDesc: 'Stories & behind the scenes',
+        press: 'Press Kit',
+        pressDesc: 'Logos, bios & media assets',
+        theme: 'Theme',
+        light: 'Light',
+        dark: 'Dark',
+      },
+      footer: {
+        portfolio: 'Portfolio',
+        services: 'Services',
+        venues: 'For Venues',
+        follow: 'Follow',
+        quote: 'Request a Quote',
+        contact: 'Contact',
+        venuePackages: 'Venue Packages',
+        applyNow: 'Apply Now',
+        rights: 'All Rights Reserved',
+        privacy: 'Privacy Policy',
+      },
+    },
+    home: {
+      eyebrow: 'Creative direction across film, music and live culture',
+      title: 'Film, music and live experiences with a point of view.',
+      intro:
+        'Samuell Goldfinch brings together cinematic production through Blaze and curated live culture through Kolasi.',
+      ctaBlaze: 'View Blaze Work',
+      ctaKolasi: 'Discover Kolasi',
+      featuredKicker: 'Selected Work',
+      featuredTitleA: 'Blaze and Kolasi',
+      featuredTitleB: 'in focus',
+      blazeWorkLabel: 'Blaze',
+      blazeWorkTitle: 'Photography, videography and creative direction',
+      blazeWorkText: 'Cinematic image-making for weddings, events, editorial stories and brands.',
+      kolasiWorkLabel: 'Kolasi',
+      kolasiWorkTitle: 'Artists, events and live culture',
+      kolasiWorkText: 'Curated programming, DJ booking and cultural moments built around atmosphere.',
+      blazeKicker: 'Blaze Production',
+      blazeTitle: ['Where', 'Emotion', 'Meets Craft'],
+      blazeText:
+        'Cinematic storytelling and visual precision for those who feel deeply. From intimate weddings to editorial campaigns, Blaze turns life into moving art.',
+      blazeCta: 'Explore Blaze',
+      kolasiKicker: 'Kolasi Agency',
+      kolasiTitle: 'Where Culture Meets the Night',
+      kolasiText:
+        'Kolasi curates nightlife, festivals and cultural happenings through bespoke talent booking, scenography and media production.',
+      kolasiCta: 'Discover Kolasi',
+      expertiseCta: 'View Expertise',
+      venuesKicker: 'For Venues',
+      venuesTitle: 'Give your venue a weekly identity',
+      venuesText:
+        'Curated DJ programming, monthly content production, and brand strategy for bars, clubs, and restaurants.',
+      learnMore: 'Learn More',
+      applyNow: 'Apply Now',
+      trustedKicker: 'Trusted Collaborations',
+      trustedTitle: 'Trusted by the Best',
+      cities: 'Cities Filmed',
+      experiences: 'Live Experiences',
+      finalTitle: "Let's Create Together",
+      finalText: 'Tell me about your vision - weddings, films or events.',
+      quoteCta: 'Request a Quote',
+      venueOwnerCta: "I'm a Venue Owner",
+    },
+    contact: {
+      title: "Let's Start the Conversation",
+      intro:
+        'Share your plans for a wedding film, live performance or curated event. We answer within 48 hours.',
+      formTitle: 'Project Snapshot',
+      name: 'Name',
+      namePlaceholder: 'Your name',
+      email: 'Email',
+      emailPlaceholder: 'Email address',
+      projectType: 'Project type',
+      details: 'Details',
+      detailsPlaceholder: 'Tell us more about your vision...',
+      send: 'Send Request',
+      sending: 'Sending...',
+      success: 'Thank you - we will reply within 48 hours.',
+      fallbackError: 'Something went wrong.',
+      direct: 'Direct Contact',
+      phone: 'Phone / WhatsApp',
+      available: 'Available for Booking',
+      availableText:
+        'Based in Paris. Frequently working across France, Europe, the Middle East and available worldwide.',
+      follow: 'Follow',
+      promise:
+        'Every enquiry receives a personalised reply with next steps, budget guidance and a proposed call time within two business days.',
+      meetingTitle: 'Prefer to meet in person?',
+      meetingText:
+        'Schedule a studio session in Paris or a virtual call to explore how Blaze Production and Kolasi can elevate your project.',
+      bookCall: 'Book a Discovery Call',
+    },
+    quote: {
+      first: 'First things first',
+      startTitle: 'How can we help?',
+      startText: 'Select your project type to get the right experience.',
+      personal: 'Personal / Brand',
+      personalDesc: 'Wedding film, editorial, DJ booking, or event production',
+      venue: "I'm a Venue Owner",
+      venueDesc: 'Weekly DJ programming, content & brand strategy',
+      whatNeed: 'What do you need?',
+      serviceHelp: 'Select the service that best fits your project.',
+      budgetTitle: 'Budget & Timeline',
+      budgetHelp: 'This helps us tailor a proposal that fits your expectations.',
+      almost: 'Almost there',
+      contactHelp: 'Where should we send your personalized proposal?',
+      sent: 'Request Sent',
+      nextTitle: 'What happens next',
+      next: [
+        'We review your brief and match you with the right team',
+        'You receive a personalized proposal within 48 hours',
+        'We schedule a call to finalize the details',
+      ],
+      backHome: 'Back to Home',
+      journal: 'Read the Journal',
+      back: 'Back',
+      continue: 'Continue',
+      send: 'Send Request',
+      sending: 'Sending...',
+      successText: "Thank you, {name}! We've received your request and will get back to you within 48 hours with a tailored proposal.",
+    },
+    venues: {
+      heroKicker: 'For Venues',
+      heroTitle: 'Give your venue a weekly identity',
+      bullets: [
+        'Curated DJ programming tailored to your crowd',
+        'Monthly content production & social strategy',
+        'Measurable ROI on every session',
+      ],
+      bookCall: 'Book a Discovery Call',
+      applyNow: 'Apply Now',
+      whatsapp: 'WhatsApp',
+      packages: 'Packages',
+      packagesTitle: 'Choose your tier',
+      packagesText:
+        'Every package is tailored after a discovery call. These tiers give you a starting framework.',
+      caseStudies: 'Case Studies',
+      caseStudiesTitle: "Venues we've transformed",
+      caseStudiesText: 'Real results from real partnerships. See how our programming drives measurable impact.',
+      roster: 'Our Roster',
+      rosterTitle: 'World-class artists, every night',
+      rosterText: 'From residents who know your crowd to headliners who pack the room.',
+      process: 'How It Works',
+      processTitle: 'From audit to launch in 3 steps',
+      faq: 'FAQ',
+      faqTitle: 'Common questions',
+      getStarted: 'Get Started',
+      finalTitle: 'Ready to transform your venue?',
+      finalText:
+        "Fill out the application form and we'll get back to you within 24 hours with a personalised plan for your venue.",
+      bookDirect: 'Or book a discovery call directly',
+      messageWhatsApp: 'Message us on WhatsApp',
+      promiseTitle: 'Response Promise',
+      promise:
+        "Every venue inquiry receives a personalised reply - not a template - within 24 hours. We'll include budget guidance, a proposed programming plan, and a Calendly link if it's a fit.",
+      formTitle: 'Venue Application',
+      formIntro: "Takes about 3 minutes. We'll tailor our response based on your answers.",
+    },
+    venueForm: {
+      steps: ['Your Venue', 'Goals & Budget', 'Contact Info'],
+      venueName: 'Venue Name *',
+      venueNamePlaceholder: 'e.g. Le Speakeasy',
+      venueType: 'Venue Type',
+      select: 'Select...',
+      capacity: 'Capacity',
+      address: 'Address',
+      website: 'Website',
+      instagram: 'Instagram',
+      dance: 'We have a dance floor / dance pocket',
+      programming: 'Current Programming',
+      goals: 'What are your goals? (select all that apply)',
+      budget: 'Monthly Budget *',
+      budgetSelect: 'Select budget range...',
+      decisionMaker: 'Decision Maker',
+      timeline: 'Timeline',
+      timelineSelect: 'When do you want to start?',
+      name: 'Your Name *',
+      whatsapp: 'WhatsApp *',
+      email: 'Email *',
+      continue: 'Continue',
+      back: 'Back',
+      submit: 'Submit Application',
+      submitting: 'Submitting...',
+      successTitle: 'Application Received',
+      successText: "We'll review your venue within 24 hours and send you a personalised response with next steps.",
+      requiredError: 'Please complete the required fields before continuing.',
+    },
+  },
+  fr: {
+    metadata: {
+      homeTitle: 'Samuell Goldfinch - Directeur creatif, realisateur, DJ',
+      homeDescription:
+        'Directeur creatif, realisateur et DJ international base a Paris. Fondateur de Blaze Production et Kolasi Agency.',
+      contactTitle: 'Contact - Parlez-nous de votre projet',
+      contactDescription:
+        'Contactez-nous pour un film de mariage, une programmation DJ, une curation evenementielle ou une production creative. Reponse sous 48 heures.',
+      quoteTitle: 'Demander un devis sur mesure',
+      quoteDescription:
+        'Partagez votre vision pour un film de mariage, un evenement ou une performance live. Productions et experiences sur mesure.',
+      venuesTitle: 'Pour les lieux - Programmation DJ & curation evenementielle',
+      venuesDescription:
+        'Donnez a votre lieu une identite hebdomadaire. Programmation DJ, production de contenu et strategie de marque pour bars, clubs et restaurants.',
+      ogLocale: 'fr_FR',
+    },
+    shell: {
+      skip: 'Aller au contenu principal',
+      nav: {
+        blaze: 'Blaze',
+        kolasi: 'Kolasi',
+        venues: 'Pour les lieux',
+        quote: 'Devis',
+        about: 'A propos',
+        more: 'Plus',
+        contact: 'Contact',
+        contactDesc: 'Parlez-nous de votre projet',
+        showreel: 'Showreel',
+        showreelDesc: 'Voir nos derniers travaux',
+        journal: 'Journal',
+        journalDesc: 'Histoires et coulisses',
+        press: 'Kit presse',
+        pressDesc: 'Logos, bios et medias',
+        theme: 'Theme',
+        light: 'Clair',
+        dark: 'Sombre',
+      },
+      footer: {
+        portfolio: 'Portfolio',
+        services: 'Services',
+        venues: 'Pour les lieux',
+        follow: 'Suivre',
+        quote: 'Demander un devis',
+        contact: 'Contact',
+        venuePackages: 'Offres lieux',
+        applyNow: 'Candidater',
+        rights: 'Tous droits reserves',
+        privacy: 'Confidentialite',
+      },
+    },
+    home: {
+      eyebrow: 'Direction creative entre film, musique et culture live',
+      title: 'Films, musique et experiences live avec un point de vue.',
+      intro:
+        'Samuell Goldfinch relie la production cinematographique de Blaze et la culture live curate par Kolasi.',
+      ctaBlaze: 'Voir Blaze',
+      ctaKolasi: 'Decouvrir Kolasi',
+      featuredKicker: 'Selection',
+      featuredTitleA: 'Blaze et Kolasi',
+      featuredTitleB: 'en focus',
+      blazeWorkLabel: 'Blaze',
+      blazeWorkTitle: 'Photographie, videographie et direction creative',
+      blazeWorkText: 'Images cinematographiques pour mariages, evenements, editoriaux et marques.',
+      kolasiWorkLabel: 'Kolasi',
+      kolasiWorkTitle: 'Artistes, evenements et culture live',
+      kolasiWorkText: 'Programmation, booking DJ et moments culturels construits autour de l atmosphere.',
+      blazeKicker: 'Blaze Production',
+      blazeTitle: ['Quand', 'l emotion', 'rencontre le geste'],
+      blazeText:
+        'Films cinematographiques et images precises pour les moments qui comptent. Du mariage intime a la campagne editoriale, Blaze transforme le reel en souvenir vivant.',
+      blazeCta: 'Explorer Blaze',
+      kolasiKicker: 'Kolasi Agency',
+      kolasiTitle: 'Quand la culture rencontre la nuit',
+      kolasiText:
+        'Kolasi imagine des soirees, festivals et experiences culturelles via booking artistique, scenographie et production media.',
+      kolasiCta: 'Decouvrir Kolasi',
+      expertiseCta: 'Voir les expertises',
+      venuesKicker: 'Pour les lieux',
+      venuesTitle: 'Donnez a votre lieu une identite hebdomadaire',
+      venuesText:
+        'Programmation DJ, production de contenu mensuelle et strategie de marque pour bars, clubs et restaurants.',
+      learnMore: 'En savoir plus',
+      applyNow: 'Candidater',
+      trustedKicker: 'Collaborations',
+      trustedTitle: 'Ils nous font confiance',
+      cities: 'Villes filmees',
+      experiences: 'Experiences live',
+      finalTitle: 'Creons ensemble',
+      finalText: 'Parlez-nous de votre vision - mariages, films ou evenements.',
+      quoteCta: 'Demander un devis',
+      venueOwnerCta: 'Je gere un lieu',
+    },
+    contact: {
+      title: 'Commencons la conversation',
+      intro:
+        'Partagez vos plans pour un film de mariage, une performance live ou un evenement curate. Reponse sous 48 heures.',
+      formTitle: 'Votre projet en bref',
+      name: 'Nom',
+      namePlaceholder: 'Votre nom',
+      email: 'Email',
+      emailPlaceholder: 'Adresse email',
+      projectType: 'Type de projet',
+      details: 'Details',
+      detailsPlaceholder: 'Parlez-nous de votre vision...',
+      send: 'Envoyer la demande',
+      sending: 'Envoi...',
+      success: 'Merci - nous repondrons sous 48 heures.',
+      fallbackError: 'Une erreur est survenue.',
+      direct: 'Contact direct',
+      phone: 'Telephone / WhatsApp',
+      available: 'Disponible pour booking',
+      availableText:
+        'Base a Paris. Projets reguliers en France, en Europe, au Moyen-Orient et disponible partout dans le monde.',
+      follow: 'Suivre',
+      promise:
+        'Chaque demande recoit une reponse personnalisee avec les prochaines etapes, une indication budgetaire et une proposition de rendez-vous sous deux jours ouvrables.',
+      meetingTitle: 'Vous preferez echanger directement ?',
+      meetingText:
+        'Planifiez une session a Paris ou un appel pour voir comment Blaze Production et Kolasi peuvent accompagner votre projet.',
+      bookCall: 'Reserver un appel',
+    },
+    quote: {
+      first: 'Avant de commencer',
+      startTitle: 'Comment pouvons-nous aider ?',
+      startText: 'Choisissez votre type de projet pour acceder au bon parcours.',
+      personal: 'Particulier / Marque',
+      personalDesc: 'Film de mariage, editorial, booking DJ ou production evenementielle',
+      venue: 'Je gere un lieu',
+      venueDesc: 'Programmation DJ hebdomadaire, contenu et strategie de marque',
+      whatNeed: 'De quoi avez-vous besoin ?',
+      serviceHelp: 'Selectionnez le service qui correspond le mieux a votre projet.',
+      budgetTitle: 'Budget & calendrier',
+      budgetHelp: 'Ces informations nous aident a preparer une proposition adaptee.',
+      almost: 'Presque termine',
+      contactHelp: 'Ou devons-nous envoyer votre proposition personnalisee ?',
+      sent: 'Demande envoyee',
+      nextTitle: 'La suite',
+      next: [
+        'Nous etudions votre brief et identifions la bonne equipe',
+        'Vous recevez une proposition personnalisee sous 48 heures',
+        'Nous planifions un appel pour finaliser les details',
+      ],
+      backHome: 'Retour accueil',
+      journal: 'Lire le journal',
+      back: 'Retour',
+      continue: 'Continuer',
+      send: 'Envoyer la demande',
+      sending: 'Envoi...',
+      successText: 'Merci, {name} ! Nous avons recu votre demande et reviendrons vers vous sous 48 heures avec une proposition sur mesure.',
+    },
+    venues: {
+      heroKicker: 'Pour les lieux',
+      heroTitle: 'Donnez a votre lieu une identite hebdomadaire',
+      bullets: [
+        'Programmation DJ adaptee a votre clientele',
+        'Production de contenu mensuelle et strategie sociale',
+        'Impact mesurable sur chaque session',
+      ],
+      bookCall: 'Reserver un appel',
+      applyNow: 'Candidater',
+      whatsapp: 'WhatsApp',
+      packages: 'Offres',
+      packagesTitle: 'Choisissez votre niveau',
+      packagesText:
+        'Chaque offre est ajustee apres un appel de decouverte. Ces niveaux servent de base.',
+      caseStudies: 'Cas clients',
+      caseStudiesTitle: 'Des lieux que nous avons transformes',
+      caseStudiesText: 'Des resultats concrets issus de vraies collaborations.',
+      roster: 'Notre roster',
+      rosterTitle: 'Des artistes solides, chaque soir',
+      rosterText: 'Des residents qui connaissent votre public aux tetes d affiche qui remplissent la salle.',
+      process: 'Processus',
+      processTitle: 'De l audit au lancement en 3 etapes',
+      faq: 'FAQ',
+      faqTitle: 'Questions frequentes',
+      getStarted: 'Demarrer',
+      finalTitle: 'Pret a transformer votre lieu ?',
+      finalText:
+        'Remplissez le formulaire et nous reviendrons vers vous sous 24 heures avec un plan personnalise.',
+      bookDirect: 'Ou reserver directement un appel',
+      messageWhatsApp: 'Nous ecrire sur WhatsApp',
+      promiseTitle: 'Promesse de reponse',
+      promise:
+        'Chaque demande recoit une reponse personnalisee - pas un modele - sous 24 heures, avec une indication budgetaire, une premiere piste de programmation et un lien Calendly si le projet correspond.',
+      formTitle: 'Candidature lieu',
+      formIntro: 'Environ 3 minutes. Vos reponses nous permettent d adapter notre retour.',
+    },
+    venueForm: {
+      steps: ['Votre lieu', 'Objectifs & budget', 'Contact'],
+      venueName: 'Nom du lieu *',
+      venueNamePlaceholder: 'ex. Le Speakeasy',
+      venueType: 'Type de lieu',
+      select: 'Selectionner...',
+      capacity: 'Capacite',
+      address: 'Adresse',
+      website: 'Site web',
+      instagram: 'Instagram',
+      dance: 'Nous avons une piste ou un espace danse',
+      programming: 'Programmation actuelle',
+      goals: 'Quels sont vos objectifs ? (plusieurs choix possibles)',
+      budget: 'Budget mensuel *',
+      budgetSelect: 'Selectionner une tranche...',
+      decisionMaker: 'Decisionnaire',
+      timeline: 'Calendrier',
+      timelineSelect: 'Quand souhaitez-vous demarrer ?',
+      name: 'Votre nom *',
+      whatsapp: 'WhatsApp *',
+      email: 'Email *',
+      continue: 'Continuer',
+      back: 'Retour',
+      submit: 'Envoyer la candidature',
+      submitting: 'Envoi...',
+      successTitle: 'Candidature recue',
+      successText: 'Nous etudions votre lieu sous 24 heures et vous envoyons une reponse personnalisee avec les prochaines etapes.',
+      requiredError: 'Veuillez completer les champs obligatoires avant de continuer.',
+    },
+  },
+} as const;
+
+export type Dictionary = typeof dictionary.en;
+
+export function getDictionary(locale: Locale = defaultLocale) {
+  return dictionary[locale];
+}

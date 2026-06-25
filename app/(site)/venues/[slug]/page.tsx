@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getVenueSEOPageBySlug, getVenueSEOPages, getGlobalSettings } from '@/lib/fetchers';
+import { safeCms } from '@/lib/cms-safe';
 import { BreadcrumbJsonLd, LocalBusinessJsonLd, ArticleJsonLd } from '@/components/JsonLd';
 import { SectionKicker } from '@/components/ui/SectionKicker';
 import { GlassCard } from '@/components/ui/GlassCard';
@@ -16,8 +17,9 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const page = await getVenueSEOPageBySlug(slug);
+  const page = await safeCms(getVenueSEOPageBySlug(slug), null, `venue metadata ${slug}`);
   if (!page) return { title: 'Not Found' };
+  const ogImage = typeof page.ogImage === 'object' ? page.ogImage?.url : undefined;
 
   return {
     title: page.seoTitle || `${page.title} | Samuell Goldfinch`,
@@ -28,14 +30,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: page.seoDescription || '',
       url: `${SITE_URL}/venues/${slug}`,
       type: 'article',
-      ...(page.ogImage?.url && { images: [{ url: page.ogImage.url, width: 1200, height: 630 }] }),
+      ...(ogImage && { images: [{ url: ogImage, width: 1200, height: 630 }] }),
     },
   };
 }
 
 export async function generateStaticParams() {
-  const pages = await getVenueSEOPages();
-  return pages.map((p) => ({ slug: (p as Record<string, string>).slug }));
+  const pages = await safeCms(getVenueSEOPages(), [], 'venue static params');
+  return pages.map((p) => ({ slug: (p as unknown as Record<string, string>).slug }));
 }
 
 export default async function VenueSEOPage({ params }: Props) {
@@ -44,10 +46,10 @@ export default async function VenueSEOPage({ params }: Props) {
   // Don't match "case-studies" — that's handled by a different route
   if (slug === 'case-studies') return notFound();
 
-  const page = await getVenueSEOPageBySlug(slug);
+  const page = await safeCms(getVenueSEOPageBySlug(slug), null, `venue page ${slug}`);
   if (!page) notFound();
 
-  const settings = await getGlobalSettings();
+  const settings = await safeCms(getGlobalSettings() as unknown as Promise<Record<string, string>>, {}, 'venue detail settings');
   const calendlyUrl = settings.calendlyUrl || 'https://calendly.com/samuellgoldfinch/venue-discovery';
 
   return (
@@ -99,8 +101,8 @@ export default async function VenueSEOPage({ params }: Props) {
             prose-blockquote:border-[#c8a96e]/30 prose-blockquote:text-zinc-400
           ">
             {page.content ? (
-              typeof page.content === 'string' ? (
-                <div dangerouslySetInnerHTML={{ __html: page.content.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/on\w+="[^"]*"/gi, '') }} />
+              typeof (page.content as unknown) === 'string' ? (
+                <div dangerouslySetInnerHTML={{ __html: (page.content as unknown as string).replace(/<script[\s\S]*?<\/script>/gi, '').replace(/on\w+="[^"]*"/gi, '') }} />
               ) : (
                 <p className="text-zinc-500 italic">Content coming soon — this page is being prepared.</p>
               )

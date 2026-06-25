@@ -18,7 +18,7 @@ export default function PrivacyPage() {
           <span className="text-zinc-400">Privacy Policy</span>
         </nav>
 
-        <h1 className="font-serif text-4xl md:text-5xl font-bold text-stone-100 leading-tight mb-4">
+        <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-stone-100 leading-tight mb-4">
           Privacy Policy
         </h1>
         <p className="text-sm text-zinc-500 mb-12">

@@ -1,37 +1,45 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { getDictionary, siteUrl } from '@/lib/i18n';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://samuellgoldfinch.com';
+const meta = getDictionary('en').metadata;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteUrl),
   title: {
-    default: 'Samuell Goldfinch — Creative Director · Filmmaker · DJ',
+    default: meta.homeTitle,
     template: '%s | Samuell Goldfinch',
   },
-  description:
-    'Paris-based creative director, filmmaker, and international DJ. Founder of Blaze Production and Kolasi Agency.',
-  alternates: { canonical: SITE_URL },
+  description: meta.homeDescription,
+  alternates: {
+    canonical: siteUrl,
+    languages: {
+      en: siteUrl,
+      fr: `${siteUrl}/fr`,
+    },
+    types: {
+      'application/rss+xml': `${siteUrl}/feed.xml`,
+    },
+  },
   openGraph: {
-    title: 'Samuell Goldfinch — Creative Director · Filmmaker · DJ',
-    description:
-      'Paris-based creative director, filmmaker, and international DJ. Founder of Blaze Production and Kolasi Agency.',
+    title: meta.homeTitle,
+    description: meta.homeDescription,
     type: 'website',
-    url: SITE_URL,
+    url: siteUrl,
     siteName: 'Samuell Goldfinch',
-    locale: 'en_US',
+    locale: meta.ogLocale,
     images: [
       {
-        url: `${SITE_URL}/og-image.png`,
+        url: `${siteUrl}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: 'Samuell Goldfinch — Creative Director, Filmmaker, DJ',
+        alt: 'Samuell Goldfinch - Creative Director, Filmmaker, DJ',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    images: [`${SITE_URL}/og-image.png`],
+    images: [`${siteUrl}/og-image.png`],
   },
   robots: {
     index: true,

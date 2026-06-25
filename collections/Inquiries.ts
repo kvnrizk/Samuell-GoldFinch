@@ -39,7 +39,11 @@ export const Inquiries: CollectionConfig = {
       async ({ doc, previousDoc, operation }) => {
         // Dynamic imports to avoid circular dependency (collection → notifications → payload → config → collection)
         const { sendNotification } = await import('../lib/notifications');
-        const { getPayload } = await import('../lib/payload');
+        const {
+          cancelPendingInquirySequences,
+          processInquiryCreateSequences,
+          processInquiryStatusChangeSequences,
+        } = await import('../lib/automation');
 
         // ---- On CREATE: admin alert + hot-lead alert + automation sequences ----
         if (operation === 'create') {
@@ -80,71 +84,7 @@ export const Inquiries: CollectionConfig = {
             });
           }
 
-          // 3. Find active AutomationSequences and process them
-          try {
-            const p = await getPayload();
-
-            const sequences = await p.find({
-              collection: 'automation-sequences',
-              where: {
-                and: [
-                  { isActive: { equals: true } },
-                  { triggerType: { equals: 'on-create' } },
-                  { triggerCollection: { equals: 'inquiries' } },
-                ],
-              },
-              limit: 50,
-            });
-
-            for (const seq of sequences.docs) {
-              // Skip if triggerStatus is set and doesn't match
-              if (seq.triggerStatus && seq.triggerStatus !== doc.status) continue;
-
-              const channels = Array.isArray(seq.channels) ? seq.channels : [seq.channels];
-
-              for (const channel of channels) {
-                if (seq.delayHours === 0) {
-                  // Send immediately
-                  await sendNotification({
-                    sequenceId: String(seq.id),
-                    inquiryId: doc.id,
-                    channel: channel as 'email' | 'whatsapp' | 'admin-alert',
-                    targetAudience: (seq.targetAudience as 'admin' | 'lead' | 'both') || 'admin',
-                    emailSubject: seq.emailSubject || undefined,
-                    emailBody: (seq.emailBody as string | undefined) || undefined,
-                    whatsappMessage: seq.whatsappMessage || undefined,
-                    alertType: 'new-lead',
-                    alertSeverity: 'info',
-                    alertTitle: seq.name,
-                    alertMessage: seq.whatsappMessage || seq.emailSubject || seq.name,
-                    context: {
-                      name: doc.name,
-                      email: doc.email,
-                      service: doc.service || '',
-                      budget: doc.budget || '',
-                      leadScore: doc.leadScore,
-                      status: doc.status || 'new',
-                    },
-                  });
-                } else {
-                  // Queue for later — create a pending SentNotification with scheduledFor
-                  const scheduledFor = new Date(Date.now() + (seq.delayHours as number) * 3600000).toISOString();
-                  await p.create({
-                    collection: 'sent-notifications',
-                    data: {
-                      sequence: seq.id,
-                      inquiryRef: doc.id,
-                      channel: channel as string,
-                      scheduledFor,
-                      status: 'pending',
-                    },
-                  });
-                }
-              }
-            }
-          } catch (err) {
-            console.error('[Inquiries afterChange] Failed to process sequences:', err);
-          }
+          await processInquiryCreateSequences(doc);
         }
 
         // ---- On UPDATE with status change ----
@@ -166,92 +106,10 @@ export const Inquiries: CollectionConfig = {
 
           // 2. If status is 'closed' or 'booked', cancel all pending sequences
           if (doc.status === 'closed' || doc.status === 'booked') {
-            try {
-              const p = await getPayload();
-              const pending = await p.find({
-                collection: 'sent-notifications',
-                where: {
-                  and: [
-                    { inquiryRef: { equals: doc.id } },
-                    { status: { equals: 'pending' } },
-                  ],
-                },
-                limit: 100,
-              });
-              for (const pend of pending.docs) {
-                await p.update({
-                  collection: 'sent-notifications',
-                  id: pend.id,
-                  data: { status: 'failed', errorMessage: `Cancelled: status changed to ${doc.status}` },
-                });
-              }
-            } catch (err) {
-              console.error('[Inquiries afterChange] Failed to cancel pending sequences:', err);
-            }
+            await cancelPendingInquirySequences(doc.id, doc.status);
           }
 
-          // 3. Find on-status-change sequences
-          try {
-            const p = await getPayload();
-            const sequences = await p.find({
-              collection: 'automation-sequences',
-              where: {
-                and: [
-                  { isActive: { equals: true } },
-                  { triggerType: { equals: 'on-status-change' } },
-                  {
-                    or: [
-                      { triggerCollection: { equals: 'inquiries' } },
-                      { triggerCollection: { equals: 'both' } },
-                    ],
-                  },
-                ],
-              },
-              limit: 50,
-            });
-
-            for (const seq of sequences.docs) {
-              if (seq.triggerStatus && seq.triggerStatus !== doc.status) continue;
-              const channels = Array.isArray(seq.channels) ? seq.channels : [seq.channels];
-              for (const channel of channels) {
-                if (seq.delayHours === 0) {
-                  await sendNotification({
-                    sequenceId: String(seq.id),
-                    inquiryId: doc.id,
-                    channel: channel as 'email' | 'whatsapp' | 'admin-alert',
-                    targetAudience: (seq.targetAudience as 'admin' | 'lead' | 'both') || 'admin',
-                    emailSubject: seq.emailSubject || undefined,
-                    emailBody: (seq.emailBody as string | undefined) || undefined,
-                    whatsappMessage: seq.whatsappMessage || undefined,
-                    alertType: 'status-change',
-                    alertSeverity: 'info',
-                    alertTitle: seq.name,
-                    alertMessage: `${doc.name} moved to ${doc.status}`,
-                    context: {
-                      name: doc.name,
-                      email: doc.email,
-                      service: doc.service || '',
-                      status: doc.status || '',
-                    },
-                  });
-                } else {
-                  const scheduledFor = new Date(Date.now() + (seq.delayHours as number) * 3600000).toISOString();
-                  await p.create({
-                    collection: 'sent-notifications',
-                    data: {
-                      sequence: seq.id,
-                      inquiryRef: doc.id,
-                      channel: channel as string,
-                      scheduledFor,
-                      status: 'pending',
-                    },
-                  });
-                }
-              }
-            }
-          } catch (err) {
-            console.error('[Inquiries afterChange] Failed to process status-change sequences:', err);
-          }
+          await processInquiryStatusChangeSequences(doc);
         }
       },
     ],

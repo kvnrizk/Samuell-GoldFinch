@@ -1,7 +1,7 @@
 'use server';
 
 import { getPayload } from './payload';
-import { Resend } from 'resend';
+import { getResend } from './resend';
 import {
   contactNotification,
   contactAutoReply,
@@ -12,8 +12,6 @@ import {
   venueUnderBudgetNotification,
   venueStarterNightAutoReply,
 } from './email-templates';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 function sanitize(input: string, maxLength: number): string {
   return input
@@ -101,6 +99,7 @@ export async function submitContactForm(formData: FormData): Promise<FormResult>
     });
 
     try {
+      const resend = getResend();
       await resend.emails.send({
         from: 'Samuell Goldfinch <noreply@samuellgoldfinch.com>',
         to: 'contact@samuellgoldfinch.com',
@@ -171,6 +170,7 @@ export async function submitQuoteForm(formData: FormData): Promise<FormResult> {
     });
 
     try {
+      const resend = getResend();
       await resend.emails.send({
         from: 'Samuell Goldfinch <noreply@samuellgoldfinch.com>',
         to: 'contact@samuellgoldfinch.com',
@@ -271,9 +271,10 @@ export async function submitVenueInquiry(formData: FormData): Promise<FormResult
     });
 
     const settings = await payload.findGlobal({ slug: 'global-settings' });
-    const calendlyUrl = (settings as Record<string, unknown>).calendlyUrl as string || 'https://calendly.com/samuellgoldfinch';
+    const calendlyUrl = (settings as unknown as Record<string, unknown>).calendlyUrl as string || 'https://calendly.com/samuellgoldfinch';
 
     try {
+      const resend = getResend();
       if (isQualified) {
         const venueData = { venueName, contactName, contactEmail, contactWhatsApp, venueType, capacity, monthlyBudget, goals, timeline, currentProgramming, calendlyUrl };
 

@@ -1,18 +1,24 @@
 import type { Metadata } from 'next';
 import { getVenuePackages, getCaseStudies, getVenueFAQ, getArtists, getGlobalSettings } from '@/lib/fetchers';
+import { safeCms } from '@/lib/cms-safe';
 import VenuesClient from './VenuesClient';
+import { getDictionary } from '@/lib/i18n';
 
 export const revalidate = 60;
 
+const meta = getDictionary('en').metadata;
+
 export const metadata: Metadata = {
-  title: 'For Venues — DJ Programming & Event Curation',
-  description:
-    'Give your venue a weekly identity. Curated DJ programming, content production, and brand strategy for bars, clubs, and restaurants across Paris.',
-  alternates: { canonical: '/venues' },
+  title: meta.venuesTitle,
+  description: meta.venuesDescription,
+  alternates: {
+    canonical: '/venues',
+    languages: { en: '/venues', fr: '/fr/venues' },
+  },
   openGraph: {
-    title: 'For Venues — Samuell Goldfinch',
-    description:
-      'Give your venue a weekly identity. Curated DJ programming, content production, and brand strategy.',
+    title: 'For Venues - Samuell Goldfinch',
+    description: meta.venuesDescription,
+    locale: meta.ogLocale,
   },
 };
 
@@ -28,27 +34,31 @@ const staticRoster = [
   { id: 'yasmine-k', name: 'Yasmine K', photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg' }, genre: 'Organic House · Downtempo', rosterCategory: 'headliner' },
 ];
 
+const fallbackSettings = {
+  calendlyUrl: 'https://calendly.com/samuellgoldfinch/venue-discovery',
+  whatsappNumber: '+33605883966',
+};
+
 export default async function VenuesPage() {
   const [packages, caseStudies, faq, cmsArtists, settings] = await Promise.all([
-    getVenuePackages(),
-    getCaseStudies(),
-    getVenueFAQ(),
-    getArtists(),
-    getGlobalSettings(),
+    safeCms(getVenuePackages(), [], 'venue packages'),
+    safeCms(getCaseStudies(), [], 'venue case studies'),
+    safeCms(getVenueFAQ(), [], 'venue faq'),
+    safeCms(getArtists(), [], 'venue artists'),
+    safeCms(getGlobalSettings() as unknown as Promise<Record<string, string>>, fallbackSettings, 'venue settings'),
   ]);
 
   const artists = (cmsArtists as any[]).length > 0 ? cmsArtists : staticRoster;
 
-  /* eslint-disable @typescript-eslint/no-explicit-any -- Payload returns generic JsonObject types */
   return (
     <VenuesClient
       packages={packages as any}
       caseStudies={caseStudies as any}
       faq={faq as any}
       artists={artists as any}
-      calendlyUrl={(settings as Record<string, string>).calendlyUrl || 'https://calendly.com/samuellgoldfinch/venue-discovery'}
-      whatsappNumber={(settings as Record<string, string>).whatsappNumber || '+33605883966'}
+      calendlyUrl={settings.calendlyUrl || 'https://calendly.com/samuellgoldfinch/venue-discovery'}
+      whatsappNumber={settings.whatsappNumber || '+33605883966'}
+      locale="en"
     />
   );
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 }

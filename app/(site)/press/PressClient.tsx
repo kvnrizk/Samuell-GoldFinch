@@ -129,7 +129,7 @@ export default function PressClient({ pressKit }: PressClientProps) {
           >
             Press Kit
           </span>
-          <h1 className="press-reveal text-4xl md:text-6xl lg:text-7xl font-serif italic leading-[0.95] tracking-tight mb-6">
+          <h1 className="press-reveal text-3xl sm:text-4xl md:text-5xl font-serif italic leading-[0.95] tracking-tight mb-6">
             Media Resources
           </h1>
           <p className="press-reveal text-sm md:text-base font-light max-w-2xl mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>

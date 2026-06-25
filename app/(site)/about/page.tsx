@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getMilestones, getGlobalSettings } from '@/lib/fetchers';
+import { safeCms } from '@/lib/cms-safe';
 import AboutClient from './AboutClient';
 
 export const revalidate = 60;
@@ -12,8 +13,8 @@ export const metadata: Metadata = {
 
 export default async function AboutPage() {
   const [cmsMilestones, settings] = await Promise.all([
-    getMilestones(),
-    getGlobalSettings(),
+    safeCms(getMilestones(), [], 'about milestones'),
+    safeCms(getGlobalSettings() as unknown as Promise<Record<string, unknown>>, {}, 'about settings'),
   ]);
-  return <AboutClient cmsMilestones={cmsMilestones as { title?: string; name?: string; description?: string }[]} settings={settings as Record<string, unknown>} />;
+  return <AboutClient cmsMilestones={cmsMilestones as { title?: string; name?: string; description?: string }[]} settings={settings} />;
 }

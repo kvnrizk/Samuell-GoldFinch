@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getBlazeProjectBySlug, getAllBlazeProjects, getAdjacentBlazeProjects } from '@/lib/fetchers';
+import { safeCms } from '@/lib/cms-safe';
 import BlazeProjectDetail from './BlazeProjectDetail';
 import { notFound } from 'next/navigation';
 
@@ -145,7 +146,7 @@ function getStaticAdjacent(slug: string) {
 /* ── Route generation ── */
 
 export async function generateStaticParams() {
-  const projects = await getAllBlazeProjects();
+  const projects = await safeCms(getAllBlazeProjects(), [], 'blaze static params');
   const cmsSlugs = (projects as any[])
     .filter((p) => p.slug)
     .map((p) => ({ slug: p.slug }));
@@ -169,7 +170,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const cmsProject = await getBlazeProjectBySlug(slug);
+  const cmsProject = await safeCms(getBlazeProjectBySlug(slug), null, `blaze metadata ${slug}`);
   const project = (cmsProject as any) || staticProjects[slug];
   if (!project) return {};
 
@@ -199,14 +200,14 @@ export default async function BlazeProjectPage({
   const { slug } = await params;
 
   // Try CMS first, fall back to static data
-  const cmsProject = await getBlazeProjectBySlug(slug);
+  const cmsProject = await safeCms(getBlazeProjectBySlug(slug), null, `blaze project ${slug}`);
   const project = (cmsProject as any) || staticProjects[slug];
   if (!project) notFound();
 
   // Adjacent projects: CMS or static
   let adjacent;
   if (cmsProject) {
-    adjacent = await getAdjacentBlazeProjects(slug);
+    adjacent = await safeCms(getAdjacentBlazeProjects(slug), getStaticAdjacent(slug), `blaze adjacent ${slug}`);
   } else {
     adjacent = getStaticAdjacent(slug);
   }

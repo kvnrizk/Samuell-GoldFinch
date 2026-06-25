@@ -1,12 +1,19 @@
 import type { Metadata } from 'next';
 import QuoteClient from './QuoteClient';
+import { getDictionary } from '@/lib/i18n';
+
+const meta = getDictionary('en').metadata;
 
 export const metadata: Metadata = {
-  title: 'Request a Bespoke Quote',
-  description: 'Share your vision for a wedding film, curated event, or live performance. Tailored production and experiences.',
-  alternates: { canonical: '/quote' },
+  title: meta.quoteTitle,
+  description: meta.quoteDescription,
+  alternates: {
+    canonical: '/quote',
+    languages: { en: '/quote', fr: '/fr/quote' },
+  },
+  openGraph: { locale: meta.ogLocale },
 };
 
 export default function QuotePage() {
-  return <QuoteClient />;
+  return <QuoteClient locale="en" />;
 }

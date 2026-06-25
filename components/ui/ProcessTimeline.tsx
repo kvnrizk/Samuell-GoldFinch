@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import type { Locale } from '@/lib/i18n';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,8 +25,27 @@ const steps = [
   },
 ];
 
-export function ProcessTimeline() {
+const frenchSteps = [
+  {
+    number: '01',
+    title: 'Audit',
+    description: 'Nous visitons votre lieu, analysons votre public et identifions les opportunites.',
+  },
+  {
+    number: '02',
+    title: 'Plan de programmation',
+    description: 'Nous construisons une identite hebdomadaire : artistes, calendrier, contenu et prix.',
+  },
+  {
+    number: '03',
+    title: 'Lancement + contenu',
+    description: 'Nous lancons, produisons du contenu a chaque session et optimisons chaque mois.',
+  },
+];
+
+export function ProcessTimeline({ locale = 'en' }: { locale?: Locale }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const items = locale === 'fr' ? frenchSteps : steps;
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -53,13 +73,13 @@ export function ProcessTimeline() {
 
   return (
     <div ref={containerRef} className="grid md:grid-cols-3 gap-6">
-      {steps.map((step, i) => (
+      {items.map((step, i) => (
         <div key={i} className="process-step relative">
           <div className="flex items-center gap-3 mb-4">
             <span className="w-10 h-10 rounded-full border border-[#c8a96e]/30 flex items-center justify-center text-[#c8a96e] font-mono text-sm font-semibold">
               {step.number}
             </span>
-            {i < steps.length - 1 && (
+            {i < items.length - 1 && (
               <div className="hidden md:block flex-1 h-px bg-gradient-to-r from-[#c8a96e]/30 to-transparent" />
             )}
           </div>

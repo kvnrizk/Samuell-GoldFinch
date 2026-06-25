@@ -13,12 +13,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   /* ── Static routes ─────────────────────────────────── */
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
+    { url: `${BASE_URL}/fr`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: `${BASE_URL}/blaze`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/kolasi`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${BASE_URL}/venues`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${BASE_URL}/fr/venues`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE_URL}/fr/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE_URL}/quote`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE_URL}/fr/quote`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE_URL}/journal`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/showreel`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${BASE_URL}/press`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },

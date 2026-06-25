@@ -58,7 +58,7 @@ export async function GET(request: Request) {
       try {
         const sequence =
           typeof notif.sequence === 'object' && notif.sequence
-            ? (notif.sequence as Record<string, unknown>)
+            ? (notif.sequence as unknown as Record<string, unknown>)
             : null;
 
         if (!sequence) {
@@ -72,11 +72,11 @@ export async function GET(request: Request) {
 
         const inquiryDoc =
           notif.inquiryRef && typeof notif.inquiryRef === 'object'
-            ? (notif.inquiryRef as Record<string, unknown>)
+            ? (notif.inquiryRef as unknown as Record<string, unknown>)
             : null;
         const venueDoc =
           notif.venueInquiryRef && typeof notif.venueInquiryRef === 'object'
-            ? (notif.venueInquiryRef as Record<string, unknown>)
+            ? (notif.venueInquiryRef as unknown as Record<string, unknown>)
             : null;
 
         const refDoc = inquiryDoc || venueDoc;
