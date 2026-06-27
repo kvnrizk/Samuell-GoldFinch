@@ -258,3 +258,21 @@ Intentional exceptions:
 - White text remains inside dark image/video overlays.
 - White carousel dots remain because they sit on media and communicate active state.
 - Broad light-mode overrides still remain until `/blaze`, `/kolasi`, `/venues`, `/quote`, and `/contact` are migrated.
+
+### 2026-06-27 - Step 4 Started
+
+Blaze and Kolasi page clients now use the semantic primitive layer.
+
+What changed:
+
+- Added `sg-action-accent` for gold-accent CTAs.
+- Migrated `/blaze` surfaces, CTA buttons, showcase media frame, selected-work selector, and final CTA.
+- Migrated `/kolasi` hero CTA, manifesto media frame, expertise section, showcase cards, accordion states, venue-owner banner, and final CTA.
+- Preserved white-on-media overlays where the text is part of the image/video treatment.
+
+Remaining core pages:
+
+- `/venues`
+- `/quote`
+- `/contact`
+- French mirrors where they use separate components or wrappers

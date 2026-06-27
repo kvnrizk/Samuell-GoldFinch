@@ -165,9 +165,9 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} style={{ backgroundColor: 'var(--bg)' }}>
+    <div ref={containerRef} style={{ backgroundColor: 'var(--surface-page)' }}>
       {/* Full Screen Hero Video */}
-      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--bg)' }}>
+      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--surface-page)' }}>
         {(heroProject?.heroVideo?.muxPlaybackId || heroProject?.heroVideo?.cloudinaryVideoId) ? (
           <div className="absolute inset-0">
             <VideoPlayer
@@ -194,17 +194,17 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
             />
           </div>
         )}
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--bg) 60%, transparent), transparent, var(--bg))' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--surface-page) 60%, transparent), transparent, var(--surface-page))' }} />
 
         <div className="relative z-10 text-center px-6">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
             Bringing Your <br />
             <span className="italic">Story to Life</span>
           </h1>
-          <p className="text-xs md:text-sm font-medium mb-10 reveal-up" style={{ color: 'var(--text-mute)' }}>
+          <p className="text-xs md:text-sm font-medium mb-10 reveal-up" style={{ color: 'var(--text-muted)' }}>
             Cinematic storytelling and visual precision for those who feel deeply.
           </p>
-          <button className="px-12 py-4 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all reveal-up backdrop-blur-sm">
+          <button className="px-12 py-4 border rounded-full text-sm font-semibold transition-all reveal-up backdrop-blur-sm sg-action-secondary">
             Discover Blaze
           </button>
         </div>
@@ -217,21 +217,21 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
             Where Emotion <br />
             <span className="not-italic">Meets Craft</span>
           </h2>
-          <div className="space-y-5 text-sm md:text-base leading-[1.9] font-light" style={{ color: 'var(--text-dim)' }}>
+          <div className="space-y-5 text-sm md:text-base leading-[1.9] font-light" style={{ color: 'var(--text-secondary)' }}>
             <p>
               Blaze Production is a full-service creative studio specialising in cinematic wedding films, editorial content and
               branded storytelling. With over 50 productions across 12 cities, we bring a director&apos;s eye and an editor&apos;s
               precision to every frame.
             </p>
             <p>
-              Trusted by <span className="font-medium" style={{ color: 'var(--text)' }}>MIPIM Cannes</span>, <span className="font-medium" style={{ color: 'var(--text)' }}>Brunch Festival</span>, <span className="font-medium" style={{ color: 'var(--text)' }}>Transdev</span>, <span className="font-medium" style={{ color: 'var(--text)' }}>France Tourisme</span>, and renowned international artists, we bring
+              Trusted by <span className="font-medium" style={{ color: 'var(--text-primary)' }}>MIPIM Cannes</span>, <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Brunch Festival</span>, <span className="font-medium" style={{ color: 'var(--text-primary)' }}>Transdev</span>, <span className="font-medium" style={{ color: 'var(--text-primary)' }}>France Tourisme</span>, and renowned international artists, we bring
               your story to life with timeless visual impact.
             </p>
           </div>
         </div>
 
         <div className="reveal-up">
-          <div className="aspect-[4/3] rounded-[2.5rem] bg-neutral-900 border border-white/5 shadow-2xl relative overflow-hidden group">
+          <div className="aspect-[4/3] rounded-[2.5rem] border relative overflow-hidden group sg-media-frame">
             <Image
               src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363947/sg-platform/static/assets/blaze/IMG_6050.jpg"
               alt="Blaze Production — behind the scenes"
@@ -248,31 +248,31 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
                 <div className="h-[1px] w-8 bg-white/40" />
               </div>
               <p className="text-xl font-serif tracking-[0.2em] uppercase">Blaze</p>
-              <p className="text-[10px] font-light mt-1" style={{ color: 'var(--text-dim)' }}>Production</p>
+              <p className="text-[10px] font-light mt-1 text-white/60">Production</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Blaze Showcase */}
-      <section className="py-16 md:py-40 border-y" style={{ backgroundColor: 'var(--bg)', borderColor: 'var(--border)' }}>
+      <section className="py-16 md:py-40 border-y" style={{ backgroundColor: 'var(--surface-page)', borderColor: 'var(--border-subtle)' }}>
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div className="mb-12 md:mb-24 reveal-up">
             <h2 className="text-4xl md:text-6xl font-serif italic mb-4">Blaze Showcase</h2>
-            <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>Light, movement, and emotion captured through crafted moments.</p>
+            <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Light, movement, and emotion captured through crafted moments.</p>
           </div>
           <div className="reveal-up max-w-4xl mx-auto">
-            <div className="group relative rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl aspect-[16/9] mb-12">
+            <div className="group relative rounded-[2rem] overflow-hidden border aspect-[16/9] mb-12 sg-media-frame">
               <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363947/sg-platform/static/assets/blaze/IMG_6050.jpg" alt="Blaze Showcase" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover group-hover:scale-105 transition-all duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 md:p-12 text-center">
-                <p className="text-xs font-medium mb-2" style={{ color: 'var(--text-mute)' }}>Featured Project</p>
+                <p className="text-xs font-medium mb-2 text-white/60">Featured Project</p>
                 <h3 className="text-xl md:text-2xl font-serif italic uppercase tracking-tighter">STOUH BEIRUT Rooftop</h3>
               </div>
             </div>
             <div className="space-y-4">
-              <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>Golden-hour diplomacy on the Parisian skyline</p>
+              <p className="text-xs font-light" style={{ color: 'var(--text-muted)' }}>Golden-hour diplomacy on the Parisian skyline</p>
               <p className="text-sm font-serif">Paris, France</p>
-              <Link href={`/blaze/${firstSlugForCategory(projects, 'Event') || 'stouh-beirut'}`} className="mt-8 inline-block px-10 py-3 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
+              <Link href={`/blaze/${firstSlugForCategory(projects, 'Event') || 'stouh-beirut'}`} className="mt-8 inline-block px-10 py-3 border rounded-full text-sm font-semibold transition-all sg-action-secondary">
                 View Project
               </Link>
             </div>
@@ -284,9 +284,9 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
       <section id="selected-work" className="py-16 md:py-40 overflow-hidden scroll-mt-24">
         <div className="max-w-7xl mx-auto px-6 reveal-up">
           <div className="mb-10 md:mb-16 text-center">
-            <p className="text-xs font-medium uppercase tracking-[0.24em] mb-4" style={{ color: 'var(--text-mute)' }}>Selected Work</p>
+            <p className="text-xs font-medium uppercase tracking-[0.24em] mb-4" style={{ color: 'var(--text-muted)' }}>Selected Work</p>
             <h2 className="text-3xl md:text-5xl font-serif italic mb-5">Choose a project</h2>
-            <p className="max-w-xl mx-auto text-sm font-light leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+            <p className="max-w-xl mx-auto text-sm font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               Select a project below. The full image set appears here in the same cinematic carousel.
             </p>
           </div>
@@ -299,26 +299,26 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
                   key={work.id}
                   type="button"
                   onClick={() => setSelectedWorkId(work.id)}
-                  className="rounded-2xl border px-4 py-5 text-left transition-all duration-300 hover:bg-white/[0.06]"
+                  className="rounded-2xl border px-4 py-5 text-left transition-all duration-300 sg-hover-surface"
                   style={{
-                    borderColor: isSelected ? 'rgba(255,255,255,0.32)' : 'var(--border)',
-                    backgroundColor: isSelected ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.02)',
+                    borderColor: isSelected ? 'var(--border-accent)' : 'var(--border-subtle)',
+                    backgroundColor: isSelected ? 'var(--brand-gold-soft)' : 'var(--surface-card-soft)',
                   }}
                   aria-pressed={isSelected}
                 >
-                  <span className="mb-3 block text-[10px] font-semibold uppercase tracking-[0.22em]" style={{ color: 'var(--text-mute)' }}>
+                  <span className="mb-3 block text-[10px] font-semibold uppercase tracking-[0.22em]" style={{ color: 'var(--text-muted)' }}>
                     {work.category}
                   </span>
-                  <span className="block text-sm font-semibold" style={{ color: 'var(--text)' }}>{work.label}</span>
+                  <span className="block text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{work.label}</span>
                 </button>
               );
             })}
           </div>
 
           <div className="mb-10 text-center">
-            <p className="text-xs font-medium uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--text-mute)' }}>{activeWork.category}</p>
+            <p className="text-xs font-medium uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--text-muted)' }}>{activeWork.category}</p>
             <h3 className="text-3xl font-serif mb-3 italic">{activeWork.title}</h3>
-            <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>{activeWork.description}</p>
+            <p className="text-xs font-light" style={{ color: 'var(--text-muted)' }}>{activeWork.description}</p>
           </div>
         </div>
 
@@ -333,13 +333,13 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
       </section>
 
       {/* Final CTA */}
-      <section className="py-16 md:py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--bg), var(--bg-card))', borderColor: 'var(--border)' }}>
+      <section className="py-16 md:py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--surface-page), var(--surface-card))', borderColor: 'var(--border-subtle)' }}>
         <div className="max-w-3xl mx-auto px-6 reveal-up">
           <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-10 italic leading-tight">Your Story Deserves a Cinematic Soul</h2>
-          <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+          <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
             Let&apos;s create films that feel alive ~ crafted with depth and precision.
           </p>
-          <Link href="/contact" className="px-14 py-4 border border-white/30 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
+          <Link href="/contact" className="px-14 py-4 border rounded-full text-sm font-semibold transition-all sg-action-secondary">
             Get in Touch
           </Link>
         </div>

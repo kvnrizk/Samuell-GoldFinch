@@ -200,6 +200,17 @@
     color: var(--action-primary-text);
   }
 
+  .sg-action-accent {
+    background: var(--text-accent);
+    border-color: var(--text-accent);
+    color: var(--text-inverse);
+  }
+
+  .sg-action-accent:hover {
+    background: color-mix(in srgb, var(--text-accent) 86%, var(--surface-inverse));
+    border-color: color-mix(in srgb, var(--text-accent) 86%, var(--surface-inverse));
+  }
+
   .sg-card {
     background: var(--surface-card-soft);
     border-color: var(--border-subtle);

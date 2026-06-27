@@ -80,8 +80,7 @@ function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] & { slug?: 
   return (
     <div
       ref={cardRef}
-      className="reveal-up aspect-[4/3] rounded-3xl overflow-hidden border relative group cursor-pointer shadow-2xl"
-      style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border)' }}
+      className="reveal-up aspect-[4/3] rounded-3xl overflow-hidden border relative group cursor-pointer sg-media-frame"
     >
       <div className="w-full h-full opacity-60 group-hover:opacity-100 transition-opacity duration-500">
         <VideoPlayer
@@ -95,18 +94,18 @@ function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] & { slug?: 
       </div>
       {/* Hover hint — fades out on hover */}
       <div className="absolute inset-0 flex flex-col items-center justify-center group-hover:opacity-0 transition-opacity duration-300 pointer-events-none">
-        <div className="w-14 h-14 rounded-full border flex items-center justify-center mb-3" style={{ borderColor: 'var(--border-hi)', backgroundColor: 'color-mix(in srgb, var(--bg) 50%, transparent)' }}>
+        <div className="w-14 h-14 rounded-full border flex items-center justify-center mb-3" style={{ borderColor: 'var(--border-strong)', backgroundColor: 'color-mix(in srgb, var(--surface-page) 50%, transparent)' }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="10 8 16 12 10 16" /></svg>
         </div>
-        <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>Hover to play</p>
+        <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Hover to play</p>
       </div>
       <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
-        <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>{clip.label}</p>
+        <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>{clip.label}</p>
         {clip.slug && (
           <Link
             href={`/kolasi/${clip.slug}`}
             className="text-[10px] font-medium px-3 py-1.5 rounded-full border opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            style={{ borderColor: 'var(--border-hi)', color: 'var(--text-dim)' }}
+            style={{ borderColor: 'var(--border-strong)', color: 'var(--text-secondary)' }}
           >
             View Event
           </Link>
@@ -122,7 +121,7 @@ function ShowcaseSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-24 reveal-up">
           <h2 className="text-4xl font-serif mb-4 italic">Kolasi Showcase</h2>
-          <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>Selected clips and promos from Kolasi nights.</p>
+          <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Selected clips and promos from Kolasi nights.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {showcaseClips.map((clip) => (
@@ -328,7 +327,7 @@ function ServicesAccordion() {
   }, [activeIdx]);
 
   return (
-    <section ref={sectionRef} className="py-20 border-y" style={{ borderColor: 'var(--border)' }}>
+    <section ref={sectionRef} className="py-20 border-y" style={{ borderColor: 'var(--border-subtle)' }}>
       <div className="max-w-5xl mx-auto px-6">
         <h2 className="text-4xl md:text-5xl font-serif text-center mb-16 reveal-up italic">Services &amp; Capabilities</h2>
         <div className="reveal-up">
@@ -337,7 +336,7 @@ function ServicesAccordion() {
               key={i}
               ref={(el) => { rowRefs.current[i] = el; }}
               className="border-b cursor-pointer group relative overflow-hidden"
-              style={{ borderColor: 'var(--border)' }}
+              style={{ borderColor: 'var(--border-subtle)' }}
               onClick={() => toggle(i)}
             >
               {/* Background image (absolute, behind content) */}
@@ -352,21 +351,21 @@ function ServicesAccordion() {
                 style={{ opacity: 0, transform: 'scale(1.15)' }}
                 sizes="(max-width: 768px) 100vw, 960px"
               />
-              <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to right, var(--bg) 30%, color-mix(in srgb, var(--bg) 70%, transparent))' }} />
+              <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(to right, var(--surface-page) 30%, color-mix(in srgb, var(--surface-page) 70%, transparent))' }} />
 
               {/* Collapsed header — always visible */}
               <div className="relative z-10 flex items-center justify-between py-7 md:py-8">
                 <div className="flex items-center gap-6 md:gap-8">
-                  <span className="text-2xl md:text-3xl font-serif italic transition-colors duration-300" style={{ color: activeIdx === i ? '#c8a96e' : 'var(--text-mute)' }}>
+                  <span className="text-2xl md:text-3xl font-serif italic transition-colors duration-300" style={{ color: activeIdx === i ? 'var(--text-accent)' : 'var(--text-muted)' }}>
                     {svc.num}
                   </span>
-                  <h3 className="text-lg md:text-xl font-serif transition-colors duration-300" style={{ color: activeIdx === i ? 'var(--text)' : 'var(--text-dim)' }}>
+                  <h3 className="text-lg md:text-xl font-serif transition-colors duration-300" style={{ color: activeIdx === i ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
                     {svc.title}
                   </h3>
                 </div>
                 <div
                   className="w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-300"
-                  style={{ borderColor: activeIdx === i ? '#c8a96e' : 'var(--border-hi)', transform: activeIdx === i ? 'rotate(45deg)' : 'rotate(0deg)' }}
+                  style={{ borderColor: activeIdx === i ? 'var(--text-accent)' : 'var(--border-strong)', transform: activeIdx === i ? 'rotate(45deg)' : 'rotate(0deg)' }}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <line x1="12" y1="5" x2="12" y2="19" />
@@ -382,7 +381,7 @@ function ServicesAccordion() {
                 style={{ height: 0 }}
               >
                 <div className="pb-10 pl-8 md:pl-16 pr-6 max-w-2xl">
-                  <p className="acc-reveal text-sm md:text-base leading-relaxed font-light mb-6" style={{ color: 'var(--text-dim)' }}>
+                  <p className="acc-reveal text-sm md:text-base leading-relaxed font-light mb-6" style={{ color: 'var(--text-secondary)' }}>
                     {svc.description}
                   </p>
                   <div className="acc-reveal flex flex-wrap gap-2">
@@ -390,7 +389,7 @@ function ServicesAccordion() {
                       <span
                         key={tag}
                         className="text-xs font-medium px-4 py-2 rounded-full border"
-                        style={{ borderColor: 'color-mix(in srgb, #c8a96e 30%, transparent)', color: '#c8a96e' }}
+                        style={{ borderColor: 'color-mix(in srgb, var(--text-accent) 30%, transparent)', color: 'var(--text-accent)' }}
                       >
                         {tag}
                       </span>
@@ -411,7 +410,7 @@ function MarqueeGallery({ row1, row2 }: { row1: string[]; row2: string[] }) {
     <section className="py-20 overflow-hidden">
       <div className="text-center mb-16 reveal-up px-6">
         <h2 className="text-4xl font-serif italic mb-4">Kolasi Gallery</h2>
-        <p className="text-xs font-medium" style={{ color: 'var(--text-mute)' }}>
+        <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
           A glimpse into our nights ~ sound, light and emotion captured in motion.
         </p>
       </div>
@@ -444,9 +443,9 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} className="pt-20" style={{ backgroundColor: 'var(--bg)' }}>
+    <div ref={containerRef} className="pt-20" style={{ backgroundColor: 'var(--surface-page)' }}>
       {/* Hero */}
-      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--bg)' }}>
+      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="absolute inset-0">
           <VideoPlayer
             muxPlaybackId="RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo"
@@ -458,16 +457,16 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
             className="opacity-60 scale-105"
           />
         </div>
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--bg) 60%, transparent), transparent, var(--bg))' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--surface-page) 60%, transparent), transparent, var(--surface-page))' }} />
         <div className="relative z-10 text-center px-6 max-w-5xl">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
             Creative Booking <br />
             <span className="italic">and Talent Agency</span>
           </h1>
-          <p className="text-xs md:text-sm font-medium mb-10 reveal-up" style={{ color: 'var(--text-mute)' }}>
+          <p className="text-xs md:text-sm font-medium mb-10 reveal-up" style={{ color: 'var(--text-muted)' }}>
             DJ &amp; Live Show Booking &bull; Event Curation &bull; Content Creation &bull; Production Services
           </p>
-          <a href="#services" className="px-10 py-4 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all reveal-up backdrop-blur-sm inline-block">
+          <a href="#services" className="px-10 py-4 border rounded-full text-sm font-semibold transition-all reveal-up backdrop-blur-sm inline-block sg-action-secondary">
             Explore Services
           </a>
         </div>
@@ -480,14 +479,14 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
             Curating Nights <br />
             <span className="not-italic">That Move People</span>
           </h2>
-          <div className="space-y-5 text-sm md:text-base leading-[1.9] font-light" style={{ color: 'var(--text-dim)' }}>
+          <div className="space-y-5 text-sm md:text-base leading-[1.9] font-light" style={{ color: 'var(--text-secondary)' }}>
             <p>At Kolasi, we craft your brand&apos;s visual and audio identity through artistic direction, DJ bookings, live shows with top-tier singers, and PR strategy.</p>
             <p>Our agency creates events and collaborates with renowned curators to deliver unforgettable experiences.</p>
-            <p>With a network of over <span className="font-medium" style={{ color: 'var(--text)' }}>50 international DJs</span> and partnerships across Europe, the Middle East, and South America, Kolasi bridges music, performance, and innovation to elevate every moment.</p>
+            <p>With a network of over <span className="font-medium" style={{ color: 'var(--text-primary)' }}>50 international DJs</span> and partnerships across Europe, the Middle East, and South America, Kolasi bridges music, performance, and innovation to elevate every moment.</p>
           </div>
         </div>
         <div className="reveal-up">
-          <div className="aspect-[4/3] rounded-[2.5rem] border shadow-2xl relative overflow-hidden group" style={{ borderColor: 'var(--border)' }}>
+          <div className="aspect-[4/3] rounded-[2.5rem] border relative overflow-hidden group sg-media-frame">
             <Image
               src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg"
               alt="Kolasi — behind the scenes"
@@ -497,21 +496,21 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
               className="object-cover group-hover:scale-105 transition-transform duration-700"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, var(--bg), transparent)' }} />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--brand-dark) 88%, transparent), transparent)' }} />
             <div className="absolute bottom-8 left-8 z-10">
-              <p className="text-xl font-serif tracking-[0.2em] uppercase" style={{ color: 'var(--text)' }}>Kolasi</p>
-              <p className="text-[10px] font-light mt-1" style={{ color: 'var(--text-dim)' }}>Agency</p>
+              <p className="text-xl font-serif tracking-[0.2em] uppercase text-white">Kolasi</p>
+              <p className="text-[10px] font-light mt-1 text-white/60">Agency</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Expertise */}
-      <section id="services" className="py-20 border-y" style={{ backgroundColor: 'var(--bg)', borderColor: 'var(--border)' }}>
+      <section id="services" className="py-20 border-y" style={{ backgroundColor: 'var(--surface-page)', borderColor: 'var(--border-subtle)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12 md:mb-24 reveal-up">
             <h2 className="text-4xl md:text-6xl font-serif italic mb-4">Our Expertise</h2>
-            <div className="w-20 h-[1px] mx-auto" style={{ backgroundColor: 'var(--border-hi)' }} />
+            <div className="w-20 h-[1px] mx-auto" style={{ backgroundColor: 'var(--border-strong)' }} />
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {expertise.map((exp, i) => (
@@ -525,13 +524,13 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
                   className="absolute inset-0 object-cover group-hover:scale-110 transition-transform duration-700"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, var(--bg) 10%, color-mix(in srgb, var(--bg) 60%, transparent) 50%, transparent)' }} />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--brand-dark) 92%, transparent) 10%, color-mix(in srgb, var(--brand-dark) 60%, transparent) 50%, transparent)' }} />
                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 z-10">
-                  <div className="mb-4 p-3 rounded-full inline-flex" style={{ backgroundColor: 'color-mix(in srgb, var(--bg) 60%, transparent)', color: 'var(--text)' }}>
+                  <div className="mb-4 p-3 rounded-full inline-flex" style={{ backgroundColor: 'color-mix(in srgb, var(--brand-dark) 60%, transparent)', color: 'var(--brand-ivory)' }}>
                     {getIcon(exp.icon)}
                   </div>
-                  <h3 className="text-xl font-serif mb-3" style={{ color: 'var(--text)' }}>{exp.title}</h3>
-                  <p className="text-sm leading-relaxed font-light" style={{ color: 'var(--text-dim)' }}>{exp.description}</p>
+                  <h3 className="text-xl font-serif mb-3 text-white">{exp.title}</h3>
+                  <p className="text-sm leading-relaxed font-light text-white/65">{exp.description}</p>
                 </div>
               </div>
             ))}
@@ -552,21 +551,21 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
       <MarqueeGallery row1={row1} row2={row2} />
 
       {/* For Venue Owners Banner */}
-      <section className="py-20 reveal-up" style={{ backgroundColor: 'var(--bg)' }}>
+      <section className="py-20 reveal-up" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="max-w-4xl mx-auto px-6">
-          <div className="rounded-2xl border border-[#c8a96e]/20 bg-gradient-to-r from-[#c8a96e]/[0.05] to-transparent p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
+          <div className="rounded-2xl border p-8 md:p-12 flex flex-col md:flex-row items-center gap-8" style={{ borderColor: 'var(--border-accent)', background: 'linear-gradient(to right, var(--brand-gold-soft), transparent)' }}>
             <div className="flex-1">
-              <p className="text-xs font-medium text-[#c8a96e] mb-2">For Venue Owners</p>
-              <h3 className="font-serif text-2xl text-stone-100 font-semibold mb-2">
+              <p className="text-xs font-medium mb-2" style={{ color: 'var(--text-accent)' }}>For Venue Owners</p>
+              <h3 className="font-serif text-2xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
                 Looking for weekly programming?
               </h3>
-              <p className="text-sm text-zinc-500">
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                 We offer full-service venue programming — DJ booking, content production, and brand strategy tailored to your crowd.
               </p>
             </div>
             <Link
               href="/venues"
-              className="bg-[#c8a96e] text-[#09090b] font-semibold text-sm px-8 py-3 rounded-lg hover:bg-[#d4b87a] active:scale-[0.98] transition-all whitespace-nowrap"
+              className="border font-semibold text-sm px-8 py-3 rounded-lg active:scale-[0.98] transition-all whitespace-nowrap sg-action-accent"
             >
               Explore Venue Packages
             </Link>
@@ -575,13 +574,13 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
       </section>
 
       {/* CTA */}
-      <section className="py-16 md:py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--bg), var(--bg-card))', borderColor: 'var(--border)' }}>
+      <section className="py-16 md:py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--surface-page), var(--surface-card))', borderColor: 'var(--border-subtle)' }}>
         <div className="max-w-3xl mx-auto px-6 reveal-up">
           <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-10 italic">Let&apos;s Create the Night</h2>
-          <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+          <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
             From concept to performance, Kolasi curates experiences that transcend nightlife.
           </p>
-          <Link href="/contact" className="px-14 py-4 border border-white/30 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all">
+          <Link href="/contact" className="px-14 py-4 border rounded-full text-sm font-semibold transition-all sg-action-secondary">
             Contact Kolasi
           </Link>
         </div>

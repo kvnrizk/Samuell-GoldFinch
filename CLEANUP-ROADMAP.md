@@ -339,3 +339,11 @@ Add entries here after each phase.
 - Preserved homepage layout, section order, carousel behavior, routes, copy, and media selection.
 - Left white text inside dark image/video overlays where it is intentional for legibility.
 - Next step: continue token migration on `/blaze` and `/kolasi` before removing broad light-mode compatibility overrides.
+
+### 2026-06-27 - Phase 1E Blaze and Kolasi Token Migration
+
+- Added `sg-action-accent` for gold-accent CTAs without hardcoded color literals.
+- Migrated `/blaze` and `/kolasi` page clients to semantic surfaces, text states, borders, media frames, and shared action utilities.
+- Preserved page structure, copy, routes, section order, media choices, carousels, accordions, animations, and CTA destinations.
+- Left white overlay text/marks only where they sit directly on dark media imagery.
+- Next step: migrate `/venues`, `/quote`, and `/contact` before broad light-mode override removal.
