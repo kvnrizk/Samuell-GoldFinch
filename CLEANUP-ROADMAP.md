@@ -331,3 +331,11 @@ Add entries here after each phase.
 - Switched shell surfaces, borders, text states, active nav states, dropdown hover states, and theme toggle accents to semantic tokens.
 - Kept navigation structure, spacing, layout, routes, and behavior unchanged.
 - Next step: migrate landing-page section primitives and CTAs to the same token layer.
+
+### 2026-06-27 - Phase 1D Landing Primitives Token Migration
+
+- Added shared action/card/media utilities: `sg-action-primary`, `sg-action-secondary`, `sg-group-action-primary`, `sg-card`, and `sg-media-frame`.
+- Migrated homepage CTAs, cards, counters, media frames, section backgrounds, and non-media text states to semantic tokens.
+- Preserved homepage layout, section order, carousel behavior, routes, copy, and media selection.
+- Left white text inside dark image/video overlays where it is intentional for legibility.
+- Next step: continue token migration on `/blaze` and `/kolasi` before removing broad light-mode compatibility overrides.

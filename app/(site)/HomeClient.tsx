@@ -174,11 +174,11 @@ function useRevealCounter(target: number) {
 function CounterStat({ value, label }: { value: number; label: string }) {
   const counter = useRevealCounter(value);
   return (
-    <div className="p-4 border-l" style={{ borderColor: 'var(--border)' }}>
-      <p className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--text)' }}>
+    <div className="p-4 border-l" style={{ borderColor: 'var(--border-subtle)' }}>
+      <p className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--text-primary)' }}>
         <span ref={counter.ref}>{counter.value}</span>+
       </p>
-      <p className="ui-caption mt-1" style={{ color: 'var(--text-dim)' }}>{label}</p>
+      <p className="ui-caption mt-1" style={{ color: 'var(--text-secondary)' }}>{label}</p>
     </div>
   );
 }
@@ -197,15 +197,21 @@ function ReelModal({ onClose }: { onClose: () => void }) {
   }, [onClose]);
 
   return createPortal(
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/95 p-4 md:p-10" role="dialog" aria-modal="true" aria-label="Signature Wedding Reel">
+    <div
+      className="fixed inset-0 z-[70] flex items-center justify-center p-4 md:p-10"
+      style={{ backgroundColor: 'color-mix(in srgb, var(--surface-page) 95%, black)' }}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Signature Wedding Reel"
+    >
       <button
         type="button"
         onClick={onClose}
-        className="absolute right-5 top-5 z-10 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold text-white backdrop-blur-md transition-colors hover:bg-white hover:text-black"
+        className="absolute right-5 top-5 z-10 rounded-full border px-4 py-2 text-xs font-semibold backdrop-blur-md transition-colors sg-action-secondary"
       >
         Close
       </button>
-      <div className="relative aspect-video w-full max-w-5xl overflow-hidden rounded-2xl border border-white/10 bg-black">
+      <div className="relative aspect-video w-full max-w-5xl overflow-hidden rounded-2xl border sg-media-frame">
         <VideoPlayer
           muxPlaybackId="ABVHVsPKRIgCyqWD7JOSHSxvR00HVt800oBerw5sQDk00A"
           poster={media.weddings[0]}
@@ -311,7 +317,7 @@ function WorkOrbitCarousel({
           >
             <div
               className="relative aspect-[4/5] w-[240px] overflow-hidden rounded-2xl border shadow-2xl md:w-[450px]"
-              style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border)' }}
+              style={{ backgroundColor: 'var(--surface-card)', borderColor: 'var(--border-subtle)' }}
             >
               <Image
                 src={item.image}
@@ -322,7 +328,7 @@ function WorkOrbitCarousel({
                 sizes="(max-width: 768px) 240px, 450px"
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 flex flex-col justify-end p-7 md:p-8" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--bg) 84%, transparent), transparent, transparent)' }}>
+              <div className="absolute inset-0 flex flex-col justify-end p-7 md:p-8" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--brand-dark) 84%, transparent), transparent, transparent)' }}>
                 <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/50">
                   {item.category}
                 </p>
@@ -357,7 +363,7 @@ function WorkOrbitCarousel({
         <button
           type="button"
           onClick={prev}
-          className="rounded-full border border-white/10 px-3 py-2 text-xs text-white/60 transition-colors hover:bg-white hover:text-black"
+          className="rounded-full border px-3 py-2 text-xs transition-colors sg-action-secondary"
           aria-label="Previous selected work"
         >
           Prev
@@ -376,7 +382,7 @@ function WorkOrbitCarousel({
         <button
           type="button"
           onClick={next}
-          className="rounded-full border border-white/10 px-3 py-2 text-xs text-white/60 transition-colors hover:bg-white hover:text-black"
+          className="rounded-full border px-3 py-2 text-xs transition-colors sg-action-secondary"
           aria-label="Next selected work"
         >
           Next
@@ -458,30 +464,30 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
             mode="hero"
             className="opacity-40"
           />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent, var(--bg))' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--surface-page), transparent, var(--surface-page))' }} />
         </div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <p className="hero-reveal ui-kicker font-medium" style={{ color: 'var(--text-mute)' }}>
+            <p className="hero-reveal ui-kicker font-medium" style={{ color: 'var(--text-muted)' }}>
               {t.eyebrow}
             </p>
             <h1 className="hero-reveal text-3xl sm:text-4xl md:text-5xl font-serif leading-tight tracking-tight max-w-4xl">
               {t.title}
             </h1>
-            <p className="hero-reveal ui-body-small md:ui-body max-w-md font-light" style={{ color: 'var(--text-dim)' }}>
+            <p className="hero-reveal ui-body-small md:ui-body max-w-md font-light" style={{ color: 'var(--text-secondary)' }}>
               {t.intro}
             </p>
             <div className="hero-reveal flex flex-wrap gap-4 pt-4">
               <Link
                 href="/blaze"
-                className="px-8 py-3 border border-white/20 text-sm font-semibold hover:bg-white hover:text-black transition-all rounded-sm backdrop-blur-md"
+                className="px-8 py-3 border text-sm font-semibold transition-all rounded-sm backdrop-blur-md sg-action-secondary"
               >
                 {t.ctaBlaze}
               </Link>
               <Link
                 href="/kolasi"
-                className="px-8 py-3 bg-white/5 border border-white/10 text-sm font-semibold hover:bg-white hover:text-black transition-all rounded-sm backdrop-blur-md"
+                className="px-8 py-3 border text-sm font-semibold transition-all rounded-sm backdrop-blur-md sg-action-secondary"
               >
                 {t.ctaKolasi}
               </Link>
@@ -492,7 +498,8 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
             <button
               type="button"
               onClick={() => setShowReel(true)}
-              className="group relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-2xl text-left"
+              className="group relative w-full aspect-[4/3] rounded-2xl overflow-hidden border text-left"
+              style={{ borderColor: 'var(--media-border)', boxShadow: 'var(--media-shadow)' }}
               aria-label="Play Signature Wedding Reel"
             >
               <Image
@@ -505,15 +512,15 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
                 className="object-cover group-hover:scale-105 transition-all duration-700"
                 priority
               />
-              <div className="absolute inset-0 flex flex-col justify-end p-10" style={{ background: 'linear-gradient(to top, var(--bg), transparent, transparent)' }}>
-                <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-white/10 text-white backdrop-blur-md transition-all group-hover:bg-white group-hover:text-black">
+              <div className="absolute inset-0 flex flex-col justify-end p-10" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--brand-dark) 92%, transparent), transparent, transparent)' }}>
+                <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-full border backdrop-blur-md transition-all sg-action-secondary sg-group-action-primary">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <polygon points="8 5 19 12 8 19" />
                   </svg>
                 </div>
-                <p className="text-xs font-medium mb-2" style={{ color: 'var(--text-mute)' }}>Blaze Motion</p>
+                <p className="text-xs font-medium mb-2 text-white/60">Blaze Motion</p>
                 <h3 className="text-xl font-serif italic mb-1">Signature Wedding Reel</h3>
-                <p className="text-xs font-light border-t border-white/10 pt-4 mt-4" style={{ color: 'var(--text-mute)' }}>
+                <p className="text-xs font-light border-t border-white/10 pt-4 mt-4 text-white/60">
                   Paris &bull; Cinematic Weddings
                 </p>
               </div>
@@ -522,32 +529,32 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
         </div>
 
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-30 animate-bounce">
-          <div className="w-[1px] h-10 bg-white" />
+          <div className="w-[1px] h-10" style={{ backgroundColor: 'var(--text-primary)' }} />
         </div>
       </section>
 
-      <section className="py-16 md:py-40" style={{ backgroundColor: 'var(--bg)' }}>
+      <section className="py-16 md:py-40" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-10 md:gap-20 items-center reveal-section">
             <div className="space-y-10">
-              <p className="ui-kicker font-medium" style={{ color: 'var(--text-mute)' }}>{t.blazeKicker}</p>
+              <p className="ui-kicker font-medium" style={{ color: 'var(--text-muted)' }}>{t.blazeKicker}</p>
               <h2 className="text-2xl md:text-4xl font-serif leading-tight italic max-w-xl">
                 {t.blazeTitle[0]} {t.blazeTitle[1]} <span className="not-italic">{t.blazeTitle[2]}</span>
               </h2>
-              <p className="ui-body-small md:ui-body font-light max-w-sm" style={{ color: 'var(--text-dim)' }}>
+              <p className="ui-body-small md:ui-body font-light max-w-sm" style={{ color: 'var(--text-secondary)' }}>
                 {t.blazeText}
               </p>
               <div className="grid grid-cols-2 gap-8 pt-6">
-                <div className="space-y-2 border-l border-white/10 pl-6">
+                <div className="space-y-2 border-l pl-6" style={{ borderColor: 'var(--border-subtle)' }}>
                   <p className="text-xs font-semibold">Wedding films</p>
-                  <p className="text-xs font-light leading-relaxed" style={{ color: 'var(--text-dim)' }}>Crafted with timeless elegance and emotional weight.</p>
+                  <p className="text-xs font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>Crafted with timeless elegance and emotional weight.</p>
                 </div>
-                <div className="space-y-2 border-l border-white/10 pl-6">
+                <div className="space-y-2 border-l pl-6" style={{ borderColor: 'var(--border-subtle)' }}>
                   <p className="text-xs font-semibold">Speakeasy Series</p>
-                  <p className="text-xs font-light leading-relaxed" style={{ color: 'var(--text-dim)' }}>Capturing warmth, shadow, and nocturnal energy.</p>
+                  <p className="text-xs font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>Capturing warmth, shadow, and nocturnal energy.</p>
                 </div>
               </div>
-              <Link href="/blaze" className="inline-block px-12 py-4 border border-white/20 text-sm font-semibold hover:bg-white hover:text-black transition-all">
+              <Link href="/blaze" className="inline-block px-12 py-4 border text-sm font-semibold transition-all sg-action-secondary">
                 {t.blazeCta}
               </Link>
             </div>
@@ -562,42 +569,42 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
         </div>
       </section>
 
-      <section className="py-16 md:py-40 overflow-hidden" style={{ backgroundColor: 'var(--bg)' }}>
+      <section className="py-16 md:py-40 overflow-hidden" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 reveal-section">
-            <div className="bg-neutral-900/40 p-6 md:p-12 rounded-3xl border border-white/5 backdrop-blur-xl">
-              <p className="ui-kicker font-medium mb-8" style={{ color: 'var(--text-mute)' }}>{t.kolasiKicker}</p>
+            <div className="p-6 md:p-12 rounded-3xl border backdrop-blur-xl sg-card">
+              <p className="ui-kicker font-medium mb-8" style={{ color: 'var(--text-muted)' }}>{t.kolasiKicker}</p>
               <h2 className="text-3xl md:text-4xl font-serif mb-8 leading-tight italic">
                 {t.kolasiTitle}
               </h2>
-              <p className="ui-body-small md:ui-body font-light mb-10" style={{ color: 'var(--text-dim)' }}>
+              <p className="ui-body-small md:ui-body font-light mb-10" style={{ color: 'var(--text-secondary)' }}>
                 {t.kolasiText}
               </p>
               <ul className="space-y-4 mb-12">
                 {['DJ booking & live performers worldwide', 'Tailor-made events with artistic direction and PR', 'Cinematic coverage and post-event media', 'Sound & Light Rental'].map((item, i) => (
-                  <li key={i} className="text-xs flex items-center" style={{ color: 'var(--text)' }}>
-                    <span className="w-1 h-1 rounded-full mr-4 flex-shrink-0" style={{ backgroundColor: 'var(--text-mute)' }} /> {item}
+                  <li key={i} className="text-xs flex items-center" style={{ color: 'var(--text-primary)' }}>
+                    <span className="w-1 h-1 rounded-full mr-4 flex-shrink-0" style={{ backgroundColor: 'var(--text-muted)' }} /> {item}
                   </li>
                 ))}
               </ul>
               <div className="flex space-x-4">
-                <Link href="/kolasi" className="px-8 py-3 border border-white/20 text-sm font-semibold hover:bg-white hover:text-black transition-all">
+                <Link href="/kolasi" className="px-8 py-3 border text-sm font-semibold transition-all sg-action-secondary">
                   {t.kolasiCta}
                 </Link>
-                <Link href="/kolasi#services" className="px-8 py-3 border border-white/10 bg-white/5 text-sm font-semibold hover:bg-white hover:text-black transition-all">
+                <Link href="/kolasi#services" className="px-8 py-3 border text-sm font-semibold transition-all sg-action-secondary">
                   {t.expertiseCta}
                 </Link>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-6">
-              <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl relative">
+              <div className="aspect-[3/4] rounded-2xl overflow-hidden border relative sg-media-frame">
                 <Image src={media.speakeasy[1]} alt="Kolasi event atmosphere" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
               </div>
-              <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl relative">
+              <div className="aspect-[3/4] rounded-2xl overflow-hidden border relative sg-media-frame">
                 <Image src={media.artists[0]} alt="Kolasi artist direction" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
               </div>
-              <div className="col-span-2 aspect-[16/9] rounded-2xl overflow-hidden bg-neutral-900 border border-white/5 shadow-2xl">
+              <div className="col-span-2 aspect-[16/9] rounded-2xl overflow-hidden border sg-media-frame">
                 <VideoPlayer muxPlaybackId="bzlHPIIz3L68lqg6fmMTH02GsYL1AeZnT6ewRQIlokaE" autoPlay loop muted mode="hero" />
               </div>
             </div>
@@ -605,28 +612,28 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
         </div>
       </section>
 
-      <section className="py-16 reveal-section" style={{ backgroundColor: 'var(--bg)' }}>
+      <section className="py-16 reveal-section" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="max-w-5xl mx-auto px-6">
-          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.025] p-6 md:p-16">
+          <div className="relative overflow-hidden rounded-3xl border p-6 md:p-16 sg-card">
             <div className="grid md:grid-cols-2 gap-10 items-center">
               <div>
-                <p className="ui-kicker mb-5" style={{ color: 'var(--text-mute)' }}>{t.venuesKicker}</p>
-                <h2 className="font-serif text-2xl md:text-3xl mb-4" style={{ color: 'var(--text)' }}>
+                <p className="ui-kicker mb-5" style={{ color: 'var(--text-muted)' }}>{t.venuesKicker}</p>
+                <h2 className="font-serif text-2xl md:text-3xl mb-4" style={{ color: 'var(--text-primary)' }}>
                   {t.venuesTitle}
                 </h2>
-                <p className="ui-body-small md:ui-body mb-8" style={{ color: 'var(--text-dim)' }}>
+                <p className="ui-body-small md:ui-body mb-8" style={{ color: 'var(--text-secondary)' }}>
                   {t.venuesText}
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Link
                     href={localizedPath('/venues', locale)}
-                    className="border border-white/20 bg-white text-[#09090b] font-semibold text-sm px-8 py-3 rounded-lg hover:bg-white/90 active:scale-[0.98] transition-all"
+                    className="border font-semibold text-sm px-8 py-3 rounded-lg active:scale-[0.98] transition-all sg-action-primary"
                   >
                     {t.learnMore}
                   </Link>
                   <Link
                     href={`${localizedPath('/venues', locale)}#venue-form`}
-                    className="border border-white/15 text-white font-semibold text-sm px-8 py-3 rounded-lg hover:bg-white/[0.08] transition-all"
+                    className="border font-semibold text-sm px-8 py-3 rounded-lg transition-all sg-action-secondary"
                   >
                     {t.applyNow}
                   </Link>
@@ -641,26 +648,26 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
         </div>
       </section>
 
-      <section className="py-20" style={{ backgroundColor: 'var(--bg)' }}>
+      <section className="py-20" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="max-w-5xl mx-auto px-6 text-center">
           <div className="reveal-section">
-            <p className="ui-kicker font-medium mb-8" style={{ color: 'var(--text-mute)' }}>{t.trustedKicker}</p>
+            <p className="ui-kicker font-medium mb-8" style={{ color: 'var(--text-muted)' }}>{t.trustedKicker}</p>
             <h2 className="text-2xl md:text-3xl font-serif italic mb-10 md:mb-20">
               {t.trustedTitle}
             </h2>
 
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               {collaborations.map((c) => (
-                <div key={c.name} className="group flex flex-col items-center justify-center p-4 md:p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04] transition-all duration-500">
+                <div key={c.name} className="group flex flex-col items-center justify-center p-4 md:p-8 rounded-2xl border transition-all duration-500 sg-card sg-hover-surface">
                   <div className="h-12 flex items-center justify-center mb-5">
                     {c.logo ? (
                       <Image src={c.logo} alt={c.name} width={120} height={40} placeholder="blur" blurDataURL={BLUR_DATA_URL} className="h-10 w-auto object-contain mix-blend-screen opacity-60 group-hover:opacity-100 transition-opacity duration-500" sizes="120px" />
                     ) : (
-                      <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/45 group-hover:text-white/70 transition-colors duration-500">{c.name}</span>
+                      <span className="text-xs font-semibold uppercase tracking-[0.18em] transition-colors duration-500" style={{ color: 'var(--text-secondary)' }}>{c.name}</span>
                     )}
                   </div>
-                  {c.logo && <p className="text-xs font-semibold mb-1 text-white/70 group-hover:text-white transition-colors">{c.name}</p>}
-                  <p className="ui-caption font-light transition-colors" style={{ color: 'var(--text-mute)' }}>{c.location}</p>
+                  {c.logo && <p className="text-xs font-semibold mb-1 transition-colors" style={{ color: 'var(--text-secondary)' }}>{c.name}</p>}
+                  <p className="ui-caption font-light transition-colors" style={{ color: 'var(--text-muted)' }}>{c.location}</p>
                 </div>
               ))}
             </div>
@@ -668,23 +675,22 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
         </div>
       </section>
 
-      <section className="py-20" style={{ backgroundColor: 'var(--bg)' }}>
+      <section className="py-20" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="max-w-4xl mx-auto px-6 text-center reveal-section">
           <h2 className="text-2xl md:text-4xl font-serif mb-10 italic">{t.finalTitle}</h2>
-          <p className="ui-body-small md:ui-body font-light mb-12" style={{ color: 'var(--text-dim)' }}>
+          <p className="ui-body-small md:ui-body font-light mb-12" style={{ color: 'var(--text-secondary)' }}>
             {t.finalText}
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href={localizedPath('/quote', locale)}
-              className="inline-block px-12 py-4 rounded-full text-sm font-semibold transition-all"
-              style={{ border: '1px solid var(--border-hi)', color: 'var(--text)' }}
+              className="inline-block px-12 py-4 rounded-full border text-sm font-semibold transition-all sg-action-secondary"
             >
               {t.quoteCta}
             </Link>
             <Link
               href={localizedPath('/venues', locale)}
-              className="inline-block px-12 py-4 bg-white/[0.04] border border-white/15 rounded-full text-sm font-semibold text-white hover:bg-white hover:text-[#09090b] transition-all"
+              className="inline-block px-12 py-4 border rounded-full text-sm font-semibold transition-all sg-action-secondary"
             >
               {t.venueOwnerCta}
             </Link>

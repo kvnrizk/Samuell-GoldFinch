@@ -172,6 +172,45 @@
     background: var(--surface-card-soft);
   }
 
+  .sg-action-primary {
+    background: var(--action-primary-bg);
+    border-color: var(--action-primary-border);
+    color: var(--action-primary-text);
+  }
+
+  .sg-action-primary:hover {
+    background: color-mix(in srgb, var(--action-primary-bg) 90%, transparent);
+  }
+
+  .sg-action-secondary {
+    background: var(--action-secondary-bg);
+    border-color: var(--action-secondary-border);
+    color: var(--action-secondary-text);
+  }
+
+  .sg-action-secondary:hover {
+    background: var(--action-primary-bg);
+    border-color: var(--action-primary-border);
+    color: var(--action-primary-text);
+  }
+
+  .group:hover .sg-group-action-primary {
+    background: var(--action-primary-bg);
+    border-color: var(--action-primary-border);
+    color: var(--action-primary-text);
+  }
+
+  .sg-card {
+    background: var(--surface-card-soft);
+    border-color: var(--border-subtle);
+  }
+
+  .sg-media-frame {
+    background: var(--surface-card);
+    border-color: var(--media-border);
+    box-shadow: var(--media-shadow);
+  }
+
   /* Public-site typography normalization (excludes Payload admin) */
   .site-scope :is(h1, h2, h3, h4, h5, h6) {
     font-weight: 500;

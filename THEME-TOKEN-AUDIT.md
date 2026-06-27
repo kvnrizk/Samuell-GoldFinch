@@ -241,3 +241,20 @@ Remaining Step 2 work:
 
 - Review shared CTA/button components outside the shell.
 - Keep migrating only shared primitives before page-specific polish.
+
+### 2026-06-27 - Step 3 Started
+
+The landing page now uses the semantic primitives for non-media shell styling.
+
+What changed:
+
+- Added shared action classes for primary and secondary CTAs.
+- Added shared card and media-frame classes.
+- Migrated homepage section surfaces, CTA buttons, venue counter cards, collaboration cards, Kolasi panel, and media frame borders/shadows.
+- Replaced remaining homepage compatibility aliases such as `--bg`, `--text`, `--text-dim`, `--text-mute`, and `--border` where they controlled non-media UI.
+
+Intentional exceptions:
+
+- White text remains inside dark image/video overlays.
+- White carousel dots remain because they sit on media and communicate active state.
+- Broad light-mode overrides still remain until `/blaze`, `/kolasi`, `/venues`, `/quote`, and `/contact` are migrated.
