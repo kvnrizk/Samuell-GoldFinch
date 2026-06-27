@@ -2,6 +2,10 @@
 
 Next.js 15 + Payload CMS 3 + MongoDB Atlas + Tailwind CSS 4 + GSAP
 
+## Current Cleanup Roadmap
+
+Use [`CLEANUP-ROADMAP.md`](./CLEANUP-ROADMAP.md) as the source of truth for the next frontend, CMS, and backend simplification phases. It defines the protected core routes, cleanup rules, phase order, and verification gates.
+
 ## Tech Stack
 
 | Layer | Technology |

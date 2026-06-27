@@ -1,4 +1,6 @@
-﻿# Frontend Polish Checklist (Post-Reset)
+# Frontend Polish Checklist (Post-Reset)
+
+Master cleanup plan: [`CLEANUP-ROADMAP.md`](./CLEANUP-ROADMAP.md).
 
 Use this after runtime + admin verification is stable.
 
