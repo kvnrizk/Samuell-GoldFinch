@@ -323,3 +323,11 @@ Add entries here after each phase.
 - Left broad light-mode override rules in place until components are migrated intentionally.
 - No component markup, routes, backend wiring, or visual layout was changed in this step.
 - Next step: migrate the shared shell/header/footer and CTA treatments before touching page-level sections.
+
+### 2026-06-27 - Phase 1C Shared Shell Token Migration
+
+- Migrated `Header`, `Footer`, and the `SiteShell` skip link away from repeated hardcoded gold/dark color literals.
+- Added minimal shared utilities: `sg-skip-link`, `sg-hover-accent`, `sg-group-hover-accent`, and `sg-hover-surface`.
+- Switched shell surfaces, borders, text states, active nav states, dropdown hover states, and theme toggle accents to semantic tokens.
+- Kept navigation structure, spacing, layout, routes, and behavior unchanged.
+- Next step: migrate landing-page section primitives and CTAs to the same token layer.

@@ -158,6 +158,20 @@
     line-height: 1.2;
   }
 
+  .sg-skip-link {
+    background: var(--action-primary-bg);
+    color: var(--action-primary-text);
+  }
+
+  .sg-hover-accent:hover,
+  .group:hover .sg-group-hover-accent {
+    color: var(--text-accent);
+  }
+
+  .sg-hover-surface:hover {
+    background: var(--surface-card-soft);
+  }
+
   /* Public-site typography normalization (excludes Payload admin) */
   .site-scope :is(h1, h2, h3, h4, h5, h6) {
     font-weight: 500;

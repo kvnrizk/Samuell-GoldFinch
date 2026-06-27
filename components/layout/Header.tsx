@@ -135,7 +135,7 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
           ? 'backdrop-blur-xl py-3 md:py-5 border-b'
           : 'bg-transparent py-4 md:py-10'
       }`}
-      style={isScrolled ? { backgroundColor: 'color-mix(in srgb, var(--bg) 90%, transparent)', borderColor: 'var(--border)' } : undefined}
+      style={isScrolled ? { backgroundColor: 'color-mix(in srgb, var(--surface-page) 90%, transparent)', borderColor: 'var(--border-subtle)' } : undefined}
     >
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <Link
@@ -143,7 +143,7 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
           className="text-lg font-serif tracking-tighter uppercase font-medium group"
         >
           Samuell{' '}
-          <span className="transition-colors" style={{ color: 'var(--text-dim)' }}>
+          <span className="transition-colors" style={{ color: 'var(--text-secondary)' }}>
             Goldfinch
           </span>
         </Link>
@@ -157,8 +157,8 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
               className="ui-micro font-medium transition-colors"
               style={{
                 color: link.accent
-                  ? pathname === link.path ? '#c8a96e' : 'rgba(200,169,110,0.7)'
-                  : pathname === link.path ? 'var(--text)' : 'var(--text-dim)',
+                  ? pathname === link.path ? 'var(--text-accent)' : 'color-mix(in srgb, var(--text-accent) 70%, transparent)'
+                  : pathname === link.path ? 'var(--text-primary)' : 'var(--text-secondary)',
               }}
             >
               {link.name}
@@ -166,12 +166,12 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
           ))}
 
           {/* More dropdown trigger */}
-          <div className="h-4 w-[1px]" style={{ backgroundColor: 'var(--border)' }} />
+          <div className="h-4 w-[1px]" style={{ backgroundColor: 'var(--border-subtle)' }} />
           <div ref={moreRef} className="relative">
             <button
               onClick={() => setMoreOpen(!moreOpen)}
               className="ui-micro font-medium transition-colors flex items-center gap-1.5"
-              style={{ color: isMoreActive ? 'var(--text)' : 'var(--text-dim)' }}
+              style={{ color: isMoreActive ? 'var(--text-primary)' : 'var(--text-secondary)' }}
               aria-expanded={moreOpen}
             >
               {copy.more}
@@ -200,14 +200,14 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
               <div
                 className="rounded-2xl p-[1px]"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(200,169,110,0.3), rgba(200,169,110,0.05) 50%, rgba(200,169,110,0.15))',
+                  background: 'linear-gradient(135deg, color-mix(in srgb, var(--text-accent) 30%, transparent), color-mix(in srgb, var(--text-accent) 5%, transparent) 50%, color-mix(in srgb, var(--text-accent) 15%, transparent))',
                 }}
               >
                 <div
                   className="rounded-2xl backdrop-blur-2xl overflow-hidden w-72"
                   style={{
-                    backgroundColor: 'color-mix(in srgb, var(--bg) 95%, transparent)',
-                    boxShadow: '0 25px 60px -12px rgba(0,0,0,0.5), 0 0 40px -15px rgba(200,169,110,0.1)',
+                    backgroundColor: 'color-mix(in srgb, var(--surface-page) 95%, transparent)',
+                    boxShadow: '0 25px 60px -12px rgba(0,0,0,0.5), 0 0 40px -15px color-mix(in srgb, var(--text-accent) 10%, transparent)',
                   }}
                 >
                   {/* Links */}
@@ -217,7 +217,7 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
                         key={link.path}
                         href={link.path}
                         onClick={() => setMoreOpen(false)}
-                        className="group flex items-start gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 hover:bg-white/[0.04]"
+                        className="group flex items-start gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 sg-hover-surface"
                         style={{
                           animationDelay: `${i * 50}ms`,
                         }}
@@ -225,23 +225,23 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
                         <span
                           className="mt-0.5 shrink-0 transition-colors duration-300"
                           style={{
-                            color: pathname === link.path ? '#c8a96e' : 'var(--text-mute)',
+                            color: pathname === link.path ? 'var(--text-accent)' : 'var(--text-muted)',
                           }}
                         >
                           {link.icon}
                         </span>
                         <div className="min-w-0">
                           <span
-                            className="block ui-kicker font-semibold transition-colors duration-300 group-hover:text-[#c8a96e]"
+                            className="block ui-kicker font-semibold transition-colors duration-300 sg-group-hover-accent"
                             style={{
-                              color: pathname === link.path ? '#c8a96e' : 'var(--text)',
+                              color: pathname === link.path ? 'var(--text-accent)' : 'var(--text-primary)',
                             }}
                           >
                             {link.name}
                           </span>
                           <span
                             className="block ui-caption mt-0.5"
-                            style={{ color: 'var(--text-mute)' }}
+                            style={{ color: 'var(--text-muted)' }}
                           >
                             {link.desc}
                           </span>
@@ -254,13 +254,13 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
                   <div
                     className="mx-3 mb-3 rounded-xl px-4 py-3 flex items-center justify-between"
                     style={{
-                      backgroundColor: 'var(--bg)',
-                      border: '1px solid var(--border)',
+                      backgroundColor: 'var(--surface-page)',
+                      border: '1px solid var(--border-subtle)',
                     }}
                   >
                     <span
                       className="ui-micro font-medium"
-                      style={{ color: 'var(--text-mute)' }}
+                      style={{ color: 'var(--text-muted)' }}
                     >
                       {copy.theme}
                     </span>
@@ -270,9 +270,9 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
                       className="relative w-14 h-7 rounded-full transition-colors duration-500 flex items-center"
                       style={{
                         backgroundColor: theme === 'dark'
-                          ? 'rgba(200,169,110,0.15)'
-                          : 'rgba(200,169,110,0.25)',
-                        border: '1px solid rgba(200,169,110,0.2)',
+                          ? 'color-mix(in srgb, var(--text-accent) 15%, transparent)'
+                          : 'color-mix(in srgb, var(--text-accent) 25%, transparent)',
+                        border: '1px solid color-mix(in srgb, var(--text-accent) 20%, transparent)',
                       }}
                     >
                       {/* Sliding knob */}
@@ -280,16 +280,16 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
                         className="absolute w-5 h-5 rounded-full flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
                         style={{
                           left: theme === 'dark' ? '3px' : '29px',
-                          backgroundColor: '#c8a96e',
-                          boxShadow: '0 1px 4px rgba(200,169,110,0.4)',
+                          backgroundColor: 'var(--text-accent)',
+                          boxShadow: '0 1px 4px color-mix(in srgb, var(--text-accent) 40%, transparent)',
                         }}
                       >
                         {theme === 'dark' ? (
-                          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="#09090b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="var(--text-inverse)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                           </svg>
                         ) : (
-                          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="#09090b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="var(--text-inverse)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="12" cy="12" r="4" />
                             <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
                           </svg>
@@ -306,7 +306,7 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
         <Link
           href={languageHref}
           className="hidden md:block ml-6 ui-micro font-medium transition-colors"
-          style={{ color: 'var(--text-mute)' }}
+          style={{ color: 'var(--text-muted)' }}
           aria-label={otherLocale === 'fr' ? 'Version francaise' : 'English version'}
         >
           {otherLocale.toUpperCase()}
@@ -324,19 +324,19 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
             className={`block w-5 h-[1.5px] transition-all duration-300 ${
               isOpen ? 'rotate-45 translate-y-[0px]' : '-translate-y-1'
             }`}
-            style={{ backgroundColor: 'var(--text)' }}
+            style={{ backgroundColor: 'var(--text-primary)' }}
           />
           <span
             className={`block w-5 h-[1.5px] transition-all duration-300 ${
               isOpen ? 'opacity-0' : 'opacity-100'
             }`}
-            style={{ backgroundColor: 'var(--text)' }}
+            style={{ backgroundColor: 'var(--text-primary)' }}
           />
           <span
             className={`block w-5 h-[1.5px] transition-all duration-300 ${
               isOpen ? '-rotate-45 translate-y-[0px]' : 'translate-y-1'
             }`}
-            style={{ backgroundColor: 'var(--text)' }}
+            style={{ backgroundColor: 'var(--text-primary)' }}
           />
         </button>
       </div>
@@ -351,9 +351,9 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
         }`}
         style={{
           top: isScrolled ? '52px' : '60px',
-          backgroundColor: 'color-mix(in srgb, var(--bg) 97%, transparent)',
+          backgroundColor: 'color-mix(in srgb, var(--surface-page) 97%, transparent)',
           backdropFilter: 'blur(20px)',
-          borderColor: 'var(--border)',
+          borderColor: 'var(--border-subtle)',
         }}
         aria-hidden={!isOpen}
       >
@@ -367,19 +367,19 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
               href={link.path}
               onClick={() => setIsOpen(false)}
               className="ui-kicker font-medium transition-colors py-1"
-              style={{ color: pathname === link.path ? '#c8a96e' : 'var(--text-dim)' }}
+              style={{ color: pathname === link.path ? 'var(--text-accent)' : 'var(--text-secondary)' }}
             >
               {link.name}
             </Link>
           ))}
-          <div className="mt-2 pt-3 border-t w-24 text-center" style={{ borderColor: 'var(--border)' }}>
+          <div className="mt-2 pt-3 border-t w-24 text-center" style={{ borderColor: 'var(--border-subtle)' }}>
             <button
               onClick={toggleTheme}
               className="ui-micro transition-colors flex items-center gap-2 mx-auto"
-              style={{ color: 'var(--text-mute)' }}
+              style={{ color: 'var(--text-muted)' }}
             >
               {theme === 'dark' ? (
-                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="var(--text-accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="4" />
                   <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
                 </svg>
@@ -394,7 +394,7 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
               href={languageHref}
               onClick={() => setIsOpen(false)}
               className="mt-4 block ui-micro transition-colors"
-              style={{ color: 'var(--text-mute)' }}
+              style={{ color: 'var(--text-muted)' }}
             >
               {otherLocale.toUpperCase()}
             </Link>

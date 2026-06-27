@@ -225,3 +225,19 @@ What changed:
 - Did not migrate component markup yet.
 
 The next implementation step should be Step 2: migrate the shared shell/header/footer and shared CTA treatments to semantic tokens or shared classes.
+
+### 2026-06-27 - Step 2 Started
+
+The shared shell has started moving to semantic tokens.
+
+What changed:
+
+- `Header` uses semantic surface, border, text, accent, and hover tokens for nav, dropdown, mobile menu, and theme toggle styling.
+- `Footer` uses semantic surface, border, text, and accent hover tokens.
+- `SiteShell` skip-link styling now uses action tokens.
+- Added minimal shell utilities in `app/globals.css` instead of creating a large design system.
+
+Remaining Step 2 work:
+
+- Review shared CTA/button components outside the shell.
+- Keep migrating only shared primitives before page-specific polish.
