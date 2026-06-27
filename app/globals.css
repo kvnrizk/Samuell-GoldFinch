@@ -222,6 +222,24 @@
     box-shadow: var(--media-shadow);
   }
 
+  .sg-form-field {
+    background: color-mix(in srgb, var(--surface-page) 80%, transparent);
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+  }
+
+  .sg-form-field::placeholder {
+    color: var(--text-muted);
+  }
+
+  .sg-form-field:focus {
+    border-color: var(--border-accent);
+  }
+
+  .sg-form-label {
+    color: var(--text-muted);
+  }
+
   /* Public-site typography normalization (excludes Payload admin) */
   .site-scope :is(h1, h2, h3, h4, h5, h6) {
     font-weight: 500;

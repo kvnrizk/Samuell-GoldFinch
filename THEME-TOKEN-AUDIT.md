@@ -276,3 +276,25 @@ Remaining core pages:
 - `/quote`
 - `/contact`
 - French mirrors where they use separate components or wrappers
+
+### 2026-06-27 - Step 4 Continued
+
+Quote, Contact, and the shared Venues inquiry form now use semantic form/action primitives.
+
+What changed:
+
+- Added `sg-form-field` and `sg-form-label` utilities.
+- Migrated `/quote` field styling, selector states, progress indicators, and success/CTA treatments.
+- Migrated `/contact` form fields, sidebar cards, link hover states, dividers, and CTA treatments.
+- Migrated `VenueForm` step indicators, inputs, selects, goal chips, success state, and action buttons.
+
+Intentional exceptions:
+
+- The green availability dot on `/contact` remains a literal status color.
+- `/venues` page sections are not migrated yet; that page needs a targeted component pass rather than broad replacements.
+
+Remaining core pages/components:
+
+- `/venues` page client sections.
+- Shared venue/presentation cards such as pricing, FAQ, and supporting card primitives.
+- Broad light-mode compatibility overrides in `app/globals.css`.

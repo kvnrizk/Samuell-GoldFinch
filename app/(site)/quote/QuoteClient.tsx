@@ -82,8 +82,8 @@ function InputField({ label, name, type = 'text', placeholder, value, onChange, 
   const id = `quote-${name}`;
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="text-[0.78rem] font-medium ml-1" style={{ color: 'var(--text-mute)' }}>
-        {label} {required && <span style={{ color: '#c8a96e' }}>*</span>}
+      <label htmlFor={id} className="text-[0.78rem] font-medium ml-1" style={{ color: 'var(--text-muted)' }}>
+        {label} {required && <span style={{ color: 'var(--text-accent)' }}>*</span>}
       </label>
       <input
         id={id}
@@ -93,8 +93,7 @@ function InputField({ label, name, type = 'text', placeholder, value, onChange, 
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
-        className="w-full border rounded-xl px-4 py-3 text-[0.95rem] focus:border-white/40 outline-none transition-all"
-        style={{ backgroundColor: 'color-mix(in srgb, var(--bg) 80%, transparent)', borderColor: 'var(--border-hi)' }}
+        className="w-full border rounded-xl px-4 py-3 text-[0.95rem] outline-none transition-all sg-form-field"
       />
     </div>
   );
@@ -108,8 +107,8 @@ function SelectField({ label, name, value, onChange, options, required }: {
   const id = `quote-${name}`;
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="text-[0.78rem] font-medium ml-1" style={{ color: 'var(--text-mute)' }}>
-        {label} {required && <span style={{ color: '#c8a96e' }}>*</span>}
+      <label htmlFor={id} className="text-[0.78rem] font-medium ml-1" style={{ color: 'var(--text-muted)' }}>
+        {label} {required && <span style={{ color: 'var(--text-accent)' }}>*</span>}
       </label>
       <select
         id={id}
@@ -117,8 +116,7 @@ function SelectField({ label, name, value, onChange, options, required }: {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
-        className="w-full border rounded-xl px-4 py-3 text-[0.95rem] focus:border-white/40 outline-none transition-all"
-        style={{ backgroundColor: 'color-mix(in srgb, var(--bg) 80%, transparent)', borderColor: 'var(--border-hi)' }}
+        className="w-full border rounded-xl px-4 py-3 text-[0.95rem] outline-none transition-all sg-form-field"
       >
         <option value="">Select...</option>
         {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -134,7 +132,7 @@ function TextareaField({ label, name, placeholder, value, onChange, rows = 4 }: 
   const id = `quote-${name}`;
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="text-[0.78rem] font-medium ml-1" style={{ color: 'var(--text-mute)' }}>{label}</label>
+      <label htmlFor={id} className="text-[0.78rem] font-medium ml-1" style={{ color: 'var(--text-muted)' }}>{label}</label>
       <textarea
         id={id}
         name={name}
@@ -142,8 +140,7 @@ function TextareaField({ label, name, placeholder, value, onChange, rows = 4 }: 
         value={value}
         onChange={(e) => onChange(e.target.value)}
         rows={rows}
-        className="w-full border rounded-xl px-4 py-3 text-[0.95rem] focus:border-white/40 outline-none transition-all resize-none"
-        style={{ backgroundColor: 'color-mix(in srgb, var(--bg) 80%, transparent)', borderColor: 'var(--border-hi)' }}
+        className="w-full border rounded-xl px-4 py-3 text-[0.95rem] outline-none transition-all resize-none sg-form-field"
       />
     </div>
   );
@@ -159,9 +156,9 @@ function ProgressBar({ currentStep, totalSteps, labels = stepLabels }: { current
             <div
               className="w-8 h-8 rounded-full border flex items-center justify-center text-[11px] font-medium transition-all duration-300"
               style={{
-                borderColor: i <= currentStep ? '#c8a96e' : 'var(--border)',
-                backgroundColor: i < currentStep ? '#c8a96e' : i === currentStep ? 'color-mix(in srgb, #c8a96e 15%, transparent)' : 'transparent',
-                color: i < currentStep ? '#09090b' : i === currentStep ? '#c8a96e' : 'var(--text-mute)',
+                borderColor: i <= currentStep ? 'var(--text-accent)' : 'var(--border-subtle)',
+                backgroundColor: i < currentStep ? 'var(--text-accent)' : i === currentStep ? 'color-mix(in srgb, var(--text-accent) 15%, transparent)' : 'transparent',
+                color: i < currentStep ? 'var(--text-inverse)' : i === currentStep ? 'var(--text-accent)' : 'var(--text-muted)',
               }}
             >
               {i < currentStep ? (
@@ -172,14 +169,14 @@ function ProgressBar({ currentStep, totalSteps, labels = stepLabels }: { current
                 i + 1
               )}
             </div>
-            <span className="text-[9px] font-medium hidden md:block" style={{ color: i <= currentStep ? 'var(--text-dim)' : 'var(--text-mute)' }}>
+            <span className="text-[9px] font-medium hidden md:block" style={{ color: i <= currentStep ? 'var(--text-secondary)' : 'var(--text-muted)' }}>
               {labels[i]}
             </span>
           </div>
           {i < totalSteps - 1 && (
             <div
               className="flex-1 h-[1px] mt-[-14px] md:mt-[-4px] transition-all duration-500"
-              style={{ backgroundColor: i < currentStep ? '#c8a96e' : 'var(--border)' }}
+              style={{ backgroundColor: i < currentStep ? 'var(--text-accent)' : 'var(--border-subtle)' }}
             />
           )}
         </React.Fragment>
@@ -307,12 +304,12 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
   /* ── Step -1: Client type selector ── */
   if (step === -1) {
     return (
-      <div ref={containerRef} className="pt-32 pb-24 min-h-screen text-[0.95rem] md:text-base" style={{ backgroundColor: 'var(--bg)' }}>
+      <div ref={containerRef} className="pt-32 pb-24 min-h-screen text-[0.95rem] md:text-base" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="max-w-2xl mx-auto px-6 text-center">
           <div className="reveal-up">
-            <p className="text-xs font-medium mb-4" style={{ color: 'var(--text-mute)' }}>{t.first}</p>
+            <p className="text-xs font-medium mb-4" style={{ color: 'var(--text-muted)' }}>{t.first}</p>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-8 italic">{t.startTitle}</h1>
-            <p className="ui-body-small md:ui-body max-w-lg mx-auto font-light mb-16" style={{ color: 'var(--text-dim)' }}>
+            <p className="ui-body-small md:ui-body max-w-lg mx-auto font-light mb-16" style={{ color: 'var(--text-secondary)' }}>
               {t.startText}
             </p>
           </div>
@@ -320,22 +317,23 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
             <button
               data-halo
               onClick={() => { update('clientType', 'personal'); setStep(0); setTimeout(() => animateStep('forward'), 50); }}
-              className="p-10 border rounded-[2rem] hover:border-white/20 transition-all text-center group"
-              style={{ borderColor: 'var(--border)', backgroundColor: 'color-mix(in srgb, var(--bg-card) 60%, transparent)' }}
+              className="p-10 border rounded-[2rem] transition-all text-center group sg-hover-surface"
+              style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'color-mix(in srgb, var(--surface-card) 60%, transparent)' }}
             >
               <p className="text-3xl mb-4">🎬</p>
               <h3 className="text-lg font-serif mb-2">{t.personal}</h3>
-              <p className="text-xs font-light" style={{ color: 'var(--text-dim)' }}>{t.personalDesc}</p>
+              <p className="text-xs font-light" style={{ color: 'var(--text-secondary)' }}>{t.personalDesc}</p>
             </button>
             <button
               data-halo
-              data-halo-color="#c8a96e"
+              data-halo-color="var(--text-accent)"
               onClick={() => update('clientType', 'venue')}
-              className="p-10 border border-[#c8a96e]/20 bg-[#c8a96e]/[0.03] rounded-[2rem] hover:bg-[#c8a96e]/[0.08] hover:border-[#c8a96e]/40 transition-all text-center group"
+              className="p-10 border rounded-[2rem] transition-all text-center group sg-hover-surface"
+              style={{ borderColor: 'var(--border-accent)', backgroundColor: 'var(--brand-gold-soft)' }}
             >
               <p className="text-3xl mb-4">🍸</p>
-              <h3 className="text-lg font-serif mb-2 text-[#c8a96e]">{t.venue}</h3>
-              <p className="text-xs font-light" style={{ color: 'var(--text-dim)' }}>{t.venueDesc}</p>
+              <h3 className="text-lg font-serif mb-2" style={{ color: 'var(--text-accent)' }}>{t.venue}</h3>
+              <p className="text-xs font-light" style={{ color: 'var(--text-secondary)' }}>{t.venueDesc}</p>
             </button>
           </div>
         </div>
@@ -347,7 +345,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
   const renderStep0 = () => (
     <div ref={stepRef}>
       <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{t.whatNeed}</h2>
-      <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
+      <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
         {t.serviceHelp}
       </p>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -355,15 +353,15 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
           <button
             key={opt.value}
             onClick={() => { update('service', opt.value); goNext(); }}
-            className="step-field p-6 border rounded-2xl text-left transition-all hover:border-[#c8a96e]/40 group"
+            className="step-field p-6 border rounded-2xl text-left transition-all group sg-hover-surface"
             style={{
-              borderColor: form.service === opt.value ? '#c8a96e' : 'var(--border)',
-              backgroundColor: form.service === opt.value ? 'color-mix(in srgb, #c8a96e 8%, transparent)' : 'color-mix(in srgb, var(--bg-card) 60%, transparent)',
+              borderColor: form.service === opt.value ? 'var(--text-accent)' : 'var(--border-subtle)',
+              backgroundColor: form.service === opt.value ? 'color-mix(in srgb, var(--text-accent) 8%, transparent)' : 'color-mix(in srgb, var(--surface-card) 60%, transparent)',
             }}
           >
             <span className="text-2xl block mb-3">{opt.icon}</span>
-            <h3 className="text-sm font-semibold mb-1 group-hover:text-[#c8a96e] transition-colors">{opt.label}</h3>
-            <p className="text-[11px] font-light leading-relaxed" style={{ color: 'var(--text-dim)' }}>{opt.desc}</p>
+            <h3 className="text-sm font-semibold mb-1 transition-colors sg-group-hover-accent">{opt.label}</h3>
+            <p className="text-[11px] font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{opt.desc}</p>
           </button>
         ))}
       </div>
@@ -377,7 +375,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
         return (
           <div ref={stepRef}>
             <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us about the wedding', 'Parlez-nous du mariage')}</h2>
-            <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
+            <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
               {tx(locale, 'These details help us plan the perfect crew and equipment.', 'Ces details nous aident a prevoir la bonne equipe et le bon materiel.')}
             </p>
             <div className="space-y-5">
@@ -416,7 +414,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
         return (
           <div ref={stepRef}>
             <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us about the project', 'Parlez-nous du projet')}</h2>
-            <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
+            <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
               {tx(locale, 'Understanding your brand and deliverables helps us scope the project accurately.', 'Comprendre votre marque et les livrables nous aide a cadrer le projet avec precision.')}
             </p>
             <div className="space-y-5">
@@ -451,7 +449,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
         return (
           <div ref={stepRef}>
             <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us about the event', 'Parlez-nous de l evenement')}</h2>
-            <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
+            <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
               {tx(locale, 'Help us match you with the perfect artist from the Kolasi roster.', 'Aidez-nous a vous proposer le bon artiste du roster Kolasi.')}
             </p>
             <div className="space-y-5">
@@ -503,7 +501,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
         return (
           <div ref={stepRef}>
             <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us about the event', 'Parlez-nous de l evenement')}</h2>
-            <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
+            <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
               {tx(locale, 'The more detail you share, the more accurate our proposal.', 'Plus vous partagez de details, plus notre proposition sera precise.')}
             </p>
             <div className="space-y-5">
@@ -516,7 +514,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
                 ]} />
               </div>
               <div className="step-field space-y-2">
-                <label className="text-xs font-medium ml-1" style={{ color: 'var(--text-mute)' }}>{tx(locale, 'Services needed', 'Services souhaites')}</label>
+                <label className="text-xs font-medium ml-1" style={{ color: 'var(--text-muted)' }}>{tx(locale, 'Services needed', 'Services souhaites')}</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {[
                     { label: 'Sound & lights', value: 'sound-lights' },
@@ -537,9 +535,9 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
                       }}
                       className="px-4 py-2.5 rounded-xl border text-xs font-medium text-left transition-all"
                       style={{
-                        borderColor: form.eventServices.includes(opt.value) ? '#c8a96e' : 'var(--border-hi)',
-                        color: form.eventServices.includes(opt.value) ? '#c8a96e' : 'var(--text-dim)',
-                        backgroundColor: form.eventServices.includes(opt.value) ? 'color-mix(in srgb, #c8a96e 10%, transparent)' : 'transparent',
+                        borderColor: form.eventServices.includes(opt.value) ? 'var(--text-accent)' : 'var(--border-strong)',
+                        color: form.eventServices.includes(opt.value) ? 'var(--text-accent)' : 'var(--text-secondary)',
+                        backgroundColor: form.eventServices.includes(opt.value) ? 'color-mix(in srgb, var(--text-accent) 10%, transparent)' : 'transparent',
                       }}
                     >
                       {form.eventServices.includes(opt.value) ? '✓ ' : ''}{opt.label}
@@ -561,7 +559,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
         return (
           <div ref={stepRef}>
             <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us your vision', 'Parlez-nous de votre vision')}</h2>
-            <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
+            <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
               {tx(locale, 'A hybrid package combines multiple services. Describe what you have in mind and we will craft a bespoke proposal.', 'Un pack hybride combine plusieurs services. Decrivez votre idee et nous preparerons une proposition sur mesure.')}
             </p>
             <div className="space-y-5">
@@ -588,7 +586,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
   const renderStep2 = () => (
     <div ref={stepRef}>
       <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{t.budgetTitle}</h2>
-      <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
+      <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
         {t.budgetHelp}
       </p>
       <div className="space-y-5">
@@ -618,7 +616,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
   const renderStep3 = () => (
     <div ref={stepRef}>
       <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{t.almost}</h2>
-      <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-dim)' }}>
+      <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
         {t.contactHelp}
       </p>
       <div className="space-y-5">
@@ -646,20 +644,20 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
       <div className="step-field mb-8">
         <div
           className="w-20 h-20 rounded-full mx-auto flex items-center justify-center mb-6"
-          style={{ backgroundColor: 'color-mix(in srgb, #c8a96e 15%, transparent)' }}
+          style={{ backgroundColor: 'color-mix(in srgb, var(--text-accent) 15%, transparent)' }}
         >
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c8a96e" strokeWidth="2">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--text-accent)" strokeWidth="2">
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
         <h2 className="text-2xl md:text-4xl font-serif italic mb-4">{t.sent}</h2>
-        <p className="text-sm font-light max-w-md mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>
+        <p className="text-sm font-light max-w-md mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           {t.successText.replace('{name}', form.name.split(' ')[0] || '')}
         </p>
       </div>
 
       <div className="step-field max-w-sm mx-auto mb-12">
-        <h3 className="text-xs font-semibold uppercase tracking-[0.15em] mb-6" style={{ color: 'var(--text-mute)' }}>
+        <h3 className="text-xs font-semibold uppercase tracking-[0.15em] mb-6" style={{ color: 'var(--text-muted)' }}>
           {t.nextTitle}
         </h3>
         <div className="space-y-4 text-left">
@@ -668,9 +666,9 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
             { num: '02', text: t.next[1] },
             { num: '03', text: t.next[2] },
           ].map((item) => (
-            <div key={item.num} className="flex items-start gap-4 p-4 rounded-xl border" style={{ borderColor: 'var(--border)' }}>
-              <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: '#c8a96e' }}>{item.num}</span>
-              <p className="text-sm font-light" style={{ color: 'var(--text-dim)' }}>{item.text}</p>
+            <div key={item.num} className="flex items-start gap-4 p-4 rounded-xl border" style={{ borderColor: 'var(--border-subtle)' }}>
+              <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: 'var(--text-accent)' }}>{item.num}</span>
+              <p className="text-sm font-light" style={{ color: 'var(--text-secondary)' }}>{item.text}</p>
             </div>
           ))}
         </div>
@@ -679,14 +677,14 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
       <div className="step-field flex flex-col sm:flex-row items-center justify-center gap-4">
         <Link
           href={localizedPath('/', locale)}
-          className="px-10 py-3.5 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all"
+          className="px-10 py-3.5 border rounded-full text-sm font-semibold transition-all sg-action-secondary"
         >
           {t.backHome}
         </Link>
         <Link
           href="/journal"
           className="px-10 py-3.5 text-sm font-light transition-colors"
-          style={{ color: 'var(--text-dim)' }}
+          style={{ color: 'var(--text-secondary)' }}
         >
           {t.journal}
         </Link>
@@ -712,7 +710,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
   };
 
   return (
-    <div ref={containerRef} className="pt-32 pb-24 min-h-screen text-[0.95rem] md:text-base" style={{ backgroundColor: 'var(--bg)' }}>
+    <div ref={containerRef} className="pt-32 pb-24 min-h-screen text-[0.95rem] md:text-base" style={{ backgroundColor: 'var(--surface-page)' }}>
       <div className="max-w-2xl mx-auto px-6">
         {step < 4 && (
           <div className="reveal-up">
@@ -731,8 +729,8 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
               {canGoBack && (
                 <button
                   onClick={goBack}
-                  className="px-6 py-3 text-sm font-medium transition-colors hover:text-[#c8a96e]"
-                  style={{ color: 'var(--text-dim)' }}
+                  className="px-6 py-3 text-sm font-medium transition-colors sg-hover-accent"
+                  style={{ color: 'var(--text-secondary)' }}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline mr-2 -mt-0.5">
                     <path d="M19 12H5M12 5l-7 7 7 7" />
@@ -743,8 +741,8 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
               {step === 0 && (
                 <button
                   onClick={() => { setStep(-1); setForm(initialForm); }}
-                  className="px-6 py-3 text-sm font-medium transition-colors hover:text-[#c8a96e]"
-                  style={{ color: 'var(--text-dim)' }}
+                  className="px-6 py-3 text-sm font-medium transition-colors sg-hover-accent"
+                  style={{ color: 'var(--text-secondary)' }}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline mr-2 -mt-0.5">
                     <path d="M19 12H5M12 5l-7 7 7 7" />
@@ -759,7 +757,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
                   onClick={goNext}
                   disabled={!isStepValid()}
                   className="px-8 py-3.5 border rounded-full text-sm font-semibold transition-all disabled:opacity-30"
-                  style={{ borderColor: 'var(--border-hi)' }}
+                  style={{ borderColor: 'var(--border-strong)' }}
                 >
                   {t.continue}
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline ml-2 -mt-0.5">
@@ -771,7 +769,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
                 <button
                   onClick={handleSubmit}
                   disabled={!isStepValid() || status === 'sending'}
-                  className="px-10 py-3.5 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all disabled:opacity-50"
+                  className="px-10 py-3.5 border rounded-full text-sm font-semibold transition-all disabled:opacity-50 sg-action-secondary"
                 >
                   {status === 'sending' ? t.sending : t.send}
                 </button>

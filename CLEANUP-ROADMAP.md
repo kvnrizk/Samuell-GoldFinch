@@ -347,3 +347,13 @@ Add entries here after each phase.
 - Preserved page structure, copy, routes, section order, media choices, carousels, accordions, animations, and CTA destinations.
 - Left white overlay text/marks only where they sit directly on dark media imagery.
 - Next step: migrate `/venues`, `/quote`, and `/contact` before broad light-mode override removal.
+
+### 2026-06-27 - Phase 1F Quote Contact and Venue Form Token Migration
+
+- Added shared `sg-form-field` and `sg-form-label` utilities for core public forms.
+- Migrated `/quote` form fields, progress states, selector cards, success state, and CTAs to semantic tokens/shared action utilities.
+- Migrated `/contact` page surfaces, form fields, sidebar cards, link states, dividers, and CTAs to semantic tokens/shared form utilities.
+- Migrated the shared `VenueForm` fields, step indicators, goal chips, success state, and submit/back controls to semantic tokens/shared action utilities.
+- Preserved routes, form names, server-action payload shape, copy, layout, and interaction flow.
+- Decision: defer the full `/venues` page-section migration to a targeted pass because broad replacement risks flattening its visual hierarchy.
+- Next step: migrate `/venues` page sections and shared venue cards/components deliberately, then start removing broad light-mode compatibility overrides.
