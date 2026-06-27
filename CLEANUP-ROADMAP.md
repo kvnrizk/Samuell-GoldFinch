@@ -70,6 +70,8 @@ Non-core pages stay available for now, but should be hidden or de-emphasized unl
 
 Move from broad overrides to explicit semantic tokens.
 
+Detailed audit and migration target: [`THEME-TOKEN-AUDIT.md`](./THEME-TOKEN-AUDIT.md).
+
 Required token groups:
 
 - Page surfaces: background, elevated, muted, overlay.
@@ -306,3 +308,10 @@ Add entries here after each phase.
 - Created roadmap as the master cleanup document.
 - Decision: leave `app/globals.css` untouched because it has existing user-owned changes.
 - Decision: keep current uncommitted `HomeClient.tsx` image swap separate from roadmap work unless explicitly committed later.
+
+### 2026-06-27 - Phase 1A Theme Audit
+
+- Added `THEME-TOKEN-AUDIT.md`.
+- Recorded hardcoded public-surface color usage and the semantic token target.
+- Decision: add semantic tokens first, preserve compatibility aliases, and remove broad light-mode overrides only after core pages migrate.
+- Decision: migrate shell first, then landing page, then core pages.
