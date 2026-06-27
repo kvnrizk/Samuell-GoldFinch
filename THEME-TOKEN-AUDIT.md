@@ -210,8 +210,18 @@ Phase 1 is not complete until:
 - Light mode looks intentionally designed, not auto-inverted.
 - `npx tsc --noEmit --pretty false`, `npm run lint`, and `npm run test` pass.
 
-## Important Current State
+## Implementation Status
 
-`app/globals.css` is currently dirty in the working tree and must be treated as user-owned until explicitly reviewed or replaced. Do not overwrite it casually.
+### 2026-06-27 - Step 1 Complete
 
-The next implementation step should be Step 1: add semantic tokens while preserving all current aliases and overrides.
+Semantic tokens were added to `app/globals.css` for dark and light themes.
+
+What changed:
+
+- Added brand tokens: `--brand-gold`, `--brand-gold-soft`, `--brand-ivory`, `--brand-dark`, and `--brand-kolasi`.
+- Added semantic surface, text, border, action, and media tokens.
+- Preserved compatibility aliases such as `--bg`, `--text`, `--border`, and `--bg-card`.
+- Left broad light-mode compatibility overrides in place.
+- Did not migrate component markup yet.
+
+The next implementation step should be Step 2: migrate the shared shell/header/footer and shared CTA treatments to semantic tokens or shared classes.

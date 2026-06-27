@@ -315,3 +315,11 @@ Add entries here after each phase.
 - Recorded hardcoded public-surface color usage and the semantic token target.
 - Decision: add semantic tokens first, preserve compatibility aliases, and remove broad light-mode overrides only after core pages migrate.
 - Decision: migrate shell first, then landing page, then core pages.
+
+### 2026-06-27 - Phase 1B Semantic Tokens
+
+- Added semantic theme tokens in `app/globals.css` for surfaces, text, borders, actions, media, and brand accents.
+- Preserved existing compatibility aliases so current pages keep rendering through `--bg`, `--text`, `--border`, and related variables.
+- Left broad light-mode override rules in place until components are migrated intentionally.
+- No component markup, routes, backend wiring, or visual layout was changed in this step.
+- Next step: migrate the shared shell/header/footer and CTA treatments before touching page-level sections.
