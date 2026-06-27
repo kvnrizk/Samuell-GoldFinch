@@ -1,4 +1,4 @@
-﻿# Frontend Polish Checklist
+# Frontend Polish Checklist
 
 Status: Planning document
 Scope: Frontend polish after backend foundation cleanup
@@ -50,9 +50,9 @@ Full checklist:
 
 ### 1. Token And Light-Mode Pass
 
-- [ ] Fix Home "For Venues" heading and body text colors.
-- [ ] Tokenize Home, Venues, Contact, Quote, VenueForm, PricingCard, and ProcessTimeline where hardcoded dark classes break light mode.
-- [ ] Remove only the global light-mode hacks that become unnecessary.
+- [x] Fix Home "For Venues" heading and body text colors.
+- [x] Tokenize Home, Venues, VenueForm, PricingCard, ProcessTimeline, CaseStudyCard, and AccordionFAQ where hardcoded dark classes break light mode.
+- [ ] Remove only the global light-mode hacks that become unnecessary after visual review.
 - [ ] Keep visual design unchanged.
 
 ### 2. Venues Credibility Pass
@@ -120,9 +120,9 @@ Manual checks:
 
 ## Current Project Sequence
 
-Frontend polish is documented but not started.
+Frontend Phase 1 token/light-mode implementation has started.
 
 Next active implementation work should return to the foundation checklist:
 
 - `FOUNDATION-AUDIT-CLEANUP-CHECKLIST.md`
-- Next phase: Backend Phase 3 - Reduce Backend Complexity.
+- Next phase: Frontend Phase 2 - Venues Credibility Pass.

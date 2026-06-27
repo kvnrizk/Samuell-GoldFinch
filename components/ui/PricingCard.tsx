@@ -20,18 +20,18 @@ export function PricingCard({ name, tagline, deliverables, priceRange, featured 
           Most Popular
         </span>
       )}
-      <h3 className="font-serif text-xl font-semibold text-stone-100 mb-1">{name}</h3>
-      {tagline && <p className="text-sm text-zinc-500 mb-6">{tagline}</p>}
+      <h3 className="font-serif text-xl font-semibold mb-1" style={{ color: 'var(--text)' }}>{name}</h3>
+      {tagline && <p className="text-sm mb-6" style={{ color: 'var(--text-mute)' }}>{tagline}</p>}
       <ul className="space-y-3 mb-8 flex-1">
         {deliverables.map((item, i) => (
-          <li key={i} className="flex items-start gap-2 text-sm text-zinc-400">
+          <li key={i} className="flex items-start gap-2 text-sm" style={{ color: 'var(--text-dim)' }}>
             <span className="text-[#c8a96e] mt-0.5 text-xs">&#10003;</span>
             {item}
           </li>
         ))}
       </ul>
       {priceRange && (
-        <p className="font-serif text-lg text-stone-100 font-semibold mb-6">{priceRange}</p>
+        <p className="font-serif text-lg font-semibold mb-6" style={{ color: 'var(--text)' }}>{priceRange}</p>
       )}
       <button
         onClick={onCTA}

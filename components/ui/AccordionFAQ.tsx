@@ -39,12 +39,12 @@ function AccordionItem({
   const contentRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="border border-white/[0.08] rounded-xl overflow-hidden bg-white/[0.02]">
+    <div className="border rounded-xl overflow-hidden" style={{ borderColor: 'var(--border)', backgroundColor: 'var(--bg-card)' }}>
       <button
         onClick={onToggle}
         className="w-full flex items-center justify-between px-6 py-5 text-left group"
       >
-        <span className="font-serif text-base font-medium text-stone-100 group-hover:text-[#c8a96e] transition-colors pr-4">
+        <span className="font-serif text-base font-medium text-[color:var(--text)] group-hover:text-[#c8a96e] transition-colors pr-4">
           {question}
         </span>
         <span
@@ -60,7 +60,7 @@ function AccordionItem({
         className="overflow-hidden transition-all duration-300 ease-in-out"
         style={{ maxHeight: isOpen ? contentRef.current?.scrollHeight ?? 200 : 0 }}
       >
-        <div className="px-6 pb-5 text-sm text-zinc-400 leading-relaxed">
+        <div className="px-6 pb-5 text-sm leading-relaxed" style={{ color: 'var(--text-dim)' }}>
           {answer}
         </div>
       </div>

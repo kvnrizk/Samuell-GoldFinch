@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
@@ -10,32 +10,33 @@ import TestimonialCarousel from '@/components/ui/TestimonialCarousel';
 import UpcomingEvents from '@/components/ui/UpcomingEvents';
 import BudgetEstimator from '@/components/ui/BudgetEstimator';
 import VideoPlayer from '@/components/ui/VideoPlayer';
+import { fallbackMedia } from '@/lib/fallback-media';
 
 const expertise = [
-  { icon: 'music', title: 'DJ Booking', description: 'Connecting world-class DJs and live performers with venues, festivals and private events globally.', image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg' },
-  { icon: 'layout', title: 'Event Curation', description: 'Art direction, programming and press relations to shape cultural experiences and narratives.', image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg' },
-  { icon: 'camera', title: 'Content Creation', description: 'Cinematic capture, editing and campaign-ready media for events and promotions.', image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364281/sg-platform/static/assets/kolasi/images/4F8A3310.jpg' },
+  { icon: 'music', title: 'DJ Booking', description: 'Connecting world-class DJs and live performers with venues, festivals and private events globally.', image: fallbackMedia.kolasi.artistPrimary },
+  { icon: 'layout', title: 'Event Curation', description: 'Art direction, programming and press relations to shape cultural experiences and narratives.', image: fallbackMedia.kolasi.eventOne },
+  { icon: 'camera', title: 'Content Creation', description: 'Cinematic capture, editing and campaign-ready media for events and promotions.', image: fallbackMedia.kolasi.eventThree },
 ];
 
 const galleryRow1 = [
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364281/sg-platform/static/assets/kolasi/images/4F8A3310.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364247/sg-platform/static/assets/kolasi/images/4F8A2938.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364282/sg-platform/static/assets/kolasi/images/4F8A3750.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364276/sg-platform/static/assets/kolasi/images/4F8A3777.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364297/sg-platform/static/assets/kolasi/images/4F8A3801.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364299/sg-platform/static/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.jpg',
+  fallbackMedia.kolasi.eventOne,
+  fallbackMedia.kolasi.eventTwo,
+  fallbackMedia.kolasi.eventThree,
+  fallbackMedia.kolasi.eventFour,
+  fallbackMedia.kolasi.eventFive,
+  fallbackMedia.kolasi.eventSix,
+  fallbackMedia.kolasi.eventSeven,
+  fallbackMedia.kolasi.speakeasy,
 ];
 
 const galleryRow2 = [
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364188/sg-platform/static/assets/kolasi/artists/artist-1.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364228/sg-platform/static/assets/kolasi/artists/artist-2.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364230/sg-platform/static/assets/kolasi/artists/artist-3.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364243/sg-platform/static/assets/kolasi/artists/artist-4.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364222/sg-platform/static/assets/kolasi/artists/IMG_6476.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364210/sg-platform/static/assets/kolasi/artists/IMG_6733.jpg',
-  'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg',
+  fallbackMedia.kolasi.artistOne,
+  fallbackMedia.kolasi.artistTwo,
+  fallbackMedia.kolasi.artistThree,
+  fallbackMedia.kolasi.artistFour,
+  fallbackMedia.kolasi.artistFive,
+  fallbackMedia.kolasi.artistSix,
+  fallbackMedia.kolasi.artistPrimary,
 ];
 
 const IconMusic = () => (
@@ -77,9 +78,9 @@ interface KolasiClientProps {
 }
 
 const showcaseClips = [
-  { muxPlaybackId: 'bzlHPIIz3L68lqg6fmMTH02GsYL1AeZnT6ewRQIlokaE', label: 'Le Speakeasy', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364299/sg-platform/static/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.jpg', slug: 'le-speakeasy' },
-  { muxPlaybackId: 'RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo', label: '2nd Sun', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg', slug: '2nd-sun' },
-  { muxPlaybackId: '2aAgNa5S5s32fQG8XBUHXrwPUBbEQxn4oyKAjJSV801k', label: 'Kolasi Nights', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364247/sg-platform/static/assets/kolasi/images/4F8A2938.jpg', slug: 'kolasi-nights' },
+  { muxPlaybackId: 'bzlHPIIz3L68lqg6fmMTH02GsYL1AeZnT6ewRQIlokaE', label: 'Le Speakeasy', poster: fallbackMedia.kolasi.speakeasy, slug: 'le-speakeasy' },
+  { muxPlaybackId: 'RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo', label: '2nd Sun', poster: fallbackMedia.kolasi.eventTwo, slug: '2nd-sun' },
+  { muxPlaybackId: '2aAgNa5S5s32fQG8XBUHXrwPUBbEQxn4oyKAjJSV801k', label: 'Kolasi Nights', poster: fallbackMedia.kolasi.eventFour, slug: 'kolasi-nights' },
 ];
 
 function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] & { slug?: string } }) {
@@ -143,7 +144,7 @@ function ShowcaseSection() {
   );
 }
 
-/* ── Marquee Gallery ── */
+/* -- Marquee Gallery -- */
 function MarqueeRow({ images, direction = 'left', speed = 1 }: { images: string[]; direction?: 'left' | 'right'; speed?: number }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -257,35 +258,35 @@ function MarqueeRow({ images, direction = 'left', speed = 1 }: { images: string[
   );
 }
 
-/* ── Services Accordion ── */
+/* -- Services Accordion -- */
 const services = [
   {
     num: '01',
     title: 'DJ & Live Show Booking',
     description: 'Talent sourcing, rider negotiation and international bookings for clubs, festivals and private events across Europe, the Middle East, and South America.',
     tags: ['Clubs', 'Festivals', 'Private Events', 'International Tours'],
-    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg',
+    image: fallbackMedia.kolasi.artistPrimary,
   },
   {
     num: '02',
     title: 'Event Curation & PR',
     description: 'Art direction, programming and press relations to shape cultural experiences and narratives that resonate with audiences worldwide.',
     tags: ['Art Direction', 'Programming', 'Press Relations', 'Brand Strategy'],
-    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg',
+    image: fallbackMedia.kolasi.eventTwo,
   },
   {
     num: '03',
     title: 'Content Creation & Production',
     description: 'Cinematic capture, editing and campaign-ready media for events and promotions — from music videos to social content and brand films.',
     tags: ['Music Videos', 'Event Recaps', 'Social Content', 'Brand Films'],
-    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364281/sg-platform/static/assets/kolasi/images/4F8A3310.jpg',
+    image: fallbackMedia.kolasi.eventThree,
   },
   {
     num: '+',
     title: 'Sound & Light Design',
     description: 'Full technical production — sound engineering and lighting design that transforms any venue into an immersive experience.',
     tags: ['Sound Engineering', 'Lighting Design', 'Venue Setup', 'Technical Production'],
-    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364282/sg-platform/static/assets/kolasi/images/4F8A3750.jpg',
+    image: fallbackMedia.kolasi.eventFive,
   },
 ];
 
@@ -459,7 +460,7 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
         <div className="absolute inset-0">
           <VideoPlayer
             muxPlaybackId="RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo"
-            poster="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg"
+            poster={fallbackMedia.kolasi.eventTwo}
             autoPlay
             loop
             muted
@@ -498,7 +499,7 @@ export default function KolasiClient({ events, testimonials = [], upcomingEvents
         <div className="reveal-up">
           <div className="aspect-[4/3] rounded-[2.5rem] border shadow-2xl relative overflow-hidden group" style={{ borderColor: 'var(--border)' }}>
             <Image
-              src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg"
+              src={fallbackMedia.kolasi.eventTwo}
               alt="Kolasi — behind the scenes"
               fill
               placeholder="blur"

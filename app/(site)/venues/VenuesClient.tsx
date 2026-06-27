@@ -17,6 +17,7 @@ import { VenueForm } from '@/components/ui/VenueForm';
 import { StickyMobileCTA } from '@/components/ui/StickyMobileCTA';
 import { trackEvent } from '@/lib/analytics';
 import { BLUR_DATA_URL } from '@/lib/cloudinary';
+import { venueBackgrounds } from '@/lib/fallback-media';
 import { getDictionary, type Locale } from '@/lib/i18n';
 
 interface Deliverable {
@@ -104,7 +105,7 @@ export default function VenuesClient({
 
   return (
     <div ref={containerRef}>
-      {/* ─── HERO ─── */}
+      {/* â”€â”€â”€ HERO â”€â”€â”€ */}
       <section id="venue-hero" className="relative min-h-screen flex items-center overflow-hidden">
         {/* Video Background */}
         <div className="absolute inset-0 z-0">
@@ -128,12 +129,12 @@ export default function VenuesClient({
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 md:py-40">
           <div className="max-w-3xl venue-reveal">
             <SectionKicker label={t.heroKicker} />
-            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-stone-100 leading-tight mb-6">
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6" style={{ color: 'var(--text)' }}>
               {t.heroTitle}
             </h1>
             <ul className="space-y-2 mb-8">
               {t.bullets.map((line, i) => (
-                <li key={i} className="flex items-start gap-3 text-zinc-400 text-sm md:text-base">
+                <li key={i} className="flex items-start gap-3 text-sm md:text-base" style={{ color: 'var(--text-dim)' }}>
                   <span className="w-1.5 h-1.5 rounded-full bg-[#c8a96e] mt-2 flex-shrink-0" />
                   {line}
                 </li>
@@ -159,7 +160,7 @@ export default function VenuesClient({
             {/* WhatsApp micro-CTA */}
             <button
               onClick={handleWhatsApp}
-              className="flex items-center gap-2 ui-caption text-zinc-500 hover:text-[#c8a96e] transition-colors mb-8"
+              className="flex items-center gap-2 ui-caption text-[color:var(--text-mute)] hover:text-[#c8a96e] transition-colors mb-8"
             >
               <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -172,23 +173,23 @@ export default function VenuesClient({
         </div>
       </section>
 
-      {/* ─── Visual break ─── */}
+      {/* â”€â”€â”€ Visual break â”€â”€â”€ */}
       <div className="relative h-40 md:h-64 overflow-hidden">
-        <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364276/sg-platform/static/assets/kolasi/images/4F8A3777.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
+        <Image src={venueBackgrounds.visualBreakTop} alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
       </div>
 
-      {/* ─── PACKAGES ─── */}
+      {/* â”€â”€â”€ PACKAGES â”€â”€â”€ */}
       <section className="py-24 md:py-32 relative overflow-hidden">
         {/* Ambient background glow */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-[0.04] blur-[120px] pointer-events-none" style={{ background: '#c8a96e' }} />
         <div className="relative max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 venue-reveal">
             <SectionKicker label={t.packages} />
-            <h2 className="font-serif text-2xl md:text-4xl font-bold text-stone-100 mb-4">
+            <h2 className="font-serif text-2xl md:text-4xl font-bold mb-4" style={{ color: 'var(--text)' }}>
               {t.packagesTitle}
             </h2>
-              <p className="text-zinc-500 max-w-2xl mx-auto ui-body-small md:ui-body">
+              <p className="max-w-2xl mx-auto ui-body-small md:ui-body" style={{ color: 'var(--text-mute)' }}>
                 {t.packagesText}
               </p>
           </div>
@@ -218,7 +219,7 @@ export default function VenuesClient({
                     'Monthly content recap',
                     'WhatsApp support line',
                   ]}
-                  priceRange="From €1,500/mo"
+                  priceRange="From â‚¬1,500/mo"
                   onCTA={handleCallClick}
                   ctaLabel={t.getStarted}
                 />
@@ -226,13 +227,13 @@ export default function VenuesClient({
                   name="Core Identity"
                   tagline="Build a weekly identity that attracts a loyal crowd"
                   deliverables={[
-                    '2–3 nights per week',
+                    '2â€“3 nights per week',
                     'Full booking + sound rider',
                     'Social content per session',
                     'Monthly strategy call',
                     'Dedicated WhatsApp channel',
                   ]}
-                  priceRange="From €3,500/mo"
+                  priceRange="From â‚¬3,500/mo"
                   featured
                   onCTA={handleCallClick}
                   ctaLabel={t.getStarted}
@@ -248,7 +249,7 @@ export default function VenuesClient({
                     'Weekly reporting dashboard',
                     'Priority artist access',
                   ]}
-                  priceRange="From €7,500/mo"
+                  priceRange="From â‚¬7,500/mo"
                   onCTA={handleCallClick}
                   ctaLabel={t.getStarted}
                 />
@@ -258,21 +259,21 @@ export default function VenuesClient({
         </div>
       </section>
 
-      {/* ─── CASE STUDIES ─── */}
+      {/* â”€â”€â”€ CASE STUDIES â”€â”€â”€ */}
       {(caseStudies.length > 0 || true) && (
         <section className="py-24 md:py-32 relative overflow-hidden">
           {/* Background image accent */}
           <div className="absolute inset-0 pointer-events-none">
-            <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.06]" />
+            <Image src={venueBackgrounds.caseStudyAccent} alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.06]" />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 20%, transparent 80%, var(--bg))' }} />
           </div>
           <div className="relative max-w-7xl mx-auto px-6">
             <div className="text-center mb-16 venue-reveal">
               <SectionKicker label={t.caseStudies} />
-              <h2 className="font-serif text-2xl md:text-4xl font-bold text-stone-100 mb-4">
+              <h2 className="font-serif text-2xl md:text-4xl font-bold mb-4" style={{ color: 'var(--text)' }}>
                 {t.caseStudiesTitle}
               </h2>
-              <p className="text-zinc-500 max-w-2xl mx-auto ui-body-small md:ui-body">
+              <p className="max-w-2xl mx-auto ui-body-small md:ui-body" style={{ color: 'var(--text-mute)' }}>
                 {t.caseStudiesText}
               </p>
             </div>
@@ -320,23 +321,23 @@ export default function VenuesClient({
         </section>
       )}
 
-      {/* ─── Visual break ─── */}
+      {/* â”€â”€â”€ Visual break â”€â”€â”€ */}
       <div className="relative h-40 md:h-64 overflow-hidden">
-        <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
+        <Image src={venueBackgrounds.rosterBreak} alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-30" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
       </div>
 
-      {/* ─── ROSTER ─── */}
+      {/* â”€â”€â”€ ROSTER â”€â”€â”€ */}
       <section className="py-24 md:py-32 relative overflow-hidden">
         {/* Ambient glow */}
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full opacity-[0.03] blur-[100px] pointer-events-none" style={{ background: '#a78bfa' }} />
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 venue-reveal">
             <SectionKicker label={t.roster} />
-            <h2 className="font-serif text-2xl md:text-4xl font-bold text-stone-100 mb-4">
+            <h2 className="font-serif text-2xl md:text-4xl font-bold mb-4" style={{ color: 'var(--text)' }}>
               {t.rosterTitle}
             </h2>
-            <p className="text-zinc-500 max-w-2xl mx-auto ui-body-small md:ui-body">
+            <p className="max-w-2xl mx-auto ui-body-small md:ui-body" style={{ color: 'var(--text-mute)' }}>
               {t.rosterText}
             </p>
           </div>
@@ -419,7 +420,7 @@ export default function VenuesClient({
             </div>
           ) : (
             <div className="text-center py-12 venue-reveal">
-              <p className="text-zinc-600 ui-body-small">
+              <p className="ui-body-small" style={{ color: 'var(--text-mute)' }}>
                 Roster coming soon. Book a call to discuss your programming needs.
               </p>
             </div>
@@ -427,14 +428,14 @@ export default function VenuesClient({
         </div>
       </section>
 
-      {/* ─── PROCESS ─── */}
+      {/* â”€â”€â”€ PROCESS â”€â”€â”€ */}
       <section className="py-24 md:py-32 relative overflow-hidden" style={{ backgroundColor: 'color-mix(in srgb, var(--bg-card) 50%, var(--bg))' }}>
         {/* Background accent */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full opacity-[0.03] blur-[100px] pointer-events-none" style={{ background: '#c8a96e' }} />
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <SectionKicker label={t.process} />
-            <h2 className="font-serif text-2xl md:text-4xl font-bold text-stone-100 mb-4">
+            <h2 className="font-serif text-2xl md:text-4xl font-bold mb-4" style={{ color: 'var(--text)' }}>
               {t.processTitle}
             </h2>
           </div>
@@ -442,12 +443,12 @@ export default function VenuesClient({
         </div>
       </section>
 
-      {/* ─── FAQ ─── */}
+      {/* â”€â”€â”€ FAQ â”€â”€â”€ */}
       <section className="py-24 md:py-32 relative">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-16 venue-reveal">
             <SectionKicker label={t.faq} />
-            <h2 className="font-serif text-2xl md:text-4xl font-bold text-stone-100 mb-4">
+            <h2 className="font-serif text-2xl md:text-4xl font-bold mb-4" style={{ color: 'var(--text)' }}>
               {t.faqTitle}
             </h2>
           </div>
@@ -463,7 +464,7 @@ export default function VenuesClient({
                       {
                         question: 'What genres do you programme?',
                         answer:
-                          'We cover the full spectrum — from deep house and afro beats to disco, funk, Latin, and live jazz. Every programme is tailored to your venue and crowd.',
+                          'We cover the full spectrum â€” from deep house and afro beats to disco, funk, Latin, and live jazz. Every programme is tailored to your venue and crowd.',
                       },
                       {
                         question: 'Do you work outside Paris?',
@@ -473,7 +474,7 @@ export default function VenuesClient({
                       {
                         question: 'How fast can you launch?',
                         answer:
-                          'After the audit call, we typically deliver a programming plan within 5 business days. First night can happen 2–3 weeks after sign-off.',
+                          'After the audit call, we typically deliver a programming plan within 5 business days. First night can happen 2â€“3 weeks after sign-off.',
                       },
                       {
                         question: 'What if we already have DJs booked?',
@@ -492,17 +493,17 @@ export default function VenuesClient({
         </div>
       </section>
 
-      {/* ─── Visual break ─── */}
+      {/* â”€â”€â”€ Visual break â”€â”€â”€ */}
       <div className="relative h-40 md:h-56 overflow-hidden">
-        <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364297/sg-platform/static/assets/kolasi/images/4F8A3801.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-25" />
+        <Image src={venueBackgrounds.finalBreak} alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-25" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--bg), transparent 30%, transparent 70%, var(--bg))' }} />
       </div>
 
-      {/* ─── VENUE FORM / FINAL CTA ─── */}
+      {/* â”€â”€â”€ VENUE FORM / FINAL CTA â”€â”€â”€ */}
       <section id="venue-form" className="py-24 md:py-32 relative overflow-hidden">
         {/* Background photo accent */}
         <div className="absolute inset-0 pointer-events-none">
-          <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364247/sg-platform/static/assets/kolasi/images/4F8A2938.jpg" alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.04]" />
+          <Image src={venueBackgrounds.finalCta} alt="" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover opacity-[0.04]" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, var(--bg) 40%, transparent 80%)' }} />
         </div>
         <div className="relative max-w-7xl mx-auto px-6">
@@ -510,10 +511,10 @@ export default function VenuesClient({
             {/* Left: CTA copy */}
             <div className="venue-reveal">
               <SectionKicker label={t.getStarted} />
-              <h2 className="font-serif text-2xl md:text-4xl font-bold text-stone-100 mb-6">
+              <h2 className="font-serif text-2xl md:text-4xl font-bold mb-6" style={{ color: 'var(--text)' }}>
                 {t.finalTitle}
               </h2>
-              <p className="text-zinc-400 ui-body-small md:ui-body mb-8 max-w-lg">
+              <p className="ui-body-small md:ui-body mb-8 max-w-lg" style={{ color: 'var(--text-dim)' }}>
                 {t.finalText}
               </p>
 
@@ -538,7 +539,7 @@ export default function VenuesClient({
                 </button>
                 <button
                   onClick={handleWhatsApp}
-                  className="flex items-center gap-3 text-zinc-500 hover:text-[#c8a96e] transition-colors text-sm"
+                  className="flex items-center gap-3 text-[color:var(--text-mute)] hover:text-[#c8a96e] transition-colors text-sm"
                 >
                   <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
@@ -551,7 +552,7 @@ export default function VenuesClient({
                 <p className="ui-kicker font-medium text-[#c8a96e] mb-3">
                   {t.promiseTitle}
                 </p>
-                <p className="text-sm text-zinc-400 leading-relaxed italic">
+                <p className="text-sm leading-relaxed italic" style={{ color: 'var(--text-dim)' }}>
                   &ldquo;{t.promise}&rdquo;
                 </p>
               </GlassCard>
@@ -560,10 +561,10 @@ export default function VenuesClient({
             {/* Right: Form */}
             <div className="venue-reveal">
               <GlassCard className="!p-8">
-                <h3 className="font-serif text-xl font-semibold text-stone-100 mb-2">
+                <h3 className="font-serif text-xl font-semibold mb-2" style={{ color: 'var(--text)' }}>
                   {t.formTitle}
                 </h3>
-                <p className="ui-caption text-zinc-500 mb-8">
+                <p className="ui-caption mb-8" style={{ color: 'var(--text-mute)' }}>
                   {t.formIntro}
                 </p>
                 <VenueForm locale={locale} />

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useRef } from 'react';
 import Image from 'next/image';
@@ -7,6 +7,7 @@ import Link from 'next/link';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/gsap-utils';
+import { fallbackMedia } from '@/lib/fallback-media';
 
 interface BrandPillar {
   num: string;
@@ -32,7 +33,7 @@ const brandPillars: BrandPillar[] = [
       { value: '50+', label: 'Intl DJs' },
     ],
     link: '/about',
-    visual: { type: 'image', src: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363934/sg-platform/static/assets/1st.png' },
+    visual: { type: 'image', src: fallbackMedia.personal.portrait },
   },
   {
     num: '02',
@@ -60,7 +61,7 @@ const brandPillars: BrandPillar[] = [
       { value: '12', label: 'Cities' },
     ],
     link: '/blaze',
-    visual: { type: 'image', src: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg' },
+    visual: { type: 'image', src: fallbackMedia.blaze.weddingHero },
   },
 ];
 
@@ -70,21 +71,21 @@ const drives = [
     description: 'Emotion-first direction for weddings, commercials and editorial films that are made to last.',
     accent: '#c8a96e',
     link: '/blaze',
-    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg',
+    image: fallbackMedia.blaze.weddingHero,
   },
   {
     title: 'Music',
     description: 'Melodic and commercial house sets that blend culture and mood into a dancefloor journey.',
     accent: '#a78bfa',
     link: '/kolasi',
-    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg',
+    image: fallbackMedia.kolasi.artistPrimary,
   },
   {
     title: 'Experiences',
     description: 'Kolasi curates multi-sensory events, from scenography to PR, turning moments into memories.',
     accent: '#c8a96e',
     link: '/kolasi',
-    image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg',
+    image: fallbackMedia.kolasi.eventOne,
   },
 ];
 
@@ -125,7 +126,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
         accent: accentMap[m.brand || 'personal'] || 'var(--text)',
         stats: [],
         link: '/about',
-        visual: brandPillars[i]?.visual || { type: 'image' as const, src: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363934/sg-platform/static/assets/1st.png' },
+        visual: brandPillars[i]?.visual || { type: 'image' as const, src: fallbackMedia.personal.portrait },
       }))
     : brandPillars;
   const containerRef = useRef<HTMLDivElement>(null);
@@ -143,7 +144,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
     });
   }, { scope: containerRef });
 
-  // Brand Pillars — scroll-drawn line + staggered card reveals
+  // Brand Pillars â€” scroll-drawn line + staggered card reveals
   useGSAP(() => {
     registerGSAP();
     const section = pillarsRef.current;
@@ -210,7 +211,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
         <div className="reveal-up">
           <div className="relative rounded-[2.5rem] overflow-hidden aspect-[3/4] shadow-2xl bg-neutral-900 border border-white/5 group">
             <Image
-              src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363938/sg-platform/static/assets/about/IMG_5840.jpg"
+              src={fallbackMedia.personal.aboutHero}
               alt="Samuell Goldfinch"
               fill
               placeholder="blur"
@@ -227,7 +228,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
               Paris-based creative director, filmmaker, and international DJ. Founder of <span className="font-medium" style={{ color: 'var(--text)' }}>Blaze Production</span> (cinematic film and photography) and <span className="font-medium" style={{ color: 'var(--text)' }}>Kolasi Agency</span> (DJ booking, event curation, and content creation).
             </p>
             <p>
-              With over 50 productions across 12 cities — including work for <span className="font-medium" style={{ color: 'var(--text)' }}>MIPIM Cannes</span>, <span className="font-medium" style={{ color: 'var(--text)' }}>Brunch Festival</span>, <span className="font-medium" style={{ color: 'var(--text)' }}>Transdev</span>, and <span className="font-medium" style={{ color: 'var(--text)' }}>France Tourisme</span> — and a network of 50+ international DJs across 20+ venues, Samuell bridges art, technology, and music.
+              With over 50 productions across 12 cities â€” including work for <span className="font-medium" style={{ color: 'var(--text)' }}>MIPIM Cannes</span>, <span className="font-medium" style={{ color: 'var(--text)' }}>Brunch Festival</span>, <span className="font-medium" style={{ color: 'var(--text)' }}>Transdev</span>, and <span className="font-medium" style={{ color: 'var(--text)' }}>France Tourisme</span> â€” and a network of 50+ international DJs across 20+ venues, Samuell bridges art, technology, and music.
             </p>
             <p>
               Known for performances at <span className="font-medium" style={{ color: 'var(--text)' }}>Le Speakeasy Paris &amp; Cannes</span>, Gate Club, Silencio, Saint-Tropez, San Sebasti&aacute;n, and Hard Rock Hotel Punta Cana, Samuell continues to unite art, technology, and music to create experiences that move people.
@@ -236,7 +237,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
         </div>
       </section>
 
-      {/* The Universe — Brand Pillars */}
+      {/* The Universe â€” Brand Pillars */}
       <section ref={pillarsRef} className="py-16 md:py-40 max-w-7xl mx-auto px-6">
         <div className="text-center mb-16 md:mb-32 reveal-up">
           <h2 className="text-4xl md:text-5xl font-serif italic">The Universe</h2>
@@ -251,7 +252,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
             <div ref={lineRef} className="w-full origin-top" style={{ height: '0%', background: 'linear-gradient(to bottom, var(--text), var(--text-mute))' }} />
           </div>
 
-          {/* Pillar cards — alternating left/right with visuals */}
+          {/* Pillar cards â€” alternating left/right with visuals */}
           <div className="space-y-16 md:space-y-36">
             {displayPillars.map((pillar, i) => {
               const isLeft = i % 2 === 0;
@@ -472,7 +473,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
           <div data-halo className="reveal-up p-8 md:p-16 border border-white/5 bg-neutral-900/20 rounded-[3rem] space-y-10">
             <h3 className="text-2xl font-serif text-center mb-8 italic">Artist Statement</h3>
             <p className="text-sm leading-[1.9] font-light text-center" style={{ color: 'var(--text-dim)' }}>
-              I believe the most powerful stories are felt before they&apos;re understood. Whether through a lens or a live set, my work explores the space between emotion and craft — where a perfectly timed cut mirrors the drop in a melody, where light and sound dissolve the boundary between observer and participant.
+              I believe the most powerful stories are felt before they&apos;re understood. Whether through a lens or a live set, my work explores the space between emotion and craft â€” where a perfectly timed cut mirrors the drop in a melody, where light and sound dissolve the boundary between observer and participant.
             </p>
             <div className="pt-10 border-t border-white/5 text-center">
               <p className="text-xs font-semibold mb-4" style={{ color: 'var(--text)' }}>Quick Facts</p>

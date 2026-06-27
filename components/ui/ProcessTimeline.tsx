@@ -83,8 +83,8 @@ export function ProcessTimeline({ locale = 'en' }: { locale?: Locale }) {
               <div className="hidden md:block flex-1 h-px bg-gradient-to-r from-[#c8a96e]/30 to-transparent" />
             )}
           </div>
-          <h3 className="font-serif text-lg font-semibold text-stone-100 mb-2">{step.title}</h3>
-          <p className="text-sm text-zinc-500 leading-relaxed">{step.description}</p>
+          <h3 className="font-serif text-lg font-semibold mb-2" style={{ color: 'var(--text)' }}>{step.title}</h3>
+          <p className="text-sm leading-relaxed" style={{ color: 'var(--text-mute)' }}>{step.description}</p>
         </div>
       ))}
     </div>
