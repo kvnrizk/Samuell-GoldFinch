@@ -79,7 +79,6 @@ export const homeCollaborations: { name: string; location: string; logo?: string
   { name: 'STOUH BEIRUT', location: 'Paris', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364300/sg-platform/static/assets/stouth_beirut_logo.webp' },
   { name: 'MIPIM Cannes', location: 'Cannes', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364300/sg-platform/static/assets/mipim_logo.webp' },
   { name: 'Elie Saab', location: 'Beirut', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363933/sg-platform/static/assets/Elie_saab_logo.webp' },
-  { name: 'Kate Zubok', location: 'International' },
   { name: 'Transdev', location: 'France' },
   { name: 'Le Speakeasy', location: 'Paris', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364284/sg-platform/static/assets/kolasi/logo_speakeasy.png' },
   { name: 'Chloe Khalife', location: 'International' },

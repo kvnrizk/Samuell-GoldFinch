@@ -54,7 +54,7 @@ const staticHighlights = [
     slug: null,
   },
   {
-    title: 'Kate Zubok Live',
+    title: 'Live Set',
     muxPlaybackId: 'RPuL7pFySoUTqNAjG601srkT1Nhqmcyhkug5uhGpz8PA',
     category: 'music' as const,
     slug: null,

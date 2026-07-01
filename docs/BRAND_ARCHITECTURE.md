@@ -126,11 +126,12 @@ Where 3D would be harmful:
 
 ## Next Implementation Phase
 
-Recommended Phase 16: home/showreel static proof cleanup.
+Recommended Phase 17: verify real credentials and seed CMS.
 
 Scope:
 
-- Decide the content approach for the remaining static "proof" arrays in `home-content.ts` (fabricated artist names, venue logos presented as credentials) and `showreel`.
+- With the client, verify remaining named collaborations/credits (home collaborations strip, About-page credits) against real engagements.
+- Seed real CMS artists, posts, and events so public proof surfaces render genuine content instead of empty states.
 - Keep real CMS content, venue conversion paths, and current visual direction intact.
 - Do not add 3D or redesign.
 
@@ -169,3 +170,10 @@ Scope:
 - Journal listing renders CMS posts only, falling back to its existing empty state; the RSS feed publishes CMS posts only (valid empty feed when none exist).
 - The sitemap was already CMS-only for journal posts and was left unchanged.
 - Real CMS journal rendering and the journal design are unchanged; static "proof" arrays in `home-content.ts` and `showreel` remain for a separate content decision.
+
+## Phase 16 Static Proof Cleanup Completed
+
+- The fabricated demo persona "Kate Zubok" was removed from the homepage "Trusted by" collaborations strip and neutralized to "Live Set" in the showreel; real collaborations and real Mux clips were preserved.
+- The fabricated 8-artist `staticRoster` fallback was removed from both venues pages; the roster is CMS-only and shows the existing "Roster coming soon" empty state when CMS has no artists.
+- No real CMS content, real media assets, or conversion CTAs were removed; no testimonials/press/awards/case studies existed on these surfaces.
+- Remaining named credentials (home collaborations, About-page credits) still depend on client verification and real CMS seeding.

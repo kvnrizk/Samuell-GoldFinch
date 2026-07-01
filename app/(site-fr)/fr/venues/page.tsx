@@ -22,21 +22,6 @@ export const metadata: Metadata = {
   },
 };
 
-/* ── Static fallback roster (until CMS is seeded) ──
-   No slugs: these previews must not link to CMS-only artist detail routes,
-   which return notFound() for unknown slugs. Real CMS artists keep their
-   slugs and remain clickable via VenuesClient. */
-const staticRoster = [
-  { id: 'kate-zubok', name: 'Kate Zubok', photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364188/sg-platform/static/assets/kolasi/artists/artist-1.jpg' }, genre: 'Deep House · Melodic Techno', rosterCategory: 'resident' },
-  { id: 'dj-marco', name: 'DJ Marco', photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364228/sg-platform/static/assets/kolasi/artists/artist-2.jpg' }, genre: 'Afro House · Progressive', rosterCategory: 'resident' },
-  { id: 'lina-m', name: 'Lina M', photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364222/sg-platform/static/assets/kolasi/artists/IMG_6476.jpg' }, genre: 'Melodic House · Indie Dance', rosterCategory: 'resident' },
-  { id: 'samir-k', name: 'Samir K', photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364243/sg-platform/static/assets/kolasi/artists/artist-4.jpg' }, genre: 'Techno · Industrial', rosterCategory: 'headliner' },
-  { id: 'naya-sound', name: 'Naya Sound', photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364230/sg-platform/static/assets/kolasi/artists/artist-3.jpg' }, genre: 'Live Act · Electronic Fusion', rosterCategory: 'live-act' },
-  { id: 'rami-b', name: 'Rami B', photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364210/sg-platform/static/assets/kolasi/artists/IMG_6733.jpg' }, genre: 'DJ + Live Vocals', rosterCategory: 'hybrid' },
-  { id: 'alex-d', name: 'Alex D', photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg' }, genre: 'Tech House · Minimal', rosterCategory: 'resident' },
-  { id: 'yasmine-k', name: 'Yasmine K', photo: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg' }, genre: 'Organic House · Downtempo', rosterCategory: 'headliner' },
-];
-
 const fallbackSettings = {
   calendlyUrl: 'https://calendly.com/samuellgoldfinch/venue-discovery',
   whatsappNumber: '+33605883966',
@@ -51,7 +36,9 @@ export default async function FrenchVenuesPage() {
     safeCms(getGlobalSettings() as unknown as Promise<Record<string, string>>, fallbackSettings, 'venue settings'),
   ]);
 
-  const artists = (cmsArtists as any[]).length > 0 ? cmsArtists : staticRoster;
+  // CMS-only roster: never present fabricated demo artists as real proof.
+  // VenuesClient shows a credible "Roster coming soon" empty state when empty.
+  const artists = cmsArtists;
 
   return (
     <VenuesClient

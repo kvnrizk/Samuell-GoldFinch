@@ -844,3 +844,78 @@ Phase 15: content decision on the `journal/[slug]` static demo posts (currently 
 ### Recommended Next Phase
 
 Phase 16: content decision on remaining static "proof" arrays in `home-content.ts` (fabricated artist names / venue logos presented as credentials) and `showreel`, keeping real CMS-driven content intact.
+
+## 2026-07-01 - Phase 16: Static Proof Cleanup (Home, Showreel, Venues Roster)
+
+### Static Proof Surfaces Reviewed
+
+- `app/(site)/home-content.ts` — `homeMedia` galleries and `homeCollaborations` ("Trusted by" credential strip).
+- `app/(site)/HomeClient.tsx` — collaborations strip rendering (`grid-cols-2 md:grid-cols-5`, logo-or-name cards).
+- `app/(site)/showreel/page.tsx` and `ShowreelClient.tsx` — `staticHighlights` reel clips.
+- `app/(site)/venues/page.tsx` and `app/(site-fr)/fr/venues/page.tsx` — `staticRoster` fallback.
+- `app/(site)/venues/VenuesClient.tsx` — roster grid and empty state.
+
+### Fake/Demo Proof Found
+
+- The fabricated demo persona "Kate Zubok" (part of the placeholder DJ roster: Kate Zubok, DJ Marco, Naya Sound, Samir K, Lina M, Rami B, Alex D, Yasmine K) appeared as:
+  - A "Trusted by" collaboration credential in `homeCollaborations`.
+  - A showreel highlight titled "Kate Zubok Live".
+- Both venues pages carried an 8-artist `staticRoster` fallback of fabricated DJs (names + genres + generic photos) shown as the venues roster whenever CMS returned no artists.
+- No static testimonials, press, awards, or case studies were found on these surfaces.
+
+### Chosen Scope
+
+- Remove the fabricated "Kate Zubok" credential from the homepage collaborations strip; keep all real collaborations (Elie Saab, MIPIM Cannes, STOUH BEIRUT, Le Speakeasy, Embassy of Lebanon, Transdev, Chloe Khalife, Brunch Festival, France Tourisme).
+- Neutralize the showreel "Kate Zubok Live" label to a non-credential "Live Set", preserving the real Mux clip (no real media deleted).
+- Remove the fabricated venues `staticRoster` fallback so the roster is CMS-only; VenuesClient's existing "Roster coming soon. Book a call…" empty state renders when CMS has no artists.
+
+### Changes Made
+
+- `app/(site)/home-content.ts`: removed the `{ name: 'Kate Zubok', location: 'International' }` collaboration entry.
+- `app/(site)/showreel/page.tsx`: renamed the "Kate Zubok Live" highlight to "Live Set".
+- `app/(site)/venues/page.tsx` and `app/(site-fr)/fr/venues/page.tsx`: removed `staticRoster`; roster is now `cmsArtists` only.
+- `tests/static-proof.test.ts`: new focused regression test.
+
+### Static Content Intentionally Kept
+
+- `homeMedia` image galleries and showreel Mux clips — real portfolio media, not fabricated named credentials.
+- Real collaborations/logos in `homeCollaborations` (Elie Saab, MIPIM, STOUH BEIRUT, Le Speakeasy, etc.) — corroborated by the About-page credits and real brand logos.
+- "Chloe Khalife" — a real artist name, not part of the demo placeholder roster; left as a collaboration.
+- VenuesClient roster grid and its empty state — real UI, unchanged.
+
+### Files Changed
+
+- `app/(site)/home-content.ts`
+- `app/(site)/showreel/page.tsx`
+- `app/(site)/venues/page.tsx`
+- `app/(site-fr)/fr/venues/page.tsx`
+- `tests/static-proof.test.ts`
+- `docs/DEV_LOG.md`
+- `docs/BRAND_ARCHITECTURE.md`
+
+### Intentionally Not Changed
+
+- No 3D, no redesign, no broad page rewrites.
+- No routes, slugs, SEO metadata, Payload schemas, API contracts, backend behavior, or form contracts changed.
+- No dependencies added.
+- No real CMS-driven content or real media assets removed.
+- No conversion CTAs removed (quote/contact/venues/Calendly/WhatsApp all preserved).
+- The About page credits and other pages were left untouched (out of scope).
+
+### Validation Results
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed (no warnings or errors).
+- `npm test`: passed. Result: 15 files and 63 tests.
+- `npm run build`: passed (no dev server running, so no `.next` lock). Build still logged the expected CMS-safe MongoDB auth fallback because local `.env` cannot authenticate with Atlas.
+
+### Remaining Frontend/Content Risks
+
+- When CMS has no artists, the venues roster shows only the "Roster coming soon" empty state; seeding real artists is required for a public roster.
+- Homepage/showreel/venues still depend on real CMS data for named proof; only the fabricated "Kate Zubok" persona was scrubbed here — any other unverifiable collaboration names remain the client's to confirm.
+- Static demo imagery (generic artist photos) is still used decoratively in some galleries but is no longer attached to fabricated names.
+- Local build cannot authenticate with Atlas, so live CMS rendering of these surfaces was not verified against real data.
+
+### Recommended Next Phase
+
+Phase 17: with the client, verify the remaining named collaborations/credits (home collaborations, About-page credits) against real engagements, and seed real CMS artists/posts/events so the public proof surfaces render genuine content instead of empty states.
