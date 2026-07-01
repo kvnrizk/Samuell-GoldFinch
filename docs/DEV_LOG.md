@@ -770,3 +770,77 @@ Phase 14: neutralize the venues page static artist roster links to `/kolasi/arti
 ### Recommended Next Phase
 
 Phase 15: content decision on the `journal/[slug]` static demo posts (currently rendered as real journal detail pages), then a broader pass on remaining static "proof" arrays in `home-content.ts` and `showreel`.
+
+## 2026-07-01 - Phase 15: Journal Demo Post Cleanup
+
+### Journal Areas Reviewed
+
+- `app/(site)/journal/[slug]/page.tsx` — detail route (`staticPostsMap` fallback, `generateStaticParams`, `generateMetadata`, related posts).
+- `app/(site)/journal/page.tsx` — listing page (`staticPosts` fallback).
+- `app/feed.xml/route.ts` — RSS feed (`staticPosts` fallback).
+- `app/sitemap.ts` — journal `postRoutes` (already CMS-only, no static demo posts).
+- `app/(site)/journal/JournalClient.tsx` and `JournalPostDetail.tsx` — empty-state behavior.
+- `lib/fetchers.ts` — `getAllPosts`, `getPostBySlug` (returns null for missing), `getRelatedPosts`.
+
+### Demo/Static Posts Found
+
+- Five full demo articles were served as real content: `behind-the-scenes-beirut-wedding`, `5-questions-wedding-videographer`, `art-of-nightlife-programming`, `kolasi-season-3`, `embassy-of-lebanon-bts`.
+- Detail route: `staticPostsMap` provided full fake article bodies; demo slugs were prerendered via `generateStaticParams`, served on cache miss, used for metadata, and used as related-post fallbacks.
+- Listing page: `staticPosts` rendered the five demo articles whenever CMS returned no posts.
+- Feed: `staticPosts` published the five demo articles in the public RSS feed whenever CMS returned no posts.
+- Sitemap: already CMS-only — no change needed.
+
+### Chosen Scope
+
+- Detail route → CMS-only; `notFound()` when the post is missing (matches Blaze/Kolasi/artist routes from Phase 12).
+- Listing page → CMS-only; `JournalClient` already renders a credible empty state ("No posts in this category yet.").
+- Feed → CMS-only; emits a valid RSS feed with zero items when CMS is empty.
+- No component redesign; `JournalClient`/`JournalPostDetail` untouched.
+
+### Changes Made
+
+- `app/(site)/journal/[slug]/page.tsx`: removed `staticPostsMap`/`staticAllPosts`; `generateStaticParams` uses CMS slugs only; metadata and page fall back to `notFound()`/"Post Not Found" instead of demo content; related posts come from CMS only.
+- `app/(site)/journal/page.tsx`: removed `staticPosts`; passes CMS posts only.
+- `app/feed.xml/route.ts`: removed `staticPosts` and the empty-CMS fallback.
+- `tests/journal-fallbacks.test.ts`: new focused regression test.
+
+### Feed/Sitemap Impact
+
+- Feed (`/feed.xml`): no longer publishes demo posts; renders a valid empty channel when CMS has no posts.
+- Sitemap (`/sitemap.xml`): unchanged — it was already CMS-only for journal posts.
+
+### Files Changed
+
+- `app/(site)/journal/[slug]/page.tsx`
+- `app/(site)/journal/page.tsx`
+- `app/feed.xml/route.ts`
+- `tests/journal-fallbacks.test.ts`
+- `docs/DEV_LOG.md`
+- `docs/BRAND_ARCHITECTURE.md`
+
+### Intentionally Not Changed
+
+- No 3D, no redesign, no broad journal rewrite.
+- No routes, slugs, SEO metadata structure, Payload schemas, API contracts, backend behavior, or form contracts changed.
+- No dependencies added.
+- No real CMS-driven content removed; real CMS journal rendering preserved.
+- Static "proof" arrays in `home-content.ts` and `showreel` were left untouched per scope.
+
+### Validation Results
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed (no warnings or errors).
+- `npm test`: passed. Result: 14 files and 59 tests.
+- `npm run build`: passed after stopping a running `next dev` server that held `.next\trace` (Windows/OneDrive `EPERM` lock) and clearing `.next`. `/journal/[slug]` now prerenders zero static params (no demo posts); build still logged the expected CMS-safe MongoDB auth fallback because local `.env` cannot authenticate with Atlas.
+
+### Remaining Frontend/Content Risks
+
+- The journal listing and feed are empty while CMS has no posts; seeding real posts is required for public journal content to appear.
+- Static "proof" arrays remain in `home-content.ts` (artist names, venue logos) and `showreel`.
+- The static venues roster still shows demo artist names/genres as non-clickable previews (content-authenticity item from Phase 14).
+- The Kolasi landing still stacks several dense media sections (deferred content/design decision).
+- Local build cannot authenticate with Atlas, so live CMS journal rendering was not verified against real data.
+
+### Recommended Next Phase
+
+Phase 16: content decision on remaining static "proof" arrays in `home-content.ts` (fabricated artist names / venue logos presented as credentials) and `showreel`, keeping real CMS-driven content intact.

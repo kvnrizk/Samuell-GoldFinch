@@ -10,60 +10,6 @@ export const metadata: Metadata = {
   alternates: { canonical: '/journal' },
 };
 
-/* ── Static fallback posts ── */
-const staticPosts = [
-  {
-    title: 'Behind the Scenes: Filming a Destination Wedding in Beirut',
-    slug: 'behind-the-scenes-beirut-wedding',
-    excerpt: 'A look inside the creative process of capturing a three-day celebration across Beirut — from scouting locations at dawn to the final color grade.',
-    category: 'behind-the-scenes',
-    coverImage: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364170/sg-platform/static/assets/blaze/weddings/DSCF2395.jpg' },
-    publishedAt: '2025-12-15',
-    featured: true,
-    tags: [{ tag: 'Wedding' }, { tag: 'Beirut' }, { tag: 'Cinematic' }],
-  },
-  {
-    title: '5 Questions to Ask Your Wedding Videographer',
-    slug: '5-questions-wedding-videographer',
-    excerpt: 'Before you book, make sure you ask these essential questions to find a filmmaker whose style matches your vision.',
-    category: 'tips',
-    coverImage: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364162/sg-platform/static/assets/blaze/weddings/0G0A7733.jpg' },
-    publishedAt: '2025-11-28',
-    featured: false,
-    tags: [{ tag: 'Tips' }, { tag: 'Wedding' }],
-  },
-  {
-    title: 'The Art of Nightlife Programming',
-    slug: 'art-of-nightlife-programming',
-    excerpt: 'How we curate lineups, build crowd loyalty, and create weekly identities for venues — the Kolasi methodology explained.',
-    category: 'industry',
-    coverImage: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg' },
-    publishedAt: '2025-11-10',
-    featured: false,
-    tags: [{ tag: 'Nightlife' }, { tag: 'Kolasi' }, { tag: 'Venues' }],
-  },
-  {
-    title: 'Kolasi Season 3: What\'s Coming',
-    slug: 'kolasi-season-3',
-    excerpt: 'New residencies, international headliners, and a brand new rooftop series — here\'s everything we have planned for the season ahead.',
-    category: 'news',
-    coverImage: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364282/sg-platform/static/assets/kolasi/images/4F8A3750.jpg' },
-    publishedAt: '2025-10-20',
-    featured: false,
-    tags: [{ tag: 'News' }, { tag: 'Kolasi' }],
-  },
-  {
-    title: 'How We Shot the Embassy of Lebanon Reception',
-    slug: 'embassy-of-lebanon-bts',
-    excerpt: 'Diplomatic events require a unique approach — discretion, elegance, and zero room for error. Here\'s how we handled it.',
-    category: 'client-stories',
-    coverImage: { url: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363942/sg-platform/static/assets/blaze/ambassy/0C5A9134.jpg' },
-    publishedAt: '2025-09-05',
-    featured: false,
-    tags: [{ tag: 'Embassy' }, { tag: 'Diplomatic' }, { tag: 'Client Story' }],
-  },
-];
-
 export default async function JournalPage() {
   let cmsPosts: any[] = [];
   try {
@@ -72,7 +18,7 @@ export default async function JournalPage() {
     /* CMS unavailable */
   }
 
-  const posts = cmsPosts.length > 0 ? cmsPosts : staticPosts;
-
-  return <JournalClient posts={posts as any} />;
+  // CMS-only: never present static/demo posts as real editorial content.
+  // JournalClient renders a credible empty state when there are no posts.
+  return <JournalClient posts={cmsPosts as any} />;
 }

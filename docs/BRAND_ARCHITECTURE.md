@@ -126,12 +126,11 @@ Where 3D would be harmful:
 
 ## Next Implementation Phase
 
-Recommended Phase 15: journal demo post cleanup.
+Recommended Phase 16: home/showreel static proof cleanup.
 
 Scope:
 
-- Decide the content approach for `journal/[slug]` static demo posts, which currently render as real journal detail pages.
-- Follow up on remaining static "proof" arrays in `home-content.ts` and `showreel`.
+- Decide the content approach for the remaining static "proof" arrays in `home-content.ts` (fabricated artist names, venue logos presented as credentials) and `showreel`.
 - Keep real CMS content, venue conversion paths, and current visual direction intact.
 - Do not add 3D or redesign.
 
@@ -163,3 +162,10 @@ Scope:
 - Real CMS artists keep their slugs and remain clickable via the unchanged `VenuesClient` conditional.
 - Venue conversion paths (Calendly, WhatsApp, `#venue-form`, sticky mobile CTA) are preserved.
 - The demo roster names/genres remain as non-clickable previews; whether those demo names should exist at all is a separate content-authenticity decision.
+
+## Phase 15 Journal Demo Post Cleanup Completed
+
+- Journal detail route is CMS-only and returns `notFound()` for missing posts; the five static demo articles (`behind-the-scenes-beirut-wedding`, `5-questions-wedding-videographer`, `art-of-nightlife-programming`, `kolasi-season-3`, `embassy-of-lebanon-bts`) are no longer served or prerendered.
+- Journal listing renders CMS posts only, falling back to its existing empty state; the RSS feed publishes CMS posts only (valid empty feed when none exist).
+- The sitemap was already CMS-only for journal posts and was left unchanged.
+- Real CMS journal rendering and the journal design are unchanged; static "proof" arrays in `home-content.ts` and `showreel` remain for a separate content decision.
