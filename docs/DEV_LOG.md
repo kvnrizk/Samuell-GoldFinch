@@ -419,3 +419,51 @@ Continue with another narrow frontend simplification pass, preferably `QuoteClie
 ### Recommended Next Phase
 
 Continue with another narrow frontend simplification pass, preferably `QuoteClient` form-step extraction, without changing visual design or behavior.
+
+## 2026-07-01 - Phase 9: QuoteClient Structure Cleanup
+
+### QuoteClient Areas Reviewed
+
+- `app/(site)/quote/page.tsx`
+- `app/(site)/quote/QuoteClient.tsx`
+- quote form state and step rendering
+- `submitQuoteForm` usage and related action tests
+- quote constants/options and field helpers
+
+### Chosen Simplification Scope
+
+- Extracted quote form state types, initial form state, service option arrays, step labels, and `tx` helper into `quote-content.ts`.
+- Extracted `InputField`, `SelectField`, `TextareaField`, and `ProgressBar` into `quote-fields.tsx`.
+- Left step render functions, form state updates, validation checks, submit payload, animations, and server action contract inside `QuoteClient`.
+
+### Files Changed
+
+- `app/(site)/quote/QuoteClient.tsx`
+- `app/(site)/quote/quote-content.ts`
+- `app/(site)/quote/quote-fields.tsx`
+- `docs/DEV_LOG.md`
+
+### Intentionally Not Changed
+
+- No public routes, slugs, SEO metadata, Payload schemas, API contracts, backend behavior, public copy, form fields, validation behavior, submit payload shape, visual design, or responsive behavior changed.
+- No 3D.
+- No dependencies were added or upgraded.
+
+### Validation Results
+
+- `npm ci`: passed. The run emitted a Windows cleanup warning on `node_modules`.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm test`: passed after rerun with escalated filesystem access because the sandboxed run hit the known Windows `EPERM` realpath issue. Result: 10 files and 46 tests.
+- `npm run build`: passed. Build still logged CMS-safe MongoDB authentication fallback errors because local `.env` credentials could not authenticate with Atlas. Build also logged a stale Browserslist data notice.
+
+### Remaining Frontend Risks
+
+- Browser visual comparison was not performed in this phase.
+- Quote form should still be manually smoke-tested after the next dev server start.
+- `VenuesClient`, `KolasiClient`, and `AboutClient` remain large cleanup targets.
+- Existing local MongoDB auth warnings still reduce build-log signal quality.
+
+### Recommended Next Phase
+
+Continue with another narrow frontend simplification pass, preferably `VenuesClient` or `KolasiClient`, without changing visual design or behavior.

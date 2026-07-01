@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
@@ -8,184 +8,10 @@ import { useRouter } from 'next/navigation';
 import { submitQuoteForm } from '@/lib/actions';
 import { trackEvent } from '@/lib/analytics';
 import { getDictionary, localizedPath, type Locale } from '@/lib/i18n';
+import { getLocalizedServiceOptions, initialForm, stepLabels, tx, type FormState } from './quote-content';
+import { InputField, ProgressBar, SelectField, TextareaField } from './quote-fields';
 
 /* ── Types ── */
-type Service = 'wedding-film' | 'editorial-commercial' | 'event-production' | 'dj-performance' | 'hybrid-package';
-
-interface FormState {
-  // Step 0: client type
-  clientType: 'personal' | 'venue' | null;
-  // Step 1: service
-  service: Service | '';
-  // Step 2: service-specific
-  // Wedding
-  weddingDate: string;
-  weddingVenue: string;
-  weddingHours: string;
-  weddingStyle: string;
-  // Editorial
-  editorialBrand: string;
-  editorialDeliverables: string;
-  editorialUsage: string;
-  // DJ
-  djEventType: string;
-  djHours: string;
-  djGenre: string;
-  djEquipment: string;
-  // Event production
-  eventScale: string;
-  eventServices: string[];
-  eventVenue: string;
-  // General details
-  details: string;
-  // Step 3: budget + timeline
-  eventDate: string;
-  guestCount: string;
-  budget: string;
-  // Step 4: contact
-  name: string;
-  email: string;
-  phone: string;
-}
-
-const initialForm: FormState = {
-  clientType: null,
-  service: '',
-  weddingDate: '', weddingVenue: '', weddingHours: '', weddingStyle: '',
-  editorialBrand: '', editorialDeliverables: '', editorialUsage: '',
-  djEventType: '', djHours: '', djGenre: '', djEquipment: '',
-  eventScale: '', eventServices: [], eventVenue: '',
-  details: '',
-  eventDate: '', guestCount: '', budget: '',
-  name: '', email: '', phone: '',
-};
-
-const serviceOptions = [
-  { value: 'wedding-film' as Service, label: 'Wedding Film', icon: '🎬', desc: 'Cinematic wedding films that tell your love story' },
-  { value: 'editorial-commercial' as Service, label: 'Editorial / Commercial', icon: '📷', desc: 'Brand films, fashion, and editorial content' },
-  { value: 'dj-performance' as Service, label: 'DJ Performance', icon: '🎵', desc: 'Book a DJ or live performer for your event' },
-  { value: 'event-production' as Service, label: 'Event Production', icon: '🎪', desc: 'Full event design, production, and management' },
-  { value: 'hybrid-package' as Service, label: 'Hybrid Package', icon: '✨', desc: 'Combine film, music, and production services' },
-];
-
-const stepLabels = ['Service', 'Details', 'Timeline', 'Contact', 'Done'];
-
-function tx(locale: Locale, en: string, fr: string) {
-  return locale === 'fr' ? fr : en;
-}
-
-/* ── Helpers ── */
-function InputField({ label, name, type = 'text', placeholder, value, onChange, required }: {
-  label: string; name: string; type?: string; placeholder?: string;
-  value: string; onChange: (v: string) => void; required?: boolean;
-}) {
-  const id = `quote-${name}`;
-  return (
-    <div className="space-y-2">
-      <label htmlFor={id} className="text-[0.78rem] font-medium ml-1" style={{ color: 'var(--text-muted)' }}>
-        {label} {required && <span style={{ color: 'var(--text-accent)' }}>*</span>}
-      </label>
-      <input
-        id={id}
-        type={type}
-        name={name}
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        required={required}
-        className="w-full border rounded-xl px-4 py-3 text-[0.95rem] outline-none transition-all sg-form-field"
-      />
-    </div>
-  );
-}
-
-function SelectField({ label, name, value, onChange, options, required }: {
-  label: string; name: string; value: string;
-  onChange: (v: string) => void; options: { label: string; value: string }[];
-  required?: boolean;
-}) {
-  const id = `quote-${name}`;
-  return (
-    <div className="space-y-2">
-      <label htmlFor={id} className="text-[0.78rem] font-medium ml-1" style={{ color: 'var(--text-muted)' }}>
-        {label} {required && <span style={{ color: 'var(--text-accent)' }}>*</span>}
-      </label>
-      <select
-        id={id}
-        name={name}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        required={required}
-        className="w-full border rounded-xl px-4 py-3 text-[0.95rem] outline-none transition-all sg-form-field"
-      >
-        <option value="">Select...</option>
-        {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-      </select>
-    </div>
-  );
-}
-
-function TextareaField({ label, name, placeholder, value, onChange, rows = 4 }: {
-  label: string; name: string; placeholder?: string;
-  value: string; onChange: (v: string) => void; rows?: number;
-}) {
-  const id = `quote-${name}`;
-  return (
-    <div className="space-y-2">
-      <label htmlFor={id} className="text-[0.78rem] font-medium ml-1" style={{ color: 'var(--text-muted)' }}>{label}</label>
-      <textarea
-        id={id}
-        name={name}
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        rows={rows}
-        className="w-full border rounded-xl px-4 py-3 text-[0.95rem] outline-none transition-all resize-none sg-form-field"
-      />
-    </div>
-  );
-}
-
-/* ── Progress Bar ── */
-function ProgressBar({ currentStep, totalSteps, labels = stepLabels }: { currentStep: number; totalSteps: number; labels?: string[] }) {
-  return (
-    <div className="flex items-center gap-2 mb-12">
-      {Array.from({ length: totalSteps }, (_, i) => (
-        <React.Fragment key={i}>
-          <div className="flex flex-col items-center gap-1.5">
-            <div
-              className="w-8 h-8 rounded-full border flex items-center justify-center text-[11px] font-medium transition-all duration-300"
-              style={{
-                borderColor: i <= currentStep ? 'var(--text-accent)' : 'var(--border-subtle)',
-                backgroundColor: i < currentStep ? 'var(--text-accent)' : i === currentStep ? 'color-mix(in srgb, var(--text-accent) 15%, transparent)' : 'transparent',
-                color: i < currentStep ? 'var(--text-inverse)' : i === currentStep ? 'var(--text-accent)' : 'var(--text-muted)',
-              }}
-            >
-              {i < currentStep ? (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              ) : (
-                i + 1
-              )}
-            </div>
-            <span className="text-[9px] font-medium hidden md:block" style={{ color: i <= currentStep ? 'var(--text-secondary)' : 'var(--text-muted)' }}>
-              {labels[i]}
-            </span>
-          </div>
-          {i < totalSteps - 1 && (
-            <div
-              className="flex-1 h-[1px] mt-[-14px] md:mt-[-4px] transition-all duration-500"
-              style={{ backgroundColor: i < currentStep ? 'var(--text-accent)' : 'var(--border-subtle)' }}
-            />
-          )}
-        </React.Fragment>
-      ))}
-    </div>
-  );
-}
-
-/* ── Main Component ── */
 export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const stepRef = useRef<HTMLDivElement>(null);
@@ -195,15 +21,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const t = getDictionary(locale).quote;
-  const localizedServiceOptions = locale === 'fr'
-    ? [
-        { value: 'wedding-film' as Service, label: 'Film de mariage', icon: '🎬', desc: 'Films cinematographiques pour raconter votre histoire' },
-        { value: 'editorial-commercial' as Service, label: 'Editorial / Commercial', icon: '📷', desc: 'Films de marque, mode et contenu editorial' },
-        { value: 'dj-performance' as Service, label: 'Performance DJ', icon: '🎵', desc: 'Booker un DJ ou artiste live pour votre evenement' },
-        { value: 'event-production' as Service, label: 'Production evenementielle', icon: '🎪', desc: 'Direction, production et gestion complete' },
-        { value: 'hybrid-package' as Service, label: 'Pack hybride', icon: '✨', desc: 'Combiner film, musique et production' },
-      ]
-    : serviceOptions;
+  const localizedServiceOptions = getLocalizedServiceOptions(locale);
 
   const update = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
