@@ -35,7 +35,7 @@ export function StickyMobileCTA({ calendlyUrl, whatsappNumber, locale = 'en' }: 
         href={calendlyUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex-1 bg-[#c8a96e] text-[#09090b] font-semibold text-sm py-3 rounded-lg text-center active:scale-[0.98] transition-transform"
+        className="flex-1 bg-[#f7f7f5] text-[#09090b] font-semibold text-sm py-3 rounded-lg text-center active:scale-[0.98] transition-transform"
       >
         {t.bookCall}
       </a>
@@ -43,7 +43,7 @@ export function StickyMobileCTA({ calendlyUrl, whatsappNumber, locale = 'en' }: 
         href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-12 border border-[#c8a96e] text-[#c8a96e] rounded-lg flex items-center justify-center active:scale-[0.98] transition-transform"
+        className="w-12 border border-[#f7f7f5] text-[#f7f7f5] rounded-lg flex items-center justify-center active:scale-[0.98] transition-transform"
         aria-label="WhatsApp"
       >
         <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">

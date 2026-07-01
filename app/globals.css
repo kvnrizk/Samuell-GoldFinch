@@ -604,3 +604,12 @@ html.light {
 .kolasi-page {
   --accent: #a78bfa;
 }
+
+/* Venues section reads as white/ivory instead of gold. Remaps the accent
+   tokens so variable-based gold (e.g. .sg-action-accent in the venue form,
+   featured card borders) resolves to ivory within the venues section. */
+.venues-section {
+  --text-accent: var(--brand-ivory);
+  --border-accent: rgba(247, 247, 245, 0.24);
+  --brand-gold-soft: rgba(247, 247, 245, 0.08);
+}

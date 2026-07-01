@@ -76,11 +76,11 @@ export function ProcessTimeline({ locale = 'en' }: { locale?: Locale }) {
       {items.map((step, i) => (
         <div key={i} className="process-step relative">
           <div className="flex items-center gap-3 mb-4">
-            <span className="w-10 h-10 rounded-full border border-[#c8a96e]/30 flex items-center justify-center text-[#c8a96e] font-mono text-sm font-semibold">
+            <span className="w-10 h-10 rounded-full border border-[#f7f7f5]/30 flex items-center justify-center text-[#f7f7f5] font-mono text-sm font-semibold">
               {step.number}
             </span>
             {i < items.length - 1 && (
-              <div className="hidden md:block flex-1 h-px bg-gradient-to-r from-[#c8a96e]/30 to-transparent" />
+              <div className="hidden md:block flex-1 h-px bg-gradient-to-r from-[#f7f7f5]/30 to-transparent" />
             )}
           </div>
           <h3 className="font-serif text-lg font-semibold text-stone-100 mb-2">{step.title}</h3>

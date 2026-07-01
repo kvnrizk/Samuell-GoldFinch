@@ -6,17 +6,16 @@ interface PricingCardProps {
   name: string;
   tagline?: string;
   deliverables: string[];
-  priceRange?: string;
   featured?: boolean;
   onCTA?: () => void;
   ctaLabel?: string;
 }
 
-export function PricingCard({ name, tagline, deliverables, priceRange, featured = false, onCTA, ctaLabel = 'Get Started' }: PricingCardProps) {
+export function PricingCard({ name, tagline, deliverables, featured = false, onCTA, ctaLabel = 'Get Started' }: PricingCardProps) {
   return (
     <GlassCard featured={featured} className="flex flex-col">
       {featured && (
-        <span className="self-start text-[10px] font-mono uppercase tracking-[0.2em] text-[#c8a96e] bg-[#c8a96e]/10 px-3 py-1 rounded-full mb-4 font-medium">
+        <span className="self-start text-[10px] font-mono uppercase tracking-[0.2em] text-[#f7f7f5] bg-[#f7f7f5]/10 px-3 py-1 rounded-full mb-4 font-medium">
           Most Popular
         </span>
       )}
@@ -25,20 +24,17 @@ export function PricingCard({ name, tagline, deliverables, priceRange, featured 
       <ul className="space-y-3 mb-8 flex-1">
         {deliverables.map((item, i) => (
           <li key={i} className="flex items-start gap-2 text-sm text-zinc-400">
-            <span className="text-[#c8a96e] mt-0.5 text-xs">&#10003;</span>
+            <span className="text-[#f7f7f5] mt-0.5 text-xs">&#10003;</span>
             {item}
           </li>
         ))}
       </ul>
-      {priceRange && (
-        <p className="font-serif text-lg text-stone-100 font-semibold mb-6">{priceRange}</p>
-      )}
       <button
         onClick={onCTA}
         className={`w-full py-3 rounded-lg font-semibold text-sm transition-all duration-200 ${
           featured
-            ? 'bg-[#c8a96e] text-[#09090b] hover:bg-[#d4b87a] active:scale-[0.98]'
-            : 'border border-[#c8a96e] text-[#c8a96e] hover:bg-[#c8a96e]/[0.08]'
+            ? 'bg-[#f7f7f5] text-[#09090b] hover:bg-[#e4e4e7] active:scale-[0.98]'
+            : 'border border-[#f7f7f5] text-[#f7f7f5] hover:bg-[#f7f7f5]/[0.08]'
         }`}
       >
         {ctaLabel}

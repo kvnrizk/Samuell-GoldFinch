@@ -44,11 +44,11 @@ function AccordionItem({
         onClick={onToggle}
         className="w-full flex items-center justify-between px-6 py-5 text-left group"
       >
-        <span className="font-serif text-base font-medium text-stone-100 group-hover:text-[#c8a96e] transition-colors pr-4">
+        <span className="font-serif text-base font-medium text-stone-100 group-hover:text-[#f7f7f5] transition-colors pr-4">
           {question}
         </span>
         <span
-          className={`text-[#c8a96e] text-lg transition-transform duration-300 flex-shrink-0 ${
+          className={`text-[#f7f7f5] text-lg transition-transform duration-300 flex-shrink-0 ${
             isOpen ? 'rotate-45' : ''
           }`}
         >

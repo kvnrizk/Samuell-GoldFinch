@@ -13,8 +13,8 @@ export function GlassCard({ children, featured = false, className = '' }: GlassC
         backdrop-blur-xl border rounded-2xl p-8
         transition-all duration-300
         ${featured
-          ? 'border-[#c8a96e]/30 shadow-[0_0_40px_rgba(200,169,110,0.08)]'
-          : 'hover:shadow-[0_0_30px_rgba(200,169,110,0.05)]'
+          ? 'border-[#f7f7f5]/30 shadow-[0_0_40px_rgba(247,247,245,0.08)]'
+          : 'hover:shadow-[0_0_30px_rgba(247,247,245,0.05)]'
         }
         ${className}
       `}

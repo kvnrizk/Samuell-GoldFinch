@@ -69,7 +69,7 @@ export default async function VenueSEOPage({ params }: Props) {
         datePublished={page.createdAt}
       />
 
-      <article className="pt-32 pb-24">
+      <article className="pt-32 pb-24 venues-section">
         <div className="max-w-3xl mx-auto px-6">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-xs font-mono text-zinc-600 mb-12">
@@ -95,10 +95,10 @@ export default async function VenueSEOPage({ params }: Props) {
           <div className="prose prose-invert prose-lg max-w-none mb-16
             prose-headings:font-serif prose-headings:text-stone-100
             prose-p:text-zinc-400 prose-p:leading-relaxed
-            prose-a:text-[#c8a96e] prose-a:no-underline hover:prose-a:underline
+            prose-a:text-[#f7f7f5] prose-a:no-underline hover:prose-a:underline
             prose-strong:text-stone-200
             prose-li:text-zinc-400
-            prose-blockquote:border-[#c8a96e]/30 prose-blockquote:text-zinc-400
+            prose-blockquote:border-[#f7f7f5]/30 prose-blockquote:text-zinc-400
           ">
             {page.content ? (
               typeof (page.content as unknown) === 'string' ? (
@@ -124,13 +124,13 @@ export default async function VenueSEOPage({ params }: Props) {
                 href={calendlyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#c8a96e] text-[#09090b] font-semibold text-sm px-8 py-3.5 rounded-lg hover:bg-[#d4b87a] active:scale-[0.98] transition-all"
+                className="bg-[#f7f7f5] text-[#09090b] font-semibold text-sm px-8 py-3.5 rounded-lg hover:bg-[#e4e4e7] active:scale-[0.98] transition-all"
               >
                 Book a Discovery Call
               </a>
               <Link
                 href="/venues#venue-form"
-                className="border border-[#c8a96e] text-[#c8a96e] font-semibold text-sm px-8 py-3.5 rounded-lg text-center hover:bg-[#c8a96e]/[0.08] transition-all"
+                className="border border-[#f7f7f5] text-[#f7f7f5] font-semibold text-sm px-8 py-3.5 rounded-lg text-center hover:bg-[#f7f7f5]/[0.08] transition-all"
               >
                 Apply Now
               </Link>
@@ -141,9 +141,9 @@ export default async function VenueSEOPage({ params }: Props) {
           <div className="mt-16 pt-8 border-t border-white/[0.06]">
             <p className="text-xs font-mono text-zinc-600 mb-4">Related</p>
             <div className="flex flex-wrap gap-3">
-              <Link href="/venues" className="text-sm text-[#c8a96e] hover:underline">Venue Packages</Link>
+              <Link href="/venues" className="text-sm text-[#f7f7f5] hover:underline">Venue Packages</Link>
               <span className="text-zinc-700">·</span>
-              <Link href="/venues#venue-form" className="text-sm text-[#c8a96e] hover:underline">Apply Now</Link>
+              <Link href="/venues#venue-form" className="text-sm text-[#f7f7f5] hover:underline">Apply Now</Link>
               <span className="text-zinc-700">·</span>
               <Link href="/kolasi" className="text-sm text-zinc-500 hover:text-white transition-colors">Kolasi Agency</Link>
               <span className="text-zinc-700">·</span>
