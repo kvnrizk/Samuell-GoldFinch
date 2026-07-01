@@ -1,17 +1,21 @@
 # dependencies
-node_modules/
+node_modules
 .pnp
 .pnp.js
 
 # next.js
-.next/
+.next
 out/
 
 # production
 build/
+dist
+coverage
 
 # env files
 .env
+.env.*
+!.env.example
 .env.local
 .env.development.local
 .env.test.local
@@ -40,13 +44,13 @@ scripts/mux-playback-ids.json
 # static assets (images served from public/, heavy for git)
 public/assets/
 
-# docs (internal)
-docs/
-
 # misc
 .DS_Store
+*.log
 dev-check.*.log
 sg-website.zip
+*.zip
+tsconfig.tsbuildinfo
 *.tsbuildinfo
 next-env.d.ts
 npm-debug.log*
