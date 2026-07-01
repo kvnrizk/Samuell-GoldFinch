@@ -1048,3 +1048,56 @@ No new content commit was created for the card itself — it was already committ
 
 - The homepage card ids and the Blaze allowlist are still maintained in two places; they are consistent now but could drift again without the guard test (which would catch it).
 - Local build cannot authenticate with Atlas, so the deep-link was verified structurally/by test rather than against live CMS data.
+
+## 2026-07-01 - Phase 17: Visual Hierarchy Elevation Baseline
+
+### Visual Areas Reviewed
+
+- `app/(site)/HomeClient.tsx` — hero, Blaze section, Kolasi section, Venues banner, "Trusted by" collaboration strip, final CTA.
+- `app/(site)/home-content.ts` (collaborations/media data) and `app/(site)/blaze/BlazeClient.tsx` (Blaze layout) for context.
+- `docs/BRAND_ARCHITECTURE.md` (Blaze should feel gallery/editorial; Kolasi carded).
+
+### Hierarchy/Design Issues Found
+
+- The "Trusted by" strip boxed all 10 collaborations in repeated bordered glass cards (`sg-card sg-hover-surface`), reading as generic/template-like and heavy on repeated glass.
+- The final CTA had two equal `sg-action-secondary` buttons — no clear primary conversion.
+- (Left intentionally: hero has two equal brand-pillar CTAs; Blaze is open/editorial vs Kolasi carded — both intentional; section padding rhythm is uneven but risky to change blind.)
+
+### Chosen Scope
+
+Two minimal, structural, low-risk improvements using the existing styling system:
+
+1. "Trusted by" strip: removed the per-item bordered-glass card treatment and gave the grid more breathing room, for a cleaner, premium editorial logo/name wall. All collaborations kept.
+2. Final CTA: promoted "Get a Quote" to a filled primary (`sg-action-primary`), keeping the venues link secondary, establishing a clear CTA hierarchy.
+
+### Changes Made
+
+- `app/(site)/HomeClient.tsx`:
+  - Collaboration items: `p-4 md:p-8 rounded-2xl border … sg-card sg-hover-surface` → borderless `px-2 py-2 text-center`; grid gap `gap-4` → `gap-x-6 gap-y-10 md:gap-x-10 md:gap-y-14`.
+  - Final CTA "Get a Quote" link: `sg-action-secondary` → `sg-action-primary`.
+
+### Intentionally Not Changed
+
+- No 3D, WebGL, or new animation libraries (3D remains deferred).
+- No routes, slugs, SEO metadata, Payload schemas, API contracts, backend behavior, or form contracts.
+- No dependencies added; no new assets.
+- No real CMS-driven content or conversion CTAs removed; no fake/demo proof reintroduced.
+- Embassy remains the priority/first Blaze proof card.
+- Hero CTAs left as two equal brand pillars; Blaze open/editorial vs Kolasi carded left as intended; section vertical padding left unchanged.
+
+### Validation Results
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed (no warnings or errors).
+- `npm test`: passed. Result: 18 files and 73 tests.
+- `npm run build`: passed (dev server stopped and `.next` cleared first to avoid the Windows/OneDrive `EPERM` lock).
+
+### Remaining Design Risks
+
+- Changes were verified structurally and via build/tests, not against a live visual preview (local build cannot authenticate with Atlas); the borderless strip and primary CTA should be eyeballed on `/` and `/fr` in `npm run dev`.
+- Section vertical rhythm across homepage blocks is still uneven (`py-16 md:py-40` vs `py-16` vs `py-20`); deferred as a larger, taste-dependent pass.
+- Broader hero typography/spacing elevation was deferred to avoid blind type-scale changes.
+
+### 3D Status
+
+Still deferred. No 3D/WebGL was added in this phase.

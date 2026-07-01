@@ -353,9 +353,9 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
               {t.trustedTitle}
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-x-6 gap-y-10 md:gap-x-10 md:gap-y-14">
               {collaborations.map((c) => (
-                <div key={c.name} className="group flex flex-col items-center justify-center p-4 md:p-8 rounded-2xl border transition-all duration-500 sg-card sg-hover-surface">
+                <div key={c.name} className="group flex flex-col items-center justify-center px-2 py-2 text-center">
                   <div className="h-12 flex items-center justify-center mb-5">
                     {c.logo ? (
                       <Image src={c.logo} alt={c.name} width={120} height={40} placeholder="blur" blurDataURL={BLUR_DATA_URL} className="h-10 w-auto object-contain mix-blend-screen opacity-60 group-hover:opacity-100 transition-opacity duration-500" sizes="120px" />
@@ -381,7 +381,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href={localizedPath('/quote', locale)}
-              className="inline-block px-12 py-4 rounded-full border text-sm font-semibold transition-all sg-action-secondary"
+              className="inline-block px-12 py-4 rounded-full border text-sm font-semibold transition-all sg-action-primary"
             >
               {t.quoteCta}
             </Link>
