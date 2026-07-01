@@ -310,3 +310,61 @@ Continue backend cleanup with a narrow authenticated-admin access review, then s
 - `npm run lint`: passed.
 - `npm test`: passed, 10 files and 46 tests.
 - `npm run build`: passed. Build still logged CMS-safe MongoDB authentication fallback errors because local `.env` credentials could not authenticate with Atlas.
+
+## 2026-07-01 - Phase 7: Frontend Simplification Baseline
+
+### Frontend Areas Reviewed
+
+- `app/(site)/HomeClient.tsx`
+- `app/(site)/quote/QuoteClient.tsx`
+- `app/(site)/venues/VenuesClient.tsx`
+- `app/(site)/kolasi/KolasiClient.tsx`
+- `app/(site)/about/AboutClient.tsx`
+- `components/layout/Header.tsx`
+- large client components and `use client` boundaries under `app/` and `components/`
+
+### Complexity Found
+
+- Several route-level client components are large and mix orchestration, static content, animation helpers, and presentational UI.
+- `HomeClient` contained homepage media constants, collaborator data, counter animation logic, and selected-work carousel logic in the same file.
+- `QuoteClient`, `VenuesClient`, `KolasiClient`, and `Header` remain larger-risk files and were intentionally left untouched in this baseline.
+
+### Chosen Simplification Scope
+
+- Homepage-only extraction.
+- Moved static homepage media and collaborator data into a local data module.
+- Moved venue counter animation into a small local component.
+- Moved the selected-work carousel into a small local component.
+
+### Files Changed
+
+- `app/(site)/HomeClient.tsx`
+- `app/(site)/home-content.ts`
+- `app/(site)/_components/CounterStat.tsx`
+- `app/(site)/_components/WorkOrbitCarousel.tsx`
+- `docs/DEV_LOG.md`
+
+### Intentionally Not Changed
+
+- No public routes, slugs, SEO metadata, Payload schemas, API contracts, backend behavior, public copy, colors, layout, or visual design direction changed.
+- No 3D was added.
+- No dependencies were added.
+- No broader frontend files were refactored.
+
+### Validation Results
+
+- `npm ci`: passed. The run emitted a Windows cleanup warning on `node_modules`.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm test`: passed after rerun with escalated filesystem access because the sandboxed run hit the known Windows `EPERM` realpath issue. Result: 10 files and 46 tests.
+- `npm run build`: passed. Build still logged CMS-safe MongoDB authentication fallback errors because local `.env` credentials could not authenticate with Atlas. Build also logged a stale Browserslist data notice.
+
+### Remaining Frontend Risks
+
+- `QuoteClient`, `VenuesClient`, `KolasiClient`, `AboutClient`, and `Header` are still large and should be simplified in separate narrow passes.
+- Homepage visual parity was preserved by code movement, but browser screenshot comparison was not performed in this phase.
+- Existing local MongoDB auth warnings still reduce signal quality during builds.
+
+### Recommended Next Phase
+
+Continue with another narrow frontend simplification pass, preferably `QuoteClient` form-step component extraction or `Header` state/render split, without changing visual design or behavior.
