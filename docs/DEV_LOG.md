@@ -707,3 +707,66 @@ Phase 13 should focus on Kolasi page density and media-source cleanup: consolida
 ### Recommended Next Phase
 
 Phase 14: neutralize the venues page static artist roster links to `/kolasi/artists/<demo-slug>` (same CMS-only 404 risk as the Kolasi showcase), and make a content decision on the journal `[slug]` static demo posts.
+
+## 2026-07-01 - Phase 14: Venues Artist Roster Link Cleanup
+
+### Venues Artist Links Reviewed
+
+- `app/(site)/venues/page.tsx` — English venues server page and its `staticRoster` fallback.
+- `app/(site-fr)/fr/venues/page.tsx` — French venues server page (imports the same `VenuesClient` and carries a duplicate `staticRoster`).
+- `app/(site)/venues/VenuesClient.tsx` — roster card render (`artist.slug ? <Link> : <div>`), Calendly/WhatsApp/`#venue-form` conversion paths.
+- Artist detail route (`app/(site)/kolasi/artists/[slug]/page.tsx`) — CMS-only, `notFound()` on unknown slugs.
+- All `/kolasi/artists/` link sites across `app/`.
+
+### Broken/Demo Artist Links Found
+
+- Both venues pages fed `VenuesClient` a `staticRoster` (used only when CMS returns no artists) in which six demo artists carried `slug` fields — `kate-zubok`, `dj-marco`, `lina-m`, `samir-k`, `naya-sound`, `rami-b` — rendering clickable `/kolasi/artists/<demo-slug>` cards that 404 on the CMS-only artist detail route.
+- Two static roster entries (`alex-d`, `yasmine-k`) already had no slug and were non-clickable.
+- All other `/kolasi/artists/` links in the app are real CMS-driven (VenuesClient for CMS artists, ArtistProfile prev/next, KolasiEventDetail artist chips, sitemap) and were left unchanged.
+
+### Chosen Scope
+
+- Remove the demo `slug` fields from both static rosters so the fallback cards render as non-clickable `<div>` previews via `VenuesClient`'s existing conditional.
+- Leave `VenuesClient` untouched: real CMS artists still carry real slugs and remain clickable.
+- Preserve all conversion paths (Calendly, WhatsApp, `#venue-form`, sticky mobile CTA).
+
+### Changes Made
+
+- `app/(site)/venues/page.tsx`: dropped `slug` from the six demo roster entries; added a comment explaining why static previews carry no slug.
+- `app/(site-fr)/fr/venues/page.tsx`: same change for the French page.
+- `tests/venues-roster-links.test.ts`: new focused regression test — both venues pages expose no demo artist slugs, `VenuesClient` still links real CMS artists, and venue conversion paths remain.
+
+### Files Changed
+
+- `app/(site)/venues/page.tsx`
+- `app/(site-fr)/fr/venues/page.tsx`
+- `tests/venues-roster-links.test.ts`
+- `docs/DEV_LOG.md`
+- `docs/BRAND_ARCHITECTURE.md`
+
+### Intentionally Not Changed
+
+- No 3D, no redesign, no broad `VenuesClient` rewrite.
+- No routes, slugs, SEO metadata, Payload schemas, API contracts, backend behavior, or form contracts changed.
+- No dependencies added.
+- No CMS-driven content removed; real CMS artist links preserved.
+- The static roster cards themselves (demo artist names/genres/photos) were kept as non-clickable previews, per the phase's preferred approach; whether those demo names should exist at all is a separate content-authenticity decision.
+
+### Validation Results
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed (no warnings or errors).
+- `npm test`: passed. Result: 13 files and 55 tests.
+- `npm run build`: passed. `/venues` and `/fr/venues` both build; build still logged the expected CMS-safe MongoDB auth fallback because local `.env` cannot authenticate with Atlas.
+
+### Remaining Frontend Risks
+
+- The static venues roster still shows demo artist names/genres as non-clickable previews; treating these as a content-authenticity item is deferred.
+- `journal/[slug]` still serves `staticPostsMap` demo posts.
+- Static artist proof also remains on `home-content.ts` and `showreel`.
+- The Kolasi landing still stacks several dense media sections (deferred content/design decision).
+- Local build cannot authenticate with Atlas, so live CMS rendering of the venues roster was not verified against real data.
+
+### Recommended Next Phase
+
+Phase 15: content decision on the `journal/[slug]` static demo posts (currently rendered as real journal detail pages), then a broader pass on remaining static "proof" arrays in `home-content.ts` and `showreel`.

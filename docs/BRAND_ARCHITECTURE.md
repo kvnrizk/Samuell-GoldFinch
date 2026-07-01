@@ -126,12 +126,12 @@ Where 3D would be harmful:
 
 ## Next Implementation Phase
 
-Recommended Phase 14: venues page roster links and journal demo cleanup.
+Recommended Phase 15: journal demo post cleanup.
 
 Scope:
 
-- Neutralize the venues page static artist roster links to `/kolasi/artists/<demo-slug>` (same CMS-only 404 risk fixed on the Kolasi landing in Phase 13).
-- Decide the content approach for `journal/[slug]` static demo posts.
+- Decide the content approach for `journal/[slug]` static demo posts, which currently render as real journal detail pages.
+- Follow up on remaining static "proof" arrays in `home-content.ts` and `showreel`.
 - Keep real CMS content, venue conversion paths, and current visual direction intact.
 - Do not add 3D or redesign.
 
@@ -156,3 +156,10 @@ Scope:
 - Real conversion CTAs (`/venues`, `/contact`, `#services`) and the CMS-driven `UpcomingEvents` links remain unchanged.
 - Media sections (expertise, showcase, gallery, services) were intentionally left intact; consolidating them is a content/design decision, not a link-safety fix.
 - The venues page still links its static artist roster to `/kolasi/artists/<demo-slug>`; that shares the same CMS-only 404 risk and is deferred to Phase 14.
+
+## Phase 14 Venues Roster Link Cleanup Completed
+
+- Static venues roster cards (English and French pages) no longer carry demo slugs, so they render as non-clickable previews instead of linking to CMS-only artist detail routes that `notFound()`.
+- Real CMS artists keep their slugs and remain clickable via the unchanged `VenuesClient` conditional.
+- Venue conversion paths (Calendly, WhatsApp, `#venue-form`, sticky mobile CTA) are preserved.
+- The demo roster names/genres remain as non-clickable previews; whether those demo names should exist at all is a separate content-authenticity decision.
