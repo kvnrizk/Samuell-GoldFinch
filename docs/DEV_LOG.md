@@ -467,3 +467,50 @@ Continue with another narrow frontend simplification pass, preferably `QuoteClie
 ### Recommended Next Phase
 
 Continue with another narrow frontend simplification pass, preferably `VenuesClient` or `KolasiClient`, without changing visual design or behavior.
+
+## 2026-07-01 - Phase 10: Blaze/Kolasi Brand Architecture Audit
+
+### Areas Reviewed
+
+- homepage Blaze and Kolasi sections
+- `app/(site)/blaze/BlazeClient.tsx`
+- `app/(site)/kolasi/KolasiClient.tsx`
+- Blaze and Kolasi detail routes
+- venue page connection to Kolasi programming
+- About page brand relationship
+- header navigation structure
+- quote service options and venue routing
+- hardcoded media arrays and fallback/demo content
+- `blaze-projects` and `kolasi-events` Payload collections
+
+### Findings
+
+- Blaze is already positioned as cinematic production, weddings, editorials, and visual storytelling.
+- Kolasi is already positioned as artist booking, event curation, live programming, and venue activation.
+- The split is directionally correct, but the frontend still feels overloaded because proof, service explanation, media galleries, and conversion paths are mixed together.
+- Blaze currently feels clearer and stronger than Kolasi because its selected-work structure is more direct.
+- Kolasi has the right content model but too many competing sections and some unnecessary 3D/tilt behavior.
+- Venue programming should be treated as a Kolasi-owned conversion path.
+- Public fallback/demo proof remains a credibility risk, especially forced venue case studies.
+
+### Files Changed
+
+- `docs/BRAND_ARCHITECTURE.md`
+- `docs/DEV_LOG.md`
+
+### Intentionally Not Changed
+
+- No app code changed.
+- No design changes.
+- No 3D added.
+- No frontend components refactored.
+- No routes, slugs, SEO metadata, Payload schemas, API contracts, backend behavior, public copy, dependencies, or media assets changed.
+
+### Validation Results
+
+- `git status`: reviewed before documentation edits.
+- `npm run typecheck`: passed after rerun with escalated filesystem access because the sandboxed run hit the known Windows `EPERM` realpath issue.
+
+### Recommended Next Phase
+
+Phase 11 should be a narrow Kolasi and Venues simplification baseline: remove fake public proof, isolate unnecessary 3D/tilt behavior, and consolidate Kolasi media constants without changing visual design or behavior.
