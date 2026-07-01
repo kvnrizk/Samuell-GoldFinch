@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload';
 import { calculateInquiryScore } from '../lib/lead-scoring';
+import { isUnauthenticatedCreate, sanitizePublicInquiryCreate } from '../lib/public-write-sanitizer';
 
 export const Inquiries: CollectionConfig = {
   slug: 'inquiries',
@@ -16,6 +17,15 @@ export const Inquiries: CollectionConfig = {
     delete: ({ req: { user } }) => user?.role === 'admin',
   },
   hooks: {
+    beforeValidate: [
+      ({ data, operation, req }) => {
+        if (isUnauthenticatedCreate(operation, req)) {
+          return sanitizePublicInquiryCreate(data as Record<string, unknown> | undefined);
+        }
+
+        return data;
+      },
+    ],
     beforeChange: [
       ({ data, operation }) => {
         if (data && (operation === 'create' || operation === 'update')) {

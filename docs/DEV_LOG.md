@@ -119,3 +119,54 @@ Plan a scoped dependency update branch for Next 15 and Payload 3 patch/minor upd
 ### Recommended Next Phase
 
 Decide explicitly whether to wait for a Payload 3 release that supports Next 15.5.x, approve a larger Next 16 migration, or approve a separate manual lockfile refresh experiment.
+
+## 2026-07-01 - Phase 3: Payload Public Write Hardening
+
+### Public Write Surface Reviewed
+
+- `app/api/[...slug]/route.ts` exposes Payload REST handlers, so collection-level create access is the direct public write boundary.
+- `inquiries` allowed unauthenticated create.
+- `venue-inquiries` allowed unauthenticated create.
+- Server actions in `lib/actions.ts` already validated and sanitized form values, but still sent internal `status` values.
+
+### Files Changed
+
+- `collections/Inquiries.ts`
+- `collections/VenueInquiries.ts`
+- `lib/actions.ts`
+- `lib/public-write-sanitizer.ts`
+- `tests/actions.test.ts`
+- `tests/public-write-sanitizer.test.ts`
+- `docs/DEV_LOG.md`
+
+### Hardening Applied
+
+- Added explicit public create allowlists for `inquiries` and `venue-inquiries`.
+- Added collection `beforeValidate` sanitizers for unauthenticated creates.
+- Public `inquiries` creates can only submit approved contact/quote fields; `status` is derived as `new`.
+- Public `venue-inquiries` creates can only submit approved venue form fields; `source` is derived as `venue-form`, and `status` is derived from budget.
+- Removed internal `status` writes from public server actions.
+- Authenticated admin create/update behavior remains unchanged.
+
+### Tests Added or Updated
+
+- Added sanitizer tests proving public creates cannot inject internal inquiry or venue inquiry fields.
+- Added server-action tests proving contact, quote, and venue form submissions only pass public fields to Payload.
+
+### Validation Results
+
+- `npm ci`: passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm test`: passed, 6 files and 22 tests.
+- `npm run build`: passed. Build still logged CMS-safe MongoDB authentication fallback errors because local `.env` credentials could not authenticate with Atlas.
+
+### Remaining Risks
+
+- Payload REST endpoints are still public for the two form collections by design; protection now depends on the allowlist sanitizer and collection validation.
+- Local MongoDB Atlas credentials still need to be corrected or rotated before production validation.
+- Existing dependency audit vulnerabilities from Phase 2 remain unresolved.
+
+### Recommended Next Phase
+
+Continue backend cleanup with a narrow authenticated-admin access review, then separately address the local Atlas credential issue before production deployment.

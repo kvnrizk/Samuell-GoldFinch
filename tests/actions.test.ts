@@ -59,6 +59,31 @@ describe('form actions', () => {
     expect(mocks.create).not.toHaveBeenCalled();
   });
 
+  it('submits contact form data without internal inquiry fields', async () => {
+    const result = await submitContactForm(form({
+      name: 'Sam',
+      email: 'sam@example.com',
+      projectType: 'Wedding Film',
+      details: '<b>Hello</b>',
+    }));
+
+    expect(result).toEqual({ success: true });
+    expect(mocks.create).toHaveBeenCalledTimes(1);
+
+    const call = mocks.create.mock.calls[0][0];
+    expect(call.collection).toBe('inquiries');
+    expect(call.data).toMatchObject({
+      name: 'Sam',
+      email: 'sam@example.com',
+      service: 'wedding-film',
+      details: 'Hello',
+      source: 'contact-page',
+    });
+    expect(call.data).not.toHaveProperty('status');
+    expect(call.data).not.toHaveProperty('internalNotes');
+    expect(call.data).not.toHaveProperty('leadScore');
+  });
+
   it('rejects invalid quote services before persistence', async () => {
     const result = await submitQuoteForm(form({
       name: 'Sam',
@@ -69,6 +94,39 @@ describe('form actions', () => {
     expect(result.success).toBe(false);
     expect(result.error).toContain('valid service');
     expect(mocks.create).not.toHaveBeenCalled();
+  });
+
+  it('submits quote form data without internal inquiry fields', async () => {
+    const result = await submitQuoteForm(form({
+      name: 'Sam',
+      email: 'sam@example.com',
+      phone: '+33123456789',
+      service: 'editorial-commercial',
+      eventDate: 'September',
+      guestCount: '120',
+      budget: '5000',
+      details: 'Brand film',
+    }));
+
+    expect(result).toEqual({ success: true });
+    expect(mocks.create).toHaveBeenCalledTimes(1);
+
+    const call = mocks.create.mock.calls[0][0];
+    expect(call.collection).toBe('inquiries');
+    expect(call.data).toMatchObject({
+      name: 'Sam',
+      email: 'sam@example.com',
+      phone: '+33123456789',
+      service: 'editorial-commercial',
+      eventDate: 'September',
+      guestCount: 120,
+      budget: '5000',
+      details: 'Brand film',
+      source: 'quote-page',
+    });
+    expect(call.data).not.toHaveProperty('status');
+    expect(call.data).not.toHaveProperty('internalNotes');
+    expect(call.data).not.toHaveProperty('estimatedValue');
   });
 
   it('rejects venue inquiries without a WhatsApp number before persistence', async () => {
@@ -82,5 +140,53 @@ describe('form actions', () => {
     expect(result.success).toBe(false);
     expect(result.error).toContain('required');
     expect(mocks.create).not.toHaveBeenCalled();
+  });
+
+  it('submits venue inquiry data without internal venue fields', async () => {
+    const result = await submitVenueInquiry(form({
+      venueName: 'Club Test',
+      address: 'Paris',
+      website: 'https://example.com',
+      instagram: '@club',
+      venueType: 'club',
+      capacity: '250',
+      hasDancePocket: 'on',
+      currentProgramming: 'Weekly DJs',
+      goal: ['better-crowd', 'signature-night'],
+      monthlyBudget: '2k-5k',
+      decisionMaker: 'owner',
+      contactName: 'Owner',
+      contactWhatsApp: '+33123456789',
+      contactEmail: 'owner@example.com',
+      timeline: 'asap',
+    }));
+
+    expect(result).toEqual({ success: true });
+    expect(mocks.create).toHaveBeenCalledTimes(1);
+
+    const call = mocks.create.mock.calls[0][0];
+    expect(call.collection).toBe('venue-inquiries');
+    expect(call.data).toMatchObject({
+      venueName: 'Club Test',
+      address: 'Paris',
+      website: 'https://example.com',
+      instagram: '@club',
+      venueType: 'club',
+      capacity: 250,
+      hasDancePocket: true,
+      currentProgramming: 'Weekly DJs',
+      goal: ['better-crowd', 'signature-night'],
+      monthlyBudget: '2k-5k',
+      decisionMaker: 'owner',
+      contactName: 'Owner',
+      contactWhatsApp: '+33123456789',
+      contactEmail: 'owner@example.com',
+      timeline: 'asap',
+      source: 'venue-form',
+    });
+    expect(call.data).not.toHaveProperty('status');
+    expect(call.data).not.toHaveProperty('contractValue');
+    expect(call.data).not.toHaveProperty('leadScore');
+    expect(call.data).not.toHaveProperty('internalNotes');
   });
 });

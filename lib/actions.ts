@@ -94,7 +94,6 @@ export async function submitContactForm(formData: FormData): Promise<FormResult>
         ...(service ? { service } : {}),
         details,
         source: 'contact-page',
-        status: 'new',
       },
     });
 
@@ -165,7 +164,6 @@ export async function submitQuoteForm(formData: FormData): Promise<FormResult> {
         budget,
         details,
         source: 'quote-page',
-        status: 'new',
       },
     });
 
@@ -266,7 +264,6 @@ export async function submitVenueInquiry(formData: FormData): Promise<FormResult
         contactEmail,
         ...(timeline ? { timeline } : {}),
         source: 'venue-form',
-        status: isQualified ? 'qualified' : 'new',
       },
     });
 

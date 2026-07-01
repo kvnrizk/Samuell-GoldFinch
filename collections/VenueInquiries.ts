@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload';
 import { calculateVenueScore } from '../lib/lead-scoring';
+import { isUnauthenticatedCreate, sanitizePublicVenueInquiryCreate } from '../lib/public-write-sanitizer';
 
 export const VenueInquiries: CollectionConfig = {
   slug: 'venue-inquiries',
@@ -16,6 +17,15 @@ export const VenueInquiries: CollectionConfig = {
     delete: ({ req: { user } }) => user?.role === 'admin',
   },
   hooks: {
+    beforeValidate: [
+      ({ data, operation, req }) => {
+        if (isUnauthenticatedCreate(operation, req)) {
+          return sanitizePublicVenueInquiryCreate(data as Record<string, unknown> | undefined);
+        }
+
+        return data;
+      },
+    ],
     beforeChange: [
       ({ data, operation }) => {
         if (data && (operation === 'create' || operation === 'update')) {
