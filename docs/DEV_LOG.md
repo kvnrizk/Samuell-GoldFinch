@@ -919,3 +919,70 @@ Phase 16: content decision on remaining static "proof" arrays in `home-content.t
 ### Recommended Next Phase
 
 Phase 17: with the client, verify the remaining named collaborations/credits (home collaborations, About-page credits) against real engagements, and seed real CMS artists/posts/events so the public proof surfaces render genuine content instead of empty states.
+
+## 2026-07-01 - Phase 16B: Add Embassy of Lebanon as Priority Blaze Project Card
+
+### Context
+
+Embassy of Lebanon is a confirmed real Blaze collaboration (per the phase brief and the real event assets in the repo). It previously appeared only as a generic collaboration credential and a press mention, not as a Blaze project card.
+
+### Blaze Project/Proof Surfaces Reviewed
+
+- `app/(site)/HomeClient.tsx` — homepage `curatedBlazeItems` fed to `WorkOrbitCarousel`.
+- `app/(site)/home-content.ts` — `homeMedia` image sets, `homeCollaborations` strip.
+- `app/(site)/blaze/BlazeClient.tsx` — `selectedWork` module (`stouhBeirut`/`weddingsStatic`/`editorialStatic` + `OrbitCarousel`) and the `?work=` deep-link handler.
+- `app/(site-fr)/fr/page.tsx` — reuses `HomeClient` (so the homepage change covers `/fr`); no separate `/fr/blaze` route exists.
+- `app/(site)/showreel/page.tsx` — does not feed Blaze cards.
+
+### Where Embassy Was Already Present
+
+- `home-content.ts` `homeCollaborations`: `{ name: 'Embassy of Lebanon', location: 'Paris' }` (generic, no logo).
+- `app/(site)/press/page.tsx`: a press item "Behind the Lens: Embassy Events".
+
+### Real Embassy Media Found
+
+- `public/assets/blaze/ambassy/` contains 19 real Embassy event photos (`0C5A9134.jpg` … `4F8A9996.jpg`), also mirrored on Cloudinary. These are served the same way as the other Blaze card media (`/assets/blaze/...`).
+
+### Where Embassy Was Added
+
+- Homepage Blaze carousel (`curatedBlazeItems`): a new first WorkItem — title "Embassy of Lebanon", category "Institutional Event", meta "Institutional event coverage", image `media.embassy[0]`, `blazeWorkId: 'embassy'`.
+- `home-content.ts`: added an `embassy` image array to `homeMedia` using real ambassy assets.
+- Blaze page `selectedWork`: a new first item (id `embassy`) — "Embassy of Lebanon", "Institutional Event", description "Institutional event coverage in Paris.", `items: embassyStatic` (12 real ambassy photos in the same `{ url, title, category }` shape as the other cards).
+- Blaze page: added `'embassy'` to the `?work=` deep-link allowlist so the homepage card opens the Embassy tab; widened the tab grid from `sm:grid-cols-3` to `sm:grid-cols-2 lg:grid-cols-4` to fit four tabs cleanly.
+
+### Card Order / Priority
+
+- Embassy is placed first on both the homepage carousel and the Blaze page selected-work module (default active tab), giving it top visual priority alongside the main showcased projects.
+
+### What Was Intentionally Not Invented
+
+- No fake case study, long description, event dates, metrics, testimonials, or invented gallery images.
+- Only real ambassy assets were used; no unrelated wedding/editorial media was assigned to Embassy.
+- Copy kept minimal and factual ("Institutional event coverage in Paris" — Paris is the confirmed collaboration location); no video was implied (only photo assets exist).
+
+### Files Changed
+
+- `app/(site)/home-content.ts`
+- `app/(site)/HomeClient.tsx`
+- `app/(site)/blaze/BlazeClient.tsx`
+- `tests/blaze-embassy-card.test.ts`
+- `docs/DEV_LOG.md`
+- `docs/BRAND_ARCHITECTURE.md`
+
+### Validation Results
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed (no warnings or errors).
+- `npm test`: passed. Result: 16 files and 66 tests.
+- `npm run build`: passed after stopping a running `next dev` server that held `.next` and clearing `.next` (Windows/OneDrive `EPERM` lock). Build still logged the expected CMS-safe MongoDB auth fallback (local `.env` cannot authenticate with Atlas).
+
+### Remaining Content/Design Risks
+
+- Embassy card media/copy is curated/static, matching the other Blaze cards ("curated until the final CMS media pass"); it should migrate to CMS when Blaze projects are seeded.
+- Only photo assets exist for Embassy; if a real Embassy film clip is provided later, the card can gain a hero video like other projects.
+- The pre-existing homepage `?work=creative-direction` deep-link still does not match the Blaze `selectedWork` id `editorial` (unrelated pre-existing quirk, left untouched).
+- Local build cannot authenticate with Atlas, so live rendering was not verified against real CMS data.
+
+### Recommended Next Phase
+
+Phase 17: with the client, verify the remaining named collaborations/credits against real engagements, and seed real CMS Blaze projects/artists/posts/events (including a CMS-backed Embassy project) so the curated static cards can be replaced by CMS-driven content.

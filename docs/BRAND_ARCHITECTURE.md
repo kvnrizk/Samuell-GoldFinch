@@ -177,3 +177,10 @@ Scope:
 - The fabricated 8-artist `staticRoster` fallback was removed from both venues pages; the roster is CMS-only and shows the existing "Roster coming soon" empty state when CMS has no artists.
 - No real CMS content, real media assets, or conversion CTAs were removed; no testimonials/press/awards/case studies existed on these surfaces.
 - Remaining named credentials (home collaborations, About-page credits) still depend on client verification and real CMS seeding.
+
+## Phase 16B Embassy of Lebanon Blaze Card Completed
+
+- Embassy of Lebanon (a confirmed real collaboration) was added as a priority Blaze project card using real repo assets (`public/assets/blaze/ambassy/`), in the same card system as the other Blaze projects.
+- It appears first in the homepage Blaze carousel (`curatedBlazeItems`) and first in the Blaze page selected-work module (default tab), with a deep-link (`/blaze?work=embassy`) from the homepage card.
+- Copy is minimal and factual ("Institutional event coverage in Paris"); no case study, dates, metrics, testimonials, or gallery content were invented, and no unrelated media was used.
+- Embassy remains listed among real collaborations; the card is curated/static like the other Blaze cards until Blaze projects are seeded in CMS.

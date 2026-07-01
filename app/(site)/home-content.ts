@@ -56,6 +56,12 @@ export const homeMedia = {
     '/assets/blaze/editorial_and_brand/pexels-fabrice-busching-1777473881-30235864.jpg',
     '/assets/blaze/editorial_and_brand/pexels-valentina-maros-128709290-13283497.jpg',
   ],
+  embassy: [
+    '/assets/blaze/ambassy/0C5A9134.jpg',
+    '/assets/blaze/ambassy/0C5A9189.jpg',
+    '/assets/blaze/ambassy/0C5A9206.jpg',
+    '/assets/blaze/ambassy/4F8A9963.jpg',
+  ],
   speakeasy: [
     'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364299/sg-platform/static/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.jpg',
     'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg',

@@ -88,6 +88,15 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
 
   const curatedBlazeItems: WorkItem[] = [
     {
+      id: 'embassy-of-lebanon',
+      blazeWorkId: 'embassy',
+      identity: 'blaze',
+      title: 'Embassy of Lebanon',
+      category: 'Institutional Event',
+      meta: 'Institutional event coverage',
+      image: media.embassy[0],
+    },
+    {
       id: 'blaze-weddings',
       blazeWorkId: 'weddings',
       identity: 'blaze',

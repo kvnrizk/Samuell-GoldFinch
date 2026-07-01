@@ -70,6 +70,22 @@ const editorialStatic = [
   { url: '/assets/blaze/editorial_and_brand/pexels-valentina-maros-128709290-13283497.jpg', title: 'Creative Direction', category: 'Editorial' },
 ];
 
+// Real Embassy of Lebanon event assets (public/assets/blaze/ambassy).
+const embassyStatic = [
+  { url: '/assets/blaze/ambassy/0C5A9134.jpg', title: 'Embassy of Lebanon', category: 'Event' },
+  { url: '/assets/blaze/ambassy/0C5A9139.jpg', title: 'Embassy of Lebanon', category: 'Event' },
+  { url: '/assets/blaze/ambassy/0C5A9189.jpg', title: 'Embassy of Lebanon', category: 'Event' },
+  { url: '/assets/blaze/ambassy/0C5A9194.jpg', title: 'Embassy of Lebanon', category: 'Event' },
+  { url: '/assets/blaze/ambassy/0C5A9196.jpg', title: 'Embassy of Lebanon', category: 'Event' },
+  { url: '/assets/blaze/ambassy/0C5A9203.jpg', title: 'Embassy of Lebanon', category: 'Event' },
+  { url: '/assets/blaze/ambassy/0C5A9206.jpg', title: 'Embassy of Lebanon', category: 'Event' },
+  { url: '/assets/blaze/ambassy/0C5A9210.jpg', title: 'Embassy of Lebanon', category: 'Event' },
+  { url: '/assets/blaze/ambassy/0C5A9214.jpg', title: 'Embassy of Lebanon', category: 'Event' },
+  { url: '/assets/blaze/ambassy/0C5A9228.jpg', title: 'Embassy of Lebanon', category: 'Event' },
+  { url: '/assets/blaze/ambassy/4F8A9963.jpg', title: 'Embassy of Lebanon', category: 'Event' },
+  { url: '/assets/blaze/ambassy/4F8A9974.jpg', title: 'Embassy of Lebanon', category: 'Event' },
+];
+
 interface BlazeGalleryItem {
   image?: {
     url?: string;
@@ -107,7 +123,17 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
   const weddingItems = weddingsStatic;
   const editorialItems = editorialStatic;
   const eventItems = stouhBeirut;
+  const embassyItems = embassyStatic;
   const selectedWork = [
+    {
+      id: 'embassy',
+      label: 'Embassy of Lebanon',
+      title: 'Embassy of Lebanon',
+      category: 'Institutional Event',
+      description: 'Institutional event coverage in Paris.',
+      items: embassyItems,
+      autoplayInterval: 5200,
+    },
     {
       id: 'stouh',
       label: 'STOUH BEIRUT',
@@ -144,7 +170,7 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
 
   useEffect(() => {
     const requestedWork = new URLSearchParams(window.location.search).get('work');
-    if (requestedWork && ['stouh', 'weddings', 'creative-direction'].includes(requestedWork)) {
+    if (requestedWork && ['embassy', 'stouh', 'weddings', 'creative-direction'].includes(requestedWork)) {
       setSelectedWorkId(requestedWork);
     }
   }, []);
@@ -291,7 +317,7 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
             </p>
           </div>
 
-          <div className="mx-auto mb-12 grid max-w-4xl grid-cols-1 gap-3 sm:grid-cols-3">
+          <div className="mx-auto mb-12 grid max-w-4xl grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {selectedWork.map((work) => {
               const isSelected = work.id === activeWork.id;
               return (
