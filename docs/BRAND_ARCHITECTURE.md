@@ -126,12 +126,12 @@ Where 3D would be harmful:
 
 ## Next Implementation Phase
 
-Recommended Phase 13: Kolasi page density and media-source cleanup.
+Recommended Phase 14: venues page roster links and journal demo cleanup.
 
 Scope:
 
-- Consolidate Kolasi page media constants into a local content module.
-- Decide whether the Kolasi showcase and marquee gallery both need to stay.
+- Neutralize the venues page static artist roster links to `/kolasi/artists/<demo-slug>` (same CMS-only 404 risk fixed on the Kolasi landing in Phase 13).
+- Decide the content approach for `journal/[slug]` static demo posts.
 - Keep real CMS content, venue conversion paths, and current visual direction intact.
 - Do not add 3D or redesign.
 
@@ -149,3 +149,10 @@ Scope:
 - Static demo slugs and static detail maps were removed from those public detail routes.
 - Missing CMS detail records now return `notFound()` instead of public demo content.
 - Neutral page-level fallbacks, such as non-proof layout media and utility FAQ/package content, remain for a separate content decision.
+
+## Phase 13 Kolasi Landing Link Cleanup Completed
+
+- Kolasi landing showcase cards no longer link to CMS-only event detail routes; the static promo clips are now honest, non-clickable brand media previews (no demo `/kolasi/<slug>` links).
+- Real conversion CTAs (`/venues`, `/contact`, `#services`) and the CMS-driven `UpcomingEvents` links remain unchanged.
+- Media sections (expertise, showcase, gallery, services) were intentionally left intact; consolidating them is a content/design decision, not a link-safety fix.
+- The venues page still links its static artist roster to `/kolasi/artists/<demo-slug>`; that shares the same CMS-only 404 risk and is deferred to Phase 14.

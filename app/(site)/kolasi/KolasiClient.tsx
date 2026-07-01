@@ -68,19 +68,21 @@ interface KolasiClientProps {
   upcomingEvents?: any[];
 }
 
+/* Static promo clips — brand media previews only. Not linked to CMS event
+   detail routes, so no demo slugs are exposed as public /kolasi/<slug> links. */
 const showcaseClips = [
-  { muxPlaybackId: 'bzlHPIIz3L68lqg6fmMTH02GsYL1AeZnT6ewRQIlokaE', label: 'Le Speakeasy', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364299/sg-platform/static/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.jpg', slug: 'le-speakeasy' },
-  { muxPlaybackId: 'RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo', label: '2nd Sun', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg', slug: '2nd-sun' },
-  { muxPlaybackId: '2aAgNa5S5s32fQG8XBUHXrwPUBbEQxn4oyKAjJSV801k', label: 'Kolasi Nights', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364247/sg-platform/static/assets/kolasi/images/4F8A2938.jpg', slug: 'kolasi-nights' },
+  { muxPlaybackId: 'bzlHPIIz3L68lqg6fmMTH02GsYL1AeZnT6ewRQIlokaE', label: 'Le Speakeasy', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364299/sg-platform/static/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.jpg' },
+  { muxPlaybackId: 'RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo', label: '2nd Sun', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg' },
+  { muxPlaybackId: '2aAgNa5S5s32fQG8XBUHXrwPUBbEQxn4oyKAjJSV801k', label: 'Kolasi Nights', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364247/sg-platform/static/assets/kolasi/images/4F8A2938.jpg' },
 ];
 
-function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] & { slug?: string } }) {
+function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   return (
     <div
       ref={cardRef}
-      className="reveal-up aspect-[4/3] rounded-3xl overflow-hidden border relative group cursor-pointer sg-media-frame"
+      className="reveal-up aspect-[4/3] rounded-3xl overflow-hidden border relative group sg-media-frame"
     >
       <div className="w-full h-full opacity-60 group-hover:opacity-100 transition-opacity duration-500">
         <VideoPlayer
@@ -101,15 +103,6 @@ function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] & { slug?: 
       </div>
       <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
         <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>{clip.label}</p>
-        {clip.slug && (
-          <Link
-            href={`/kolasi/${clip.slug}`}
-            className="text-[10px] font-medium px-3 py-1.5 rounded-full border opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            style={{ borderColor: 'var(--border-strong)', color: 'var(--text-secondary)' }}
-          >
-            View Event
-          </Link>
-        )}
       </div>
     </div>
   );

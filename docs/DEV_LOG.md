@@ -646,3 +646,64 @@ Phase 12 should remove public demo/fallback detail content from Blaze projects, 
 ### Recommended Next Phase
 
 Phase 13 should focus on Kolasi page density and media-source cleanup: consolidate static media constants, decide whether both showcase and marquee are needed, and preserve current visual direction without adding 3D.
+
+## 2026-07-01 - Phase 13: Kolasi Landing Link and Density Cleanup
+
+### Kolasi Areas Reviewed
+
+- `app/(site)/kolasi/KolasiClient.tsx` (hero, manifesto, expertise, showcase, upcoming events, services accordion, marquee gallery, venue/CTA banners).
+- `app/(site)/kolasi/page.tsx` server data flow (`getAllKolasiEvents`, `getUpcomingEvents` via `safeCms`).
+- `components/ui/UpcomingEvents.tsx` link behavior.
+- Kolasi event detail route and artist detail route (CMS-only from Phase 12).
+- All `/kolasi/` link sites across `app/`.
+
+### Broken/Demo Links Found
+
+- The static `showcaseClips` cards rendered a "View Event" link to `/kolasi/<slug>` for demo slugs `le-speakeasy`, `2nd-sun`, and `kolasi-nights`. With the event detail route now CMS-only (`notFound()` on unknown slugs), these three links resolved to 404 and presented static promos as real, browsable events.
+- `UpcomingEvents` was already safe: it links to `/kolasi/<slug>` only when a real CMS `slug` exists and shows a credible empty state otherwise.
+
+### Chosen Scope
+
+- Remove the demo `slug` fields from the static `showcaseClips` and drop the broken "View Event" link so the clips are honest, non-clickable brand/media previews.
+- Remove `cursor-pointer` from the showcase card so a non-navigating card does not look clickable.
+- Keep the promo videos, labels, layout, and all real conversion CTAs (`/venues`, `/contact`, `#services`) unchanged.
+- Do not consolidate/remove media sections: the expertise, showcase, gallery, and services sections are all real brand media, and merging or removing any is a redesign/content decision outside this phase's minimal scope.
+
+### Changes Made
+
+- `app/(site)/kolasi/KolasiClient.tsx`: removed demo slugs from `showcaseClips`, removed the `/kolasi/<slug>` "View Event" link and the `& { slug?: string }` card type, removed the misleading `cursor-pointer`, and added a comment documenting that these clips are media previews, not linked events.
+- `tests/kolasi-landing-links.test.ts`: new focused regression test asserting the landing exposes no demo detail links and keeps its real conversion CTAs.
+
+### Files Changed
+
+- `app/(site)/kolasi/KolasiClient.tsx`
+- `tests/kolasi-landing-links.test.ts`
+- `docs/DEV_LOG.md`
+- `docs/BRAND_ARCHITECTURE.md`
+
+### Intentionally Not Changed
+
+- No 3D, no redesign, no broad `KolasiClient` rewrite.
+- No routes, slugs, SEO metadata, Payload schemas, API contracts, backend behavior, or form contracts changed.
+- No dependencies added.
+- No CMS-driven content removed; real event links via `UpcomingEvents` untouched.
+- Static media arrays (`galleryRow1/2`, `expertise`, `services`) kept — they are neutral fallback/brand media, not demo proof, and consolidating them was not clearly safe within scope.
+
+### Validation Results
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed (no warnings or errors).
+- `npm test`: passed. Result: 12 files and 51 tests.
+- `npm run build`: passed. `/kolasi` bundle shrank slightly after removing the link block; build still logged the expected CMS-safe MongoDB auth fallback because local `.env` cannot authenticate with Atlas.
+
+### Remaining Frontend Risks
+
+- The venues page still links its static artist roster to `/kolasi/artists/<slug>` (`kate-zubok`, `dj-marco`, …), which now 404 on the CMS-only artist detail route. This is a separate page and out of this phase's scope.
+- `journal/[slug]` still serves `staticPostsMap` demo posts.
+- Static artist rosters / proof remain on the venues pages, `home-content.ts`, and `showreel`.
+- The Kolasi landing still stacks several dense media sections (expertise vs. services overlap; showcase + marquee gallery); reducing this is a content/design decision deferred to a future phase.
+- Local build cannot authenticate with Atlas, so live CMS rendering of the landing was not verified against real data.
+
+### Recommended Next Phase
+
+Phase 14: neutralize the venues page static artist roster links to `/kolasi/artists/<demo-slug>` (same CMS-only 404 risk as the Kolasi showcase), and make a content decision on the journal `[slug]` static demo posts.
