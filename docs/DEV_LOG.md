@@ -368,3 +368,54 @@ Continue backend cleanup with a narrow authenticated-admin access review, then s
 ### Recommended Next Phase
 
 Continue with another narrow frontend simplification pass, preferably `QuoteClient` form-step component extraction or `Header` state/render split, without changing visual design or behavior.
+
+## 2026-07-01 - Phase 8: Header Structure Simplification
+
+### Header Areas Reviewed
+
+- `components/layout/Header.tsx`
+- desktop navigation
+- mobile navigation
+- scroll behavior
+- active route styling
+- theme toggle behavior
+- language switch behavior
+- More dropdown behavior
+
+### Chosen Simplification Scope
+
+- Split header rendering structure into an internal `header-structure.tsx` module.
+- Keep `Header.tsx` focused on state, effects, route awareness, and orchestration.
+- Preserve existing navigation labels, destination URLs, classes, styles, and behavior.
+
+### Files Changed
+
+- `components/layout/Header.tsx`
+- `components/layout/header-structure.tsx`
+- `docs/DEV_LOG.md`
+
+### Intentionally Not Changed
+
+- No visual redesign.
+- No 3D.
+- No public routes, slugs, SEO metadata, Payload schemas, API contracts, backend behavior, public copy, navigation labels, or destination URLs changed.
+- No dependencies were added or upgraded.
+
+### Validation Results
+
+- `npm ci`: passed after the dev server was manually stopped.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm test`: passed after rerun with escalated filesystem access because the sandboxed run hit the known Windows `EPERM` realpath issue. Result: 10 files and 46 tests.
+- `npm run build`: passed. Build still logged CMS-safe MongoDB authentication fallback errors because local `.env` credentials could not authenticate with Atlas. Build also logged a stale Browserslist data notice.
+
+### Remaining Frontend Risks
+
+- Browser visual comparison was not performed in this phase.
+- Header behavior should still be manually smoke-tested on desktop and mobile after the next dev server start.
+- `QuoteClient`, `VenuesClient`, `KolasiClient`, and `AboutClient` remain large frontend cleanup targets.
+- Existing local MongoDB auth warnings still reduce build-log signal quality.
+
+### Recommended Next Phase
+
+Continue with another narrow frontend simplification pass, preferably `QuoteClient` form-step extraction, without changing visual design or behavior.
