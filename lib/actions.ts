@@ -2,6 +2,7 @@
 
 import { getPayload } from './payload';
 import { getResend } from './resend';
+import { checkFormAbuse, getFormPayloadSize } from './form-abuse';
 import {
   contactNotification,
   contactAutoReply,
@@ -59,9 +60,28 @@ interface FormResult {
   error?: string;
 }
 
+const CONTACT_GENERIC_ERROR = 'Something went wrong. Please try again or email us directly.';
+const VENUE_GENERIC_ERROR = 'Something went wrong. Please try again.';
+
+async function getClientIp(): Promise<string | undefined> {
+  try {
+    const { headers } = await import('next/headers');
+    const headersList = await headers();
+
+    return (
+      headersList.get('x-real-ip') ||
+      headersList.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      undefined
+    );
+  } catch {
+    return undefined;
+  }
+}
+
 export async function submitContactForm(formData: FormData): Promise<FormResult> {
   const honeypot = formData.get('_hp') as string;
   if (honeypot) return { success: true };
+  const payloadSize = getFormPayloadSize(formData);
 
   const name = sanitize((formData.get('name') as string) || '', 100);
   const email = sanitize((formData.get('email') as string) || '', 254);
@@ -73,6 +93,17 @@ export async function submitContactForm(formData: FormData): Promise<FormResult>
   }
   if (!isValidEmail(email)) {
     return { success: false, error: 'Please provide a valid email address.' };
+  }
+
+  const abuse = checkFormAbuse({
+    email,
+    formId: 'contact',
+    ip: await getClientIp(),
+    message: details,
+    payloadSize,
+  });
+  if (!abuse.allowed) {
+    return { success: false, error: CONTACT_GENERIC_ERROR };
   }
 
   // Map contact projectType to collection service values
@@ -119,13 +150,14 @@ export async function submitContactForm(formData: FormData): Promise<FormResult>
     return { success: true };
   } catch (err) {
     console.error('[submitContactForm] failed to save inquiry', err);
-    return { success: false, error: 'Something went wrong. Please try again or email us directly.' };
+    return { success: false, error: CONTACT_GENERIC_ERROR };
   }
 }
 
 export async function submitQuoteForm(formData: FormData): Promise<FormResult> {
   const honeypot = formData.get('_hp') as string;
   if (honeypot) return { success: true };
+  const payloadSize = getFormPayloadSize(formData);
 
   const name = sanitize((formData.get('name') as string) || '', 100);
   const email = sanitize((formData.get('email') as string) || '', 254);
@@ -149,6 +181,18 @@ export async function submitQuoteForm(formData: FormData): Promise<FormResult> {
     return { success: false, error: 'Please select a valid service.' };
   }
   const service = serviceRaw as QuoteService | '';
+
+  const abuse = checkFormAbuse({
+    email,
+    formId: 'quote',
+    ip: await getClientIp(),
+    message: details,
+    payloadSize,
+    phone,
+  });
+  if (!abuse.allowed) {
+    return { success: false, error: CONTACT_GENERIC_ERROR };
+  }
 
   try {
     const payload = await getPayload();
@@ -189,13 +233,14 @@ export async function submitQuoteForm(formData: FormData): Promise<FormResult> {
     return { success: true };
   } catch (err) {
     console.error('[submitQuoteForm] failed to save inquiry', err);
-    return { success: false, error: 'Something went wrong. Please try again or email us directly.' };
+    return { success: false, error: CONTACT_GENERIC_ERROR };
   }
 }
 
 export async function submitVenueInquiry(formData: FormData): Promise<FormResult> {
   const honeypot = formData.get('_hp') as string;
   if (honeypot) return { success: true };
+  const payloadSize = getFormPayloadSize(formData);
 
   const venueName = sanitize((formData.get('venueName') as string) || '', 200);
   const address = sanitize((formData.get('address') as string) || '', 300);
@@ -241,6 +286,18 @@ export async function submitVenueInquiry(formData: FormData): Promise<FormResult
   const decisionMaker = decisionMakerRaw as VenueDecisionMaker | '';
   const timeline = timelineRaw as VenueTimeline | '';
   const isQualified = monthlyBudget !== 'under-2k';
+
+  const abuse = checkFormAbuse({
+    email: contactEmail,
+    formId: 'venue',
+    ip: await getClientIp(),
+    message: currentProgramming,
+    payloadSize,
+    phone: contactWhatsApp,
+  });
+  if (!abuse.allowed) {
+    return { success: false, error: VENUE_GENERIC_ERROR };
+  }
 
   try {
     const payload = await getPayload();
@@ -312,6 +369,6 @@ export async function submitVenueInquiry(formData: FormData): Promise<FormResult
     return { success: true };
   } catch (err) {
     console.error('[submitVenueInquiry] failed to save venue inquiry', err);
-    return { success: false, error: 'Something went wrong. Please try again.' };
+    return { success: false, error: VENUE_GENERIC_ERROR };
   }
 }

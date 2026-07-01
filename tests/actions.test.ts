@@ -20,6 +20,7 @@ vi.mock('../lib/resend', () => ({
 }));
 
 import { submitContactForm, submitQuoteForm, submitVenueInquiry } from '../lib/actions';
+import { resetFormAbuseForTests } from '../lib/form-abuse';
 
 function form(entries: Record<string, string | string[]>) {
   const data = new FormData();
@@ -35,6 +36,7 @@ function form(entries: Record<string, string | string[]>) {
 
 describe('form actions', () => {
   beforeEach(() => {
+    resetFormAbuseForTests();
     mocks.create.mockReset();
     mocks.findGlobal.mockReset();
     mocks.emailSend.mockReset();
@@ -84,6 +86,40 @@ describe('form actions', () => {
     expect(call.data).not.toHaveProperty('leadScore');
   });
 
+  it('rejects duplicate contact submissions before persistence', async () => {
+    const data = form({
+      name: 'Sam',
+      email: 'sam@example.com',
+      projectType: 'Wedding Film',
+      details: 'Same inquiry',
+    });
+
+    expect(await submitContactForm(data)).toEqual({ success: true });
+
+    const duplicate = await submitContactForm(form({
+      name: 'Sam',
+      email: 'sam@example.com',
+      projectType: 'Wedding Film',
+      details: 'Same inquiry',
+    }));
+
+    expect(duplicate.success).toBe(false);
+    expect(duplicate.error).toContain('Something went wrong');
+    expect(mocks.create).toHaveBeenCalledTimes(1);
+  });
+
+  it('rejects oversized contact payloads before persistence', async () => {
+    const result = await submitContactForm(form({
+      name: 'Sam',
+      email: 'sam@example.com',
+      details: 'x'.repeat(9000),
+    }));
+
+    expect(result.success).toBe(false);
+    expect(result.error).toContain('Something went wrong');
+    expect(mocks.create).not.toHaveBeenCalled();
+  });
+
   it('rejects invalid quote services before persistence', async () => {
     const result = await submitQuoteForm(form({
       name: 'Sam',
@@ -127,6 +163,32 @@ describe('form actions', () => {
     expect(call.data).not.toHaveProperty('status');
     expect(call.data).not.toHaveProperty('internalNotes');
     expect(call.data).not.toHaveProperty('estimatedValue');
+  });
+
+  it('rate-limits repeated quote submissions by fallback email when IP is unavailable', async () => {
+    for (let i = 0; i < 5; i += 1) {
+      const result = await submitQuoteForm(form({
+        name: 'Sam',
+        email: 'sam@example.com',
+        phone: '+33123456789',
+        service: 'editorial-commercial',
+        details: `Brand film ${i}`,
+      }));
+
+      expect(result).toEqual({ success: true });
+    }
+
+    const limited = await submitQuoteForm(form({
+      name: 'Sam',
+      email: 'sam@example.com',
+      phone: '+33123456789',
+      service: 'editorial-commercial',
+      details: 'Brand film 6',
+    }));
+
+    expect(limited.success).toBe(false);
+    expect(limited.error).toContain('Something went wrong');
+    expect(mocks.create).toHaveBeenCalledTimes(5);
   });
 
   it('rejects venue inquiries without a WhatsApp number before persistence', async () => {
@@ -188,5 +250,24 @@ describe('form actions', () => {
     expect(call.data).not.toHaveProperty('contractValue');
     expect(call.data).not.toHaveProperty('leadScore');
     expect(call.data).not.toHaveProperty('internalNotes');
+  });
+
+  it('rejects duplicate venue submissions before persistence', async () => {
+    const data = {
+      venueName: 'Club Test',
+      monthlyBudget: '2k-5k',
+      contactName: 'Owner',
+      contactWhatsApp: '+33123456789',
+      contactEmail: 'owner@example.com',
+      currentProgramming: 'Same program',
+    };
+
+    expect(await submitVenueInquiry(form(data))).toEqual({ success: true });
+
+    const duplicate = await submitVenueInquiry(form(data));
+
+    expect(duplicate.success).toBe(false);
+    expect(duplicate.error).toContain('Something went wrong');
+    expect(mocks.create).toHaveBeenCalledTimes(1);
   });
 });

@@ -268,3 +268,45 @@ Continue backend cleanup with a narrow authenticated-admin access review, then s
 
 - Local `.env` still needs MongoDB Atlas credentials corrected or rotated before production validation.
 - Feature integrations still require real provider dashboard validation after env values are set.
+
+## 2026-07-01 - Phase 6: Public Form Abuse Protection
+
+### Form Entry Points Reviewed
+
+- `submitContactForm` in `lib/actions.ts`
+- `submitQuoteForm` in `lib/actions.ts`
+- `submitVenueInquiry` in `lib/actions.ts`
+- contact, quote, and venue client form callers
+- existing middleware in-memory rate limiter
+- Phase 3 Payload public write sanitizers
+
+### Protections Added
+
+- Added a no-dependency in-memory server-action abuse guard.
+- Blocks oversized form payloads before persistence.
+- Blocks duplicate submissions with the same email or phone and message within a short window.
+- Rate-limits repeated valid submissions by IP when available, otherwise by email or phone.
+- Keeps existing honeypot short-circuiting.
+- Keeps generic user-facing error messages.
+
+### Limitations
+
+- The guard is in-memory per server instance, like the existing middleware limiter.
+- It is a practical abuse reduction layer, not a globally consistent anti-spam system.
+- A future production upgrade could move counters to Vercel KV/Upstash or add Turnstile if spam volume justifies it.
+
+### Files Changed
+
+- `docs/DEV_LOG.md`
+- `lib/actions.ts`
+- `lib/form-abuse.ts`
+- `tests/actions.test.ts`
+- `tests/form-abuse.test.ts`
+
+### Validation Results
+
+- `npm ci`: passed. The run emitted a Windows cleanup warning on `node_modules`.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm test`: passed, 10 files and 46 tests.
+- `npm run build`: passed. Build still logged CMS-safe MongoDB authentication fallback errors because local `.env` credentials could not authenticate with Atlas.
