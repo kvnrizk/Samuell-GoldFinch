@@ -126,14 +126,14 @@ Where 3D would be harmful:
 
 ## Next Implementation Phase
 
-Recommended Phase 12: CMS-only public detail proof cleanup.
+Recommended Phase 13: Kolasi page density and media-source cleanup.
 
 Scope:
 
-- Convert Blaze, Kolasi event, and artist detail fallbacks from public demo proof into CMS-only behavior.
-- Keep safe fallback media only where it does not imply verified work, clients, artists, or events.
-- Update static params so fallback/demo slugs are not exposed as real content.
-- Keep public routes, copy meaning, CMS schemas, and visual direction unchanged.
+- Consolidate Kolasi page media constants into a local content module.
+- Decide whether the Kolasi showcase and marquee gallery both need to stay.
+- Keep real CMS content, venue conversion paths, and current visual direction intact.
+- Do not add 3D or redesign.
 
 ## Phase 11 Baseline Completed
 
@@ -141,3 +141,12 @@ Scope:
 - Fake upcoming Kolasi events were removed from the shared upcoming-events component.
 - Kolasi marquee gallery tilt/3D-like hover behavior was removed while preserving the marquee layout.
 - Static fallback detail routes for Blaze projects, Kolasi events, and artists still remain and should be handled in the next phase.
+
+## Phase 12 Detail Proof Cleanup Completed
+
+- Blaze project detail pages now render only CMS project records.
+- Kolasi event detail pages now render only CMS event records.
+- Kolasi artist detail pages now render only CMS artist records.
+- Static demo slugs and static detail maps were removed from those public detail routes.
+- Missing CMS detail records now return `notFound()` instead of public demo content.
+- Neutral page-level fallbacks, such as non-proof layout media and utility FAQ/package content, remain for a separate content decision.

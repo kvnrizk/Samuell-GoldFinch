@@ -574,3 +574,74 @@ Phase 11 should be a narrow Kolasi and Venues simplification baseline: remove fa
 ### Recommended Next Phase
 
 Phase 12 should remove public demo/fallback detail content from Blaze projects, Kolasi events, and artist profiles by switching those detail routes to CMS-only rendering while preserving safe page-level fallback media where appropriate.
+
+## 2026-07-01 - Phase 12: Remove Public Demo/Fallback Proof From Detail Pages
+
+### Detail Pages Reviewed
+
+- `app/(site)/blaze/[slug]/page.tsx`
+- `app/(site)/kolasi/[slug]/page.tsx`
+- `app/(site)/kolasi/artists/[slug]/page.tsx`
+- `app/(site)/blaze/[slug]/BlazeProjectDetail.tsx`
+- `app/(site)/kolasi/[slug]/KolasiEventDetail.tsx`
+- `app/(site)/kolasi/artists/[slug]/ArtistProfile.tsx`
+- sitemap CMS route generation
+
+### Fake/Demo Proof Removed
+
+- Removed static Blaze project maps and demo slugs from public Blaze project detail routing.
+- Removed static Kolasi event maps and demo slugs from public Kolasi event detail routing.
+- Removed static artist profiles, fake social links, fake mixes, and fake artist-event relationships from public artist detail routing.
+- Missing CMS detail records now return `notFound()` instead of static demo content.
+
+### Chosen Scope
+
+- Keep route patterns and real CMS rendering intact.
+- Keep detail presentation components intact.
+- Keep adjacent navigation for real CMS records, falling back only to neutral null adjacency if related CMS data is unavailable.
+- Add a focused regression test that prevents static demo proof maps from being reintroduced into these route files.
+
+### Fallback Content Intentionally Kept
+
+- Neutral page-level fallback media and static UI sections outside these detail routes remain.
+- Venue package/FAQ fallback utility content remains for a separate product/content decision.
+- Journal, press, RSS, and About fallback content were not changed in this phase.
+- Safe empty/not-found behavior remains the fallback for missing public detail proof.
+
+### Files Changed
+
+- `app/(site)/blaze/[slug]/page.tsx`
+- `app/(site)/kolasi/[slug]/page.tsx`
+- `app/(site)/kolasi/artists/[slug]/page.tsx`
+- `tests/detail-fallbacks.test.ts`
+- `docs/BRAND_ARCHITECTURE.md`
+- `docs/DEV_LOG.md`
+
+### Intentionally Not Changed
+
+- No 3D.
+- No redesign.
+- No routes, slugs, Payload schemas, API contracts, backend behavior, form contracts, navigation labels, or URLs changed.
+- No dependencies were added.
+- No real CMS-driven content rendering was removed.
+- No conversion paths were removed.
+
+### Validation Results
+
+- `npm ci`: passed after rerun with escalated filesystem access because the sandboxed run timed out before producing a useful result.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm test`: passed after rerun with escalated filesystem access because the sandboxed run hit the known Windows `EPERM` realpath issue. Result: 11 files and 49 tests.
+- `npm run build`: passed. Build still logged CMS-safe MongoDB authentication fallback errors because local `.env` credentials could not authenticate with Atlas. Build also logged a stale Browserslist data notice.
+
+### Remaining Frontend Risks
+
+- Kolasi page still has dense section stacking and duplicated media constants.
+- Blaze listing page still has curated static image arrays for non-detail presentation.
+- Journal and press fallback/demo content remain outside this phase.
+- Venue package/FAQ utility fallbacks remain and need a separate product/content decision.
+- Existing local MongoDB auth warnings still reduce build-log signal quality.
+
+### Recommended Next Phase
+
+Phase 13 should focus on Kolasi page density and media-source cleanup: consolidate static media constants, decide whether both showcase and marquee are needed, and preserve current visual direction without adding 3D.
