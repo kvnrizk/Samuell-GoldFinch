@@ -48,7 +48,7 @@ export default function CaseStudyDetail({ caseStudy }: CaseStudyDetailProps) {
         {/* Back link */}
         <Link
           href="/venues"
-          className="inline-flex items-center gap-2 text-xs text-zinc-500 hover:text-[#f7f7f5] transition-colors mb-12 cs-reveal"
+          className="inline-flex items-center gap-2 text-xs text-zinc-500 hover:text-ivory transition-colors mb-12 cs-reveal"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
             <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -67,13 +67,13 @@ export default function CaseStudyDetail({ caseStudy }: CaseStudyDetailProps) {
           <div className="flex flex-wrap gap-4 text-sm text-zinc-500">
             {caseStudy.role && (
               <span className="flex items-center gap-1.5">
-                <span className="w-1 h-1 rounded-full bg-[#f7f7f5]" />
+                <span className="w-1 h-1 rounded-full bg-ivory" />
                 {caseStudy.role}
               </span>
             )}
             {caseStudy.frequency && (
               <span className="flex items-center gap-1.5">
-                <span className="w-1 h-1 rounded-full bg-[#f7f7f5]" />
+                <span className="w-1 h-1 rounded-full bg-ivory" />
                 {caseStudy.frequency}
               </span>
             )}
@@ -110,7 +110,7 @@ export default function CaseStudyDetail({ caseStudy }: CaseStudyDetailProps) {
         {/* Outcome highlight */}
         {caseStudy.outcome && (
           <GlassCard featured className="!p-8 mb-12 cs-reveal">
-            <p className="text-xs font-medium text-[#f7f7f5] mb-2">
+            <p className="text-xs font-medium text-ivory mb-2">
               Key Result
             </p>
             <p className="font-serif text-2xl md:text-3xl text-stone-100 font-semibold">
@@ -151,7 +151,7 @@ export default function CaseStudyDetail({ caseStudy }: CaseStudyDetailProps) {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/venues#venue-form"
-              className="bg-[#f7f7f5] text-[#09090b] font-semibold text-sm px-8 py-3.5 rounded-lg hover:bg-[#e4e4e7] transition-all"
+              className="bg-ivory text-midnight font-semibold text-sm px-8 py-3.5 rounded-lg hover:bg-[#e4e4e7] transition-all"
             >
               Apply Now
             </Link>

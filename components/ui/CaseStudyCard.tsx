@@ -37,7 +37,7 @@ export function CaseStudyCard({ venueName, slug, coverImageUrl, role, frequency,
             {frequency && <span>· {frequency}</span>}
           </div>
           {outcome && (
-            <p className="text-sm text-[#f7f7f5] font-medium">{outcome}</p>
+            <p className="text-sm text-ivory font-medium">{outcome}</p>
           )}
         </div>
       </GlassCard>

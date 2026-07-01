@@ -15,7 +15,7 @@ export function PricingCard({ name, tagline, deliverables, featured = false, onC
   return (
     <GlassCard featured={featured} className="flex flex-col">
       {featured && (
-        <span className="self-start text-[10px] font-mono uppercase tracking-[0.2em] text-[#f7f7f5] bg-[#f7f7f5]/10 px-3 py-1 rounded-full mb-4 font-medium">
+        <span className="self-start text-[10px] font-mono uppercase tracking-[0.2em] text-ivory bg-ivory/10 px-3 py-1 rounded-full mb-4 font-medium">
           Most Popular
         </span>
       )}
@@ -24,7 +24,7 @@ export function PricingCard({ name, tagline, deliverables, featured = false, onC
       <ul className="space-y-3 mb-8 flex-1">
         {deliverables.map((item, i) => (
           <li key={i} className="flex items-start gap-2 text-sm text-zinc-400">
-            <span className="text-[#f7f7f5] mt-0.5 text-xs">&#10003;</span>
+            <span className="text-ivory mt-0.5 text-xs">&#10003;</span>
             {item}
           </li>
         ))}
@@ -33,8 +33,8 @@ export function PricingCard({ name, tagline, deliverables, featured = false, onC
         onClick={onCTA}
         className={`w-full py-3 rounded-lg font-semibold text-sm transition-all duration-200 ${
           featured
-            ? 'bg-[#f7f7f5] text-[#09090b] hover:bg-[#e4e4e7] active:scale-[0.98]'
-            : 'border border-[#f7f7f5] text-[#f7f7f5] hover:bg-[#f7f7f5]/[0.08]'
+            ? 'bg-ivory text-midnight hover:bg-[#e4e4e7] active:scale-[0.98]'
+            : 'border border-ivory text-ivory hover:bg-ivory/8'
         }`}
       >
         {ctaLabel}

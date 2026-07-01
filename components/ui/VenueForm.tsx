@@ -126,8 +126,8 @@ export function VenueForm({ locale = 'en' }: { locale?: Locale }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" data-venue-form>
-      {/* Honeypot */}
-      <input type="text" name="_hp" className="hidden" tabIndex={-1} autoComplete="off" />
+      {/* Honeypot — hidden from users and assistive tech; only bots fill it */}
+      <input type="text" name="_hp" className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
 
       {/* Step Indicators */}
       <div className="flex items-center gap-2 mb-8">
