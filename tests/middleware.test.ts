@@ -16,20 +16,23 @@ function request(url: string, init?: ConstructorParameters<typeof NextRequest>[1
 }
 
 describe('middleware', () => {
-  it('hides /admin when the configured secret is missing', async () => {
+  it('does not gate /admin with middleware secrets', async () => {
     const { middleware } = await loadMiddleware('admin-secret');
     const response = middleware(request('https://example.com/admin'));
 
-    expect(response.headers.get('x-middleware-rewrite')).toBe('https://example.com/not-found');
+    expect(response.status).toBe(200);
+    expect(response.headers.get('x-middleware-rewrite')).toBeNull();
+    expect(response.headers.get('set-cookie')).toBeNull();
   });
 
-  it('sets the admin access cookie and redirects to a clean URL with a valid secret', async () => {
+  it('ignores query-string admin secrets and does not create bypass cookies', async () => {
     const { middleware } = await loadMiddleware('admin-secret');
     const response = middleware(request('https://example.com/admin?secret=admin-secret'));
 
-    expect(response.status).toBe(307);
-    expect(response.headers.get('location')).toBe('https://example.com/admin');
-    expect(response.headers.get('set-cookie')).toContain('sg-admin-access=admin-secret');
+    expect(response.status).toBe(200);
+    expect(response.headers.get('location')).toBeNull();
+    expect(response.headers.get('set-cookie')).toBeNull();
+    expect(response.headers.get('x-middleware-rewrite')).toBeNull();
   });
 
   it('rate-limits matched form endpoints after five POSTs from the same IP', async () => {

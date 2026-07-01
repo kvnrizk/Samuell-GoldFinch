@@ -170,3 +170,50 @@ Decide explicitly whether to wait for a Payload 3 release that supports Next 15.
 ### Recommended Next Phase
 
 Continue backend cleanup with a narrow authenticated-admin access review, then separately address the local Atlas credential issue before production deployment.
+
+## 2026-07-01 - Phase 4: Admin Access and Bootstrap Hardening
+
+### Admin/Auth Surface Reviewed
+
+- `middleware.ts`
+- `collections/Users.ts`
+- `payload.config.ts`
+- `app/api/[...slug]/route.ts`
+- `app/api/export-csv/route.ts`
+- `app/api/cron/process-sequences/route.ts`
+- Existing middleware, CSV, and access tests
+
+### Unsafe Patterns Found
+
+- `/admin?secret=...` middleware access created an `sg-admin-access` cookie from a URL query parameter.
+- First unauthenticated user creation was allowed whenever the users collection was empty, including production.
+- Stale docs still instructed production users to sign in with `/admin?secret=...`.
+
+### Hardening Applied
+
+- Removed the query-string admin secret and bypass cookie behavior from middleware.
+- `/admin` now relies on Payload authentication instead of middleware URL secrets.
+- Production unauthenticated first-admin bootstrap is blocked.
+- Local empty-database first-admin bootstrap remains available for development.
+- CSV export remains authenticated admin-only through Payload auth and role checks.
+- Cron route remains server-secret-only and fails closed when `CRON_SECRET` is missing or invalid.
+- Updated docs to remove secret-login instructions.
+
+### Tests Added or Updated
+
+- Updated middleware tests to prove admin URL secrets are ignored and no bypass cookie is set.
+- Added user access tests for local bootstrap, production bootstrap blocking, and admin creation.
+- Added admin route tests for CSV auth failures and cron secret failures.
+
+### Validation Results
+
+- `npm ci`: passed.
+- `npm run typecheck`: failed once on new test typing, then passed after narrowing the test casts and env stubbing.
+- `npm run lint`: passed.
+- `npm test`: passed, 8 files and 32 tests.
+- `npm run build`: passed. Build still logged CMS-safe MongoDB authentication fallback errors because local `.env` credentials could not authenticate with Atlas.
+
+### Remaining Risks
+
+- Production admin account creation now requires a controlled setup path before launch.
+- Additional platform-layer controls, such as Vercel Firewall IP allowlisting, are still optional hardening.

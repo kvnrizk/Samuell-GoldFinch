@@ -74,9 +74,11 @@ npm run dev
 
 Windows note: if `npm run dev` stays on `Starting...` or throws `EPERM` for `.next\trace`, the repo is usually being locked by OneDrive sync. Move the repo to a non-synced path such as `C:\dev\Samuell-Goldfinch` or pause OneDrive sync for this folder, then delete `.next` and run `npm run dev` again.
 
-### 5. (First time only) Create an admin user
+### 5. (Local first time only) Create an admin user
 
 Go to [http://localhost:3000/admin](http://localhost:3000/admin) and create your account when prompted.
+
+Production first-admin bootstrap is disabled. Create the production admin in a controlled setup environment before launch, then manage all additional users from the authenticated Payload dashboard.
 
 ---
 
@@ -95,7 +97,6 @@ Go to [http://localhost:3000/admin](http://localhost:3000/admin) and create your
 | `RESEND_API_KEY` | For email | Resend transactional email |
 | `NEXT_PUBLIC_SITE_URL` | Yes | `http://localhost:3000` locally, production URL on Vercel |
 | `CRON_SECRET` | For automation cron | Shared secret for `/api/cron/process-sequences` |
-| `ADMIN_ACCESS_SECRET` | Optional | Enables the `/admin?secret=...` gate in middleware |
 | `SAM_WHATSAPP_NUMBER` | Optional | Fallback admin WhatsApp number for notifications |
 | `NEXT_PUBLIC_GA4_ID` | Optional | Google Analytics 4 measurement ID |
 | `NEXT_PUBLIC_META_PIXEL_ID` | Optional | Meta/Facebook pixel ID |
@@ -289,7 +290,7 @@ Team members can click **"Forgot password?"** on the login page. Requires Resend
 
 ## Securing the Admin URL in Production
 
-The `/admin` route is protected by Payload's built-in authentication (email + password). To add extra security:
+The `/admin` route is protected by Payload's built-in authentication (email + password). Do not use URL secrets for admin access. To add extra security:
 
 ### Option 1: Custom admin route (recommended)
 
@@ -306,9 +307,9 @@ admin: {
 
 Then access the dashboard at `https://yourdomain.com/sg-dashboard-2026` instead of `/admin`.
 
-### Option 2: IP allowlist via Vercel middleware
+### Option 2: IP allowlist at the platform edge
 
-Block `/admin` access except from specific IPs. Already partially configured in `middleware.ts`.
+Block `/admin` access except from specific IPs using Vercel Firewall or another edge/WAF layer.
 
 ### Option 3: HTTP Basic Auth layer (Vercel)
 

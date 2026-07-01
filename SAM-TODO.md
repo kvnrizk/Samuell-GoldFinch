@@ -40,7 +40,7 @@ Once delivered, replace the temporary structured-data image with the final brand
 
 ## 4. Enter real CMS content via `/admin`
 
-Sign in at `https://samuellgoldfinch.com/admin?secret=<ADMIN_ACCESS_SECRET>` (grab the secret from `.env` — Kevin has it).
+Sign in at `https://samuellgoldfinch.com/admin` with your Payload admin email and password. URL-secret access is disabled.
 
 Priority order — each is a fallback replaced by real data:
 
@@ -86,7 +86,7 @@ Everything looks good from the 2026-02-18 deploy, but please verify by visiting 
 
 - https://samuellgoldfinch.com (should load the site)
 - https://www.samuellgoldfinch.com (should 301 to the root domain)
-- https://samuellgoldfinch.com/admin?secret=... (should load the Payload admin)
+- https://samuellgoldfinch.com/admin (should load the Payload admin login)
 - https://samuellgoldfinch.com/api/globals/global-settings (should return JSON)
 
 Any one of these failing = DNS/SSL regressed.

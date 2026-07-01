@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload';
 
 const isAdmin = ({ req: { user } }: any) => user?.role === 'admin';
 const isAdminOrSelf = ({ req: { user }, id }: any) => user?.role === 'admin' || user?.id === id;
+const canBootstrapFirstAdmin = () => process.env.NODE_ENV !== 'production';
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -14,8 +15,10 @@ export const Users: CollectionConfig = {
   access: {
     read: ({ req: { user } }) => Boolean(user),
     create: async ({ req }) => {
-      // Allow first user creation (bootstrap) when no users exist
       if (req.user?.role === 'admin') return true;
+      if (!canBootstrapFirstAdmin()) return false;
+
+      // Allow first user creation locally when no users exist.
       const { totalDocs } = await req.payload.find({ collection: 'users', limit: 0 });
       return totalDocs === 0;
     },
@@ -25,8 +28,8 @@ export const Users: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ data, req, operation }) => {
-        // First user ever created automatically gets admin role
-        if (operation === 'create') {
+        // First local user ever created automatically gets admin role.
+        if (operation === 'create' && canBootstrapFirstAdmin()) {
           const { totalDocs } = await req.payload.find({ collection: 'users', limit: 0 });
           if (totalDocs === 0) {
             data.role = 'admin';

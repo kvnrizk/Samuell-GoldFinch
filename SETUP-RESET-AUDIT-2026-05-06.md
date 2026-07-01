@@ -32,7 +32,6 @@ Stabilize local runtime outside OneDrive, validate environment/config truth, and
 
 ### Optional currently missing
 - `CRON_SECRET`
-- `ADMIN_ACCESS_SECRET`
 - `NEXT_PUBLIC_GA4_ID`
 - `NEXT_PUBLIC_META_PIXEL_ID`
 
