@@ -1,10 +1,11 @@
 import { Resend } from 'resend';
+import { getEnv } from './env';
 
 let resend: Resend | null = null;
 
 export function getResend() {
   if (!resend) {
-    resend = new Resend(process.env.RESEND_API_KEY);
+    resend = new Resend(getEnv('RESEND_API_KEY'));
   }
 
   return resend;

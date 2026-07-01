@@ -3,9 +3,11 @@
 // Lightweight: uses fetch() directly instead of the Twilio SDK.
 // ---------------------------------------------------------------------------
 
-const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
-const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
-const TWILIO_WHATSAPP_FROM = process.env.TWILIO_WHATSAPP_FROM; // e.g. "whatsapp:+14155238886"
+import { getEnv } from './env';
+
+const TWILIO_ACCOUNT_SID = getEnv('TWILIO_ACCOUNT_SID');
+const TWILIO_AUTH_TOKEN = getEnv('TWILIO_AUTH_TOKEN');
+const TWILIO_WHATSAPP_FROM = getEnv('TWILIO_WHATSAPP_FROM'); // e.g. "whatsapp:+14155238886"
 
 /**
  * Send a WhatsApp message via the Twilio REST API.

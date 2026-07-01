@@ -217,3 +217,54 @@ Continue backend cleanup with a narrow authenticated-admin access review, then s
 
 - Production admin account creation now requires a controlled setup path before launch.
 - Additional platform-layer controls, such as Vercel Firewall IP allowlisting, are still optional hardening.
+
+## 2026-07-01 - Phase 5: Environment and Production Configuration Validation
+
+### Environment Surface Reviewed
+
+- `.env.example`
+- `package.json`
+- `payload.config.ts`
+- `next.config.mjs`
+- `vercel.json`
+- `app/api/cron/process-sequences/route.ts`
+- `lib/resend.ts`
+- `lib/cloudinary-adapter.ts`
+- `lib/whatsapp.ts`
+- public analytics and metadata environment usage
+- MongoDB/Payload database configuration
+
+### Files Changed
+
+- `.env.example`
+- `app/api/cron/process-sequences/route.ts`
+- `docs/DEV_LOG.md`
+- `docs/PRODUCTION_ENV.md`
+- `lib/cloudinary-adapter.ts`
+- `lib/env.ts`
+- `lib/resend.ts`
+- `lib/whatsapp.ts`
+- `payload.config.ts`
+- `tests/env.test.ts`
+
+### Hardening Applied
+
+- Added a no-dependency environment helper.
+- Production now validates core boot variables: `DATABASE_URI`, `PAYLOAD_SECRET`, and `NEXT_PUBLIC_SITE_URL`.
+- Local development remains flexible for missing optional services.
+- Feature-specific services read environment values through the helper without making optional services globally required.
+- `.env.example` now lists the feature variables referenced by runtime code.
+- Added a production environment runbook with MongoDB Atlas, Vercel, rotation, and admin provisioning notes.
+
+### Validation Results
+
+- `npm ci`: passed on rerun with a longer timeout. The first attempt timed out; the successful run emitted a Windows cleanup warning on `node_modules`.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm test`: passed, 9 files and 37 tests.
+- `npm run build`: passed. Build still logged CMS-safe MongoDB authentication fallback errors because local `.env` credentials could not authenticate with Atlas.
+
+### Remaining Risks
+
+- Local `.env` still needs MongoDB Atlas credentials corrected or rotated before production validation.
+- Feature integrations still require real provider dashboard validation after env values are set.

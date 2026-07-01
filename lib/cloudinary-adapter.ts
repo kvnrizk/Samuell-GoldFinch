@@ -1,11 +1,14 @@
 import { v2 as cloudinary } from 'cloudinary';
 import type { Adapter, GeneratedAdapter } from '@payloadcms/plugin-cloud-storage/types';
+import { getEnv } from './env';
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: getEnv('CLOUDINARY_CLOUD_NAME'),
+  api_key: getEnv('CLOUDINARY_API_KEY'),
+  api_secret: getEnv('CLOUDINARY_API_SECRET'),
 });
+
+const CLOUDINARY_CLOUD_NAME = getEnv('CLOUDINARY_CLOUD_NAME') || '';
 
 const UPLOAD_FOLDER = 'sg-platform';
 
@@ -48,13 +51,13 @@ export const cloudinaryAdapter: Adapter = ({ prefix }) => {
 
     generateURL({ filename }) {
       const publicId = `${folder}/${filename.replace(/\.[^.]+$/, '')}`;
-      return `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}`;
+      return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}`;
     },
 
     staticHandler(req, { params }) {
       const { filename } = params;
       const publicId = `${folder}/${filename.replace(/\.[^.]+$/, '')}`;
-      const url = `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}`;
+      const url = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}`;
       return Response.redirect(url, 302);
     },
   };

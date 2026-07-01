@@ -27,13 +27,15 @@ import { SentNotifications } from './collections/SentNotifications';
 import { GlobalSettings } from './globals/GlobalSettings';
 import { PressKit } from './globals/PressKit';
 import { Showreel } from './globals/Showreel';
+import { getEnv, getRequiredProductionEnv, validateProductionEnv } from './lib/env';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
+validateProductionEnv();
 
 export default buildConfig({
   serverURL: (() => {
-    const url = process.env.NEXT_PUBLIC_SITE_URL;
+    const url = getEnv('NEXT_PUBLIC_SITE_URL');
     if (!url && process.env.NODE_ENV === 'production') {
       console.warn('[payload] NEXT_PUBLIC_SITE_URL is not set in production — absolute URLs will fall back to localhost');
     }
@@ -62,7 +64,7 @@ export default buildConfig({
   editor: lexicalEditor(),
 
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
+    url: getRequiredProductionEnv('DATABASE_URI'),
     connectOptions: {
       serverSelectionTimeoutMS: 8000,
     },
@@ -92,7 +94,7 @@ export default buildConfig({
 
   globals: [GlobalSettings, PressKit, Showreel],
 
-  secret: process.env.PAYLOAD_SECRET!,
+  secret: getRequiredProductionEnv('PAYLOAD_SECRET'),
 
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
@@ -111,6 +113,6 @@ export default buildConfig({
 
   cors: [
     'http://localhost:3000',
-    process.env.NEXT_PUBLIC_SITE_URL || '',
+    getEnv('NEXT_PUBLIC_SITE_URL') || '',
   ].filter(Boolean),
 });

@@ -12,11 +12,12 @@
 import { NextResponse } from 'next/server';
 import { getPayload } from '@/lib/payload';
 import { sendNotification } from '@/lib/notifications';
+import { getEnv } from '@/lib/env';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
-  const cronSecret = process.env.CRON_SECRET;
+  const cronSecret = getEnv('CRON_SECRET');
   if (!cronSecret) {
     console.error('[cron/process-sequences] CRON_SECRET env var is not set — refusing to run');
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
