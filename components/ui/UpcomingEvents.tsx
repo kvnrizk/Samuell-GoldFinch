@@ -27,43 +27,6 @@ interface UpcomingEventsProps {
   events: UpcomingEvent[];
 }
 
-/* ── Static fallback upcoming events ── */
-const staticUpcoming: UpcomingEvent[] = [
-  {
-    title: 'Le Speakeasy — Vol. 14',
-    slug: 'le-speakeasy',
-    venue: 'Le Speakeasy, Paris',
-    date: '2026-03-07',
-    doorsTime: '23:00',
-    endTime: '06:00',
-    ticketPrice: '15€ advance / 20€ door',
-    eventType: 'club',
-    artists: [{ name: 'Kate Zubok', slug: 'kate-zubok' }, { name: 'DJ Marco', slug: 'dj-marco' }],
-  },
-  {
-    title: 'Kolasi x Warehouse',
-    slug: 'kolasi-nights',
-    venue: 'La Machine du Moulin Rouge, Paris',
-    date: '2026-03-21',
-    doorsTime: '23:30',
-    endTime: '07:00',
-    ticketPrice: '18€',
-    eventType: 'club',
-    artists: [{ name: 'Samir K', slug: 'samir-k' }, { name: 'Naya Sound', slug: 'naya-sound' }, { name: 'Lina M', slug: 'lina-m' }],
-  },
-  {
-    title: '2nd Sun — Spring Edition',
-    slug: '2nd-sun',
-    venue: 'Rooftop Venue, Paris',
-    date: '2026-04-12',
-    doorsTime: '16:00',
-    endTime: '00:00',
-    ticketPrice: 'Free before 18h / 12€ after',
-    eventType: 'rooftop',
-    artists: [{ name: 'Lina M', slug: 'lina-m' }],
-  },
-];
-
 function formatEventDate(dateStr?: string) {
   if (!dateStr) return null;
   try {
@@ -79,7 +42,6 @@ function formatEventDate(dateStr?: string) {
 }
 
 export default function UpcomingEvents({ events }: UpcomingEventsProps) {
-  const items = events.length > 0 ? events : staticUpcoming;
   const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(() => {
@@ -97,7 +59,7 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
     });
   }, { scope: sectionRef });
 
-  if (items.length === 0) {
+  if (events.length === 0) {
     return (
       <section ref={sectionRef} className="py-24 md:py-32 px-6" style={{ backgroundColor: 'var(--bg)' }}>
         <div className="max-w-4xl mx-auto text-center">
@@ -135,7 +97,7 @@ export default function UpcomingEvents({ events }: UpcomingEventsProps) {
           />
 
           <div className="space-y-6">
-            {items.map((evt, i) => {
+            {events.map((evt, i) => {
               const dateParts = formatEventDate(evt.date);
               const artistNames = (evt.artists || []).slice(0, 4).map((a) => a.name).filter(Boolean);
 

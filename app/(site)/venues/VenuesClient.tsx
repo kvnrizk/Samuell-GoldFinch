@@ -259,7 +259,7 @@ export default function VenuesClient({
       </section>
 
       {/* ─── CASE STUDIES ─── */}
-      {(caseStudies.length > 0 || true) && (
+      {caseStudies.length > 0 && (
         <section className="py-24 md:py-32 relative overflow-hidden">
           {/* Background image accent */}
           <div className="absolute inset-0 pointer-events-none">
@@ -278,43 +278,17 @@ export default function VenuesClient({
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 venue-reveal">
-              {caseStudies.length > 0 ? (
-                caseStudies.map((cs) => (
-                  <CaseStudyCard
-                    key={cs.id}
-                    venueName={cs.venueName}
-                    slug={cs.slug}
-                    coverImageUrl={cs.coverImage?.url}
-                    role={cs.role}
-                    frequency={cs.frequency}
-                    outcome={cs.outcome}
-                  />
-                ))
-              ) : (
-                <>
-                  <CaseStudyCard
-                    venueName="Le Speakeasy"
-                    slug="le-speakeasy"
-                    role="Booking / DA / Content"
-                    frequency="3 nights/week"
-                    outcome="+45% reservation rate in 3 months"
-                  />
-                  <CaseStudyCard
-                    venueName="Calypso Club"
-                    slug="calypso-club"
-                    role="Full Programming"
-                    frequency="Every Saturday"
-                    outcome="Sold out 12 weeks in a row"
-                  />
-                  <CaseStudyCard
-                    venueName="Hotel Costes Bar"
-                    slug="hotel-costes"
-                    role="Curation / Content"
-                    frequency="2 nights/week"
-                    outcome="2x social engagement in 60 days"
-                  />
-                </>
-              )}
+              {caseStudies.map((cs) => (
+                <CaseStudyCard
+                  key={cs.id}
+                  venueName={cs.venueName}
+                  slug={cs.slug}
+                  coverImageUrl={cs.coverImage?.url}
+                  role={cs.role}
+                  frequency={cs.frequency}
+                  outcome={cs.outcome}
+                />
+              ))}
             </div>
           </div>
         </section>

@@ -126,13 +126,18 @@ Where 3D would be harmful:
 
 ## Next Implementation Phase
 
-Recommended Phase 11: Kolasi and Venues simplification baseline.
+Recommended Phase 12: CMS-only public detail proof cleanup.
 
 Scope:
 
-- Remove forced fake venue case-study rendering.
-- Audit Kolasi page sections and choose what stays above the fold.
-- Remove or isolate the Kolasi 3D tilt behavior.
-- Consolidate Kolasi media constants into a small local content module.
+- Convert Blaze, Kolasi event, and artist detail fallbacks from public demo proof into CMS-only behavior.
+- Keep safe fallback media only where it does not imply verified work, clients, artists, or events.
+- Update static params so fallback/demo slugs are not exposed as real content.
 - Keep public routes, copy meaning, CMS schemas, and visual direction unchanged.
 
+## Phase 11 Baseline Completed
+
+- Venue case studies now render only when CMS provides real case-study records.
+- Fake upcoming Kolasi events were removed from the shared upcoming-events component.
+- Kolasi marquee gallery tilt/3D-like hover behavior was removed while preserving the marquee layout.
+- Static fallback detail routes for Blaze projects, Kolasi events, and artists still remain and should be handled in the next phase.

@@ -514,3 +514,63 @@ Continue with another narrow frontend simplification pass, preferably `VenuesCli
 ### Recommended Next Phase
 
 Phase 11 should be a narrow Kolasi and Venues simplification baseline: remove fake public proof, isolate unnecessary 3D/tilt behavior, and consolidate Kolasi media constants without changing visual design or behavior.
+
+## 2026-07-01 - Phase 11: Kolasi/Venues Simplification Baseline
+
+### Areas Reviewed
+
+- `app/(site)/kolasi/KolasiClient.tsx`
+- `components/ui/UpcomingEvents.tsx`
+- `app/(site)/venues/VenuesClient.tsx`
+- Kolasi event and artist detail fallback routes
+- venue case-study rendering
+- quote routing for venue users
+- hardcoded Kolasi media arrays and fake public proof
+
+### Chosen Scope
+
+- Remove or hide fake/demo public proof where CMS data is empty.
+- Prevent venue case studies from rendering forced fallback cards.
+- Remove Kolasi gallery tilt/3D-like hover behavior while keeping the marquee gallery.
+
+### Changes Made
+
+- `UpcomingEvents` no longer renders hardcoded fake upcoming events when CMS has no upcoming events. It now shows the existing empty state.
+- `VenuesClient` no longer forces the case-study section to render when `caseStudies` is empty.
+- Fake venue case-study cards for Calypso Club, Hotel Costes Bar, and forced Le Speakeasy results were removed from public rendering.
+- Kolasi marquee gallery cards no longer run rotateX/rotateY/transformPerspective hover handlers.
+
+### Files Changed
+
+- `app/(site)/kolasi/KolasiClient.tsx`
+- `app/(site)/venues/VenuesClient.tsx`
+- `components/ui/UpcomingEvents.tsx`
+- `docs/BRAND_ARCHITECTURE.md`
+- `docs/DEV_LOG.md`
+
+### Intentionally Not Changed
+
+- No routes, slugs, SEO metadata, Payload schemas, API contracts, backend behavior, form contracts, navigation labels, or URLs changed.
+- No dependencies were added.
+- No 3D was added.
+- Real CMS-driven events, case studies, packages, artists, and venue form conversion paths remain intact.
+- Static detail-route fallbacks for Blaze, Kolasi events, and artists were reviewed but left for a separate CMS-only proof cleanup phase.
+
+### Validation Results
+
+- `npm ci`: passed after rerun with escalated filesystem access because the sandboxed run hit the known Windows `EPERM` realpath issue.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm test`: passed after rerun with escalated filesystem access because the sandboxed run hit the known Windows `EPERM` realpath issue. Result: 10 files and 46 tests.
+- `npm run build`: passed. Build still logged CMS-safe MongoDB authentication fallback errors because local `.env` credentials could not authenticate with Atlas. Build also logged a stale Browserslist data notice.
+
+### Remaining Frontend Risks
+
+- Blaze/Kolasi/artist detail pages still expose static fallback/demo content when CMS is empty.
+- Kolasi page still has several dense sections and duplicated media arrays.
+- Venue package fallback pricing and FAQ fallback content remain and need a separate product/content decision.
+- Browser visual comparison was not performed yet.
+
+### Recommended Next Phase
+
+Phase 12 should remove public demo/fallback detail content from Blaze projects, Kolasi events, and artist profiles by switching those detail routes to CMS-only rendering while preserving safe page-level fallback media where appropriate.

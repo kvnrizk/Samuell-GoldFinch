@@ -195,26 +195,6 @@ function MarqueeRow({ images, direction = 'left', speed = 1 }: { images: string[
     }
   }, { scope: wrapperRef });
 
-  // 3D tilt handlers
-  const handleMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const el = e.currentTarget;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    gsap.to(el, {
-      rotateY: x * 12,
-      rotateX: -y * 12,
-      scale: 1.06,
-      duration: 0.3,
-      ease: 'power2.out',
-      transformPerspective: 800,
-    });
-  }, []);
-
-  const handleLeave = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    gsap.to(e.currentTarget, { rotateY: 0, rotateX: 0, scale: 1, duration: 0.5, ease: 'power2.out' });
-  }, []);
-
   return (
     <div ref={wrapperRef} className="overflow-hidden">
       <div ref={trackRef} className="flex gap-4 will-change-transform w-max">
@@ -222,10 +202,7 @@ function MarqueeRow({ images, direction = 'left', speed = 1 }: { images: string[
         {images.map((src, i) => (
           <div
             key={`a-${i}`}
-            className="flex-shrink-0 rounded-2xl overflow-hidden cursor-pointer"
-            style={{ transformStyle: 'preserve-3d' }}
-            onMouseMove={handleMove}
-            onMouseLeave={handleLeave}
+            className="flex-shrink-0 rounded-2xl overflow-hidden"
           >
             <Image src={src} alt="Kolasi event" className="h-56 md:h-72 w-auto object-cover pointer-events-none" width={400} height={288} placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="300px" />
           </div>
@@ -234,10 +211,7 @@ function MarqueeRow({ images, direction = 'left', speed = 1 }: { images: string[
         {images.map((src, i) => (
           <div
             key={`b-${i}`}
-            className="flex-shrink-0 rounded-2xl overflow-hidden cursor-pointer"
-            style={{ transformStyle: 'preserve-3d' }}
-            onMouseMove={handleMove}
-            onMouseLeave={handleLeave}
+            className="flex-shrink-0 rounded-2xl overflow-hidden"
           >
             <Image src={src} alt="Kolasi event" className="h-56 md:h-72 w-auto object-cover pointer-events-none" width={400} height={288} placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="300px" />
           </div>
