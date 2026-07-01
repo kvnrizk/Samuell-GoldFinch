@@ -986,3 +986,28 @@ Embassy of Lebanon is a confirmed real Blaze collaboration (per the phase brief 
 ### Recommended Next Phase
 
 Phase 17: with the client, verify the remaining named collaborations/credits against real engagements, and seed real CMS Blaze projects/artists/posts/events (including a CMS-backed Embassy project) so the curated static cards can be replaced by CMS-driven content.
+
+## 2026-07-01 - Phase 16C: Validate Embassy of Lebanon Blaze Card
+
+### Outcome
+
+Validation-only pass confirming the Embassy of Lebanon Blaze card added in Phase 16B (commit `01038e0`). No code changes were required; the working tree was already clean.
+
+### Verified
+
+- Embassy appears as a Blaze project card on both surfaces: the homepage carousel (`curatedBlazeItems` in `HomeClient.tsx`) and the Blaze page selected-work module (`selectedWork` in `BlazeClient.tsx`), not only as a generic collaboration.
+- All 12 referenced Embassy assets exist on disk under `public/assets/blaze/ambassy/` (e.g. `0C5A9134.jpg` … `4F8A9974.jpg`); no broken paths.
+- Embassy media is real Embassy-specific imagery and is consistent with the existing Blaze media class — average ~1.89 MB per image vs ~2.5 MB for the existing `stouh_beirut` set, so no oversized-asset regression; images are optimized at serve time by Next/Image.
+- Alt text is factual and minimal: both `WorkOrbitCarousel` and `OrbitCarousel` render `alt={item.title}` = "Embassy of Lebanon".
+- No fake/demo proof reintroduced (guarded by `tests/blaze-embassy-card.test.ts`).
+
+### Validation Results
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed (no warnings or errors).
+- `npm test`: passed. Result: 16 files and 66 tests.
+- `npm run build`: passed after stopping a running `next dev` server that held `.next` and clearing `.next` (Windows/OneDrive `EPERM` lock).
+
+### Commit
+
+No new content commit was created for the card itself — it was already committed in Phase 16B as `01038e0` (message `content: add Embassy of Lebanon Blaze project card`). This entry records the Phase 16C validation only.
