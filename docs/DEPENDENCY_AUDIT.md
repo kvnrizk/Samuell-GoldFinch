@@ -82,3 +82,51 @@ Reason: the meaningful production fixes require upgrading core framework/CMS pac
 3. Update all Payload packages together within major 3 only.
 4. Validate Payload admin, import map generation, forms, and production build.
 5. Re-run `npm audit --json` and compare counts.
+
+## Phase 2B Scoped Update Attempt
+
+Date: 2026-07-01
+
+### Baseline
+
+- `next`: `15.4.11`
+- Latest allowed Next 15 from npm: `15.5.19`
+- Payload direct packages: `3.84.1`
+- Latest allowed Payload 3 from npm: `3.85.1`
+- Production audit before update attempt: 19 total vulnerabilities, with 13 high, 4 moderate, and 2 low.
+
+### Update Plan Tested
+
+Targeted only:
+
+- `next`
+- `payload`
+- `@payloadcms/db-mongodb`
+- `@payloadcms/next`
+- `@payloadcms/plugin-cloud-storage`
+- `@payloadcms/richtext-lexical`
+
+### Result
+
+No dependency update was committed.
+
+Blockers:
+
+- `@payloadcms/next@3.85.1` peer dependency allows `next >=15.4.11 <15.5.0` or `next >=16.2.6 <17.0.0`.
+- `next@15.5.19` is therefore not compatible with Payload 3.85.1.
+- Next 16 is out of scope for this project phase.
+- There is no newer compatible `next@15.4.x`; `15.4.11` is the latest in that line.
+- Updating Payload packages to `3.85.1` without Next required npm to refresh stale `package-lock.json` Payload entries. Normal `npm install`, `npm update`, package-lock-only install, and aligned Payload group install all failed with peer-resolution errors against the stale `3.84.1` lock entries.
+- Using `npm install --force` was rejected as unsafe for this phase, so the update was not forced.
+
+### Versions After
+
+No package versions changed.
+
+### Remaining Recommendation
+
+Treat dependency remediation as a compatibility decision, not a mechanical patch:
+
+1. Either wait for a Payload 3 release that supports patched Next 15.5.x.
+2. Or plan a larger migration to Next 16 only after explicit approval.
+3. Or review whether a manual lockfile refresh strategy is acceptable, then test it in a separate branch with full admin and form QA.
