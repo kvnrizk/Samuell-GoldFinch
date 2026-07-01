@@ -51,3 +51,35 @@ Updated ignore rules for:
 ### Recommended Next Phase
 
 Run `npm ci`, then follow `docs/VALIDATION_CHECKLIST.md` from the top. Fix only the first failing validation category before continuing.
+
+## 2026-07-01 - Phase 2: Dependency/security audit triage
+
+### Files Changed
+
+- `docs/DEPENDENCY_AUDIT.md`
+- `docs/DEV_LOG.md`
+
+### Audit Results
+
+- Full `npm audit --json`: 22 total vulnerabilities, with 15 high, 6 moderate, and 1 low.
+- Production-only `npm audit --omit=dev --json`: 19 total vulnerabilities, with 13 high, 4 moderate, and 2 low.
+
+### Safe Fixes Applied
+
+- None. Meaningful production fixes require reviewed Next/Payload package updates, not lockfile-only changes.
+
+### Validation Results
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm test`: passed, 5 files and 15 tests.
+- `npm run build`: passed. Build still logged CMS-safe MongoDB authentication fallback errors because local `.env` credentials could not authenticate with Atlas.
+
+### Remaining Risks
+
+- Direct production vulnerabilities remain in `next`, `payload`, and Payload package group dependencies.
+- Build can still log CMS-safe MongoDB DNS/connectivity fallback errors when Atlas is unreachable.
+
+### Recommended Next Phase
+
+Plan a scoped dependency update branch for Next 15 and Payload 3 patch/minor updates, then validate admin, forms, and build.
