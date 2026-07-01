@@ -116,7 +116,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
     },
     {
       id: 'creative-direction',
-      blazeWorkId: 'creative-direction',
+      blazeWorkId: 'editorial',
       identity: 'blaze',
       title: 'Creative Direction',
       category: 'Creative Direction',

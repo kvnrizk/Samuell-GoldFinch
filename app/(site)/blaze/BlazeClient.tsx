@@ -170,7 +170,7 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
 
   useEffect(() => {
     const requestedWork = new URLSearchParams(window.location.search).get('work');
-    if (requestedWork && ['embassy', 'stouh', 'weddings', 'creative-direction'].includes(requestedWork)) {
+    if (requestedWork && ['embassy', 'stouh', 'weddings', 'editorial'].includes(requestedWork)) {
       setSelectedWorkId(requestedWork);
     }
   }, []);

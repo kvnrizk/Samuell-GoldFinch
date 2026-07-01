@@ -1011,3 +1011,40 @@ Validation-only pass confirming the Embassy of Lebanon Blaze card added in Phase
 ### Commit
 
 No new content commit was created for the card itself — it was already committed in Phase 16B as `01038e0` (message `content: add Embassy of Lebanon Blaze project card`). This entry records the Phase 16C validation only.
+
+## 2026-07-01 - Phase 16D: Blaze Selected-Work Deep-Link Consistency
+
+### Mismatch Found
+
+- The homepage "Creative Direction" Blaze card linked to `/blaze?work=creative-direction`, but the Blaze page `selectedWork` item is `id: 'editorial'`. The `?work=` allowlist also listed `'creative-direction'`, which matches no `selectedWork` id — so the deep-link passed the allowlist but `setSelectedWorkId('creative-direction')` found no item and fell back to the default tab (Embassy).
+- The other three cards already matched: `embassy`, `weddings`, `stouh`.
+
+### Fix Applied
+
+- `app/(site)/HomeClient.tsx`: changed the Creative Direction card's `blazeWorkId` from `'creative-direction'` to `'editorial'` (aligning the homepage link id to the existing Blaze `selectedWork` id).
+- `app/(site)/blaze/BlazeClient.tsx`: changed the `?work=` allowlist entry `'creative-direction'` → `'editorial'` so it matches a real `selectedWork` id.
+
+### Links Verified (via `tests/blaze-deeplinks.test.ts`)
+
+- Every homepage `blazeWorkId` is in the Blaze `?work=` allowlist, and every allowlist id maps to a real `selectedWork` item (`id: '<id>'`).
+- `?work=editorial` now opens the Creative Direction tab; `?work=embassy` still opens Embassy (default/first); Weddings and STOUH unchanged.
+- No removed demo proof (Kate Zubok / DJ Marco) reintroduced.
+
+### Intentionally Not Changed
+
+- No routes, slugs, SEO metadata, schemas, API contracts, or backend behavior.
+- Card order, copy, layout, and Embassy priority/default are unchanged.
+- The homepage WorkItem `id: 'creative-direction'` (a React key only) was left as-is; only the link-carrying `blazeWorkId` was aligned.
+- The allowlist remains a hardcoded list (not derived from `selectedWork`); a future refactor could derive it to prevent drift.
+
+### Validation Results
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed (no warnings or errors).
+- `npm test`: passed. Result: 18 files and 73 tests.
+- `npm run build`: passed.
+
+### Remaining Risks
+
+- The homepage card ids and the Blaze allowlist are still maintained in two places; they are consistent now but could drift again without the guard test (which would catch it).
+- Local build cannot authenticate with Atlas, so the deep-link was verified structurally/by test rather than against live CMS data.
