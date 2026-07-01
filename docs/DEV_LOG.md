@@ -637,8 +637,9 @@ Phase 12 should remove public demo/fallback detail content from Blaze projects, 
 ### Remaining Frontend Risks
 
 - Kolasi page still has dense section stacking and duplicated media constants.
+- Kolasi landing showcase cards link to static event slugs (`le-speakeasy`, `2nd-sun`, `kolasi-nights`); with the event detail route now CMS-only, those links resolve to `notFound()` unless the matching events exist in the CMS. Address in the Phase 13 Kolasi cleanup.
 - Blaze listing page still has curated static image arrays for non-detail presentation.
-- Journal and press fallback/demo content remain outside this phase.
+- Journal and press fallback/demo content remain outside this phase (`journal/[slug]` still serves `staticPostsMap` demo posts).
 - Venue package/FAQ utility fallbacks remain and need a separate product/content decision.
 - Existing local MongoDB auth warnings still reduce build-log signal quality.
 

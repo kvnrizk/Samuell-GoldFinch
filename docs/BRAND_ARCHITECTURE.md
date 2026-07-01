@@ -140,7 +140,6 @@ Scope:
 - Venue case studies now render only when CMS provides real case-study records.
 - Fake upcoming Kolasi events were removed from the shared upcoming-events component.
 - Kolasi marquee gallery tilt/3D-like hover behavior was removed while preserving the marquee layout.
-- Static fallback detail routes for Blaze projects, Kolasi events, and artists still remain and should be handled in the next phase.
 
 ## Phase 12 Detail Proof Cleanup Completed
 
