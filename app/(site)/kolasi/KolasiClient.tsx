@@ -10,9 +10,9 @@ import UpcomingEvents from '@/components/ui/UpcomingEvents';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 
 const expertise = [
-  { icon: 'music', title: 'DJ Booking', description: 'Connecting world-class DJs and live performers with venues, festivals and private events globally.', image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg' },
-  { icon: 'layout', title: 'Event Curation', description: 'Art direction, programming and press relations to shape cultural experiences and narratives.', image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg' },
-  { icon: 'camera', title: 'Content Creation', description: 'Cinematic capture, editing and campaign-ready media for events and promotions.', image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364281/sg-platform/static/assets/kolasi/images/4F8A3310.jpg' },
+  { icon: 'music', title: 'DJ Booking', description: 'Connecting world-class DJs and live performers with venues, festivals and private events globally.', image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364184/sg-platform/static/assets/kolasi/artists/4F8A3682.jpg', video: '/assets/kolasi/artists/kolasi%20kate%20zubok.mp4' },
+  { icon: 'layout', title: 'Event Curation', description: 'Art direction, programming and press relations to shape cultural experiences and narratives.', image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364262/sg-platform/static/assets/kolasi/images/4F8A2882.jpg', video: '/assets/kolasi/events/2ndsun/2nd_sun.mp4' },
+  { icon: 'camera', title: 'Content Creation', description: 'Cinematic capture, editing and campaign-ready media for events and promotions.', image: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364281/sg-platform/static/assets/kolasi/images/4F8A3310.jpg', video: '/assets/kolasi/Speakeasy_Ads/LeSpeakeasyVid.mp4' },
 ];
 
 const galleryRow1 = [
@@ -482,14 +482,14 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
           <div className="grid md:grid-cols-3 gap-8">
             {expertise.map((exp, i) => (
               <div key={i} className="reveal-up rounded-[2rem] overflow-hidden relative group aspect-[3/4] cursor-pointer">
-                <Image
-                  src={exp.image}
-                  alt={exp.title}
-                  fill
-                  placeholder="blur"
-                  blurDataURL={BLUR_DATA_URL}
-                  className="absolute inset-0 object-cover group-hover:scale-110 transition-transform duration-700"
-                  sizes="(max-width: 768px) 100vw, 33vw"
+                <VideoPlayer
+                  src={exp.video}
+                  poster={exp.image}
+                  autoPlay
+                  loop
+                  muted
+                  mode="hero"
+                  className="absolute inset-0 group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--brand-dark) 92%, transparent) 10%, color-mix(in srgb, var(--brand-dark) 60%, transparent) 50%, transparent)' }} />
                 <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 z-10">
