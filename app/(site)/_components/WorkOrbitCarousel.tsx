@@ -108,13 +108,17 @@ export function WorkOrbitCarousel({
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 flex flex-col justify-end p-7 md:p-8" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--brand-dark) 84%, transparent), transparent, transparent)' }}>
-                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/50">
-                  {item.category}
-                </p>
-                <h4 className="text-2xl font-serif text-white">{item.title}</h4>
-                <p className="mt-3 text-xs leading-relaxed text-white/55">{item.meta}</p>
                 {isActive && (
-                  <span className="mt-5 inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/80 backdrop-blur-md transition-colors group-hover:bg-white group-hover:text-black">
+                  <>
+                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-on-media-dim">
+                      {item.category}
+                    </p>
+                    <h4 className="text-2xl font-serif text-on-media">{item.title}</h4>
+                    <p className="mt-3 text-xs leading-relaxed text-on-media-dim">{item.meta}</p>
+                  </>
+                )}
+                {isActive && (
+                  <span className="mt-5 inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-on-media backdrop-blur-md transition-colors group-hover:bg-white group-hover:text-black">
                     {seeMoreLabel}
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                       <path d="M7 17 17 7" />
@@ -153,7 +157,8 @@ export function WorkOrbitCarousel({
               key={item.id}
               type="button"
               onClick={() => setActiveIndex(index)}
-              className={`h-2 rounded-full transition-all duration-500 ${index === activeIndex ? 'w-6 bg-white' : 'w-2 bg-white/25'}`}
+              className={`h-2 rounded-full transition-all duration-500 ${index === activeIndex ? 'w-6' : 'w-2'}`}
+              style={{ backgroundColor: index === activeIndex ? 'var(--text-primary)' : 'var(--text-muted)' }}
               aria-label={`Go to ${item.title}`}
             />
           ))}

@@ -29,6 +29,8 @@
     --brand-ivory: #f7f7f5;
     --brand-dark: #09090b;
     --brand-kolasi: #a78bfa;
+    /* Fixed dark scrim for overlays on media (theme-independent) */
+    --media-scrim: #09090b;
   }
 
   html.dark {
@@ -170,6 +172,16 @@
 
   .sg-hover-surface:hover {
     background: var(--surface-card-soft);
+  }
+
+  /* Text that always sits on dark media (images/video/dark cards).
+     Theme-independent so it stays legible in both light and dark. */
+  .text-on-media {
+    color: var(--brand-ivory);
+  }
+
+  .text-on-media-dim {
+    color: rgba(247, 247, 245, 0.66);
   }
 
   .sg-action-primary {

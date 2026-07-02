@@ -161,7 +161,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
             mode="hero"
             className="opacity-40"
           />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--surface-page), transparent, var(--surface-page))' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, var(--media-scrim), transparent, var(--surface-page))' }} />
         </div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
@@ -215,9 +215,9 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
                     <polygon points="8 5 19 12 8 19" />
                   </svg>
                 </div>
-                <p className="text-xs font-medium mb-2 text-white/60">Blaze Motion</p>
-                <h3 className="text-xl font-serif italic mb-1">Signature Wedding Reel</h3>
-                <p className="text-xs font-light border-t border-white/10 pt-4 mt-4 text-white/60">
+                <p className="text-xs font-medium mb-2 text-on-media-dim">Blaze Motion</p>
+                <h3 className="text-xl font-serif italic mb-1 text-on-media">Signature Wedding Reel</h3>
+                <p className="text-xs font-light border-t border-white/10 pt-4 mt-4 text-on-media-dim">
                   Paris &bull; Cinematic Weddings
                 </p>
               </div>
@@ -353,7 +353,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
               {t.trustedTitle}
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-x-6 gap-y-10 md:gap-x-10 md:gap-y-14">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10 md:gap-x-10 md:gap-y-14">
               {collaborations.map((c) => (
                 <div key={c.name} className="group flex flex-col items-center justify-center px-2 py-2 text-center">
                   <div className="h-12 flex items-center justify-center mb-5">
@@ -363,7 +363,6 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
                       <span className="text-xs font-semibold uppercase tracking-[0.18em] transition-colors duration-500" style={{ color: 'var(--text-secondary)' }}>{c.name}</span>
                     )}
                   </div>
-                  {c.logo && <p className="text-xs font-semibold mb-1 transition-colors" style={{ color: 'var(--text-secondary)' }}>{c.name}</p>}
                   <p className="ui-caption font-light transition-colors" style={{ color: 'var(--text-muted)' }}>{c.location}</p>
                 </div>
               ))}

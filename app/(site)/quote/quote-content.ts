@@ -51,19 +51,19 @@ export const initialForm: FormState = {
 };
 
 export const serviceOptions = [
-  { value: 'wedding-film' as Service, label: 'Wedding Film', icon: 'ðŸŽ¬', desc: 'Cinematic wedding films that tell your love story' },
-  { value: 'editorial-commercial' as Service, label: 'Editorial / Commercial', icon: 'ðŸ“·', desc: 'Brand films, fashion, and editorial content' },
-  { value: 'dj-performance' as Service, label: 'DJ Performance', icon: 'ðŸŽµ', desc: 'Book a DJ or live performer for your event' },
-  { value: 'event-production' as Service, label: 'Event Production', icon: 'ðŸŽª', desc: 'Full event design, production, and management' },
-  { value: 'hybrid-package' as Service, label: 'Hybrid Package', icon: 'âœ¨', desc: 'Combine film, music, and production services' },
+  { value: 'wedding-film' as Service, label: 'Wedding Film', icon: '🎬', desc: 'Cinematic wedding films that tell your love story' },
+  { value: 'editorial-commercial' as Service, label: 'Editorial / Commercial', icon: '📷', desc: 'Brand films, fashion, and editorial content' },
+  { value: 'dj-performance' as Service, label: 'DJ Performance', icon: '🎵', desc: 'Book a DJ or live performer for your event' },
+  { value: 'event-production' as Service, label: 'Event Production', icon: '🎪', desc: 'Full event design, production, and management' },
+  { value: 'hybrid-package' as Service, label: 'Hybrid Package', icon: '✨', desc: 'Combine film, music, and production services' },
 ];
 
 export const frenchServiceOptions = [
-  { value: 'wedding-film' as Service, label: 'Film de mariage', icon: 'ðŸŽ¬', desc: 'Films cinematographiques pour raconter votre histoire' },
-  { value: 'editorial-commercial' as Service, label: 'Editorial / Commercial', icon: 'ðŸ“·', desc: 'Films de marque, mode et contenu editorial' },
-  { value: 'dj-performance' as Service, label: 'Performance DJ', icon: 'ðŸŽµ', desc: 'Booker un DJ ou artiste live pour votre evenement' },
-  { value: 'event-production' as Service, label: 'Production evenementielle', icon: 'ðŸŽª', desc: 'Direction, production et gestion complete' },
-  { value: 'hybrid-package' as Service, label: 'Pack hybride', icon: 'âœ¨', desc: 'Combiner film, musique et production' },
+  { value: 'wedding-film' as Service, label: 'Film de mariage', icon: '🎬', desc: 'Films cinematographiques pour raconter votre histoire' },
+  { value: 'editorial-commercial' as Service, label: 'Editorial / Commercial', icon: '📷', desc: 'Films de marque, mode et contenu editorial' },
+  { value: 'dj-performance' as Service, label: 'Performance DJ', icon: '🎵', desc: 'Booker un DJ ou artiste live pour votre evenement' },
+  { value: 'event-production' as Service, label: 'Production evenementielle', icon: '🎪', desc: 'Direction, production et gestion complete' },
+  { value: 'hybrid-package' as Service, label: 'Pack hybride', icon: '✨', desc: 'Combiner film, musique et production' },
 ];
 
 export const stepLabels = ['Service', 'Details', 'Timeline', 'Contact', 'Done'];

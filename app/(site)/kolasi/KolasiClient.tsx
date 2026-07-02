@@ -424,7 +424,7 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
             className="opacity-60 scale-105"
           />
         </div>
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--surface-page) 60%, transparent), transparent, var(--surface-page))' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--media-scrim) 60%, transparent), transparent, var(--surface-page))' }} />
         <div className="relative z-10 text-center px-6 max-w-5xl">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
             Creative Booking <br />
@@ -465,8 +465,8 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
             />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--brand-dark) 88%, transparent), transparent)' }} />
             <div className="absolute bottom-8 left-8 z-10">
-              <p className="text-xl font-serif tracking-[0.2em] uppercase text-white">Kolasi</p>
-              <p className="text-[10px] font-light mt-1 text-white/60">Agency</p>
+              <p className="text-xl font-serif tracking-[0.2em] uppercase text-on-media">Kolasi</p>
+              <p className="text-[10px] font-light mt-1 text-on-media-dim">Agency</p>
             </div>
           </div>
         </div>
@@ -496,8 +496,8 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
                   <div className="mb-4 p-3 rounded-full inline-flex" style={{ backgroundColor: 'color-mix(in srgb, var(--brand-dark) 60%, transparent)', color: 'var(--brand-ivory)' }}>
                     {getIcon(exp.icon)}
                   </div>
-                  <h3 className="text-xl font-serif mb-3 text-white">{exp.title}</h3>
-                  <p className="text-sm leading-relaxed font-light text-white/65">{exp.description}</p>
+                  <h3 className="text-xl font-serif mb-3 text-on-media">{exp.title}</h3>
+                  <p className="text-sm leading-relaxed font-light text-on-media-dim">{exp.description}</p>
                 </div>
               </div>
             ))}

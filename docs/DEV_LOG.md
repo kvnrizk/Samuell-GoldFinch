@@ -1101,3 +1101,59 @@ Two minimal, structural, low-risk improvements using the existing styling system
 ### 3D Status
 
 Still deferred. No 3D/WebGL was added in this phase.
+
+## 2026-07-02 - Phase 18: Light/Dark Visibility Bug Fixes + On-Media Foundation
+
+### Context
+
+Audit (3 parallel explores) found the theme token set in `globals.css` is complete, but a global
+band-aid (`html.light { [class*="text-white"]{color:var(--text)!important} … }`, ~466-599)
+force-flips hardcoded color classes in light mode. It fixes dark-designed content on light pages
+but breaks anything on dark media (white text over images/video disappears in light), while
+dark-muted elements disappear in dark. User chose targeted deterministic fixes now (they'll QA
+light/dark in-browser) + a small reusable on-media foundation; the full component-by-component
+token migration is deferred.
+
+### Foundation (globals.css)
+
+- `--media-scrim: #09090b` (theme-independent dark scrim for media overlays).
+- `.text-on-media` / `.text-on-media-dim` utilities (fixed light text for content on dark media,
+  exempt from the band-aid since they don't contain `text-white`).
+
+### Fixes
+
+1. **Mojibake** — `app/(site)/quote/quote-content.ts`: rebuilt the 10 garbled service-icon emoji
+   (🎬 📷 🎵 🎪 ✨) from Unicode code points, saved UTF-8 no-BOM. (This is the Quote "Personal / Brand"
+   flow the user hit, not the venue form.)
+2. **Footer dark-readability** — `components/layout/Footer.tsx`: titles → `--text-primary`, links →
+   `--text-secondary` with `sg-hover-accent` (replaced the `--text-muted` + `opacity-70` dimming).
+3. **Hero overlays washed-out in light** — `HomeClient.tsx`, `BlazeClient.tsx`, `KolasiClient.tsx`:
+   the overlay's top/legibility stop `var(--surface-page)` (white in light) → `var(--media-scrim)`;
+   bottom stop kept `var(--surface-page)` for page blend.
+4. **On-dark-media text** — `KolasiClient.tsx` (manifesto logo card + "Our Expertise" cards) and the
+   `HomeClient.tsx` hero reel card: `text-white*` → `text-on-media`/`text-on-media-dim`.
+5. **Trusted-by grid** — `HomeClient.tsx`: `md:grid-cols-5` → `md:grid-cols-4` (8 items → even 4+4,
+   even at 2 cols too); dropped the redundant brand-name caption under logos so cells align.
+6. **Orbit carousel** — `WorkOrbitCarousel.tsx`: gated category/title/meta to the active card only
+   (side cards are clean previews), converted the active caption + see-more pill to on-media, and
+   made the dot indicators theme-aware (`--text-primary`/`--text-muted`) so they show in light mode.
+
+### Tests
+
+- Added `tests/encoding.test.ts` (recursive mojibake scan of `app/`+`lib/` + asserts quote emoji present).
+
+### Intentionally Deferred (Phase B, needs in-browser QA)
+
+Token migration of `OrbitCarousel.tsx` (beyond the dots/captions), `PricingCard.tsx`,
+`CaseStudyCard.tsx`, `ProcessTimeline.tsx`, `TrustStrip.tsx`, `AccordionFAQ.tsx`,
+`CookieConsent.tsx`, `BudgetEstimator.tsx`, and retiring the global `html.light` band-aid.
+
+### Validation
+
+- `npm run typecheck`, `npm run lint`, `npm test` (19 files, 75 tests), `npm run build`: all passed.
+
+### Remaining Risks
+
+- Light/dark rendering was not visually verified in this environment; user to QA in-browser.
+- The global `html.light` band-aid still governs the many un-migrated components (Phase B).
+- 3D still deferred; none added.

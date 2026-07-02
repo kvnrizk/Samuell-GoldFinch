@@ -220,7 +220,7 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
             />
           </div>
         )}
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--surface-page) 60%, transparent), transparent, var(--surface-page))' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--media-scrim) 60%, transparent), transparent, var(--surface-page))' }} />
 
         <div className="relative z-10 text-center px-6">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
