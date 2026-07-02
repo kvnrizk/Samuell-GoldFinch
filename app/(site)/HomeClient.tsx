@@ -150,7 +150,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
 
   return (
     <div ref={containerRef}>
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden" style={{ backgroundColor: 'var(--media-scrim)' }}>
         <div className="absolute inset-0">
           <VideoPlayer
             muxPlaybackId="ABVHVsPKRIgCyqWD7JOSHSxvR00HVt800oBerw5sQDk00A"
@@ -166,13 +166,13 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <p className="hero-reveal ui-kicker font-medium" style={{ color: 'var(--text-muted)' }}>
+            <p className="hero-reveal ui-kicker font-medium text-on-media-dim">
               {t.eyebrow}
             </p>
-            <h1 className="hero-reveal text-3xl sm:text-4xl md:text-5xl font-serif leading-tight tracking-tight max-w-4xl">
+            <h1 className="hero-reveal text-3xl sm:text-4xl md:text-5xl font-serif leading-tight tracking-tight max-w-4xl text-on-media">
               {t.title}
             </h1>
-            <p className="hero-reveal ui-body-small md:ui-body max-w-md font-light" style={{ color: 'var(--text-secondary)' }}>
+            <p className="hero-reveal ui-body-small md:ui-body max-w-md font-light text-on-media-dim">
               {t.intro}
             </p>
             <div className="hero-reveal flex flex-wrap gap-4 pt-4">

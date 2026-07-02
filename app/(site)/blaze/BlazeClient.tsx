@@ -193,7 +193,7 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
   return (
     <div ref={containerRef} style={{ backgroundColor: 'var(--surface-page)' }}>
       {/* Full Screen Hero Video */}
-      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--surface-page)' }}>
+      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--media-scrim)' }}>
         {(heroProject?.heroVideo?.muxPlaybackId || heroProject?.heroVideo?.cloudinaryVideoId) ? (
           <div className="absolute inset-0">
             <VideoPlayer
@@ -223,11 +223,11 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--media-scrim) 60%, transparent), transparent, var(--surface-page))' }} />
 
         <div className="relative z-10 text-center px-6">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up text-on-media">
             Bringing Your <br />
             <span className="italic">Story to Life</span>
           </h1>
-          <p className="text-xs md:text-sm font-medium mb-10 reveal-up" style={{ color: 'var(--text-muted)' }}>
+          <p className="text-xs md:text-sm font-medium mb-10 reveal-up text-on-media-dim">
             Cinematic storytelling and visual precision for those who feel deeply.
           </p>
           <button className="px-12 py-4 border rounded-full text-sm font-semibold transition-all reveal-up backdrop-blur-sm sg-action-secondary">

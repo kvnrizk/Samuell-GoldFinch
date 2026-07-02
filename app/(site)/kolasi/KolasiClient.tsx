@@ -401,9 +401,9 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} className="pt-20" style={{ backgroundColor: 'var(--surface-page)' }}>
+    <div ref={containerRef} style={{ backgroundColor: 'var(--surface-page)' }}>
       {/* Hero */}
-      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--surface-page)' }}>
+      <section className="relative h-screen w-full overflow-hidden flex items-center justify-center" style={{ backgroundColor: 'var(--media-scrim)' }}>
         <div className="absolute inset-0">
           <VideoPlayer
             muxPlaybackId="RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo"
@@ -417,11 +417,11 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
         </div>
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, color-mix(in srgb, var(--media-scrim) 60%, transparent), transparent, var(--surface-page))' }} />
         <div className="relative z-10 text-center px-6 max-w-5xl">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up text-on-media">
             Creative Booking <br />
             <span className="italic">and Talent Agency</span>
           </h1>
-          <p className="text-xs md:text-sm font-medium mb-10 reveal-up" style={{ color: 'var(--text-muted)' }}>
+          <p className="text-xs md:text-sm font-medium mb-10 reveal-up text-on-media-dim">
             DJ &amp; Live Show Booking &bull; Event Curation &bull; Content Creation &bull; Production Services
           </p>
           <a href="#services" className="px-10 py-4 border rounded-full text-sm font-semibold transition-all reveal-up backdrop-blur-sm inline-block sg-action-secondary">

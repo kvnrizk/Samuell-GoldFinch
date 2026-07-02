@@ -57,9 +57,14 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         isScrolled
           ? 'backdrop-blur-xl py-3 md:py-5 border-b'
-          : 'bg-transparent py-4 md:py-10'
+          : 'backdrop-blur-md py-4 md:py-8'
       }`}
-      style={isScrolled ? { backgroundColor: 'color-mix(in srgb, var(--surface-page) 90%, transparent)', borderColor: 'var(--border-subtle)' } : undefined}
+      style={{
+        backgroundColor: isScrolled
+          ? 'color-mix(in srgb, var(--surface-page) 90%, transparent)'
+          : 'color-mix(in srgb, var(--surface-page) 72%, transparent)',
+        borderColor: 'var(--border-subtle)',
+      }}
     >
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <HeaderBrand locale={locale} />

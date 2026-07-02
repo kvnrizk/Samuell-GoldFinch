@@ -17,15 +17,15 @@ export function TrustStrip({ locale = 'en' }: { locale?: Locale }) {
         {logos.map((logo, i) => (
           <div
             key={i}
-            className="w-9 h-9 rounded-full border border-white/[0.12] bg-white/[0.05] backdrop-blur-sm flex items-center justify-center text-[10px] font-mono text-zinc-400 uppercase"
+            className="w-9 h-9 rounded-full border border-white/[0.12] bg-white/[0.05] backdrop-blur-sm flex items-center justify-center text-[10px] font-mono text-on-media-dim uppercase"
             title={logo.name}
           >
             {logo.initials}
           </div>
         ))}
       </div>
-      <span className="text-xs text-zinc-500">
-        <span className="text-stone-100 font-semibold">150+</span>{' '}
+      <span className="text-xs text-on-media-dim">
+        <span className="text-on-media font-semibold">150+</span>{' '}
         {locale === 'fr' ? 'experiences live realisees' : 'live experiences delivered'}
       </span>
     </div>
