@@ -8,8 +8,6 @@ interface KPIData {
   projects: number;
   events: number;
   artists: number;
-  posts: number;
-  testimonials: number;
 }
 
 const defaultKPI: KPIData = {
@@ -18,8 +16,6 @@ const defaultKPI: KPIData = {
   projects: 0,
   events: 0,
   artists: 0,
-  posts: 0,
-  testimonials: 0,
 };
 
 export default function DashboardKPIs() {
@@ -45,8 +41,6 @@ export default function DashboardKPIs() {
           projectsRes,
           eventsRes,
           artistsRes,
-          postsRes,
-          testimonialsRes,
         ] = await Promise.all([
           fetch('/api/inquiries?limit=0&depth=0'),
           fetch('/api/inquiries?limit=0&depth=0&where[status][equals]=new'),
@@ -55,11 +49,9 @@ export default function DashboardKPIs() {
           fetch('/api/blaze-projects?limit=0&depth=0'),
           fetch('/api/kolasi-events?limit=0&depth=0'),
           fetch('/api/artists?limit=0&depth=0'),
-          fetch('/api/posts?limit=0&depth=0'),
-          fetch('/api/testimonials?limit=0&depth=0'),
         ]);
 
-        const [inq, newInq, vInq, newVInq, proj, evt, art, post, test] = await Promise.all([
+        const [inq, newInq, vInq, newVInq, proj, evt, art] = await Promise.all([
           inquiriesRes.json(),
           newInquiriesRes.json(),
           venueInqRes.json(),
@@ -67,8 +59,6 @@ export default function DashboardKPIs() {
           projectsRes.json(),
           eventsRes.json(),
           artistsRes.json(),
-          postsRes.json(),
-          testimonialsRes.json(),
         ]);
 
         setData({
@@ -77,8 +67,6 @@ export default function DashboardKPIs() {
           projects: proj.totalDocs || 0,
           events: evt.totalDocs || 0,
           artists: art.totalDocs || 0,
-          posts: post.totalDocs || 0,
-          testimonials: test.totalDocs || 0,
         });
       } catch (err) {
         console.error('Failed to fetch KPIs:', err);
@@ -96,8 +84,6 @@ export default function DashboardKPIs() {
     { label: 'Projects', value: data.projects, badge: '', color: '#3b82f6', href: '/admin/collections/blaze-projects' },
     { label: 'Events', value: data.events, badge: '', color: '#8b5cf6', href: '/admin/collections/kolasi-events' },
     { label: 'Artists', value: data.artists, badge: '', color: '#ec4899', href: '/admin/collections/artists' },
-    { label: 'Journal Posts', value: data.posts, badge: '', color: '#f97316', href: '/admin/collections/posts' },
-    { label: 'Testimonials', value: data.testimonials, badge: '', color: '#06b6d4', href: '/admin/collections/testimonials' },
   ];
 
   return (

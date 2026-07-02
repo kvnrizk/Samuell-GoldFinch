@@ -74,15 +74,11 @@ export interface Config {
     artists: Artist;
     milestones: Milestone;
     inquiries: Inquiry;
-    pages: Page;
     'venue-packages': VenuePackage;
     'case-studies': CaseStudy;
     'venue-faq': VenueFaq;
     'venue-inquiries': VenueInquiry;
     'venue-seo-pages': VenueSeoPage;
-    testimonials: Testimonial;
-    posts: Post;
-    'pricing-factors': PricingFactor;
     'admin-alerts': AdminAlert;
     'automation-sequences': AutomationSequence;
     'sent-notifications': SentNotification;
@@ -100,15 +96,11 @@ export interface Config {
     artists: ArtistsSelect<false> | ArtistsSelect<true>;
     milestones: MilestonesSelect<false> | MilestonesSelect<true>;
     inquiries: InquiriesSelect<false> | InquiriesSelect<true>;
-    pages: PagesSelect<false> | PagesSelect<true>;
     'venue-packages': VenuePackagesSelect<false> | VenuePackagesSelect<true>;
     'case-studies': CaseStudiesSelect<false> | CaseStudiesSelect<true>;
     'venue-faq': VenueFaqSelect<false> | VenueFaqSelect<true>;
     'venue-inquiries': VenueInquiriesSelect<false> | VenueInquiriesSelect<true>;
     'venue-seo-pages': VenueSeoPagesSelect<false> | VenueSeoPagesSelect<true>;
-    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
-    posts: PostsSelect<false> | PostsSelect<true>;
-    'pricing-factors': PricingFactorsSelect<false> | PricingFactorsSelect<true>;
     'admin-alerts': AdminAlertsSelect<false> | AdminAlertsSelect<true>;
     'automation-sequences': AutomationSequencesSelect<false> | AutomationSequencesSelect<true>;
     'sent-notifications': SentNotificationsSelect<false> | SentNotificationsSelect<true>;
@@ -123,12 +115,10 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'global-settings': GlobalSetting;
-    'press-kit': PressKit;
     showreel: Showreel;
   };
   globalsSelect: {
     'global-settings': GlobalSettingsSelect<false> | GlobalSettingsSelect<true>;
-    'press-kit': PressKitSelect<false> | PressKitSelect<true>;
     showreel: ShowreelSelect<false> | ShowreelSelect<true>;
   };
   locale: null;
@@ -460,35 +450,6 @@ export interface Inquiry {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
- */
-export interface Page {
-  id: string;
-  /**
-   * Internal label
-   */
-  title: string;
-  /**
-   * Matches route: home, blaze, kolasi, about, contact, quote
-   */
-  slug: string;
-  /**
-   * Browser tab + Google title (50–60 chars)
-   */
-  seoTitle?: string | null;
-  /**
-   * Meta description (120–155 chars)
-   */
-  seoDescription?: string | null;
-  /**
-   * 1200x630 recommended
-   */
-  ogImage?: (string | null) | Media;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "venue-packages".
  */
 export interface VenuePackage {
@@ -734,132 +695,6 @@ export interface VenueSeoPage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials".
- */
-export interface Testimonial {
-  id: string;
-  clientName: string;
-  /**
-   * e.g. "Bride", "Venue Owner", "Event Director"
-   */
-  role?: string | null;
-  brand: 'blaze' | 'kolasi' | 'venues' | 'personal';
-  quote: string;
-  rating?: number | null;
-  photo?: (string | null) | Media;
-  /**
-   * Link this testimonial to a specific project
-   */
-  projectLink?: (string | null) | BlazeProject;
-  featured?: boolean | null;
-  /**
-   * Lower numbers appear first
-   */
-  sortOrder?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
-export interface Post {
-  id: string;
-  title: string;
-  /**
-   * URL-friendly version of the title
-   */
-  slug: string;
-  /**
-   * Appears on listing pages and in social shares
-   */
-  excerpt?: string | null;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  category: 'behind-the-scenes' | 'tips' | 'industry' | 'news' | 'client-stories';
-  tags?:
-    | {
-        tag?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  coverImage?: (string | null) | Media;
-  author?: (string | null) | User;
-  publishedAt: string;
-  featured?: boolean | null;
-  seo?: {
-    metaTitle?: string | null;
-    metaDescription?: string | null;
-    ogImage?: (string | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pricing-factors".
- */
-export interface PricingFactor {
-  id: string;
-  service: 'wedding-film' | 'editorial-commercial' | 'dj-performance' | 'event-production';
-  /**
-   * e.g. "Hours of Coverage", "Number of Cameras"
-   */
-  factorName: string;
-  factorType: 'slider' | 'toggle' | 'select';
-  /**
-   * Base price in EUR for this factor
-   */
-  basePrice: number;
-  /**
-   * Options for select/slider type factors
-   */
-  options?:
-    | {
-        label: string;
-        value: string;
-        /**
-         * Price multiplier (e.g. 1.5 = 150% of base)
-         */
-        multiplier: number;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Minimum value for slider type
-   */
-  sliderMin?: number | null;
-  /**
-   * Maximum value for slider type
-   */
-  sliderMax?: number | null;
-  /**
-   * Step increment for slider
-   */
-  sliderStep?: number | null;
-  /**
-   * Display unit (e.g. "hours", "cameras")
-   */
-  unit?: string | null;
-  sortOrder?: number | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "admin-alerts".
  */
 export interface AdminAlert {
@@ -1026,10 +861,6 @@ export interface PayloadLockedDocument {
         value: string | Inquiry;
       } | null)
     | ({
-        relationTo: 'pages';
-        value: string | Page;
-      } | null)
-    | ({
         relationTo: 'venue-packages';
         value: string | VenuePackage;
       } | null)
@@ -1048,18 +879,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'venue-seo-pages';
         value: string | VenueSeoPage;
-      } | null)
-    | ({
-        relationTo: 'testimonials';
-        value: string | Testimonial;
-      } | null)
-    | ({
-        relationTo: 'posts';
-        value: string | Post;
-      } | null)
-    | ({
-        relationTo: 'pricing-factors';
-        value: string | PricingFactor;
       } | null)
     | ({
         relationTo: 'admin-alerts';
@@ -1307,19 +1126,6 @@ export interface InquiriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages_select".
- */
-export interface PagesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  seoTitle?: T;
-  seoDescription?: T;
-  ogImage?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "venue-packages_select".
  */
 export interface VenuePackagesSelect<T extends boolean = true> {
@@ -1425,78 +1231,6 @@ export interface VenueSeoPagesSelect<T extends boolean = true> {
   ctaHeading?: T;
   ctaDescription?: T;
   ogImage?: T;
-  sortOrder?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "testimonials_select".
- */
-export interface TestimonialsSelect<T extends boolean = true> {
-  clientName?: T;
-  role?: T;
-  brand?: T;
-  quote?: T;
-  rating?: T;
-  photo?: T;
-  projectLink?: T;
-  featured?: T;
-  sortOrder?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts_select".
- */
-export interface PostsSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  excerpt?: T;
-  content?: T;
-  category?: T;
-  tags?:
-    | T
-    | {
-        tag?: T;
-        id?: T;
-      };
-  coverImage?: T;
-  author?: T;
-  publishedAt?: T;
-  featured?: T;
-  seo?:
-    | T
-    | {
-        metaTitle?: T;
-        metaDescription?: T;
-        ogImage?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pricing-factors_select".
- */
-export interface PricingFactorsSelect<T extends boolean = true> {
-  service?: T;
-  factorName?: T;
-  factorType?: T;
-  basePrice?: T;
-  options?:
-    | T
-    | {
-        label?: T;
-        value?: T;
-        multiplier?: T;
-        id?: T;
-      };
-  sliderMin?: T;
-  sliderMax?: T;
-  sliderStep?: T;
-  unit?: T;
   sortOrder?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1628,64 +1362,6 @@ export interface GlobalSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "press-kit".
- */
-export interface PressKit {
-  id: string;
-  shortBio?: string | null;
-  mediumBio?: string | null;
-  fullBio?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  logos?:
-    | {
-        brand?: ('sg' | 'blaze' | 'kolasi') | null;
-        file: string | Media;
-        format?: ('svg' | 'png' | 'eps') | null;
-        variant?: ('light' | 'dark' | 'color') | null;
-        id?: string | null;
-      }[]
-    | null;
-  pressPhotos?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        credit?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  mediaAppearances?:
-    | {
-        title: string;
-        publication: string;
-        url?: string | null;
-        date?: string | null;
-        type?: ('article' | 'interview' | 'feature' | 'podcast' | 'video') | null;
-        id?: string | null;
-      }[]
-    | null;
-  pressContact?: {
-    name?: string | null;
-    email?: string | null;
-    phone?: string | null;
-  };
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "showreel".
  */
 export interface Showreel {
@@ -1743,52 +1419,6 @@ export interface GlobalSettingsSelect<T extends boolean = true> {
   responsePromise?: T;
   calendlyUrl?: T;
   whatsappNumber?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "press-kit_select".
- */
-export interface PressKitSelect<T extends boolean = true> {
-  shortBio?: T;
-  mediumBio?: T;
-  fullBio?: T;
-  logos?:
-    | T
-    | {
-        brand?: T;
-        file?: T;
-        format?: T;
-        variant?: T;
-        id?: T;
-      };
-  pressPhotos?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        credit?: T;
-        id?: T;
-      };
-  mediaAppearances?:
-    | T
-    | {
-        title?: T;
-        publication?: T;
-        url?: T;
-        date?: T;
-        type?: T;
-        id?: T;
-      };
-  pressContact?:
-    | T
-    | {
-        name?: T;
-        email?: T;
-        phone?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

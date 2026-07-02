@@ -10,7 +10,6 @@ import { KolasiEvents } from './collections/KolasiEvents';
 import { Artists } from './collections/Artists';
 import { Milestones } from './collections/Milestones';
 import { Inquiries } from './collections/Inquiries';
-import { Pages } from './collections/Pages';
 import { Media } from './collections/Media';
 import { Users } from './collections/Users';
 import { VenuePackages } from './collections/VenuePackages';
@@ -18,14 +17,10 @@ import { CaseStudies } from './collections/CaseStudies';
 import { VenueFAQ } from './collections/VenueFAQ';
 import { VenueInquiries } from './collections/VenueInquiries';
 import { VenueSEOPages } from './collections/VenueSEOPages';
-import { Testimonials } from './collections/Testimonials';
-import { Posts } from './collections/Posts';
-import { PricingFactors } from './collections/PricingFactors';
 import { AdminAlerts } from './collections/AdminAlerts';
 import { AutomationSequences } from './collections/AutomationSequences';
 import { SentNotifications } from './collections/SentNotifications';
 import { GlobalSettings } from './globals/GlobalSettings';
-import { PressKit } from './globals/PressKit';
 import { Showreel } from './globals/Showreel';
 import { getEnv, getRequiredProductionEnv, validateProductionEnv } from './lib/env';
 
@@ -78,21 +73,17 @@ export default buildConfig({
     Artists,
     Milestones,
     Inquiries,
-    Pages,
     VenuePackages,
     CaseStudies,
     VenueFAQ,
     VenueInquiries,
     VenueSEOPages,
-    Testimonials,
-    Posts,
-    PricingFactors,
     AdminAlerts,
     AutomationSequences,
     SentNotifications,
   ],
 
-  globals: [GlobalSettings, PressKit, Showreel],
+  globals: [GlobalSettings, Showreel],
 
   secret: getRequiredProductionEnv('PAYLOAD_SECRET'),
 

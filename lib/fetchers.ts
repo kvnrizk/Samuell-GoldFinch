@@ -118,27 +118,6 @@ export async function getVenueFAQ() {
   return result.docs;
 }
 
-export async function getArtistsByCategory(category: string) {
-  const payload = await getPayload();
-  const result = await payload.find({
-    collection: 'artists',
-    where: { rosterCategory: { equals: category } },
-    sort: 'name',
-    limit: 20,
-  });
-  return result.docs;
-}
-
-export async function getPageSeo(slug: string) {
-  const payload = await getPayload();
-  const result = await payload.find({
-    collection: 'pages',
-    where: { slug: { equals: slug } },
-    limit: 1,
-  });
-  return result.docs[0] || null;
-}
-
 export async function getVenueSEOPages() {
   const payload = await getPayload();
   const result = await payload.find({
@@ -187,85 +166,6 @@ export async function getBlazeProjectBySlug(slug: string) {
 
 export async function getAdjacentBlazeProjects(currentSlug: string) {
   return getAdjacentByDate('blaze-projects', currentSlug);
-}
-
-export async function getAllPosts(category?: string, limit = 12) {
-  const payload = await getPayload();
-  const where: any = { publishedAt: { less_than_equal: new Date().toISOString() } };
-  if (category) where.category = { equals: category };
-  const result = await payload.find({
-    collection: 'posts',
-    where,
-    sort: '-publishedAt',
-    limit,
-    depth: 2,
-  });
-  return result.docs;
-}
-
-export async function getPostBySlug(slug: string) {
-  const payload = await getPayload();
-  const result = await payload.find({
-    collection: 'posts',
-    where: { slug: { equals: slug } },
-    limit: 1,
-    depth: 2,
-  });
-  return result.docs[0] || null;
-}
-
-export async function getRelatedPosts(category: string, excludeSlug: string) {
-  const payload = await getPayload();
-  const result = await payload.find({
-    collection: 'posts',
-    where: {
-      and: [
-        { category: { equals: category } },
-        { slug: { not_equals: excludeSlug } },
-      ],
-    },
-    sort: '-publishedAt',
-    limit: 3,
-    depth: 2,
-  });
-  return result.docs;
-}
-
-export async function getUpcomingEvents(limit = 10) {
-  const payload = await getPayload();
-  const now = new Date().toISOString();
-  const result = await payload.find({
-    collection: 'kolasi-events',
-    where: {
-      and: [
-        { date: { greater_than: now } },
-        { status: { equals: 'upcoming' } },
-      ],
-    },
-    sort: 'date',
-    limit,
-    depth: 2,
-  });
-  return result.docs;
-}
-
-export async function getPressKit() {
-  const payload = await getPayload();
-  return payload.findGlobal({ slug: 'press-kit', depth: 2 });
-}
-
-export async function getFeaturedTestimonials(brand?: string) {
-  const payload = await getPayload();
-  const where: any = { featured: { equals: true } };
-  if (brand) where.brand = { equals: brand };
-  const result = await payload.find({
-    collection: 'testimonials',
-    where,
-    sort: 'sortOrder',
-    limit: 12,
-    depth: 2,
-  });
-  return result.docs;
 }
 
 export async function getArtistBySlug(slug: string) {
