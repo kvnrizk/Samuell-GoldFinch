@@ -70,10 +70,10 @@ interface KolasiClientProps {
 
 /* Static promo clips — brand media previews only (autoplay, muted, not linked out). */
 const showcasePoster = 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364299/sg-platform/static/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.jpg';
-const showcaseClips: { src: string; label: string; poster?: string; loopEnd?: number }[] = [
-  { src: '/assets/kolasi/Speakeasy_Ads/le%20speakeasy%20ads2%20barman.mp4', label: 'Le Speakeasy', poster: showcasePoster },
-  { src: '/assets/kolasi/Speakeasy_Ads/lespeakeasy%20g500%20mercedes.mp4', label: 'Le Speakeasy', poster: showcasePoster, loopEnd: 24 },
-  { src: '/assets/kolasi/Speakeasy_Ads/le%20speakeasy%20ads.mp4', label: 'Le Speakeasy', poster: showcasePoster },
+const showcaseClips: { src: string; poster?: string; loopEnd?: number }[] = [
+  { src: '/assets/kolasi/Speakeasy_Ads/le%20speakeasy%20ads2%20barman.mp4', poster: showcasePoster },
+  { src: '/assets/kolasi/Speakeasy_Ads/lespeakeasy%20g500%20mercedes.mp4', poster: showcasePoster, loopEnd: 24 },
+  { src: '/assets/kolasi/Speakeasy_Ads/le%20speakeasy%20ads.mp4', poster: showcasePoster },
 ];
 
 function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] }) {
@@ -94,9 +94,6 @@ function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] }) {
           muted
           mode="hero"
         />
-      </div>
-      <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
-        <p className="text-xs font-medium text-on-media-dim">{clip.label}</p>
       </div>
     </div>
   );
