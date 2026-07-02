@@ -332,7 +332,7 @@ export default function VenuesClient({
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-card)' }}>
-                        <span className="text-4xl font-serif italic" style={{ color: 'var(--text-mute)' }}>
+                        <span className="text-4xl font-serif" style={{ color: 'var(--text-mute)' }}>
                           {artist.name?.charAt(0) || '?'}
                         </span>
                       </div>
@@ -516,7 +516,7 @@ export default function VenuesClient({
                 <p className="ui-kicker font-medium text-ivory mb-3">
                   {t.promiseTitle}
                 </p>
-                <p className="text-sm text-zinc-400 leading-relaxed italic">
+                <p className="text-sm text-zinc-400 leading-relaxed">
                   &ldquo;{t.promise}&rdquo;
                 </p>
               </GlassCard>

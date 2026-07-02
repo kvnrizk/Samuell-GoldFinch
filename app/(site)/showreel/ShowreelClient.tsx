@@ -147,7 +147,7 @@ export default function ShowreelClient({ heroReel, highlights }: ShowreelClientP
       <section id="highlights" className="py-16 md:py-32 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <p className="text-xs uppercase tracking-[0.3em] font-medium mb-4" style={{ color: '#c8a96e' }}>Selected Work</p>
-          <h2 className="text-3xl md:text-5xl font-serif italic tracking-tight">Highlight Clips</h2>
+          <h2 className="text-3xl md:text-5xl font-serif tracking-tight">Highlight Clips</h2>
         </div>
 
         {/* Category filters */}
@@ -272,7 +272,7 @@ export default function ShowreelClient({ heroReel, highlights }: ShowreelClientP
         <p className="text-xs uppercase tracking-[0.3em] font-medium mb-6" style={{ color: '#c8a96e' }}>
           Like What You See?
         </p>
-        <h2 className="text-3xl md:text-5xl font-serif italic tracking-tight mb-8">
+        <h2 className="text-3xl md:text-5xl font-serif tracking-tight mb-8">
           Let&apos;s Create Together
         </h2>
         <p className="text-sm max-w-lg mx-auto mb-12 font-light leading-relaxed" style={{ color: 'var(--text-dim)' }}>

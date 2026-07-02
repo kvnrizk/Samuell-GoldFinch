@@ -19,7 +19,7 @@ import { getDictionary, type Locale } from '@/lib/i18n';
 const dmSans = DM_Sans({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
-  style: ['normal', 'italic'],
+  style: ['normal'],
   display: 'swap',
   variable: '--font-dm-sans',
 });
@@ -27,7 +27,7 @@ const dmSans = DM_Sans({
 const playfair = Playfair_Display({
   subsets: ['latin'],
   weight: ['400', '600', '700'],
-  style: ['normal', 'italic'],
+  style: ['normal'],
   display: 'swap',
   variable: '--font-playfair',
 });

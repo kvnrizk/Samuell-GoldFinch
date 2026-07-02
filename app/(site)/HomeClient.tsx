@@ -163,7 +163,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
               />
               <div className="absolute inset-0 flex flex-col justify-end p-10" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--brand-dark) 92%, transparent), transparent, transparent)' }}>
                 <p className="text-xs font-medium mb-2 text-on-media-dim">Blaze Motion</p>
-                <h3 className="text-xl font-serif italic mb-1 text-on-media">Signature Wedding</h3>
+                <h3 className="text-xl font-serif mb-1 text-on-media">Signature Wedding</h3>
                 <p className="text-xs font-light border-t border-white/10 pt-4 mt-4 text-on-media-dim">
                   Paris &bull; Cinematic Weddings
                 </p>
@@ -183,8 +183,8 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
             <div className="space-y-10 text-center">
               <Image src="/assets/blaze/LOGO_BLAZE.png" alt="Blaze Production" width={512} height={512} className="logo-monochrome mx-auto h-28 md:h-52 w-auto object-contain" sizes="(max-width: 768px) 448px, 640px" />
               <p className="ui-kicker font-medium" style={{ color: 'var(--text-muted)' }}>{t.blazeKicker}</p>
-              <h2 className="text-2xl md:text-4xl font-serif leading-tight italic max-w-xl mx-auto">
-                {t.blazeTitle[0]} {t.blazeTitle[1]} <span className="not-italic">{t.blazeTitle[2]}</span>
+              <h2 className="text-2xl md:text-4xl font-serif leading-tight max-w-xl mx-auto">
+                {t.blazeTitle[0]} {t.blazeTitle[1]} <span>{t.blazeTitle[2]}</span>
               </h2>
               <p className="ui-body-small md:ui-body font-light max-w-sm mx-auto" style={{ color: 'var(--text-secondary)' }}>
                 {t.blazeText}
@@ -238,7 +238,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
             <div className="p-6 md:p-12 rounded-3xl border backdrop-blur-xl sg-card text-center">
               <Image src="/assets/kolasi/LOGO%20KOLASI.png" alt="Kolasi" width={640} height={452} className="logo-monochrome mx-auto h-28 md:h-44 w-auto object-contain mb-8" sizes="(max-width: 768px) 400px, 560px" />
               <p className="ui-kicker font-medium mb-8" style={{ color: 'var(--text-muted)' }}>{t.kolasiKicker}</p>
-              <h2 className="text-3xl md:text-4xl font-serif mb-8 leading-tight italic">
+              <h2 className="text-3xl md:text-4xl font-serif mb-8 leading-tight">
                 {t.kolasiTitle}
               </h2>
               <p className="ui-body-small md:ui-body font-light mb-10" style={{ color: 'var(--text-secondary)' }}>
@@ -316,7 +316,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
         <div className="max-w-5xl mx-auto px-6 text-center">
           <div className="reveal-section">
             <p className="ui-kicker font-medium mb-8" style={{ color: 'var(--text-muted)' }}>{t.trustedKicker}</p>
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-10 md:mb-20">
+            <h2 className="text-2xl md:text-3xl font-serif mb-10 md:mb-20">
               {t.trustedTitle}
             </h2>
 
@@ -325,7 +325,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
                 <div key={c.name} className="group flex flex-col items-center justify-start text-center rounded-2xl border border-transparent p-4 md:p-6 transition-all duration-500 hover:-translate-y-1 sg-hover-card">
                   <div className="h-14 md:h-16 flex items-center justify-center mb-4">
                     {!c.logo ? (
-                      <span className="font-serif italic text-lg md:text-xl" style={{ color: 'var(--text-primary)' }}>{c.name}</span>
+                      <span className="font-serif text-lg md:text-xl" style={{ color: 'var(--text-primary)' }}>{c.name}</span>
                     ) : c.logoStyle === 'photo' ? (
                       <span className="block h-14 w-14 md:h-16 md:w-16 overflow-hidden rounded-xl">
                         <Image src={c.logo} alt={c.name} width={160} height={160} placeholder="blur" blurDataURL={BLUR_DATA_URL} className="h-full w-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" sizes="80px" />
@@ -351,7 +351,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
 
       <section className="py-20" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="max-w-4xl mx-auto px-6 text-center reveal-section">
-          <h2 className="text-2xl md:text-4xl font-serif mb-10 italic">{t.finalTitle}</h2>
+          <h2 className="text-2xl md:text-4xl font-serif mb-10">{t.finalTitle}</h2>
           <p className="ui-body-small md:ui-body font-light mb-12" style={{ color: 'var(--text-secondary)' }}>
             {t.finalText}
           </p>

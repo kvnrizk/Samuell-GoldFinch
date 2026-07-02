@@ -228,7 +228,7 @@ export default function ArtistProfile({
             </span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif italic leading-[0.95] tracking-tight mb-6 artist-reveal">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif leading-[0.95] tracking-tight mb-6 artist-reveal">
             {artist.name}
           </h1>
 
@@ -299,7 +299,7 @@ export default function ArtistProfile({
       {artist.bio && (
         <section className="py-24 md:py-32 max-w-3xl mx-auto px-6">
           <div className="artist-reveal">
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-8">About</h2>
+            <h2 className="text-2xl md:text-3xl font-serif mb-8">About</h2>
             <p className="text-sm md:text-base leading-[1.9] font-light" style={{ color: 'var(--text-dim)' }}>
               {artist.bio}
             </p>
@@ -320,7 +320,7 @@ export default function ArtistProfile({
       {hasMixes && (
         <section className="pb-24 md:pb-32 px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-12 artist-reveal">Mixes &amp; Sets</h2>
+            <h2 className="text-2xl md:text-3xl font-serif mb-12 artist-reveal">Mixes &amp; Sets</h2>
             <div className="space-y-4">
               {artist.mixes!.map((mix, i) => {
                 const isCurrentMix = currentTrack?.url === mix.url;
@@ -398,7 +398,7 @@ export default function ArtistProfile({
       {hasEvents && (
         <section className="pb-24 md:pb-32 px-6">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-12 artist-reveal">Past Events</h2>
+            <h2 className="text-2xl md:text-3xl font-serif mb-12 artist-reveal">Past Events</h2>
             <div className="space-y-3">
               {events.map((evt, i) => (
                 <Link
@@ -443,7 +443,7 @@ export default function ArtistProfile({
               <span className="text-[10px] font-medium uppercase tracking-[0.15em] block mb-3" style={{ color: 'var(--text-mute)' }}>
                 Previous Artist
               </span>
-              <span className="text-lg md:text-2xl font-serif italic group-hover:translate-x-[-4px] transition-transform duration-300 block">
+              <span className="text-lg md:text-2xl font-serif group-hover:translate-x-[-4px] transition-transform duration-300 block">
                 {prevArtist.name}
               </span>
             </Link>
@@ -458,7 +458,7 @@ export default function ArtistProfile({
               <span className="text-[10px] font-medium uppercase tracking-[0.15em] block mb-3" style={{ color: 'var(--text-mute)' }}>
                 Next Artist
               </span>
-              <span className="text-lg md:text-2xl font-serif italic group-hover:translate-x-[4px] transition-transform duration-300 block">
+              <span className="text-lg md:text-2xl font-serif group-hover:translate-x-[4px] transition-transform duration-300 block">
                 {nextArtist.name}
               </span>
             </Link>
@@ -477,7 +477,7 @@ export default function ArtistProfile({
         }}
       >
         <div className="max-w-3xl mx-auto px-6 artist-reveal">
-          <h2 className="text-4xl md:text-6xl font-serif italic leading-tight mb-6">
+          <h2 className="text-4xl md:text-6xl font-serif leading-tight mb-6">
             Book {artist.name}
           </h2>
           <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>

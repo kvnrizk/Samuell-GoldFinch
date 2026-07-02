@@ -193,7 +193,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
       <section className="pt-28 pb-16 md:pt-40 md:pb-32 text-center max-w-4xl mx-auto px-6">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-10 leading-none reveal-up">
           The Story <br />
-          <span className="italic">Behind the Vision</span>
+          <span>Behind the Vision</span>
         </h1>
         <p className="text-xs md:text-sm font-medium leading-relaxed reveal-up" style={{ color: 'var(--text-mute)' }}>
           Film director, international DJ and curator, Samuell Goldfinch crafts cinematic worlds and live experiences that move people.
@@ -221,7 +221,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
           </div>
         </div>
         <div className="space-y-12 reveal-up">
-          <h2 className="text-4xl font-serif italic mb-6">About Samuell</h2>
+          <h2 className="text-4xl font-serif mb-6">About Samuell</h2>
           <div className="space-y-5 text-sm md:text-base leading-[1.9] font-light" style={{ color: 'var(--text-dim)' }}>
             <p>
               Paris-based creative director, filmmaker, and international DJ. Founder of <span className="font-medium" style={{ color: 'var(--text)' }}>Blaze Production</span> (cinematic film and photography) and <span className="font-medium" style={{ color: 'var(--text)' }}>Kolasi Agency</span> (DJ booking, event curation, and content creation).
@@ -239,7 +239,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
       {/* The Universe — Brand Pillars */}
       <section ref={pillarsRef} className="py-16 md:py-40 max-w-7xl mx-auto px-6">
         <div className="text-center mb-16 md:mb-32 reveal-up">
-          <h2 className="text-4xl md:text-5xl font-serif italic">The Universe</h2>
+          <h2 className="text-4xl md:text-5xl font-serif">The Universe</h2>
         </div>
 
         {/* Timeline container */}
@@ -276,14 +276,14 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
                 >
                   <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: pillar.accent }} />
                   <span
-                    className="pillar-num text-5xl md:text-6xl font-serif italic absolute top-6 right-8 opacity-15"
+                    className="pillar-num text-5xl md:text-6xl font-serif absolute top-6 right-8 opacity-15"
                     style={{ color: pillar.accent }}
                   >
                     {pillar.num}
                   </span>
                   <div className="relative z-10 space-y-5">
                     <h3 className="pillar-reveal text-2xl md:text-3xl font-serif">{pillar.name}</h3>
-                    <p className="pillar-reveal text-sm font-light italic" style={{ color: pillar.accent !== 'var(--text)' ? pillar.accent : 'var(--text-dim)' }}>
+                    <p className="pillar-reveal text-sm font-light" style={{ color: pillar.accent !== 'var(--text)' ? pillar.accent : 'var(--text-dim)' }}>
                       {pillar.tagline}
                     </p>
                     <p className="pillar-reveal text-sm leading-relaxed font-light" style={{ color: 'var(--text-dim)' }}>
@@ -397,7 +397,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-10 md:mb-20 reveal-up">
             <p className="text-xs font-medium mb-4" style={{ color: 'var(--text-mute)' }}>The Foundation</p>
-            <h2 className="text-4xl md:text-5xl font-serif italic">What Drives the Work</h2>
+            <h2 className="text-4xl md:text-5xl font-serif">What Drives the Work</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {drives.map((drive, i) => (
@@ -433,7 +433,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
 
                 {/* Number watermark */}
                 <span
-                  className="absolute top-6 right-8 text-5xl md:text-6xl font-serif italic opacity-20 z-10"
+                  className="absolute top-6 right-8 text-5xl md:text-6xl font-serif opacity-20 z-10"
                   style={{ color: drive.accent }}
                 >
                   {String(i + 1).padStart(2, '0')}
@@ -441,7 +441,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
 
                 {/* Content pinned to bottom */}
                 <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10 z-10">
-                  <h3 className="text-2xl font-serif mb-3 italic group-hover:translate-x-1 transition-transform duration-300">
+                  <h3 className="text-2xl font-serif mb-3 group-hover:translate-x-1 transition-transform duration-300">
                     {drive.title}
                   </h3>
                   <p className="text-sm leading-relaxed font-light opacity-80 mb-5">
@@ -469,7 +469,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
       <section className="py-16 md:py-40 max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-2 gap-12">
           <div data-halo className="reveal-up p-8 md:p-16 border border-white/5 bg-neutral-900/20 rounded-[3rem] space-y-10">
-            <h3 className="text-2xl font-serif text-center mb-8 italic">Artist Statement</h3>
+            <h3 className="text-2xl font-serif text-center mb-8">Artist Statement</h3>
             <p className="text-sm leading-[1.9] font-light text-center" style={{ color: 'var(--text-dim)' }}>
               I believe the most powerful stories are felt before they&apos;re understood. Whether through a lens or a live set, my work explores the space between emotion and craft — where a perfectly timed cut mirrors the drop in a melody, where light and sound dissolve the boundary between observer and participant.
             </p>
@@ -486,7 +486,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
 
           <div data-halo className="reveal-up p-8 md:p-16 border border-white/5 bg-neutral-900/40 rounded-[3rem] space-y-10 flex flex-col justify-between">
             <div className="text-center space-y-10">
-              <h3 className="text-2xl font-serif italic">Notable credits &amp; assets</h3>
+              <h3 className="text-2xl font-serif">Notable credits &amp; assets</h3>
               <p className="text-sm font-light" style={{ color: 'var(--text-dim)' }}>Selected collaborations, events and press resources to support editorial use and bookings.</p>
               <div className="space-y-8">
                 <div>
@@ -508,11 +508,8 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
               </div>
             </div>
             <div className="pt-10 text-center">
-              <Link href="/press" className="inline-block px-10 py-4 border border-white/20 rounded-full text-sm font-semibold hover:bg-white hover:text-black transition-all mb-4">
-                Press Kit
-              </Link>
               <p className="text-xs font-light" style={{ color: 'var(--text-mute)' }}>
-                Or email <a href="mailto:contact@samuellgoldfinch.com" className="hover:text-white transition-colors">contact@samuellgoldfinch.com</a>
+                For press &amp; media enquiries, email <a href="mailto:contact@samuellgoldfinch.com" className="hover:text-white transition-colors">contact@samuellgoldfinch.com</a>
               </p>
             </div>
           </div>
@@ -522,7 +519,7 @@ export default function AboutClient({ cmsMilestones }: AboutClientProps) {
       {/* CTA */}
       <section className="py-16 md:py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--bg), var(--bg-card))', borderColor: 'var(--border)' }}>
         <div className="max-w-3xl mx-auto px-6 reveal-up">
-          <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-10 italic">Let&apos;s Create Together</h2>
+          <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-10">Let&apos;s Create Together</h2>
           <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>
             Ready to craft films, events or live performances that resonate? Share your vision, we&apos;ll design the atmosphere, sound and narrative to match.
           </p>

@@ -232,7 +232,7 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
         <div className="relative z-10 text-center px-6">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up text-on-media">
             Bringing Your <br />
-            <span className="italic">Story to Life</span>
+            <span>Story to Life</span>
           </h1>
           <p className="text-xs md:text-sm font-medium mb-10 reveal-up text-on-media-dim">
             Cinematic storytelling and visual precision for those who feel deeply.
@@ -246,9 +246,9 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
       {/* Manifesto + Logo Card */}
       <section className="py-16 md:py-40 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 md:gap-24 items-center">
         <div className="space-y-10 reveal-up">
-          <h2 className="text-3xl md:text-6xl font-serif leading-tight italic">
+          <h2 className="text-3xl md:text-6xl font-serif leading-tight">
             Where Emotion <br />
-            <span className="not-italic">Meets Craft</span>
+            <span>Meets Craft</span>
           </h2>
           <div className="space-y-5 text-sm md:text-base leading-[1.9] font-light" style={{ color: 'var(--text-secondary)' }}>
             <p>
@@ -277,7 +277,7 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
             <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--media-scrim) 85%, transparent), transparent)' }} />
             <div className="absolute bottom-8 left-8 right-8 z-10">
               <div className="flex items-center space-x-3 mb-3">
-                <div className="w-10 h-10 rounded-full border-2 border-white/80 flex items-center justify-center font-serif text-lg italic text-on-media">B</div>
+                <div className="w-10 h-10 rounded-full border-2 border-white/80 flex items-center justify-center font-serif text-lg text-on-media">B</div>
                 <div className="h-[1px] w-8 bg-white/40" />
               </div>
               <p className="text-xl font-serif tracking-[0.2em] uppercase text-on-media">Blaze</p>
@@ -291,7 +291,7 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
       <section className="py-16 md:py-40 border-y" style={{ backgroundColor: 'var(--surface-page)', borderColor: 'var(--border-subtle)' }}>
         <div className="max-w-7xl mx-auto px-6 text-center">
           <div className="mb-12 md:mb-24 reveal-up">
-            <h2 className="text-4xl md:text-6xl font-serif italic mb-4">Blaze Showcase</h2>
+            <h2 className="text-4xl md:text-6xl font-serif mb-4">Blaze Showcase</h2>
             <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Light, movement, and emotion captured through crafted moments.</p>
           </div>
           <div className="reveal-up max-w-5xl mx-auto">
@@ -322,7 +322,7 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
         <div className="max-w-7xl mx-auto px-6 reveal-up">
           <div className="mb-10 md:mb-16 text-center">
             <p className="text-xs font-medium uppercase tracking-[0.24em] mb-4" style={{ color: 'var(--text-muted)' }}>Selected Work</p>
-            <h2 className="text-3xl md:text-5xl font-serif italic mb-5">Choose a project</h2>
+            <h2 className="text-3xl md:text-5xl font-serif mb-5">Choose a project</h2>
             <p className="max-w-xl mx-auto text-sm font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               Select a project below. The full image set appears here in the same cinematic carousel.
             </p>
@@ -354,7 +354,7 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
 
           <div className="mb-10 text-center">
             <p className="text-xs font-medium uppercase tracking-[0.2em] mb-3" style={{ color: 'var(--text-muted)' }}>{activeWork.category}</p>
-            <h3 className="text-3xl font-serif mb-3 italic">{activeWork.title}</h3>
+            <h3 className="text-3xl font-serif mb-3">{activeWork.title}</h3>
             <p className="text-xs font-light" style={{ color: 'var(--text-muted)' }}>{activeWork.description}</p>
           </div>
         </div>
@@ -372,7 +372,7 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
       {/* Final CTA */}
       <section className="py-16 md:py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--surface-page), var(--surface-card))', borderColor: 'var(--border-subtle)' }}>
         <div className="max-w-3xl mx-auto px-6 reveal-up">
-          <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-10 italic leading-tight">Your Story Deserves a Cinematic Soul</h2>
+          <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-10 leading-tight">Your Story Deserves a Cinematic Soul</h2>
           <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
             Let&apos;s create films that feel alive ~ crafted with depth and precision.
           </p>

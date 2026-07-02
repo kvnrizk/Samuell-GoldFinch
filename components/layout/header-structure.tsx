@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getDictionary, localizedPath, type Locale } from '@/lib/i18n';
+import { alternateLocalePath, getDictionary, localizedPath, type Locale } from '@/lib/i18n';
 
 interface NavLink {
   name: string;
@@ -58,29 +58,6 @@ export function getMoreLinks(locale: Locale): MoreLink[] {
         </svg>
       ),
     },
-    {
-      name: copy.journal,
-      path: '/journal',
-      desc: copy.journalDesc,
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-5 h-5">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      ),
-    },
-    {
-      name: copy.press,
-      path: '/press',
-      desc: copy.pressDesc,
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" className="w-5 h-5">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" strokeLinecap="round" strokeLinejoin="round" />
-          <polyline points="7 10 12 15 17 10" strokeLinecap="round" strokeLinejoin="round" />
-          <line x1="12" y1="15" x2="12" y2="3" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      ),
-    },
   ];
 }
 
@@ -110,7 +87,7 @@ export function HeaderBrand({ locale }: { locale: Locale }) {
   );
 }
 
-function ThemeToggle({
+export function ThemeToggle({
   theme,
   onToggle,
 }: {
@@ -160,8 +137,6 @@ export function DesktopNav({
   navLinks,
   pathname,
   setMoreOpen,
-  theme,
-  toggleTheme,
 }: {
   copy: ReturnType<typeof getDictionary>['shell']['nav'];
   moreLinks: MoreLink[];
@@ -170,8 +145,6 @@ export function DesktopNav({
   navLinks: NavLink[];
   pathname: string;
   setMoreOpen: (open: boolean) => void;
-  theme: 'dark' | 'light';
-  toggleTheme: () => void;
 }) {
   const isMoreActive = moreLinks.some((link) => pathname === link.path);
 
@@ -265,19 +238,6 @@ export function DesktopNav({
                   </Link>
                 ))}
               </div>
-
-              <div
-                className="mx-3 mb-3 rounded-xl px-4 py-3 flex items-center justify-between"
-                style={{
-                  backgroundColor: 'var(--surface-page)',
-                  border: '1px solid var(--border-subtle)',
-                }}
-              >
-                <span className="ui-micro font-medium" style={{ color: 'var(--text-muted)' }}>
-                  {copy.theme}
-                </span>
-                <ThemeToggle theme={theme} onToggle={toggleTheme} />
-              </div>
             </div>
           </div>
         </div>
@@ -286,16 +246,37 @@ export function DesktopNav({
   );
 }
 
-export function LanguageLink({ href, locale }: { href: string; locale: Locale }) {
+export function LanguageSwitcher({ locale, pathname }: { locale: Locale; pathname: string }) {
+  const options: { code: Locale; label: string }[] = [
+    { code: 'en', label: 'EN' },
+    { code: 'fr', label: 'FR' },
+  ];
   return (
-    <Link
-      href={href}
-      className="hidden md:block ml-6 ui-micro font-medium transition-colors"
-      style={{ color: 'var(--text-muted)' }}
-      aria-label={locale === 'fr' ? 'Version francaise' : 'English version'}
+    <div
+      className="flex items-center rounded-full p-0.5"
+      style={{ border: '1px solid var(--border-subtle)', backgroundColor: 'var(--surface-card-soft)' }}
+      role="group"
+      aria-label="Language"
     >
-      {locale.toUpperCase()}
-    </Link>
+      {options.map((opt) => {
+        const active = opt.code === locale;
+        return (
+          <Link
+            key={opt.code}
+            href={alternateLocalePath(pathname, opt.code)}
+            aria-current={active ? 'true' : undefined}
+            aria-label={opt.code === 'fr' ? 'Version francaise' : 'English version'}
+            className="ui-micro font-semibold rounded-full px-2.5 py-1 transition-all duration-300"
+            style={{
+              backgroundColor: active ? 'var(--text-accent)' : 'transparent',
+              color: active ? 'var(--text-inverse)' : 'var(--text-muted)',
+            }}
+          >
+            {opt.label}
+          </Link>
+        );
+      })}
+    </div>
   );
 }
 

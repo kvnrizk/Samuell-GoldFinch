@@ -126,7 +126,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
         <div className="max-w-2xl mx-auto px-6 text-center">
           <div className="reveal-up">
             <p className="text-xs font-medium mb-4" style={{ color: 'var(--text-muted)' }}>{t.first}</p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-8 italic">{t.startTitle}</h1>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-8">{t.startTitle}</h1>
             <p className="ui-body-small md:ui-body max-w-lg mx-auto font-light mb-16" style={{ color: 'var(--text-secondary)' }}>
               {t.startText}
             </p>
@@ -162,7 +162,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
   /* ── Step 0: Service selector ── */
   const renderStep0 = () => (
     <div ref={stepRef}>
-      <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{t.whatNeed}</h2>
+      <h2 className="text-2xl md:text-3xl font-serif mb-3 step-field">{t.whatNeed}</h2>
       <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
         {t.serviceHelp}
       </p>
@@ -192,7 +192,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
       case 'wedding-film':
         return (
           <div ref={stepRef}>
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us about the wedding', 'Parlez-nous du mariage')}</h2>
+            <h2 className="text-2xl md:text-3xl font-serif mb-3 step-field">{tx(locale, 'Tell us about the wedding', 'Parlez-nous du mariage')}</h2>
             <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
               {tx(locale, 'These details help us plan the perfect crew and equipment.', 'Ces details nous aident a prevoir la bonne equipe et le bon materiel.')}
             </p>
@@ -231,7 +231,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
       case 'editorial-commercial':
         return (
           <div ref={stepRef}>
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us about the project', 'Parlez-nous du projet')}</h2>
+            <h2 className="text-2xl md:text-3xl font-serif mb-3 step-field">{tx(locale, 'Tell us about the project', 'Parlez-nous du projet')}</h2>
             <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
               {tx(locale, 'Understanding your brand and deliverables helps us scope the project accurately.', 'Comprendre votre marque et les livrables nous aide a cadrer le projet avec precision.')}
             </p>
@@ -266,7 +266,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
       case 'dj-performance':
         return (
           <div ref={stepRef}>
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us about the event', 'Parlez-nous de l evenement')}</h2>
+            <h2 className="text-2xl md:text-3xl font-serif mb-3 step-field">{tx(locale, 'Tell us about the event', 'Parlez-nous de l evenement')}</h2>
             <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
               {tx(locale, 'Help us match you with the perfect artist from the Kolasi roster.', 'Aidez-nous a vous proposer le bon artiste du roster Kolasi.')}
             </p>
@@ -318,7 +318,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
       case 'event-production':
         return (
           <div ref={stepRef}>
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us about the event', 'Parlez-nous de l evenement')}</h2>
+            <h2 className="text-2xl md:text-3xl font-serif mb-3 step-field">{tx(locale, 'Tell us about the event', 'Parlez-nous de l evenement')}</h2>
             <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
               {tx(locale, 'The more detail you share, the more accurate our proposal.', 'Plus vous partagez de details, plus notre proposition sera precise.')}
             </p>
@@ -376,7 +376,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
       case 'hybrid-package':
         return (
           <div ref={stepRef}>
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{tx(locale, 'Tell us your vision', 'Parlez-nous de votre vision')}</h2>
+            <h2 className="text-2xl md:text-3xl font-serif mb-3 step-field">{tx(locale, 'Tell us your vision', 'Parlez-nous de votre vision')}</h2>
             <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
               {tx(locale, 'A hybrid package combines multiple services. Describe what you have in mind and we will craft a bespoke proposal.', 'Un pack hybride combine plusieurs services. Decrivez votre idee et nous preparerons une proposition sur mesure.')}
             </p>
@@ -403,7 +403,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
   /* ── Step 2: Budget + Timeline ── */
   const renderStep2 = () => (
     <div ref={stepRef}>
-      <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{t.budgetTitle}</h2>
+      <h2 className="text-2xl md:text-3xl font-serif mb-3 step-field">{t.budgetTitle}</h2>
       <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
         {t.budgetHelp}
       </p>
@@ -433,7 +433,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
   /* ── Step 3: Contact details ── */
   const renderStep3 = () => (
     <div ref={stepRef}>
-      <h2 className="text-2xl md:text-3xl font-serif italic mb-3 step-field">{t.almost}</h2>
+      <h2 className="text-2xl md:text-3xl font-serif mb-3 step-field">{t.almost}</h2>
       <p className="text-sm font-light mb-10 step-field" style={{ color: 'var(--text-secondary)' }}>
         {t.contactHelp}
       </p>
@@ -468,7 +468,7 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
-        <h2 className="text-2xl md:text-4xl font-serif italic mb-4">{t.sent}</h2>
+        <h2 className="text-2xl md:text-4xl font-serif mb-4">{t.sent}</h2>
         <p className="text-sm font-light max-w-md mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           {t.successText.replace('{name}', form.name.split(' ')[0] || '')}
         </p>
@@ -498,13 +498,6 @@ export default function QuoteClient({ locale = 'en' }: { locale?: Locale }) {
           className="px-10 py-3.5 border rounded-full text-sm font-semibold transition-all sg-action-secondary"
         >
           {t.backHome}
-        </Link>
-        <Link
-          href="/journal"
-          className="px-10 py-3.5 text-sm font-light transition-colors"
-          style={{ color: 'var(--text-secondary)' }}
-        >
-          {t.journal}
         </Link>
       </div>
     </div>

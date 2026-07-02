@@ -103,7 +103,7 @@ function RichTextRenderer({ content }: { content: any }) {
           const text = node.children?.map((c: any) => c.text || '').join('') || '';
           const Tag = (node.tag || 'h3') as keyof React.JSX.IntrinsicElements;
           return (
-            <Tag key={i} className="text-xl md:text-2xl font-serif italic mt-8 mb-4">
+            <Tag key={i} className="text-xl md:text-2xl font-serif mt-8 mb-4">
               {text}
             </Tag>
           );
@@ -203,7 +203,7 @@ export default function BlazeProjectDetail({
             </span>
           </div>
 
-          <h1 className="text-4xl md:text-7xl lg:text-8xl font-serif italic leading-[0.95] tracking-tight mb-6 detail-reveal">
+          <h1 className="text-4xl md:text-7xl lg:text-8xl font-serif leading-[0.95] tracking-tight mb-6 detail-reveal">
             {project.title}
           </h1>
 
@@ -234,7 +234,7 @@ export default function BlazeProjectDetail({
       {galleryImages.length > 0 && (
         <section className="pb-24 md:pb-40 px-6">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-12 detail-reveal">Gallery</h2>
+            <h2 className="text-2xl md:text-3xl font-serif mb-12 detail-reveal">Gallery</h2>
             <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
               {galleryImages.map((img, i) => (
                 <div
@@ -276,7 +276,7 @@ export default function BlazeProjectDetail({
               <span className="text-[10px] font-medium uppercase tracking-[0.15em] block mb-3" style={{ color: 'var(--text-mute)' }}>
                 Previous
               </span>
-              <span className="text-lg md:text-2xl font-serif italic group-hover:translate-x-[-4px] transition-transform duration-300 block">
+              <span className="text-lg md:text-2xl font-serif group-hover:translate-x-[-4px] transition-transform duration-300 block">
                 {prevProject.title}
               </span>
             </Link>
@@ -293,7 +293,7 @@ export default function BlazeProjectDetail({
               <span className="text-[10px] font-medium uppercase tracking-[0.15em] block mb-3" style={{ color: 'var(--text-mute)' }}>
                 Next
               </span>
-              <span className="text-lg md:text-2xl font-serif italic group-hover:translate-x-[4px] transition-transform duration-300 block">
+              <span className="text-lg md:text-2xl font-serif group-hover:translate-x-[4px] transition-transform duration-300 block">
                 {nextProject.title}
               </span>
             </Link>
@@ -312,7 +312,7 @@ export default function BlazeProjectDetail({
         }}
       >
         <div className="max-w-3xl mx-auto px-6 detail-reveal">
-          <h2 className="text-4xl md:text-6xl font-serif italic leading-tight mb-6">
+          <h2 className="text-4xl md:text-6xl font-serif leading-tight mb-6">
             Let&apos;s Create Something Extraordinary
           </h2>
           <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>

@@ -4,7 +4,7 @@ export default function Error({ reset }: { reset: () => void }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#09090b]">
       <div className="text-center px-6">
-        <h1 className="text-6xl font-serif italic mb-6">Something went wrong</h1>
+        <h1 className="text-6xl font-serif mb-6">Something went wrong</h1>
         <p className="text-sm font-light mb-12" style={{ color: 'var(--text-mute)' }}>
           An unexpected error occurred.
         </p>

@@ -104,10 +104,10 @@ export default async function VenueSEOPage({ params }: Props) {
               typeof (page.content as unknown) === 'string' ? (
                 <div dangerouslySetInnerHTML={{ __html: (page.content as unknown as string).replace(/<script[\s\S]*?<\/script>/gi, '').replace(/on\w+="[^"]*"/gi, '') }} />
               ) : (
-                <p className="text-zinc-500 italic">Content coming soon — this page is being prepared.</p>
+                <p className="text-zinc-500">Content coming soon — this page is being prepared.</p>
               )
             ) : (
-              <p className="text-zinc-500 italic">Content coming soon — this page is being prepared.</p>
+              <p className="text-zinc-500">Content coming soon — this page is being prepared.</p>
             )}
           </div>
 

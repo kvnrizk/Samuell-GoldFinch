@@ -42,7 +42,7 @@ export default function ContactClient({ locale = 'en' }: { locale?: Locale }) {
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16 md:mb-32 reveal-up">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-8 italic leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-8 leading-tight">
             {t.title}
           </h1>
           <p className="ui-body-small md:ui-body max-w-2xl mx-auto font-light" style={{ color: 'var(--text-secondary)' }}>
@@ -188,7 +188,7 @@ export default function ContactClient({ locale = 'en' }: { locale?: Locale }) {
 
               {/* Response Promise — footer */}
               <div className="p-10 md:p-12 border-t mt-auto" style={{ borderColor: 'var(--border-subtle)', backgroundColor: 'color-mix(in srgb, var(--surface-card) 40%, transparent)' }}>
-                <p className="text-center text-sm leading-[1.9] italic font-light" style={{ color: 'var(--text-secondary)' }}>
+                <p className="text-center text-sm leading-[1.9] font-light" style={{ color: 'var(--text-secondary)' }}>
                   &ldquo;{t.promise}&rdquo;
                 </p>
               </div>
@@ -199,7 +199,7 @@ export default function ContactClient({ locale = 'en' }: { locale?: Locale }) {
 
         {/* Meeting Section */}
         <section className="mt-24 md:mt-48 pt-16 md:pt-32 border-t text-center reveal-up" style={{ borderColor: 'var(--border-subtle)' }}>
-          <h2 className="text-2xl md:text-4xl font-serif mb-10 italic">{t.meetingTitle}</h2>
+          <h2 className="text-2xl md:text-4xl font-serif mb-10">{t.meetingTitle}</h2>
           <p className="ui-body-small md:ui-body mb-12 max-w-2xl mx-auto font-light" style={{ color: 'var(--text-secondary)' }}>
             {t.meetingText}
           </p>

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { alternateLocalePath, getDictionary, type Locale } from '@/lib/i18n';
-import { DesktopNav, HeaderBrand, LanguageLink, MobileNav, MobileToggle, getMoreLinks, getNavLinks, useHeaderScroll } from './header-structure';
+import { DesktopNav, HeaderBrand, LanguageSwitcher, MobileNav, MobileToggle, ThemeToggle, getMoreLinks, getNavLinks, useHeaderScroll } from './header-structure';
 
 export default function Header({ locale = 'en' }: { locale?: Locale }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -77,11 +77,13 @@ export default function Header({ locale = 'en' }: { locale?: Locale }) {
           navLinks={navLinks}
           pathname={pathname}
           setMoreOpen={setMoreOpen}
-          theme={theme}
-          toggleTheme={toggleTheme}
         />
 
-        <LanguageLink href={languageHref} locale={otherLocale} />
+        <div className="hidden md:flex items-center gap-4">
+          <div className="h-4 w-[1px]" style={{ backgroundColor: 'var(--border-subtle)' }} />
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
+          <LanguageSwitcher locale={locale} pathname={pathname} />
+        </div>
 
         <MobileToggle isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
       </div>

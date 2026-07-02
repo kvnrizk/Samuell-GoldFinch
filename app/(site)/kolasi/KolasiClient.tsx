@@ -102,7 +102,7 @@ function ShowcaseSection() {
     <section className="py-20">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-24 reveal-up">
-          <h2 className="text-4xl font-serif mb-4 italic">Kolasi Showcase</h2>
+          <h2 className="text-4xl font-serif mb-4">Kolasi Showcase</h2>
           <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Selected clips and promos from Kolasi nights.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -285,7 +285,7 @@ function ServicesAccordion() {
   return (
     <section ref={sectionRef} className="py-20 border-y" style={{ borderColor: 'var(--border-subtle)' }}>
       <div className="max-w-5xl mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-serif text-center mb-16 reveal-up italic">Services &amp; Capabilities</h2>
+        <h2 className="text-4xl md:text-5xl font-serif text-center mb-16 reveal-up">Services &amp; Capabilities</h2>
         <div className="reveal-up">
           {services.map((svc, i) => (
             <div
@@ -312,7 +312,7 @@ function ServicesAccordion() {
               {/* Collapsed header — always visible */}
               <div className="relative z-10 flex items-center justify-between py-7 md:py-8">
                 <div className="flex items-center gap-6 md:gap-8">
-                  <span className="text-2xl md:text-3xl font-serif italic transition-colors duration-300" style={{ color: activeIdx === i ? 'var(--text-accent)' : 'var(--text-muted)' }}>
+                  <span className="text-2xl md:text-3xl font-serif transition-colors duration-300" style={{ color: activeIdx === i ? 'var(--text-accent)' : 'var(--text-muted)' }}>
                     {svc.num}
                   </span>
                   <h3 className="text-lg md:text-xl font-serif transition-colors duration-300" style={{ color: activeIdx === i ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
@@ -365,7 +365,7 @@ function MarqueeGallery({ row1, row2 }: { row1: string[]; row2: string[] }) {
   return (
     <section className="py-20 overflow-hidden">
       <div className="text-center mb-16 reveal-up px-6">
-        <h2 className="text-4xl font-serif italic mb-4">Kolasi Gallery</h2>
+        <h2 className="text-4xl font-serif mb-4">Kolasi Gallery</h2>
         <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>
           A glimpse into our nights ~ sound, light and emotion captured in motion.
         </p>
@@ -417,7 +417,7 @@ export default function KolasiClient({ events }: KolasiClientProps) {
         <div className="relative z-10 text-center px-6 max-w-5xl">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif mb-6 uppercase tracking-tighter leading-none reveal-up text-on-media">
             Creative Booking <br />
-            <span className="italic">and Talent Agency</span>
+            <span>and Talent Agency</span>
           </h1>
           <p className="text-xs md:text-sm font-medium mb-10 reveal-up text-on-media-dim">
             DJ &amp; Live Show Booking &bull; Event Curation &bull; Content Creation &bull; Production Services
@@ -431,9 +431,9 @@ export default function KolasiClient({ events }: KolasiClientProps) {
       {/* Manifesto + Logo */}
       <section className="py-16 md:py-32 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div className="space-y-10 reveal-up">
-          <h2 className="text-4xl md:text-5xl font-serif leading-tight italic">
+          <h2 className="text-4xl md:text-5xl font-serif leading-tight">
             Curating Nights <br />
-            <span className="not-italic">That Move People</span>
+            <span>That Move People</span>
           </h2>
           <div className="space-y-5 text-sm md:text-base leading-[1.9] font-light" style={{ color: 'var(--text-secondary)' }}>
             <p>At Kolasi, we craft your brand&apos;s visual and audio identity through artistic direction, DJ bookings, live shows with top-tier singers, and PR strategy.</p>
@@ -459,7 +459,7 @@ export default function KolasiClient({ events }: KolasiClientProps) {
       <section id="services" className="py-20 border-y" style={{ backgroundColor: 'var(--surface-page)', borderColor: 'var(--border-subtle)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12 md:mb-24 reveal-up">
-            <h2 className="text-4xl md:text-6xl font-serif italic mb-4">Our Expertise</h2>
+            <h2 className="text-4xl md:text-6xl font-serif mb-4">Our Expertise</h2>
             <div className="w-20 h-[1px] mx-auto" style={{ backgroundColor: 'var(--border-strong)' }} />
           </div>
           <div className="grid md:grid-cols-3 gap-8">
@@ -523,7 +523,7 @@ export default function KolasiClient({ events }: KolasiClientProps) {
       {/* CTA */}
       <section className="py-16 md:py-40 text-center border-t" style={{ background: 'linear-gradient(to bottom, var(--surface-page), var(--surface-card))', borderColor: 'var(--border-subtle)' }}>
         <div className="max-w-3xl mx-auto px-6 reveal-up">
-          <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-10 italic">Let&apos;s Create the Night</h2>
+          <h2 className="text-3xl sm:text-5xl md:text-7xl font-serif mb-10">Let&apos;s Create the Night</h2>
           <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
             From concept to performance, Kolasi curates experiences that transcend nightlife.
           </p>

@@ -103,7 +103,7 @@ function RichTextRenderer({ content }: { content: any }) {
         if (node.type === 'heading') {
           const text = node.children?.map((c: any) => c.text || '').join('') || '';
           return (
-            <h3 key={i} className="text-xl md:text-2xl font-serif italic mt-8 mb-4">
+            <h3 key={i} className="text-xl md:text-2xl font-serif mt-8 mb-4">
               {text}
             </h3>
           );
@@ -237,7 +237,7 @@ export default function KolasiEventDetail({
             </span>
           </div>
 
-          <h1 className="text-4xl md:text-7xl lg:text-8xl font-serif italic leading-[0.95] tracking-tight mb-6 event-reveal">
+          <h1 className="text-4xl md:text-7xl lg:text-8xl font-serif leading-[0.95] tracking-tight mb-6 event-reveal">
             {event.title}
           </h1>
 
@@ -267,7 +267,7 @@ export default function KolasiEventDetail({
       {hasArtists && (
         <section className="pb-24 md:pb-32 px-6">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-12 event-reveal">Lineup</h2>
+            <h2 className="text-2xl md:text-3xl font-serif mb-12 event-reveal">Lineup</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {event.artists!.map((artist, i) => {
                 const inner = (
@@ -285,7 +285,7 @@ export default function KolasiEventDetail({
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-card)' }}>
-                        <span className="text-3xl font-serif italic" style={{ color: 'var(--text-mute)' }}>
+                        <span className="text-3xl font-serif" style={{ color: 'var(--text-mute)' }}>
                           {artist.name?.[0] || '?'}
                         </span>
                       </div>
@@ -332,7 +332,7 @@ export default function KolasiEventDetail({
       {galleryImages.length > 0 && (
         <section className="pb-24 md:pb-40 px-6">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-serif italic mb-12 event-reveal">Gallery</h2>
+            <h2 className="text-2xl md:text-3xl font-serif mb-12 event-reveal">Gallery</h2>
             <div className="columns-1 md:columns-2 lg:columns-3 gap-4 space-y-4">
               {galleryImages.map((img, i) => (
                 <div
@@ -370,7 +370,7 @@ export default function KolasiEventDetail({
               <span className="text-[10px] font-medium uppercase tracking-[0.15em] block mb-3" style={{ color: 'var(--text-mute)' }}>
                 Previous Event
               </span>
-              <span className="text-lg md:text-2xl font-serif italic group-hover:translate-x-[-4px] transition-transform duration-300 block">
+              <span className="text-lg md:text-2xl font-serif group-hover:translate-x-[-4px] transition-transform duration-300 block">
                 {prevEvent.title}
               </span>
             </Link>
@@ -385,7 +385,7 @@ export default function KolasiEventDetail({
               <span className="text-[10px] font-medium uppercase tracking-[0.15em] block mb-3" style={{ color: 'var(--text-mute)' }}>
                 Next Event
               </span>
-              <span className="text-lg md:text-2xl font-serif italic group-hover:translate-x-[4px] transition-transform duration-300 block">
+              <span className="text-lg md:text-2xl font-serif group-hover:translate-x-[4px] transition-transform duration-300 block">
                 {nextEvent.title}
               </span>
             </Link>
@@ -404,7 +404,7 @@ export default function KolasiEventDetail({
         }}
       >
         <div className="max-w-3xl mx-auto px-6 event-reveal">
-          <h2 className="text-4xl md:text-6xl font-serif italic leading-tight mb-6">
+          <h2 className="text-4xl md:text-6xl font-serif leading-tight mb-6">
             Want Kolasi at Your Venue?
           </h2>
           <p className="text-sm font-light mb-12 max-w-lg mx-auto leading-relaxed" style={{ color: 'var(--text-dim)' }}>

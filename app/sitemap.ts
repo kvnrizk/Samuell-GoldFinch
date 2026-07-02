@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { getVenueSEOPages, getCaseStudies, getAllBlazeProjects, getAllKolasiEvents, getArtists, getAllPosts } from '@/lib/fetchers';
+import { getVenueSEOPages, getCaseStudies, getAllBlazeProjects, getAllKolasiEvents, getArtists } from '@/lib/fetchers';
 
 interface CMSDoc {
   slug?: string;
@@ -23,20 +23,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/fr/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: `${BASE_URL}/quote`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/fr/quote`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${BASE_URL}/journal`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/showreel`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${BASE_URL}/press`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE_URL}/privacy`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
   ];
 
   /* ── Dynamic CMS routes ────────────────────────────── */
-  const [seoPages, caseStudies, blazeProjects, kolasiEvents, artists, posts] = await Promise.all([
+  const [seoPages, caseStudies, blazeProjects, kolasiEvents, artists] = await Promise.all([
     getVenueSEOPages().catch(() => [] as CMSDoc[]),
     getCaseStudies().catch(() => [] as CMSDoc[]),
     getAllBlazeProjects().catch(() => [] as CMSDoc[]),
     getAllKolasiEvents().catch(() => [] as CMSDoc[]),
     getArtists().catch(() => [] as CMSDoc[]),
-    getAllPosts().catch(() => [] as CMSDoc[]),
   ]);
 
   const seoPageRoutes: MetadataRoute.Sitemap = (seoPages as CMSDoc[]).map((p) => ({
@@ -80,14 +77,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }));
 
-  const postRoutes: MetadataRoute.Sitemap = (posts as CMSDoc[])
-    .filter((p) => p.slug)
-    .map((p) => ({
-      url: `${BASE_URL}/journal/${p.slug}`,
-      lastModified: new Date(p.updatedAt || p.createdAt || Date.now()),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    }));
-
-  return [...staticRoutes, ...seoPageRoutes, ...caseStudyRoutes, ...blazeRoutes, ...kolasiRoutes, ...artistRoutes, ...postRoutes];
+  return [...staticRoutes, ...seoPageRoutes, ...caseStudyRoutes, ...blazeRoutes, ...kolasiRoutes, ...artistRoutes];
 }

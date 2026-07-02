@@ -28,8 +28,6 @@ export default function Footer({ locale = 'en' }: { locale?: Locale }) {
             <div className="space-y-3" style={{ color: 'var(--text-secondary)' }}>
               <Link href={corePath('/quote', locale)} className="block sg-hover-accent transition-colors">{copy.quote}</Link>
               <Link href={corePath('/contact', locale)} className="block sg-hover-accent transition-colors">{copy.contact}</Link>
-              <Link href="/journal" className="block sg-hover-accent transition-colors">Journal</Link>
-              <Link href="/press" className="block sg-hover-accent transition-colors">Press Kit</Link>
             </div>
           </div>
           <div>

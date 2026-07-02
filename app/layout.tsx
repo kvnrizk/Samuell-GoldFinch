@@ -17,9 +17,6 @@ export const metadata: Metadata = {
       en: siteUrl,
       fr: `${siteUrl}/fr`,
     },
-    types: {
-      'application/rss+xml': `${siteUrl}/feed.xml`,
-    },
   },
   openGraph: {
     title: meta.homeTitle,
