@@ -355,10 +355,10 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10 md:gap-x-10 md:gap-y-14">
               {collaborations.map((c) => (
-                <div key={c.name} className="group flex flex-col items-center justify-start text-center">
-                  <div className="h-10 flex items-center justify-center mb-4">
+                <div key={c.name} className="group flex flex-col items-center justify-start text-center rounded-2xl border border-transparent p-4 md:p-6 transition-all duration-500 hover:-translate-y-1 sg-hover-card">
+                  <div className="h-14 md:h-16 flex items-center justify-center mb-4">
                     {c.logo && (
-                      <Image src={c.logo} alt={c.name} width={120} height={40} placeholder="blur" blurDataURL={BLUR_DATA_URL} className="h-9 w-auto object-contain mix-blend-screen opacity-70 group-hover:opacity-100 group-hover:scale-105 group-hover:brightness-125 transition-all duration-500" sizes="120px" />
+                      <Image src={c.logo} alt={c.name} width={160} height={64} placeholder="blur" blurDataURL={BLUR_DATA_URL} className="logo-monochrome h-12 md:h-14 w-auto object-contain opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" sizes="160px" />
                     )}
                   </div>
                   <p className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: 'var(--text-secondary)' }}>{c.name}</p>

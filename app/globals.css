@@ -184,6 +184,24 @@
     color: rgba(247, 247, 245, 0.66);
   }
 
+  /* Hover-only card: borderless at rest, subtle surface + border on hover. */
+  .sg-hover-card {
+    transition: background-color 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+  }
+  .sg-hover-card:hover {
+    background: var(--surface-card-soft);
+    border-color: var(--border-subtle);
+  }
+
+  /* Normalize brand logos to theme-appropriate monochrome so any logo
+     (light or dark artwork) stays visible in both themes. */
+  .logo-monochrome {
+    filter: brightness(0) invert(1); /* dark theme → white */
+  }
+  html.light .logo-monochrome {
+    filter: brightness(0); /* light theme → near-black */
+  }
+
   .sg-action-primary {
     background: var(--action-primary-bg);
     border-color: var(--action-primary-border);
