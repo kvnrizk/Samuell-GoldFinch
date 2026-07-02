@@ -44,6 +44,9 @@ scripts/mux-playback-ids.json
 # static assets (images served from public/, heavy for git)
 public/assets/
 
+# claude code (per-user local settings; shared .claude/ config can still be committed)
+.claude/settings.local.json
+
 # misc
 .DS_Store
 *.log
