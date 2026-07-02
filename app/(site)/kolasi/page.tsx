@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getAllKolasiEvents, getUpcomingEvents } from '@/lib/fetchers';
+import { getAllKolasiEvents } from '@/lib/fetchers';
 import { safeCms } from '@/lib/cms-safe';
 import KolasiClient from './KolasiClient';
 
@@ -12,9 +12,6 @@ export const metadata: Metadata = {
 };
 
 export default async function KolasiPage() {
-  const [events, upcomingEvents] = await Promise.all([
-    safeCms(getAllKolasiEvents(), [], 'kolasi events'),
-    safeCms(getUpcomingEvents(), [], 'kolasi upcoming events'),
-  ]);
-  return <KolasiClient events={events as any} upcomingEvents={upcomingEvents as any} />;
+  const events = await safeCms(getAllKolasiEvents(), [], 'kolasi events');
+  return <KolasiClient events={events as any} />;
 }

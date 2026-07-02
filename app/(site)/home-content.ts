@@ -80,12 +80,18 @@ export const homeMedia = {
   ],
 };
 
-export const homeCollaborations: { name: string; location: string; logo?: string }[] = [
-  { name: 'Embassy of Lebanon', location: 'Paris' },
-  { name: 'STOUH BEIRUT', location: 'Paris', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364300/sg-platform/static/assets/stouth_beirut_logo.webp' },
-  { name: 'MIPIM Cannes', location: 'Cannes', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364300/sg-platform/static/assets/mipim_logo.webp' },
-  { name: 'Elie Saab', location: 'Paris', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363933/sg-platform/static/assets/Elie_saab_logo.webp' },
-  { name: 'Transdev · France Tourisme', location: 'France', logo: '/assets/blaze/events/transdev_logo.webp' },
+// logoStyle controls how each logo is rendered:
+//   'mono'  → theme-normalized silhouette (transparent line-art wordmarks, e.g. Elie Saab)
+//   'chip'  → natural colors on a white chip (logos with baked-in solid backgrounds, e.g. STOUH/MIPIM/Transdev)
+//   'photo' → cropped rounded thumbnail (a photo used in place of a logo, e.g. Embassy)
+//   undefined → natural colors, free-floating (transparent full-color logos, e.g. Le Speakeasy)
+//   no logo → the name renders as styled plain text (e.g. Chloe Khalife, Brunch Festival)
+export const homeCollaborations: { name: string; location: string; logo?: string; logoStyle?: 'mono' | 'chip' | 'photo' }[] = [
+  { name: 'Embassy of Lebanon', location: 'Paris', logo: '/assets/blaze/ambassy/0C5A9139.jpg', logoStyle: 'photo' },
+  { name: 'STOUH BEIRUT', location: 'Paris', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364300/sg-platform/static/assets/stouth_beirut_logo.webp', logoStyle: 'chip' },
+  { name: 'MIPIM Cannes', location: 'Cannes', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364300/sg-platform/static/assets/mipim_logo.webp', logoStyle: 'chip' },
+  { name: 'Elie Saab', location: 'Paris', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363933/sg-platform/static/assets/Elie_saab_logo.webp', logoStyle: 'mono' },
+  { name: 'Transdev', location: 'France', logo: '/assets/blaze/events/transdev_logo.webp', logoStyle: 'chip' },
   { name: 'Le Speakeasy', location: 'Paris', logo: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364284/sg-platform/static/assets/kolasi/logo_speakeasy.png' },
   { name: 'Chloe Khalife', location: 'International' },
   { name: 'Brunch Festival', location: 'Paris' },

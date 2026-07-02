@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/gsap-utils';
-import UpcomingEvents from '@/components/ui/UpcomingEvents';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 
 const expertise = [
@@ -65,7 +64,6 @@ interface KolasiEvent {
 
 interface KolasiClientProps {
   events: KolasiEvent[];
-  upcomingEvents?: any[];
 }
 
 /* Static promo clips — brand media previews only (autoplay, muted, not linked out). */
@@ -380,7 +378,7 @@ function MarqueeGallery({ row1, row2 }: { row1: string[]; row2: string[] }) {
   );
 }
 
-export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClientProps) {
+export default function KolasiClient({ events }: KolasiClientProps) {
   // Build gallery from CMS events or fallback
   const cmsGallery = events.flatMap((e: KolasiEvent) =>
     (e.gallery || []).map((g: GalleryPhoto) => g.image?.url).filter((u): u is string => Boolean(u)),
@@ -444,21 +442,15 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
           </div>
         </div>
         <div className="reveal-up">
-          <div className="aspect-[4/3] rounded-[2.5rem] border relative overflow-hidden group sg-media-frame">
+          <div className="aspect-[4/3] rounded-[2.5rem] border relative overflow-hidden flex items-center justify-center p-12" style={{ backgroundColor: 'var(--surface-raised)', borderColor: 'var(--border-subtle)' }}>
             <Image
-              src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg"
-              alt="Kolasi — behind the scenes"
-              fill
-              placeholder="blur"
-              blurDataURL={BLUR_DATA_URL}
-              className="object-cover group-hover:scale-105 transition-transform duration-700"
-              sizes="(max-width: 768px) 100vw, 50vw"
+              src="/assets/kolasi/LOGO%20KOLASI.png"
+              alt="Kolasi"
+              width={640}
+              height={452}
+              className="logo-monochrome w-2/3 max-w-xs h-auto object-contain"
+              sizes="(max-width: 768px) 60vw, 30vw"
             />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--brand-dark) 88%, transparent), transparent)' }} />
-            <div className="absolute bottom-8 left-8 z-10">
-              <p className="text-xl font-serif tracking-[0.2em] uppercase text-on-media">Kolasi</p>
-              <p className="text-[10px] font-light mt-1 text-on-media-dim">Agency</p>
-            </div>
           </div>
         </div>
       </section>
@@ -498,9 +490,6 @@ export default function KolasiClient({ events, upcomingEvents = [] }: KolasiClie
 
       {/* Kolasi Showcase */}
       <ShowcaseSection />
-
-      {/* Upcoming Events */}
-      <UpcomingEvents events={upcomingEvents} />
 
       {/* Services & Capabilities — Accordion */}
       <ServicesAccordion />

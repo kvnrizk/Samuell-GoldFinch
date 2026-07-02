@@ -9,6 +9,13 @@ import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import OrbitCarousel from '@/components/ui/OrbitCarousel';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 
+// Blaze Showcase clips — extensible; more will be added later
+const BLAZE_SHOWCASE_POSTER = 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363947/sg-platform/static/assets/blaze/IMG_6050.jpg';
+const blazeShowcaseClips: { src: string; poster?: string; loopEnd?: number }[] = [
+  { src: '/assets/blaze/events/website_aftermovie_transdev.mp4', poster: BLAZE_SHOWCASE_POSTER },
+  { src: '/assets/blaze/art%20direction1.mp4', poster: BLAZE_SHOWCASE_POSTER },
+];
+
 // Static fallbacks
 const stouhBeirut = [
   { url: '/assets/blaze/stouh_beirut/2E2A0578.jpg', title: 'STOUH BEIRUT', category: 'Rooftop' },
@@ -287,21 +294,25 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
             <h2 className="text-4xl md:text-6xl font-serif italic mb-4">Blaze Showcase</h2>
             <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Light, movement, and emotion captured through crafted moments.</p>
           </div>
-          <div className="reveal-up max-w-4xl mx-auto">
-            <div className="group relative rounded-[2rem] overflow-hidden border aspect-[16/9] mb-12 sg-media-frame">
-              <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363947/sg-platform/static/assets/blaze/IMG_6050.jpg" alt="Blaze Showcase" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover group-hover:scale-105 transition-all duration-700" />
-              <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12 text-center" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--media-scrim) 85%, transparent), transparent)' }}>
-                <p className="text-xs font-medium mb-2 text-on-media-dim">Featured Project</p>
-                <h3 className="text-xl md:text-2xl font-serif italic uppercase tracking-tighter text-on-media">STOUH BEIRUT Rooftop</h3>
-              </div>
+          <div className="reveal-up max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 mb-12">
+              {blazeShowcaseClips.map((clip) => (
+                <div key={clip.src} className="aspect-video rounded-[2rem] overflow-hidden border relative sg-media-frame">
+                  <VideoPlayer
+                    src={clip.src}
+                    poster={clip.poster}
+                    loopEnd={clip.loopEnd}
+                    autoPlay
+                    loop
+                    muted
+                    mode="hero"
+                  />
+                </div>
+              ))}
             </div>
-            <div className="space-y-4">
-              <p className="text-xs font-light" style={{ color: 'var(--text-muted)' }}>Golden-hour diplomacy on the Parisian skyline</p>
-              <p className="text-sm font-serif">Paris, France</p>
-              <Link href={`/blaze/${firstSlugForCategory(projects, 'Event') || 'stouh-beirut'}`} className="mt-8 inline-block px-10 py-3 border rounded-full text-sm font-semibold transition-all sg-action-secondary">
-                View Project
-              </Link>
-            </div>
+            <Link href={`/blaze/${firstSlugForCategory(projects, 'Event') || 'stouh-beirut'}`} className="inline-block px-10 py-3 border rounded-full text-sm font-semibold transition-all sg-action-secondary">
+              View Projects
+            </Link>
           </div>
         </div>
       </section>

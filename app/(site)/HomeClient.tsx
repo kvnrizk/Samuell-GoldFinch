@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { createPortal } from 'react-dom';
 import { BLUR_DATA_URL } from '@/lib/cloudinary';
 import { useGSAP } from '@gsap/react';
 import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
@@ -37,54 +36,10 @@ interface HomeClientProps {
   locale?: Locale;
 }
 
-function ReelModal({ onClose }: { onClose: () => void }) {
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
-    };
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', onKey);
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', onKey);
-    };
-  }, [onClose]);
-
-  return createPortal(
-    <div
-      className="fixed inset-0 z-[70] flex items-center justify-center p-4 md:p-10"
-      style={{ backgroundColor: 'color-mix(in srgb, var(--surface-page) 95%, black)' }}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Signature Wedding Reel"
-    >
-      <button
-        type="button"
-        onClick={onClose}
-        className="absolute right-5 top-5 z-10 rounded-full border px-4 py-2 text-xs font-semibold backdrop-blur-md transition-colors sg-action-secondary"
-      >
-        Close
-      </button>
-      <div className="relative aspect-video w-full max-w-5xl overflow-hidden rounded-2xl border sg-media-frame">
-        <VideoPlayer
-          muxPlaybackId="ABVHVsPKRIgCyqWD7JOSHSxvR00HVt800oBerw5sQDk00A"
-          poster={media.weddings[0]}
-          autoPlay
-          loop={false}
-          muted={false}
-          mode="showcase"
-        />
-      </div>
-    </div>,
-    document.body,
-  );
-}
-
 export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const t = getDictionary(locale).home;
-  const [showReel, setShowReel] = useState(false);
 
   const curatedBlazeItems: WorkItem[] = [
     {
@@ -192,36 +147,28 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
           </div>
 
           <div className="hero-reveal hidden md:block">
-            <button
-              type="button"
-              onClick={() => setShowReel(true)}
-              className="group relative w-full aspect-[4/3] rounded-2xl overflow-hidden border text-left"
+            <div
+              className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border"
               style={{ borderColor: 'var(--media-border)', boxShadow: 'var(--media-shadow)' }}
-              aria-label="Play Signature Wedding Reel"
             >
               <Image
                 src={blazeProjects[0]?.gallery?.[0]?.image?.url || media.weddings[0]}
-                alt="Blaze Motion - Signature Wedding Reel"
+                alt="Blaze Motion - Signature Wedding"
                 fill
                 placeholder="blur"
                 blurDataURL={BLUR_DATA_URL}
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover group-hover:scale-105 transition-all duration-700"
+                className="object-cover"
                 priority
               />
               <div className="absolute inset-0 flex flex-col justify-end p-10" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--brand-dark) 92%, transparent), transparent, transparent)' }}>
-                <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-full border backdrop-blur-md transition-all sg-action-secondary sg-group-action-primary">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <polygon points="8 5 19 12 8 19" />
-                  </svg>
-                </div>
                 <p className="text-xs font-medium mb-2 text-on-media-dim">Blaze Motion</p>
-                <h3 className="text-xl font-serif italic mb-1 text-on-media">Signature Wedding Reel</h3>
+                <h3 className="text-xl font-serif italic mb-1 text-on-media">Signature Wedding</h3>
                 <p className="text-xs font-light border-t border-white/10 pt-4 mt-4 text-on-media-dim">
                   Paris &bull; Cinematic Weddings
                 </p>
               </div>
-            </button>
+            </div>
           </div>
         </div>
 
@@ -233,20 +180,21 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
       <section className="py-16 md:py-40" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-10 md:gap-20 items-center reveal-section">
-            <div className="space-y-10">
+            <div className="space-y-10 text-center">
+              <Image src="/assets/blaze/LOGO_BLAZE.png" alt="Blaze Production" width={512} height={512} className="logo-monochrome mx-auto h-28 md:h-52 w-auto object-contain" sizes="(max-width: 768px) 448px, 640px" />
               <p className="ui-kicker font-medium" style={{ color: 'var(--text-muted)' }}>{t.blazeKicker}</p>
-              <h2 className="text-2xl md:text-4xl font-serif leading-tight italic max-w-xl">
+              <h2 className="text-2xl md:text-4xl font-serif leading-tight italic max-w-xl mx-auto">
                 {t.blazeTitle[0]} {t.blazeTitle[1]} <span className="not-italic">{t.blazeTitle[2]}</span>
               </h2>
-              <p className="ui-body-small md:ui-body font-light max-w-sm" style={{ color: 'var(--text-secondary)' }}>
+              <p className="ui-body-small md:ui-body font-light max-w-sm mx-auto" style={{ color: 'var(--text-secondary)' }}>
                 {t.blazeText}
               </p>
               <div className="grid grid-cols-2 gap-8 pt-6">
-                <div className="space-y-2 border-l pl-6" style={{ borderColor: 'var(--border-subtle)' }}>
+                <div className="space-y-2 border-t pt-4" style={{ borderColor: 'var(--border-subtle)' }}>
                   <p className="text-xs font-semibold">Wedding films</p>
                   <p className="text-xs font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>Crafted with timeless elegance and emotional weight.</p>
                 </div>
-                <div className="space-y-2 border-l pl-6" style={{ borderColor: 'var(--border-subtle)' }}>
+                <div className="space-y-2 border-t pt-4" style={{ borderColor: 'var(--border-subtle)' }}>
                   <p className="text-xs font-semibold">Speakeasy Series</p>
                   <p className="text-xs font-light leading-relaxed" style={{ color: 'var(--text-secondary)' }}>Capturing warmth, shadow, and nocturnal energy.</p>
                 </div>
@@ -263,13 +211,32 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
               />
             </div>
           </div>
+
+          <div className="mt-16 md:mt-28 reveal-section max-w-3xl mx-auto">
+            <div className="relative aspect-video w-full overflow-hidden rounded-[2rem] border sg-media-frame">
+              <VideoPlayer
+                src="/assets/blaze/events/website_aftermovie_transdev.mp4"
+                autoPlay
+                loop
+                muted
+                mode="hero"
+              />
+              <div className="absolute left-5 top-5 z-10 rounded-lg px-3 py-2 shadow-md" style={{ backgroundColor: '#ffffff' }}>
+                <Image src="/assets/blaze/events/transdev_logo.webp" alt="Transdev" width={140} height={56} className="h-6 md:h-8 w-auto object-contain" sizes="140px" />
+              </div>
+            </div>
+            <p className="mt-5 text-center text-xs font-medium uppercase tracking-[0.24em]" style={{ color: 'var(--text-muted)' }}>
+              Transdev — Event Aftermovie
+            </p>
+          </div>
         </div>
       </section>
 
       <section className="py-16 md:py-40 overflow-hidden" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-16 reveal-section">
-            <div className="p-6 md:p-12 rounded-3xl border backdrop-blur-xl sg-card">
+            <div className="p-6 md:p-12 rounded-3xl border backdrop-blur-xl sg-card text-center">
+              <Image src="/assets/kolasi/LOGO%20KOLASI.png" alt="Kolasi" width={640} height={452} className="logo-monochrome mx-auto h-28 md:h-44 w-auto object-contain mb-8" sizes="(max-width: 768px) 400px, 560px" />
               <p className="ui-kicker font-medium mb-8" style={{ color: 'var(--text-muted)' }}>{t.kolasiKicker}</p>
               <h2 className="text-3xl md:text-4xl font-serif mb-8 leading-tight italic">
                 {t.kolasiTitle}
@@ -279,12 +246,12 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
               </p>
               <ul className="space-y-4 mb-12">
                 {['DJ booking & live performers worldwide', 'Tailor-made events with artistic direction and PR', 'Cinematic coverage and post-event media', 'Sound & Light Rental'].map((item, i) => (
-                  <li key={i} className="text-xs flex items-center" style={{ color: 'var(--text-primary)' }}>
+                  <li key={i} className="text-xs flex items-center justify-center" style={{ color: 'var(--text-primary)' }}>
                     <span className="w-1 h-1 rounded-full mr-4 flex-shrink-0" style={{ backgroundColor: 'var(--text-muted)' }} /> {item}
                   </li>
                 ))}
               </ul>
-              <div className="flex space-x-4">
+              <div className="flex space-x-4 justify-center">
                 <Link href="/kolasi" className="px-8 py-3 border text-sm font-semibold transition-all sg-action-secondary">
                   {t.kolasiCta}
                 </Link>
@@ -357,11 +324,23 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
               {collaborations.map((c) => (
                 <div key={c.name} className="group flex flex-col items-center justify-start text-center rounded-2xl border border-transparent p-4 md:p-6 transition-all duration-500 hover:-translate-y-1 sg-hover-card">
                   <div className="h-14 md:h-16 flex items-center justify-center mb-4">
-                    {c.logo && (
-                      <Image src={c.logo} alt={c.name} width={160} height={64} placeholder="blur" blurDataURL={BLUR_DATA_URL} className="logo-monochrome h-12 md:h-14 w-auto object-contain opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" sizes="160px" />
+                    {!c.logo ? (
+                      <span className="font-serif italic text-lg md:text-xl" style={{ color: 'var(--text-primary)' }}>{c.name}</span>
+                    ) : c.logoStyle === 'photo' ? (
+                      <span className="block h-14 w-14 md:h-16 md:w-16 overflow-hidden rounded-xl">
+                        <Image src={c.logo} alt={c.name} width={160} height={160} placeholder="blur" blurDataURL={BLUR_DATA_URL} className="h-full w-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" sizes="80px" />
+                      </span>
+                    ) : c.logoStyle === 'chip' ? (
+                      <span className="flex h-14 md:h-16 items-center justify-center overflow-hidden rounded-xl px-3 py-2" style={{ backgroundColor: '#ffffff' }}>
+                        <Image src={c.logo} alt={c.name} width={160} height={64} placeholder="blur" blurDataURL={BLUR_DATA_URL} className="h-10 md:h-12 w-auto max-w-[130px] object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" sizes="160px" />
+                      </span>
+                    ) : (
+                      <Image src={c.logo} alt={c.name} width={160} height={64} placeholder="blur" blurDataURL={BLUR_DATA_URL} className={`${c.logoStyle === 'mono' ? 'logo-monochrome ' : ''}h-12 md:h-14 w-auto max-w-[150px] object-contain opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500`} sizes="160px" />
                     )}
                   </div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: 'var(--text-secondary)' }}>{c.name}</p>
+                  {c.logo && (
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: 'var(--text-secondary)' }}>{c.name}</p>
+                  )}
                   <p className="ui-caption font-light mt-1" style={{ color: 'var(--text-muted)' }}>{c.location}</p>
                 </div>
               ))}
@@ -392,8 +371,6 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
           </div>
         </div>
       </section>
-
-      {showReel && <ReelModal onClose={() => setShowReel(false)} />}
     </div>
   );
 }
