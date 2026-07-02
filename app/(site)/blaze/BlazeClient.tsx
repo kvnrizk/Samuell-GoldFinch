@@ -267,14 +267,14 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover group-hover:scale-105 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--media-scrim) 85%, transparent), transparent)' }} />
             <div className="absolute bottom-8 left-8 right-8 z-10">
               <div className="flex items-center space-x-3 mb-3">
-                <div className="w-10 h-10 rounded-full border-2 border-white/80 flex items-center justify-center font-serif text-lg italic">B</div>
+                <div className="w-10 h-10 rounded-full border-2 border-white/80 flex items-center justify-center font-serif text-lg italic text-on-media">B</div>
                 <div className="h-[1px] w-8 bg-white/40" />
               </div>
-              <p className="text-xl font-serif tracking-[0.2em] uppercase">Blaze</p>
-              <p className="text-[10px] font-light mt-1 text-white/60">Production</p>
+              <p className="text-xl font-serif tracking-[0.2em] uppercase text-on-media">Blaze</p>
+              <p className="text-[10px] font-light mt-1 text-on-media-dim">Production</p>
             </div>
           </div>
         </div>
@@ -290,9 +290,9 @@ export default function BlazeClient({ projects }: BlazeClientProps) {
           <div className="reveal-up max-w-4xl mx-auto">
             <div className="group relative rounded-[2rem] overflow-hidden border aspect-[16/9] mb-12 sg-media-frame">
               <Image src="https://res.cloudinary.com/dwayr9ynb/image/upload/v1771363947/sg-platform/static/assets/blaze/IMG_6050.jpg" alt="Blaze Showcase" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="100vw" className="object-cover group-hover:scale-105 transition-all duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 md:p-12 text-center">
-                <p className="text-xs font-medium mb-2 text-white/60">Featured Project</p>
-                <h3 className="text-xl md:text-2xl font-serif italic uppercase tracking-tighter">STOUH BEIRUT Rooftop</h3>
+              <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12 text-center" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--media-scrim) 85%, transparent), transparent)' }}>
+                <p className="text-xs font-medium mb-2 text-on-media-dim">Featured Project</p>
+                <h3 className="text-xl md:text-2xl font-serif italic uppercase tracking-tighter text-on-media">STOUH BEIRUT Rooftop</h3>
               </div>
             </div>
             <div className="space-y-4">

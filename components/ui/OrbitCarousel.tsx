@@ -150,17 +150,17 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600, disableL
                   sizes="(max-width: 768px) 240px, 450px"
                   className="object-cover transition-all duration-500"
                 />
-                <div className="absolute inset-0 flex flex-col justify-end p-8" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--bg) 80%, transparent), transparent, transparent)' }}>
+                <div className="absolute inset-0 flex flex-col justify-end p-8" style={{ background: 'linear-gradient(to top, color-mix(in srgb, var(--media-scrim) 80%, transparent), transparent, transparent)' }}>
                   {item.category && (
-                    <p className="text-xs tracking-widest uppercase text-white/50 mb-2">
+                    <p className="text-xs tracking-widest uppercase text-on-media-dim mb-2">
                       {item.category}
                     </p>
                   )}
-                  <h3 className="text-2xl font-serif text-white">{item.title}</h3>
+                  <h3 className="text-2xl font-serif text-on-media">{item.title}</h3>
                 </div>
                 {/* Tap-to-expand hint on active card */}
                 {isActive && !disableLightbox && (
-                  <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                  <div className="absolute top-4 right-4 w-8 h-8 rounded-full backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" style={{ backgroundColor: 'color-mix(in srgb, var(--media-scrim) 45%, transparent)' }}>
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
                       <polyline points="15 3 21 3 21 9" />
                       <polyline points="9 21 3 21 3 15" />
@@ -180,9 +180,10 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600, disableL
             <button
               key={i}
               onClick={() => setActiveIndex(i)}
-              className={`w-2 h-2 rounded-full transition-all duration-500 ${
-                i === activeIndex ? 'bg-white w-6' : 'bg-white/25'
+              className={`h-2 rounded-full transition-all duration-500 ${
+                i === activeIndex ? 'w-6' : 'w-2'
               }`}
+              style={{ backgroundColor: i === activeIndex ? 'var(--text-primary)' : 'var(--text-muted)' }}
               aria-label={`Go to slide ${i + 1}`}
             />
           ))}
@@ -192,7 +193,8 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600, disableL
       {/* Lightbox — portaled to body to escape main's z-10 stacking context */}
       {lightbox !== null && createPortal(
         <div
-          className="fixed inset-0 z-[60] bg-black/95 flex items-center justify-center"
+          className="fixed inset-0 z-[60] flex items-center justify-center"
+          style={{ backgroundColor: 'color-mix(in srgb, var(--media-scrim) 95%, transparent)' }}
           onClick={() => setLightbox(null)}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -228,10 +230,10 @@ export default function OrbitCarousel({ items, autoplayInterval = 5600, disableL
           {/* Caption */}
           <div className="absolute bottom-8 left-0 right-0 text-center pointer-events-none">
             {items[lightbox].category && (
-              <p className="text-xs tracking-widest uppercase text-white/40 mb-2">{items[lightbox].category}</p>
+              <p className="text-xs tracking-widest uppercase text-on-media-dim mb-2">{items[lightbox].category}</p>
             )}
-            <h3 className="text-xl font-serif text-white">{items[lightbox].title}</h3>
-            <p className="text-xs text-white/30 mt-3">{lightbox + 1} / {items.length}</p>
+            <h3 className="text-xl font-serif text-on-media">{items[lightbox].title}</h3>
+            <p className="text-xs text-on-media-dim mt-3">{lightbox + 1} / {items.length}</p>
           </div>
         </div>,
         document.body,

@@ -1157,3 +1157,38 @@ Token migration of `OrbitCarousel.tsx` (beyond the dots/captions), `PricingCard.
 - Light/dark rendering was not visually verified in this environment; user to QA in-browser.
 - The global `html.light` band-aid still governs the many un-migrated components (Phase B).
 - 3D still deferred; none added.
+
+## 2026-07-02 - Phase B Batch 1: On-media light/dark fixes (Blaze detail carousel + Blaze page cards)
+
+### Context
+
+Refined finding: the `html.light` band-aid actually *does* remap `text-stone-*`/`text-zinc-*`
+and most page-surface whites, so those components are not visibly broken — retiring the band-aid
+is a large, mostly-cosmetic refactor and stays deferred. The genuinely-broken remaining cases are
+white text/scrims on always-dark media that the band-aid wrongly flips (invisible in light) or
+solid white/black elements it misses. Also added `.vscode/settings.json` + `.hintrc` to quiet the
+non-build IDE diagnostics (Tailwind canonical hints, CSS `@theme` at-rule, webhint inline-style/
+color-mix), committed separately (`b8a9bf5`).
+
+### Fixes (using the Phase 18 on-media foundation)
+
+- `components/ui/OrbitCarousel.tsx` (Blaze `/blaze/[slug]` gallery): card caption scrim
+  `var(--bg)` → `var(--media-scrim)`; caption + lightbox caption text → `text-on-media`/`dim`;
+  tap-to-expand icon bg and lightbox backdrop → fixed `--media-scrim` (were `bg-black/*`, which the
+  band-aid turned light); dot indicators → theme tokens (`--text-primary`/`--text-muted`, were
+  solid `bg-white` → invisible in light).
+- `app/(site)/blaze/BlazeClient.tsx` (manifesto "Blaze" card + "Featured Project" showcase card):
+  washing `from-black` gradients → fixed `--media-scrim` gradients; uncolored/`text-white` titles
+  and labels → `text-on-media`/`text-on-media-dim`.
+
+### Validation
+
+- typecheck / lint / test (19 files, 75) / build: all passed.
+
+### Deferred (optional later batches)
+
+Full band-aid retirement + migrating the stone/zinc components (PricingCard, CaseStudyCard,
+ProcessTimeline, TrustStrip, AccordionFAQ, CookieConsent, BudgetEstimator) to tokens — cosmetic,
+not fixing visible bugs; do only if desired, with in-browser QA. Minor residual light-mode
+degradations (CookieConsent hardcoded dark bg; ShowreelClient `bg-black/30` video hover overlay)
+also deferred.
