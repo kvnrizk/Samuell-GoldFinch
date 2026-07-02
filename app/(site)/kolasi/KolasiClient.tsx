@@ -68,12 +68,12 @@ interface KolasiClientProps {
   upcomingEvents?: any[];
 }
 
-/* Static promo clips — brand media previews only. Not linked to CMS event
-   detail routes, so no demo slugs are exposed as public /kolasi/<slug> links. */
-const showcaseClips = [
-  { muxPlaybackId: 'bzlHPIIz3L68lqg6fmMTH02GsYL1AeZnT6ewRQIlokaE', label: 'Le Speakeasy', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364299/sg-platform/static/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.jpg' },
-  { muxPlaybackId: 'RcF8cn9OBkB6iEkU6SYZb3SE00noBIWdVOneK5fqJuWo', label: '2nd Sun', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364266/sg-platform/static/assets/kolasi/images/4F8A3195.jpg' },
-  { muxPlaybackId: '2aAgNa5S5s32fQG8XBUHXrwPUBbEQxn4oyKAjJSV801k', label: 'Kolasi Nights', poster: 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364247/sg-platform/static/assets/kolasi/images/4F8A2938.jpg' },
+/* Static promo clips — brand media previews only (autoplay, muted, not linked out). */
+const showcasePoster = 'https://res.cloudinary.com/dwayr9ynb/image/upload/v1771364299/sg-platform/static/assets/kolasi/speakeasy/le-speakeasy-art-photo-min.jpg';
+const showcaseClips: { src: string; label: string; poster?: string; loopEnd?: number }[] = [
+  { src: '/assets/kolasi/Speakeasy_Ads/le%20speakeasy%20ads2%20barman.mp4', label: 'Le Speakeasy', poster: showcasePoster },
+  { src: '/assets/kolasi/Speakeasy_Ads/lespeakeasy%20g500%20mercedes.mp4', label: 'Le Speakeasy', poster: showcasePoster, loopEnd: 24 },
+  { src: '/assets/kolasi/Speakeasy_Ads/le%20speakeasy%20ads.mp4', label: 'Le Speakeasy', poster: showcasePoster },
 ];
 
 function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] }) {
@@ -84,25 +84,19 @@ function ShowcaseCard({ clip }: { clip: typeof showcaseClips[number] }) {
       ref={cardRef}
       className="reveal-up aspect-[4/3] rounded-3xl overflow-hidden border relative group sg-media-frame"
     >
-      <div className="w-full h-full opacity-60 group-hover:opacity-100 transition-opacity duration-500">
+      <div className="w-full h-full">
         <VideoPlayer
-          muxPlaybackId={clip.muxPlaybackId}
+          src={clip.src}
           poster={clip.poster}
+          loopEnd={clip.loopEnd}
           autoPlay
           loop
           muted
           mode="hero"
         />
       </div>
-      {/* Hover hint — fades out on hover */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center group-hover:opacity-0 transition-opacity duration-300 pointer-events-none">
-        <div className="w-14 h-14 rounded-full border flex items-center justify-center mb-3" style={{ borderColor: 'var(--border-strong)', backgroundColor: 'color-mix(in srgb, var(--surface-page) 50%, transparent)' }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="10 8 16 12 10 16" /></svg>
-        </div>
-        <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Hover to play</p>
-      </div>
       <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
-        <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>{clip.label}</p>
+        <p className="text-xs font-medium text-on-media-dim">{clip.label}</p>
       </div>
     </div>
   );
@@ -118,7 +112,7 @@ function ShowcaseSection() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {showcaseClips.map((clip) => (
-            <ShowcaseCard key={clip.label} clip={clip} />
+            <ShowcaseCard key={clip.src} clip={clip} />
           ))}
         </div>
       </div>
