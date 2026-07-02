@@ -1,0 +1,10 @@
+{
+  // These quiet IDE-extension diagnostics that conflict with this project's
+  // intentional conventions (CSS-variable inline styles, Tailwind v4 arbitrary
+  // values, @theme/@layer at-rules, modern color-mix). The build source of
+  // truth is `npm run typecheck`, `npm run lint`, and `npm run build`.
+  "tailwindCSS.lint.suggestCanonicalClasses": "ignore",
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore"
+}
