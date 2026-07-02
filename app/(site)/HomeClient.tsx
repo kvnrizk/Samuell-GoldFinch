@@ -296,13 +296,13 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
 
             <div className="grid grid-cols-2 gap-6">
               <div className="aspect-[3/4] rounded-2xl overflow-hidden border relative sg-media-frame">
-                <Image src={media.speakeasy[1]} alt="Kolasi event atmosphere" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
+                <VideoPlayer src="/assets/kolasi/panorama%20voitture.mp4" autoPlay loop muted mode="hero" />
               </div>
               <div className="aspect-[3/4] rounded-2xl overflow-hidden border relative sg-media-frame">
                 <Image src={media.artists[0]} alt="Kolasi artist direction" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
               </div>
               <div className="col-span-2 aspect-[16/9] rounded-2xl overflow-hidden border sg-media-frame">
-                <VideoPlayer muxPlaybackId="bzlHPIIz3L68lqg6fmMTH02GsYL1AeZnT6ewRQIlokaE" autoPlay loop muted mode="hero" />
+                <VideoPlayer src="/assets/kolasi/kate%20zubok%20festival%20chantilly.mp4" autoPlay loop muted mode="hero" />
               </div>
             </div>
           </div>
@@ -355,15 +355,14 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10 md:gap-x-10 md:gap-y-14">
               {collaborations.map((c) => (
-                <div key={c.name} className="group flex flex-col items-center justify-center px-2 py-2 text-center">
-                  <div className="h-12 flex items-center justify-center mb-5">
-                    {c.logo ? (
-                      <Image src={c.logo} alt={c.name} width={120} height={40} placeholder="blur" blurDataURL={BLUR_DATA_URL} className="h-10 w-auto object-contain mix-blend-screen opacity-60 group-hover:opacity-100 transition-opacity duration-500" sizes="120px" />
-                    ) : (
-                      <span className="text-xs font-semibold uppercase tracking-[0.18em] transition-colors duration-500" style={{ color: 'var(--text-secondary)' }}>{c.name}</span>
+                <div key={c.name} className="group flex flex-col items-center justify-start text-center">
+                  <div className="h-10 flex items-center justify-center mb-4">
+                    {c.logo && (
+                      <Image src={c.logo} alt={c.name} width={120} height={40} placeholder="blur" blurDataURL={BLUR_DATA_URL} className="h-9 w-auto object-contain mix-blend-screen opacity-70 group-hover:opacity-100 group-hover:scale-105 group-hover:brightness-125 transition-all duration-500" sizes="120px" />
                     )}
                   </div>
-                  <p className="ui-caption font-light transition-colors" style={{ color: 'var(--text-muted)' }}>{c.location}</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: 'var(--text-secondary)' }}>{c.name}</p>
+                  <p className="ui-caption font-light mt-1" style={{ color: 'var(--text-muted)' }}>{c.location}</p>
                 </div>
               ))}
             </div>
