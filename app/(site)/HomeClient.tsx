@@ -89,7 +89,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
       category: 'Residency',
       meta: 'Weekly programming and content',
       image: media.speakeasy[0],
-      cloudinaryVideoId: 'sg-platform/static/assets/kolasi/Speakeasy_Ads/LeSpeakeasyVid',
+      video: '/assets/kolasi/Speakeasy_Ads/LeSpeakeasyVid.mp4',
     },
     {
       id: 'kolasi-nights',
@@ -99,7 +99,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
       category: 'Events',
       meta: 'Curated club nights and festivals',
       image: media.kolasiNights[0],
-      cloudinaryVideoId: 'sg-platform/static/assets/kolasi/kate_zubok_festival_chantilly',
+      video: '/assets/kolasi/kate%20zubok%20festival%20chantilly.mp4',
     },
     {
       id: 'artist-direction',
@@ -109,7 +109,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
       category: 'Booking',
       meta: 'DJ and live performer roster',
       image: media.artists[1],
-      cloudinaryVideoId: 'sg-platform/static/assets/kolasi/panorama_voitture',
+      video: '/assets/kolasi/panorama%20voitture.mp4',
     },
   ];
 
