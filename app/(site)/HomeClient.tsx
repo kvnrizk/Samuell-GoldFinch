@@ -10,7 +10,7 @@ import { registerGSAP, gsap, prefersReducedMotion } from '@/lib/gsap-utils';
 import VideoPlayer from '@/components/ui/VideoPlayer';
 import { getDictionary, localizedPath, type Locale } from '@/lib/i18n';
 import { CounterStat } from './_components/CounterStat';
-import { WorkOrbitCarousel } from './_components/WorkOrbitCarousel';
+import { CraftOrbitCarousel } from '@/components/three/CraftOrbitCarousel';
 import { homeCollaborations as collaborations, homeMedia as media, type WorkItem } from './home-content';
 
 interface CMSPhoto {
@@ -77,6 +77,39 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
       category: 'Creative Direction',
       meta: 'Editorial and brand image-making',
       image: media.editorial[0],
+    },
+  ];
+
+  const curatedKolasiItems: WorkItem[] = [
+    {
+      id: 'le-speakeasy',
+      blazeWorkId: '',
+      identity: 'kolasi',
+      title: 'Le Speakeasy',
+      category: 'Residency',
+      meta: 'Weekly programming and content',
+      image: media.speakeasy[0],
+      video: '/assets/kolasi/Speakeasy_Ads/LeSpeakeasyVid.mp4',
+    },
+    {
+      id: 'kolasi-nights',
+      blazeWorkId: '',
+      identity: 'kolasi',
+      title: 'Kolasi Nights',
+      category: 'Events',
+      meta: 'Curated club nights and festivals',
+      image: media.kolasiNights[0],
+      video: '/assets/kolasi/kate%20zubok%20festival%20chantilly.mp4',
+    },
+    {
+      id: 'artist-direction',
+      blazeWorkId: '',
+      identity: 'kolasi',
+      title: 'Artist Direction',
+      category: 'Booking',
+      meta: 'DJ and live performer roster',
+      image: media.artists[1],
+      video: '/assets/kolasi/panorama%20voitture.mp4',
     },
   ];
 
@@ -179,7 +212,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
 
       <section className="py-16 md:py-40" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-10 md:gap-20 items-center reveal-section">
+          <div className="grid md:grid-cols-[0.68fr_1.32fr] gap-10 md:gap-14 items-center reveal-section">
             <div className="space-y-10 text-center">
               <Image src="/assets/blaze/LOGO_BLAZE.png" alt="Blaze Production" width={512} height={512} className="logo-monochrome mx-auto h-28 md:h-52 w-auto object-contain" sizes="(max-width: 768px) 448px, 640px" />
               <p className="ui-kicker font-medium" style={{ color: 'var(--text-muted)' }}>{t.blazeKicker}</p>
@@ -204,8 +237,9 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
               </Link>
             </div>
             <div className="relative">
-              <WorkOrbitCarousel
+              <CraftOrbitCarousel
                 items={curatedBlazeItems}
+                brand="blaze"
                 onNavigate={(item) => router.push(`/blaze?work=${item.blazeWorkId}#selected-work`)}
                 seeMoreLabel={t.seeMore}
               />
@@ -234,7 +268,7 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
 
       <section className="py-16 md:py-40 overflow-hidden" style={{ backgroundColor: 'var(--surface-page)' }}>
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-16 reveal-section">
+          <div className="grid md:grid-cols-[0.68fr_1.32fr] gap-12 md:gap-14 reveal-section items-center">
             <div className="p-6 md:p-12 rounded-3xl border backdrop-blur-xl sg-card text-center">
               <Image src="/assets/kolasi/LOGO%20KOLASI.png" alt="Kolasi" width={640} height={452} className="logo-monochrome mx-auto h-28 md:h-44 w-auto object-contain mb-8" sizes="(max-width: 768px) 400px, 560px" />
               <p className="ui-kicker font-medium mb-8" style={{ color: 'var(--text-muted)' }}>{t.kolasiKicker}</p>
@@ -261,16 +295,13 @@ export default function HomeClient({ blazeProjects, locale = 'en' }: HomeClientP
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div className="aspect-[3/4] rounded-2xl overflow-hidden border relative sg-media-frame">
-                <VideoPlayer src="/assets/kolasi/panorama%20voitture.mp4" autoPlay loop muted mode="hero" />
-              </div>
-              <div className="aspect-[3/4] rounded-2xl overflow-hidden border relative sg-media-frame">
-                <Image src={media.artists[0]} alt="Kolasi artist direction" fill placeholder="blur" blurDataURL={BLUR_DATA_URL} sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
-              </div>
-              <div className="col-span-2 aspect-[16/9] rounded-2xl overflow-hidden border sg-media-frame">
-                <VideoPlayer src="/assets/kolasi/kate%20zubok%20festival%20chantilly.mp4" autoPlay loop muted mode="hero" />
-              </div>
+            <div className="relative">
+              <CraftOrbitCarousel
+                items={curatedKolasiItems}
+                brand="kolasi"
+                onNavigate={() => router.push('/kolasi')}
+                seeMoreLabel={t.seeMore}
+              />
             </div>
           </div>
         </div>

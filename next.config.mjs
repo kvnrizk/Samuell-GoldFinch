@@ -44,7 +44,7 @@ const nextConfig = {
               "img-src 'self' data: blob: https://res.cloudinary.com https://image.mux.com https://www.facebook.com",
               "media-src 'self' blob: https://stream.mux.com https://*.mux.com https://res.cloudinary.com",
               "font-src 'self' https://fonts.gstatic.com",
-              "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://inferred.litix.io https://connect.facebook.net https://stream.mux.com https://*.mux.com https://cdn.mux.com",
+              "connect-src 'self' blob: https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://inferred.litix.io https://connect.facebook.net https://stream.mux.com https://*.mux.com https://cdn.mux.com",
               "frame-src https://calendly.com https://www.facebook.com",
               "worker-src 'self' blob:",
             ].join('; '),

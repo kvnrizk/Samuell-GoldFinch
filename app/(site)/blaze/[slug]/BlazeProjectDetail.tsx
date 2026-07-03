@@ -101,11 +101,11 @@ function RichTextRenderer({ content }: { content: any }) {
         }
         if (node.type === 'heading') {
           const text = node.children?.map((c: any) => c.text || '').join('') || '';
-          const Tag = (node.tag || 'h3') as keyof React.JSX.IntrinsicElements;
-          return (
-            <Tag key={i} className="text-xl md:text-2xl font-serif mt-8 mb-4">
-              {text}
-            </Tag>
+          const Tag = (node.tag || 'h3') as React.ElementType;
+          return React.createElement(
+            Tag,
+            { key: i, className: 'text-xl md:text-2xl font-serif mt-8 mb-4' },
+            text,
           );
         }
         return null;

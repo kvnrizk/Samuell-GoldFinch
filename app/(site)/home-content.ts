@@ -107,4 +107,7 @@ export interface WorkItem {
   category: string;
   meta: string;
   image: string;
+  // Optional autoplay clip; when present the card plays this instead of `image`
+  // (image is used as the poster).
+  video?: string;
 }

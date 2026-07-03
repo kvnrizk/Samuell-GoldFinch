@@ -22,6 +22,9 @@
     "@payloadcms/next": "3.84.1",
     "@payloadcms/plugin-cloud-storage": "3.84.1",
     "@payloadcms/richtext-lexical": "3.84.1",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
+    "@react-three/postprocessing": "^3.0.4",
     "cloudinary": "^2.9.0",
     "graphql": "^16.12.0",
     "gsap": "^3.12.7",
@@ -30,13 +33,15 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "resend": "^4.0.0",
-    "sharp": "^0.33.0"
+    "sharp": "^0.33.0",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.185.0",
     "autoprefixer": "^10.4.20",
     "dotenv": "^17.3.0",
     "eslint": "^9.0.0",
