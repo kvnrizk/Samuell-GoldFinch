@@ -108,6 +108,8 @@ export interface WorkItem {
   meta: string;
   image: string;
   // Optional autoplay clip; when present the card plays this instead of `image`
-  // (image is used as the poster).
+  // (image is used as the poster). `cloudinaryVideoId` is preferred (hosted +
+  // optimized delivery); `video` is a raw/local src fallback.
   video?: string;
+  cloudinaryVideoId?: string;
 }

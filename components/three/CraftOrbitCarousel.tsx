@@ -175,9 +175,10 @@ export function CraftOrbitCarousel({ items, brand, onNavigate, seeMoreLabel }: C
               className="relative aspect-[4/5] w-[172px] overflow-hidden rounded-2xl border shadow-2xl md:w-[256px]"
               style={{ backgroundColor: 'var(--surface-card)', borderColor: 'var(--border-subtle)' }}
             >
-              {item.video ? (
+              {item.cloudinaryVideoId || item.video ? (
                 <VideoPlayer
-                  src={item.video}
+                  cloudinaryVideoId={item.cloudinaryVideoId}
+                  src={item.cloudinaryVideoId ? undefined : item.video}
                   poster={item.image}
                   autoPlay={isActive}
                   loop
